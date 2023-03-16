@@ -1,12 +1,9 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect } from "react";
+import React from "react";
+import ChatView from "../components/ChatView";
 
 const ChatPage: NextPage = () => {
-  useEffect(() => {
-    // todo
-  }, []);
-
   return (
     <div>
       <Head>
@@ -15,7 +12,9 @@ const ChatPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="flex flex-col items-center justify-center m-20">WIP</main>
+      <main className="w-full min-h-screen flex flex-col items-center justify-center">
+        <ChatView />
+      </main>
     </div>
   );
 };
