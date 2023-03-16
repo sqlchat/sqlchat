@@ -17,7 +17,7 @@ const HomePage: NextPage = () => {
           <h1 className="text-5xl font-extrabold sm:text-6xl">ChatDBA</h1>
           <div className="grid grid-cols-1 mt-8">
             <Link className="flex max-w-xs flex-col rounded-xl bg-gray-800 p-4 px-6 text-white hover:opacity-80" href="/chat">
-              <h3 className="text-xl font-medium">Chat →</h3>
+              <span className="text-xl font-medium">Chat →</span>
             </Link>
           </div>
         </div>

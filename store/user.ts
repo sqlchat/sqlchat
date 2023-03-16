@@ -33,7 +33,7 @@ interface UserState {
   getAssistantById: (id: string) => User | undefined;
 }
 
-export const useUserStore = create<UserState>((set) => ({
+export const useUserStore = create<UserState>()(() => ({
   assistantList: assistantList,
   currentUser: localUser,
   getAssistantById: (id: Id) => {

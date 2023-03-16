@@ -1,10 +1,15 @@
+import { useEffect, useState } from "react";
 import { useChatStore, useUserStore } from "../../store";
-import { User } from "../../types";
+import { Chat, User } from "../../types";
 
 const Sidebar = () => {
   const userStore = useUserStore();
   const chatStore = useChatStore();
-  const currentChatUserId = chatStore.currentChat.userId;
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+
+  useEffect(() => {
+    setCurrentChat(chatStore.currentChat);
+  }, [chatStore.currentChat]);
 
   const handleAssistantClick = (user: User) => {
     for (const chat of chatStore.chatList) {
@@ -23,7 +28,7 @@ const Sidebar = () => {
         {userStore.assistantList.map((assistant) => (
           <div
             className={`w-full py-2 px-3 rounded-md mb-2 cursor-pointer hover:opacity-80 hover:bg-gray-100 ${
-              currentChatUserId === assistant.id && "shadow bg-gray-100 font-medium"
+              currentChat?.userId === assistant.id && "shadow bg-gray-100 font-medium"
             }`}
             onClick={() => handleAssistantClick(assistant)}
             key={assistant.id}

@@ -7,7 +7,7 @@ interface Props {
   message: Message;
 }
 
-const Message = (props: Props) => {
+const MessageView = (props: Props) => {
   const message = props.message;
   const userStore = useUserStore();
   const currentUser = userStore.currentUser;
@@ -27,4 +27,4 @@ const Message = (props: Props) => {
   );
 };
 
-export default Message;
+export default MessageView;
