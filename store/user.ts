@@ -9,6 +9,13 @@ const assistantList: User[] = [
     avatar: "",
     role: UserRole.Assistant,
   },
+  {
+    id: "assistant-dba",
+    name: "Great DBA Bot",
+    description: "",
+    avatar: "",
+    role: UserRole.Assistant,
+  },
 ];
 
 const localUser: User = {

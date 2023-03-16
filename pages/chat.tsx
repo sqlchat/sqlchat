@@ -12,7 +12,7 @@ const ChatPage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full min-h-screen flex flex-col items-center justify-center">
+      <main className="w-full h-screen">
         <ChatView />
       </main>
     </div>

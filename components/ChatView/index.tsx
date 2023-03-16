@@ -1,7 +1,7 @@
 import { useChatStore, useMessageStore, useUserStore } from "../../store";
 import MessageView from "./MessageView";
 import Sidebar from "./Sidebar";
-import Textarea from "./Textarea";
+import MessageTextarea from "./MessageTextarea";
 
 const ChatView = () => {
   const chatStore = useChatStore();
@@ -12,14 +12,16 @@ const ChatView = () => {
   const messageList = messageStore.messageList.filter((message) => message.chatId === currentChat?.id);
 
   return (
-    <div className="w-full max-w-full lg:max-w-3xl border rounded-md grid grid-cols-[192px_1fr]">
+    <div className="relative w-full max-w-full h-full rounded-md flex flex-row justify-start items-start">
       <Sidebar />
-      <main className="w-full">
-        <p className="w-full text-center py-2 border-b">{chatTitle}</p>
-        <div className="py-2">
-          {messageList.length === 0 ? <p>no message</p> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
+      <main className="relative grow w-auto h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-gray-100">
+        <p className="sticky top-0 w-full text-center py-4 border-b bg-white">{chatTitle}</p>
+        <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 mx-auto">
+          {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
         </div>
-        <Textarea />
+        <div className="sticky bottom-0 w-full max-w-3xl py-1 px-4 mx-auto">
+          <MessageTextarea />
+        </div>
       </main>
     </div>
   );

@@ -1,16 +1,23 @@
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import TextareaAutosize from "react-textarea-autosize";
 import { useChatStore, useMessageStore, useUserStore } from "../../store";
 import { UserRole } from "../../types";
 import { generateUUID } from "../../utils";
 import Icon from "../Icon";
 
-const Textarea = () => {
+const MessageTextarea = () => {
   const userStore = useUserStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const [value, setValue] = useState<string>("");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -49,11 +56,20 @@ const Textarea = () => {
   };
 
   return (
-    <div className="w-full h-auto border-t relative">
-      <textarea ref={textareaRef} className="w-full h-full outline-none pt-2 px-2 resize-none" onChange={handleChange} rows={1} />
-      <Icon.Send className="absolute bottom-2 right-2" onClick={handleSend} />
+    <div className="w-full h-auto border rounded-md mb-4 px-2 py-1 relative shadow bg-white">
+      <TextareaAutosize
+        ref={textareaRef}
+        className="w-full h-full outline-none border-none bg-transparent pt-1 mt-1 px-2 resize-none hide-scrollbar"
+        rows={1}
+        minRows={1}
+        maxRows={5}
+        onChange={handleChange}
+      />
+      <div className="absolute bottom-2 right-2 w-8 p-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100" onClick={handleSend}>
+        <Icon.Send className="w-full h-auto text-blue-800" />
+      </div>
     </div>
   );
 };
 
-export default Textarea;
+export default MessageTextarea;
