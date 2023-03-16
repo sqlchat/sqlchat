@@ -1,6 +1,8 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useChatStore, useUserStore } from "../../store";
 import { Chat, User } from "../../types";
+import Icon from "../Icon";
 
 const Sidebar = () => {
   const userStore = useUserStore();
@@ -22,8 +24,10 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-52 lg:w-64 h-full transition-all shrink-0 border-r p-2 sticky top-0">
-      <h2 className="pt-2 pb-4 w-full text-center">Assistant list</h2>
+    <div className="w-52 lg:w-64 h-full transition-all shrink-0 border-r px-3 flex flex-col justify-start items-center sticky top-0">
+      <h2 className="py-4 w-full flex flex-row justify-center items-center">
+        <Icon.Bot className="text-gray-600 mr-2 w-6 h-auto" /> Assistant list
+      </h2>
       <div className="w-full mt-2 flex flex-col justify-start items-start">
         {userStore.assistantList.map((assistant) => (
           <div
@@ -36,6 +40,16 @@ const Sidebar = () => {
             {assistant.name}
           </div>
         ))}
+      </div>
+      <div className="grow w-full flex flex-col justify-end items-center pb-6">
+        <div className="w-full flex flex-row justify-center items-center space-x-3">
+          <Link href="/" className="p-1 rounded-md hover:shadow hover:bg-gray-100">
+            <Icon.Home className="text-gray-600 w-6 h-auto" />
+          </Link>
+          <a href="https://github.com/bytebase/chatdba" target="_blank" className="p-1 rounded-md hover:shadow hover:bg-gray-100">
+            <Icon.Github className="text-gray-600 w-6 h-auto" />
+          </a>
+        </div>
       </div>
     </div>
   );
