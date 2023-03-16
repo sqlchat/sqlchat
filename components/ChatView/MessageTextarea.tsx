@@ -66,7 +66,7 @@ const MessageTextarea = () => {
         onChange={handleChange}
       />
       <div className="absolute bottom-2 right-2 w-8 p-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100" onClick={handleSend}>
-        <Icon.Send className="w-full h-auto text-blue-800" />
+        <Icon.Io.IoMdSend className="w-full h-auto text-blue-800" />
       </div>
     </div>
   );
