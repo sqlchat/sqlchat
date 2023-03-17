@@ -56,7 +56,7 @@ const MessageTextarea = () => {
   };
 
   return (
-    <div className="w-full h-auto border rounded-md mb-4 px-2 py-1 relative shadow bg-white">
+    <div className="w-full h-auto border rounded-md mb-2 px-2 py-1 relative shadow bg-white">
       <TextareaAutosize
         ref={textareaRef}
         className="w-full h-full outline-none border-none bg-transparent pt-1 mt-1 px-2 resize-none hide-scrollbar"
@@ -64,6 +64,7 @@ const MessageTextarea = () => {
         minRows={1}
         maxRows={5}
         onChange={handleChange}
+        onSubmit={handleSend}
       />
       <div className="absolute bottom-2 right-2 w-8 p-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100" onClick={handleSend}>
         <Icon.Io.IoMdSend className="w-full h-auto text-blue-800" />

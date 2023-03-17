@@ -24,7 +24,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="w-52 lg:w-64 h-full transition-all shrink-0 border-r px-3 flex flex-col justify-start items-center sticky top-0">
+    <div className="w-52 lg:w-64 h-full transition-all shrink-0 border-r px-3 flex flex-col justify-start items-center sticky top-0 bg-white sm:rounded-l-md">
       <h2 className="py-4 w-full flex flex-row justify-center items-center">
         <Icon.Io.IoIosChatbubbles className="text-gray-600 mr-2 w-6 h-auto" /> Assistant list
       </h2>

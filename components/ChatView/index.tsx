@@ -22,14 +22,14 @@ const ChatView = () => {
   }, [currentChat?.id, messageStore.messageList]);
 
   return (
-    <div className="relative w-full max-w-full h-full rounded-md flex flex-row justify-start items-start">
+    <div className="relative w-full max-w-full h-full flex flex-row justify-start items-start">
       <Sidebar />
-      <main className="relative grow w-auto h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-gray-100">
+      <main className="relative grow w-auto h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-gray-100 sm:rounded-r-md">
         <div className="sticky top-0 w-full text-center py-4 border-b bg-white">{chatTitle}</div>
-        <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 mx-auto">
+        <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
           {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
         </div>
-        <div className="sticky bottom-0 w-full max-w-3xl py-1 px-4 mx-auto">
+        <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto backdrop-blur">
           <MessageTextarea />
         </div>
       </main>
