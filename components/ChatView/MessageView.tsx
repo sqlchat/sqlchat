@@ -16,10 +16,10 @@ const MessageView = (props: Props) => {
   return (
     <div className={`w-full flex flex-row justify-start items-start my-4 ${isCurrentUser ? "justify-end pl-8 sm:pl-16" : "pr-8 sm:pr-16"}`}>
       {isCurrentUser ? (
-        <div className="w-auto max-w-full bg-white px-3 py-2 rounded-lg rounded-tr-none shadow">{message.content}</div>
+        <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg rounded-tr-none shadow">{message.content}</div>
       ) : (
         <div
-          className="w-auto max-w-full bg-white px-3 py-2 rounded-lg rounded-tl-none shadow"
+          className="w-auto max-w-full bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow"
           dangerouslySetInnerHTML={{ __html: marked.parse(message.content) }}
         ></div>
       )}

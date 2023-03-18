@@ -1,7 +1,9 @@
+import * as Bi from "react-icons/bi";
 import * as Hi from "react-icons/hi";
 import * as Io from "react-icons/io";
 
 const Icon = {
+  Bi,
   Hi,
   Io,
 };

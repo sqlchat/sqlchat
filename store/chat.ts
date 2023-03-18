@@ -3,9 +3,10 @@ import { persist } from "zustand/middleware";
 import { Chat, User } from "../types";
 import { generateUUID } from "../utils";
 
-const defaultChat: Chat = {
+export const defaultChat: Chat = {
   id: generateUUID(),
-  userId: "assistant-chatgpt",
+  assistantId: "assistant-dba",
+  isRequesting: false,
 };
 
 interface ChatState {
@@ -21,9 +22,10 @@ export const useChatStore = create<ChatState>()(
       chatList: [defaultChat],
       currentChat: defaultChat,
       createChat: (user: User) => {
-        const chat = {
+        const chat: Chat = {
           id: generateUUID(),
-          userId: user.id,
+          assistantId: user.id,
+          isRequesting: false,
         };
         set((state) => ({
           chatList: [...state.chatList, chat],

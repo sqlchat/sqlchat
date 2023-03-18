@@ -1,8 +1,11 @@
-import { useEffect, useState } from "react";
-import { useChatStore, useMessageStore, useUserStore } from "../../store";
-import { Chat, Message } from "../../types";
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { defaultChat, useChatStore, useMessageStore, useUserStore } from "../../store";
+import { Chat, Message, UserRole } from "../../types";
+import { generateUUID } from "../../utils";
+import Icon from "../Icon";
+import Header from "./Header";
 import MessageView from "./MessageView";
-import Sidebar from "./Sidebar";
 import MessageTextarea from "./MessageTextarea";
 
 const ChatView = () => {
@@ -11,29 +14,76 @@ const ChatView = () => {
   const messageStore = useMessageStore();
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
-  const chatTitle = currentChat ? userStore.getAssistantById(currentChat.userId)?.name : "No chat";
+  const chatViewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!userStore.getAssistantById(chatStore.currentChat.assistantId)) {
+      chatStore.setCurrentChat(defaultChat);
+    }
     setCurrentChat(chatStore.currentChat);
-  }, [chatStore.currentChat]);
+  }, [chatStore, userStore]);
 
   useEffect(() => {
     setMessageList(messageStore.messageList.filter((message) => message.chatId === currentChat?.id));
   }, [currentChat?.id, messageStore.messageList]);
 
+  useEffect(() => {
+    if (!currentChat || !chatViewRef.current) {
+      return;
+    }
+    chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+  }, [currentChat, currentChat?.isRequesting]);
+
+  const sendMessageToCurrentChat = async () => {
+    if (!currentChat || !chatViewRef.current) {
+      return;
+    }
+    if (currentChat.isRequesting) {
+      return;
+    }
+
+    chatStore.setCurrentChat({
+      ...currentChat,
+      isRequesting: true,
+    });
+    const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
+    const { data } = await axios.post<string>("/api/chat", {
+      messages: messageList.map((message) => ({
+        role: message.creatorId === userStore.currentUser.id ? UserRole.User : UserRole.Assistant,
+        content: message.content,
+      })),
+    });
+    messageStore.addMessage({
+      id: generateUUID(),
+      chatId: currentChat.id,
+      creatorId: currentChat.assistantId,
+      createdAt: Date.now(),
+      content: data,
+    });
+    chatStore.setCurrentChat({
+      ...currentChat,
+      isRequesting: false,
+    });
+  };
+
   return (
-    <div className="relative w-full max-w-full h-full flex flex-row justify-start items-start">
-      <Sidebar />
-      <main className="relative grow w-auto h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-gray-100 sm:rounded-r-md">
-        <div className="sticky top-0 w-full text-center py-4 border-b bg-white">{chatTitle}</div>
-        <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
-          {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
-        </div>
-        <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto backdrop-blur">
-          <MessageTextarea />
-        </div>
-      </main>
-    </div>
+    <main
+      ref={chatViewRef}
+      className="relative sm:border-x w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto"
+    >
+      <Header />
+      <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
+        {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
+        {currentChat?.isRequesting && (
+          <div className="w-full pt-4 pb-12 flex justify-center items-center text-gray-600">
+            <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Loading...
+          </div>
+        )}
+      </div>
+      <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto backdrop-blur">
+        <MessageTextarea sendMessage={sendMessageToCurrentChat} />
+      </div>
+    </main>
   );
 };
 

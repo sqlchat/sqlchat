@@ -1,17 +1,10 @@
 import { create } from "zustand";
 import { Id, User, UserRole } from "../types";
 
-const assistantList: User[] = [
-  {
-    id: "assistant-chatgpt",
-    name: "Origin ChatGPT",
-    description: "",
-    avatar: "",
-    role: UserRole.Assistant,
-  },
+export const assistantList: User[] = [
   {
     id: "assistant-dba",
-    name: "Great DBA Bot",
+    name: "Chat DBA",
     description: "",
     avatar: "",
     role: UserRole.Assistant,

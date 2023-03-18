@@ -6,6 +6,7 @@ interface MessageState {
   messageList: Message[];
   getState: () => MessageState;
   addMessage: (message: Message) => void;
+  clearMessage: (filter: (message: Message) => boolean) => void;
 }
 
 export const useMessageStore = create<MessageState>()(
@@ -14,6 +15,7 @@ export const useMessageStore = create<MessageState>()(
       messageList: [],
       getState: () => get(),
       addMessage: (message: Message) => set((state) => ({ messageList: [...state.messageList, message] })),
+      clearMessage: (filter: (message: Message) => boolean) => set((state) => ({ messageList: state.messageList.filter(filter) })),
     }),
     {
       name: "message-storage",

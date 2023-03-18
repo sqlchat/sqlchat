@@ -2,5 +2,6 @@ import { Id } from "./common";
 
 export interface Chat {
   id: string;
-  userId: Id;
+  assistantId: Id;
+  isRequesting: boolean;
 }
