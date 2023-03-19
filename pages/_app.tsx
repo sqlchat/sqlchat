@@ -1,8 +1,9 @@
 import { AppProps } from "next/app";
 import React from "react";
+import { Toaster } from "react-hot-toast";
 import { Analytics } from "@vercel/analytics/react";
 import "../styles/tailwind.css";
-import { Toaster } from "react-hot-toast";
+import "../styles/global.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

@@ -13,7 +13,7 @@ const HomePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className="w-full min-h-screen flex flex-col items-center justify-center">
+      <main className="w-full h-full flex flex-col items-center justify-center">
         <div className="flex flex-col items-center justify-center px-4 py-16">
           <h1 className="text-5xl font-extrabold text-gray-800 sm:text-6xl">ChatDBA</h1>
           <div className="grid grid-cols-1 mt-8">
