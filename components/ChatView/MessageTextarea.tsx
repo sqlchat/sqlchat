@@ -38,22 +38,15 @@ const MessageTextarea = (props: Props) => {
       return;
     }
 
-    const currentChat = chatStore.currentChat;
-    if (currentChat.isRequesting) {
-      toast.error("Please wait for the previous message to be sent.");
-      return;
-    }
-
     messageStore.addMessage({
       id: generateUUID(),
-      chatId: currentChat.id,
+      chatId: chatStore.currentChat.id,
       creatorId: userStore.currentUser.id,
       createdAt: Date.now(),
       content: value,
     });
     setValue("");
     textareaRef.current!.value = "";
-
     await sendMessage();
   };
 

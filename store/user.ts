@@ -4,8 +4,8 @@ import { Id, User, UserRole } from "../types";
 export const assistantList: User[] = [
   {
     id: "assistant-dba",
-    name: "Chat DBA",
-    description: "",
+    name: "ChatDBA",
+    description: "🤖️ I am a chatbot that can help you with database administration.",
     avatar: "",
     role: UserRole.Assistant,
   },

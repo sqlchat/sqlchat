@@ -14,6 +14,7 @@ const ChatView = () => {
   const messageStore = useMessageStore();
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+  const [isRequesting, setIsRequesting] = useState<boolean>(false);
   const chatViewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -32,20 +33,17 @@ const ChatView = () => {
       return;
     }
     chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
-  }, [currentChat, currentChat?.isRequesting]);
+  }, [currentChat, isRequesting]);
 
   const sendMessageToCurrentChat = async () => {
     if (!currentChat || !chatViewRef.current) {
       return;
     }
-    if (currentChat.isRequesting) {
+    if (isRequesting) {
       return;
     }
 
-    chatStore.setCurrentChat({
-      ...currentChat,
-      isRequesting: true,
-    });
+    setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
     const { data } = await axios.post<string>("/api/chat", {
       messages: messageList.map((message) => ({
@@ -60,21 +58,18 @@ const ChatView = () => {
       createdAt: Date.now(),
       content: data,
     });
-    chatStore.setCurrentChat({
-      ...currentChat,
-      isRequesting: false,
-    });
+    setIsRequesting(false);
   };
 
   return (
     <main
       ref={chatViewRef}
-      className="relative sm:border-x w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto"
+      className="relative sm:border sm:rounded-lg sm:shadow w-full mx-auto h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
     >
       <Header />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
-        {currentChat?.isRequesting && (
+        {isRequesting && (
           <div className="w-full pt-4 pb-12 flex justify-center items-center text-gray-600">
             <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Loading...
           </div>
