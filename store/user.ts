@@ -1,15 +1,6 @@
 import { create } from "zustand";
+import { assistantList } from ".";
 import { Id, User, UserRole } from "../types";
-
-export const assistantList: User[] = [
-  {
-    id: "assistant-dba",
-    name: "ChatDBA",
-    description: "🤖️ I am a chatbot that can help you with database administration.",
-    avatar: "",
-    role: UserRole.Assistant,
-  },
-];
 
 const localUser: User = {
   id: "local-user",
@@ -20,7 +11,6 @@ const localUser: User = {
 };
 
 interface UserState {
-  // We can think assistants are special users.
   assistantList: User[];
   currentUser: User;
   getAssistantById: (id: string) => User | undefined;

@@ -14,12 +14,4 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   res.status(200).json(completionResponse.data.choices[0].message?.content || "");
 };
 
-// TODO(steven): Implement a generic getChatPrompt function that takes in a
-// message and a robot identifier, then returns a string with specific prompts.
-const getChatPrompt = async (message: string) => {
-  return `
-  Question: ${message}
-  Answer:`;
-};
-
 export default handler;

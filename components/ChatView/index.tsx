@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { defaultChat, useChatStore, useMessageStore, useUserStore } from "../../store";
+import { defaultChat, getPromptOfAssistant, useChatStore, useMessageStore, useUserStore } from "../../store";
 import { Chat, Message, UserRole } from "../../types";
 import { generateUUID } from "../../utils";
 import Icon from "../Icon";
@@ -47,11 +47,18 @@ const ChatView = () => {
 
     setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
+    const prompt = getPromptOfAssistant(userStore.getAssistantById(currentChat.assistantId)!);
     const { data } = await axios.post<string>("/api/chat", {
-      messages: messageList.map((message) => ({
-        role: message.creatorId === userStore.currentUser.id ? UserRole.User : UserRole.Assistant,
-        content: message.content,
-      })),
+      messages: [
+        {
+          role: "system",
+          content: prompt,
+        },
+        ...messageList.map((message) => ({
+          role: message.creatorId === userStore.currentUser.id ? UserRole.User : UserRole.Assistant,
+          content: message.content,
+        })),
+      ],
     });
     messageStore.addMessage({
       id: generateUUID(),
