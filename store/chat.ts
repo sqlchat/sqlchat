@@ -6,7 +6,6 @@ import { generateUUID } from "../utils";
 export const defaultChat: Chat = {
   id: generateUUID(),
   assistantId: "assistant-dba",
-  isRequesting: false,
 };
 
 interface ChatState {
@@ -25,7 +24,6 @@ export const useChatStore = create<ChatState>()(
         const chat: Chat = {
           id: generateUUID(),
           assistantId: user.id,
-          isRequesting: false,
         };
         set((state) => ({
           chatList: [...state.chatList, chat],

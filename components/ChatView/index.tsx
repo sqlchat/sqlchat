@@ -29,10 +29,12 @@ const ChatView = () => {
   }, [currentChat?.id, messageStore.messageList]);
 
   useEffect(() => {
-    if (!currentChat || !chatViewRef.current) {
-      return;
-    }
-    chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+    setTimeout(() => {
+      if (!chatViewRef.current) {
+        return;
+      }
+      chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+    });
   }, [currentChat, isRequesting]);
 
   const sendMessageToCurrentChat = async () => {
@@ -70,13 +72,13 @@ const ChatView = () => {
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
         {isRequesting && (
-          <div className="w-full pt-4 pb-12 flex justify-center items-center text-gray-600">
-            <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Loading...
+          <div className="w-full pt-4 pb-8 flex justify-center items-center text-gray-600">
+            <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...
           </div>
         )}
       </div>
-      <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto backdrop-blur">
-        <MessageTextarea sendMessage={sendMessageToCurrentChat} />
+      <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
+        <MessageTextarea disabled={isRequesting} sendMessage={sendMessageToCurrentChat} />
       </div>
     </main>
   );

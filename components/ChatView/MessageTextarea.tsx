@@ -6,11 +6,12 @@ import { generateUUID } from "../../utils";
 import Icon from "../Icon";
 
 interface Props {
+  disabled?: boolean;
   sendMessage: () => Promise<void>;
 }
 
 const MessageTextarea = (props: Props) => {
-  const { sendMessage } = props;
+  const { disabled, sendMessage } = props;
   const userStore = useUserStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
@@ -35,6 +36,9 @@ const MessageTextarea = (props: Props) => {
     }
     if (!value) {
       toast.error("Please enter a message.");
+      return;
+    }
+    if (disabled) {
       return;
     }
 
@@ -71,9 +75,13 @@ const MessageTextarea = (props: Props) => {
         onChange={handleChange}
         onKeyDown={handleKeyDown}
       />
-      <div className="w-8 p-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100" onClick={handleSend}>
+      <button
+        className="w-8 p-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+        disabled={disabled}
+        onClick={handleSend}
+      >
         <Icon.Io.IoMdSend className="w-full h-auto text-indigo-600" />
-      </div>
+      </button>
     </div>
   );
 };
