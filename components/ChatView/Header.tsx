@@ -1,15 +1,14 @@
 import { Menu, Popover } from "@headlessui/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import { useChatStore, useMessageStore, useUserStore } from "../../store";
+import { getAssistantById, useChatStore, useMessageStore } from "../../store";
 import Icon from "../Icon";
 
 const Header = () => {
-  const userStore = useUserStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const currentChat = chatStore.currentChat;
-  const assistant = userStore.getAssistantById(currentChat?.assistantId)!;
+  const assistant = getAssistantById(currentChat?.assistantId)!;
 
   const handleClearMessage = () => {
     messageStore.clearMessage((message) => message.chatId !== currentChat?.id);

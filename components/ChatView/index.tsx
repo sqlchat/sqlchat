@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { defaultChat, getPromptOfAssistant, useChatStore, useMessageStore, useUserStore } from "../../store";
+import { defaultChat, getAssistantById, getPromptOfAssistant, localUser, useChatStore, useMessageStore } from "../../store";
 import { Chat, Message, UserRole } from "../../types";
 import { generateUUID } from "../../utils";
 import Icon from "../Icon";
@@ -10,7 +10,6 @@ import MessageTextarea from "./MessageTextarea";
 
 const ChatView = () => {
   const chatStore = useChatStore();
-  const userStore = useUserStore();
   const messageStore = useMessageStore();
   const [messageList, setMessageList] = useState<Message[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
@@ -18,11 +17,11 @@ const ChatView = () => {
   const chatViewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!userStore.getAssistantById(chatStore.currentChat.assistantId)) {
+    if (!getAssistantById(chatStore.currentChat.assistantId)) {
       chatStore.setCurrentChat(defaultChat);
     }
     setCurrentChat(chatStore.currentChat);
-  }, [chatStore, userStore]);
+  }, [chatStore]);
 
   useEffect(() => {
     setMessageList(messageStore.messageList.filter((message) => message.chatId === currentChat?.id));
@@ -47,7 +46,7 @@ const ChatView = () => {
 
     setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
-    const prompt = getPromptOfAssistant(userStore.getAssistantById(currentChat.assistantId)!);
+    const prompt = getPromptOfAssistant(getAssistantById(currentChat.assistantId)!);
     const { data } = await axios.post<string>("/api/chat", {
       messages: [
         {
@@ -55,7 +54,7 @@ const ChatView = () => {
           content: prompt,
         },
         ...messageList.map((message) => ({
-          role: message.creatorId === userStore.currentUser.id ? UserRole.User : UserRole.Assistant,
+          role: message.creatorId === localUser.id ? UserRole.User : UserRole.Assistant,
           content: message.content,
         })),
       ],

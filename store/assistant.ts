@@ -1,4 +1,4 @@
-import { User, UserRole } from "../types";
+import { Id, User, UserRole } from "../types";
 
 // Assistant is a special user.
 export const assistantList: User[] = [
@@ -10,6 +10,11 @@ export const assistantList: User[] = [
     role: UserRole.Assistant,
   },
 ];
+
+export const getAssistantById = (id: Id) => {
+  const user = assistantList.find((user) => user.id === id);
+  return user || undefined;
+};
 
 // getPromptOfAssistant define the special prompt for each assistant.
 export const getPromptOfAssistant = (assistant: User) => {
