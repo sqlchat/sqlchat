@@ -7,6 +7,7 @@ specifiers:
   '@types/marked': ^4.0.8
   '@types/node': ^18.11.18
   '@types/react': ^18.0.26
+  '@types/react-dom': ^18.0.11
   '@types/uuid': ^9.0.1
   '@vercel/analytics': ^0.1.11
   autoprefixer: ^10.4.13
@@ -54,6 +55,7 @@ devDependencies:
   '@types/marked': 4.0.8
   '@types/node': 18.15.3
   '@types/react': 18.0.28
+  '@types/react-dom': 18.0.11
   '@types/uuid': 9.0.1
   autoprefixer: 10.4.14_postcss@8.4.21
   eslint: 8.20.0
@@ -308,6 +310,12 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
+
+  /@types/react-dom/18.0.11:
+    resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
+    dependencies:
+      '@types/react': 18.0.28
+    dev: true
 
   /@types/react/18.0.28:
     resolution: {integrity: sha512-RD0ivG1kEztNBdoAK7lekI9M+azSnitIn85h4iOiaLjaTrMjzslhaqCGaI4IyCJ1RljWiLCEu4jyrLLgqxBTew==}
