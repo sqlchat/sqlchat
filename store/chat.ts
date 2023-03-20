@@ -5,7 +5,7 @@ import { generateUUID } from "../utils";
 
 export const defaultChat: Chat = {
   id: generateUUID(),
-  assistantId: "assistant-dba",
+  assistantId: "sql-assistant",
 };
 
 interface ChatState {
