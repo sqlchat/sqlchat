@@ -1,4 +1,4 @@
-import { User } from "../types";
+import { User } from "@/types";
 
 export const localUser: User = {
   id: "local-user",

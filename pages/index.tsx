@@ -1,7 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
-import ChatView from "../components/ChatView";
+import ChatView from "@/components/ChatView";
 
 const ChatPage: NextPage = () => {
   return (

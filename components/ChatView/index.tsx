@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { defaultChat, getAssistantById, getPromptOfAssistant, localUser, useChatStore, useMessageStore } from "../../store";
-import { Chat, CreatorRole, Message } from "../../types";
-import { generateUUID } from "../../utils";
+import { defaultChat, getAssistantById, getPromptOfAssistant, localUser, useChatStore, useMessageStore } from "@/store";
+import { Chat, CreatorRole, Message } from "@/types";
+import { generateUUID } from "@/utils";
 import Icon from "../Icon";
 import Header from "./Header";
 import MessageView from "./MessageView";

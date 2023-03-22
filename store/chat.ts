@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Chat, UNKNOWN_ID, User } from "../types";
-import { generateUUID } from "../utils";
+import { Chat, UNKNOWN_ID, User } from "@/types";
+import { generateUUID } from "@/utils";
 
 export const defaultChat: Chat = {
   id: generateUUID(),

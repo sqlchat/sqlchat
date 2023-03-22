@@ -1,6 +1,6 @@
 import { marked } from "marked";
-import { localUser } from "../../store";
-import { Message } from "../../types";
+import { localUser } from "@/store";
+import { Message } from "@/types";
 
 interface Props {
   message: Message;

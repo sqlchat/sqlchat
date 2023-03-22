@@ -1,5 +1,5 @@
 import { first } from "lodash-es";
-import { Id, User } from "../types";
+import { Id, User } from "@/types";
 
 // Assistant is a special user.
 export const assistantList: User[] = [

@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
-import { localUser, useChatStore, useMessageStore } from "../../store";
-import { CreatorRole } from "../../types";
-import { generateUUID } from "../../utils";
+import { localUser, useChatStore, useMessageStore } from "@/store";
+import { CreatorRole } from "@/types";
+import { generateUUID } from "@/utils";
 import Icon from "../Icon";
 
 interface Props {

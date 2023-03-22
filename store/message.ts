@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Message } from "../types";
+import { Message } from "@/types";
 
 interface MessageState {
   messageList: Message[];

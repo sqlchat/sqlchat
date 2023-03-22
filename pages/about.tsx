@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import React from "react";
-import Icon from "../components/Icon";
+import Icon from "@/components/Icon";
 
 const HomePage: NextPage = () => {
   return (

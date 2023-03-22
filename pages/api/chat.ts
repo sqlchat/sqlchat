@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import openai from "../../utils/openai-api";
+import openai from "@/utils/openai-api";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const completionResponse = await openai.createChatCompletion({

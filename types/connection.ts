@@ -1,4 +1,4 @@
-import { Id } from "./common";
+import { Id } from "./";
 
 enum Engine {
   MySQL = "MYSQL",

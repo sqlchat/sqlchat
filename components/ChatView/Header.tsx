@@ -1,7 +1,7 @@
 import { Menu, Popover } from "@headlessui/react";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
-import { getAssistantById, useChatStore, useMessageStore } from "../../store";
+import { getAssistantById, useChatStore, useMessageStore } from "@/store";
 import Icon from "../Icon";
 
 const Header = () => {
