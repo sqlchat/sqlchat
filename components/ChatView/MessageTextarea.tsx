@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
-import { localUser, useChatStore, useMessageStore } from "@/store";
+import { useChatStore, useMessageStore, useUserStore } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -13,6 +13,7 @@ interface Props {
 
 const MessageTextarea = (props: Props) => {
   const { disabled, sendMessage } = props;
+  const userStore = useUserStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const [value, setValue] = useState<string>("");
@@ -45,7 +46,7 @@ const MessageTextarea = (props: Props) => {
     messageStore.addMessage({
       id: generateUUID(),
       chatId: chatStore.currentChat.id,
-      creatorId: localUser.id,
+      creatorId: userStore.currentUser.id,
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),
       content: value,

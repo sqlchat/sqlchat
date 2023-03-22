@@ -1,5 +1,5 @@
 import { marked } from "marked";
-import { localUser } from "@/store";
+import { useUserStore } from "@/store";
 import { Message } from "@/types";
 
 interface Props {
@@ -8,7 +8,8 @@ interface Props {
 
 const MessageView = (props: Props) => {
   const message = props.message;
-  const isCurrentUser = message.creatorId === localUser.id;
+  const userStore = useUserStore();
+  const isCurrentUser = message.creatorId === userStore.currentUser.id;
 
   return (
     <div className={`w-full flex flex-row justify-start items-start my-4 ${isCurrentUser ? "justify-end pl-8 sm:pl-24" : "pr-8 sm:pr-24"}`}>

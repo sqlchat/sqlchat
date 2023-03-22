@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { defaultChat, getAssistantById, getPromptOfAssistant, localUser, useChatStore, useMessageStore } from "@/store";
-import { Chat, CreatorRole, Message } from "@/types";
+import { getAssistantById, getPromptOfAssistant, useChatStore, useMessageStore } from "@/store";
+import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
 import Header from "./Header";
@@ -11,21 +11,10 @@ import MessageTextarea from "./MessageTextarea";
 const ChatView = () => {
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
-  const [messageList, setMessageList] = useState<Message[]>([]);
-  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [isRequesting, setIsRequesting] = useState<boolean>(false);
   const chatViewRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!getAssistantById(chatStore.currentChat.assistantId)) {
-      chatStore.setCurrentChat(defaultChat);
-    }
-    setCurrentChat(chatStore.currentChat);
-  }, [chatStore]);
-
-  useEffect(() => {
-    setMessageList(messageStore.messageList.filter((message) => message.chatId === currentChat?.id));
-  }, [currentChat?.id, messageStore.messageList]);
+  const currentChat = chatStore.currentChat;
+  const messageList = messageStore.messageList.filter((message) => message.chatId === currentChat?.id);
 
   useEffect(() => {
     setTimeout(() => {
@@ -54,7 +43,7 @@ const ChatView = () => {
           content: prompt,
         },
         ...messageList.map((message) => ({
-          role: message.creatorId === localUser.id ? CreatorRole.User : CreatorRole.Assistant,
+          role: message.creatorRole,
           content: message.content,
         })),
       ],
