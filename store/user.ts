@@ -1,9 +1,8 @@
-import { User, UserRole } from "../types";
+import { User } from "../types";
 
 export const localUser: User = {
   id: "local-user",
   name: "Local user",
   description: "",
   avatar: "",
-  role: UserRole.User,
 };

@@ -1,10 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Chat, User } from "../types";
+import { Chat, UNKNOWN_ID, User } from "../types";
 import { generateUUID } from "../utils";
 
 export const defaultChat: Chat = {
   id: generateUUID(),
+  connectionId: UNKNOWN_ID,
+  databaseName: "",
   assistantId: "sql-assistant",
 };
 
@@ -20,10 +22,12 @@ export const useChatStore = create<ChatState>()(
     (set) => ({
       chatList: [defaultChat],
       currentChat: defaultChat,
-      createChat: (user: User) => {
+      createChat: (assistant: User) => {
         const chat: Chat = {
           id: generateUUID(),
-          assistantId: user.id,
+          connectionId: UNKNOWN_ID,
+          databaseName: "",
+          assistantId: assistant.id,
         };
         set((state) => ({
           chatList: [...state.chatList, chat],

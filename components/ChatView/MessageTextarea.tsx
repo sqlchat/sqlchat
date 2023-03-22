@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { localUser, useChatStore, useMessageStore } from "../../store";
+import { CreatorRole } from "../../types";
 import { generateUUID } from "../../utils";
 import Icon from "../Icon";
 
@@ -45,6 +46,7 @@ const MessageTextarea = (props: Props) => {
       id: generateUUID(),
       chatId: chatStore.currentChat.id,
       creatorId: localUser.id,
+      creatorRole: CreatorRole.User,
       createdAt: Date.now(),
       content: value,
     });

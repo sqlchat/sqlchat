@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { defaultChat, getAssistantById, getPromptOfAssistant, localUser, useChatStore, useMessageStore } from "../../store";
-import { Chat, Message, UserRole } from "../../types";
+import { Chat, CreatorRole, Message } from "../../types";
 import { generateUUID } from "../../utils";
 import Icon from "../Icon";
 import Header from "./Header";
@@ -50,11 +50,11 @@ const ChatView = () => {
     const { data } = await axios.post<string>("/api/chat", {
       messages: [
         {
-          role: "system",
+          role: CreatorRole.System,
           content: prompt,
         },
         ...messageList.map((message) => ({
-          role: message.creatorId === localUser.id ? UserRole.User : UserRole.Assistant,
+          role: message.creatorId === localUser.id ? CreatorRole.User : CreatorRole.Assistant,
           content: message.content,
         })),
       ],
@@ -63,6 +63,7 @@ const ChatView = () => {
       id: generateUUID(),
       chatId: currentChat.id,
       creatorId: currentChat.assistantId,
+      creatorRole: CreatorRole.Assistant,
       createdAt: Date.now(),
       content: data,
     });

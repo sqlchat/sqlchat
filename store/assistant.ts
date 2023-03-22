@@ -1,5 +1,5 @@
 import { first } from "lodash-es";
-import { Id, User, UserRole } from "../types";
+import { Id, User } from "../types";
 
 // Assistant is a special user.
 export const assistantList: User[] = [
@@ -8,7 +8,6 @@ export const assistantList: User[] = [
     name: "SQL Chat",
     description: "🤖️ I'm an expert in SQL. I can answer your questions about databases and SQL.",
     avatar: "",
-    role: UserRole.Assistant,
   },
 ];
 
