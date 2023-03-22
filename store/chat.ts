@@ -3,11 +3,15 @@ import { persist } from "zustand/middleware";
 import { Chat, UNKNOWN_ID, User } from "@/types";
 import { generateUUID } from "@/utils";
 
-export const defaultChat: Chat = {
-  id: generateUUID(),
-  connectionId: UNKNOWN_ID,
-  databaseName: "",
-  assistantId: "sql-assistant",
+const getDefaultChat = (): Chat => {
+  return {
+    id: generateUUID(),
+    connectionId: UNKNOWN_ID,
+    databaseName: "",
+    assistantId: "sql-assistant",
+    title: "default chat",
+    createdAt: Date.now(),
+  };
 };
 
 interface ChatState {
@@ -20,13 +24,11 @@ interface ChatState {
 export const useChatStore = create<ChatState>()(
   persist(
     (set) => ({
-      chatList: [defaultChat],
-      currentChat: defaultChat,
+      chatList: [getDefaultChat()],
+      currentChat: getDefaultChat(),
       createChat: (assistant: User) => {
         const chat: Chat = {
-          id: generateUUID(),
-          connectionId: UNKNOWN_ID,
-          databaseName: "",
+          ...getDefaultChat(),
           assistantId: assistant.id,
         };
         set((state) => ({
