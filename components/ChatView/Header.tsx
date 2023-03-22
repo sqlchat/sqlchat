@@ -24,16 +24,16 @@ const Header = () => {
           </Menu.Button>
           <Menu.Items className="absolute left-0 top-full mt-1 w-32 origin-top-right rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5 outline-none p-1 space-y-1">
             <Menu.Item>
-              <Link className="w-full p-2 rounded-lg flex flex-row justify-start items-center hover:bg-gray-100" href="/">
-                <Icon.Io.IoMdHome className="text-gray-600 w-5 h-auto mr-1" />
-                Home
+              <Link className="w-full p-2 rounded-lg flex flex-row justify-start items-center hover:bg-gray-100" href="/about">
+                <Icon.Io.IoMdInformationCircleOutline className="text-gray-600 w-5 h-auto mr-1" />
+                About
               </Link>
             </Menu.Item>
             <Menu.Item>
               <a
+                className="w-full p-2 rounded-lg flex flex-row justify-start items-center hover:bg-gray-100"
                 href="https://github.com/bytebase/sqlchat"
                 target="_blank"
-                className="w-full p-2 rounded-lg flex flex-row justify-start items-center hover:bg-gray-100"
               >
                 <Icon.Io.IoLogoGithub className="text-gray-600 w-5 h-auto mr-1" /> GitHub
               </a>
