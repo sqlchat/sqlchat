@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { newConnector } from "@/lib/connectors";
-import { Connection } from "@/types";
+import { Connection, Table } from "@/types";
 
 // POST /api/connection/db_schema
 // req body: { connection: Connection, db: string }
@@ -14,11 +14,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const db = req.body.db as string;
   try {
     const connector = newConnector(connection);
-    const tableStructures: string[] = [];
-    const tables = await connector.getTables(db);
-    for (const table of tables) {
-      const structure = await connector.getTableStructure(db, table);
-      tableStructures.push(structure);
+    const tableStructures: Table[] = [];
+    const rawTableNameList = await connector.getTables(db);
+    for (const tableName of rawTableNameList) {
+      const structure = await connector.getTableStructure(db, tableName);
+      tableStructures.push({
+        name: tableName,
+        structure,
+      });
     }
     res.status(200).json(tableStructures);
   } catch (error) {

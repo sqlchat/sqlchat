@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Engine, UNKNOWN_ID } from "@/types";
+import { Connection, Database, Engine, Table, UNKNOWN_ID } from "@/types";
 import { generateUUID } from "@/utils";
 import axios from "axios";
 import { uniqBy } from "lodash-es";
@@ -27,12 +27,13 @@ interface ConnectionState {
   createConnection: (connection: Connection) => void;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext) => void;
   getOrFetchDatabaseList: (connection: Connection) => Promise<Database[]>;
+  getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
 }
 
 export const useConnectionStore = create<ConnectionState>()(
   persist(
     (set, get) => ({
-      connectionList: [connectionSampleData],
+      connectionList: [],
       databaseList: [],
       createConnection: (connection: Connection) => {
         set((state) => ({
@@ -73,6 +74,19 @@ export const useConnectionStore = create<ConnectionState>()(
           databaseList,
         }));
         return databaseList.filter((database) => database.connectionId === connection.id);
+      },
+      getOrFetchDatabaseSchema: async (database: Database) => {
+        const state = get();
+        const connection = state.connectionList.find((connection) => connection.id === database.connectionId);
+        if (!connection) {
+          return [];
+        }
+
+        const { data } = await axios.post<Table[]>("/api/connection/db_schema", {
+          connection,
+          db: database.name,
+        });
+        return data;
       },
     }),
     {

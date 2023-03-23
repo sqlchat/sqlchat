@@ -1,35 +1,34 @@
+import dayjs from "dayjs";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Chat, UNKNOWN_ID, User } from "@/types";
+import { Chat, Id } from "@/types";
 import { generateUUID } from "@/utils";
 
 const getDefaultChat = (): Chat => {
   return {
     id: generateUUID(),
-    connectionId: UNKNOWN_ID,
-    databaseName: "",
     assistantId: "sql-assistant",
-    title: "default chat",
+    title: "SQL Chat " + dayjs().format("LTS"),
     createdAt: Date.now(),
   };
 };
 
 interface ChatState {
   chatList: Chat[];
-  currentChat: Chat;
-  createChat: (user: User) => void;
+  currentChat?: Chat;
+  createChat: (connectionId?: Id, databaseName?: string) => void;
   setCurrentChat: (chat: Chat) => void;
 }
 
 export const useChatStore = create<ChatState>()(
   persist(
     (set) => ({
-      chatList: [getDefaultChat()],
-      currentChat: getDefaultChat(),
-      createChat: (assistant: User) => {
+      chatList: [],
+      createChat: (connectionId?: Id, databaseName?: string) => {
         const chat: Chat = {
           ...getDefaultChat(),
-          assistantId: assistant.id,
+          connectionId,
+          databaseName,
         };
         set((state) => ({
           chatList: [...state.chatList, chat],

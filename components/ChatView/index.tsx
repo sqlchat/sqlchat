@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { getAssistantById, getPromptOfAssistant, useChatStore, useMessageStore } from "@/store";
+import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -9,6 +9,7 @@ import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
 
 const ChatView = () => {
+  const connectionStore = useConnectionStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const [isRequesting, setIsRequesting] = useState<boolean>(false);
@@ -35,7 +36,12 @@ const ChatView = () => {
 
     setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
-    const prompt = getPromptOfAssistant(getAssistantById(currentChat.assistantId)!);
+    let prompt = "";
+    if (connectionStore.currentConnectionCtx?.database) {
+      const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
+      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
+      prompt = promptGenerator(tables.map((table) => table.structure).join("/n"));
+    }
     const { data } = await axios.post<string>("/api/chat", {
       messages: [
         {

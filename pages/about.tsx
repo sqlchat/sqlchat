@@ -19,7 +19,7 @@ const HomePage: NextPage = () => {
           <div className="grid grid-cols-1 mt-8">
             <Link
               className="flex max-w-xs flex-row justify-center items-center rounded-xl bg-indigo-600 p-4 px-6 text-white shadow-lg hover:opacity-80"
-              href="/chat"
+              href="/"
             >
               <Icon.Io.IoIosChatbubbles className="w-6 h-auto mr-2" />
               <span className="text-xl font-medium">Chat →</span>

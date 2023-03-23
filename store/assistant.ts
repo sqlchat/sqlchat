@@ -17,9 +17,10 @@ export const getAssistantById = (id: Id) => {
 };
 
 // getPromptOfAssistant define the special prompt for each assistant.
-export const getPromptOfAssistant = (assistant: User) => {
+export const getPromptGeneratorOfAssistant = (assistant: User) => {
   if (assistant.id === "sql-assistant") {
-    return `Remember that you are an expert in SQL. And you know everything about databases. You will answer some questions about databases and SQL.`;
+    return (schema: string) =>
+      `Remember that you are an expert in SQL. And you know everything about databases. You will answer some questions about databases with a database schema like "${schema}".`;
   }
-  return "";
+  return () => "";
 };
