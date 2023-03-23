@@ -1,7 +1,13 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextRequest } from "next/server";
 
-const handler = async (_: NextApiRequest, res: NextApiResponse) => {
-  res.status(200).json("Hello world!");
+export const config = {
+  runtime: "edge",
+};
+
+const handler = async (_: NextRequest) => {
+  return new Response("Hello world!", {
+    status: 200,
+  });
 };
 
 export default handler;
