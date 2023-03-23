@@ -1,6 +1,6 @@
 import { Id } from "./";
 
-enum Engine {
+export enum Engine {
   MySQL = "MYSQL",
   PostgreSQL = "POSTGRESQL",
 }

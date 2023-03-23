@@ -1,6 +1,7 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
+    "import/no-anonymous-default-export": "off",
     "@next/next/no-img-element": "off",
     "react/jsx-no-target-blank": "off"
   }
