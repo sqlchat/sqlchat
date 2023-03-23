@@ -77,7 +77,7 @@ const ConnectionSidebar = () => {
               </button>
             ))}
             <button
-              className="tooltip tooltip-right w-10 h-10 !mt-5 ml-2 p-2 bg-gray-50 rounded-full text-gray-500 cursor-pointer"
+              className="tooltip tooltip-right w-10 h-10 !mt-5 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
               data-tip="Create Connection"
               onClick={() => toggleCreateConnectionModal(true)}
             >
@@ -86,20 +86,13 @@ const ConnectionSidebar = () => {
           </div>
           <div className="w-full flex flex-col justify-end items-center">
             <a
-              className="tooltip tooltip-right w-10 h-10 p-1 rounded-lg flex flex-row justify-center items-center hover:bg-gray-100"
+              className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
               href="https://github.com/bytebase/sqlchat"
               data-tip="GitHub"
               target="_blank"
             >
               <Icon.Io.IoLogoGithub className="text-gray-600 w-6 h-auto" />
             </a>
-            <Link
-              className="tooltip tooltip-right w-10 h-10 p-1 rounded-lg flex flex-row justify-center items-center hover:bg-gray-100"
-              data-tip="About"
-              href="/about"
-            >
-              <Icon.Io.IoMdInformationCircleOutline className="text-gray-600 w-6 h-auto" />
-            </Link>
           </div>
         </div>
         <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 ${databaseList.length === 0 && "pt-4"}`}>
