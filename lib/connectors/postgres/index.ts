@@ -1,0 +1,81 @@
+import { Client } from "pg";
+import { Connection } from "@/types";
+import { Connector } from "..";
+
+const newPostgresClient = (connection: Connection) => {
+  return new Client({
+    host: connection.host,
+    port: Number(connection.port),
+    user: connection.username,
+    password: connection.password,
+    database: connection.database,
+  });
+};
+
+const testConnection = async (connection: Connection): Promise<boolean> => {
+  if (!connection.database) {
+    return false;
+  }
+
+  try {
+    const client = newPostgresClient(connection);
+    await client.connect();
+    await client.end();
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
+
+const getDatabases = async (connection: Connection): Promise<string[]> => {
+  const client = newPostgresClient(connection);
+  await client.connect();
+  await client.end();
+  return [connection.database!];
+};
+
+const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+  const client = newPostgresClient(connection);
+  await client.connect();
+  const { rows } = await client.query(
+    `SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' AND table_catalog=$1;`,
+    [databaseName]
+  );
+  await client.end();
+  const tableList = [];
+  for (const row of rows) {
+    if (row["table_name"]) {
+      tableList.push(row["table_name"]);
+    }
+  }
+  return tableList;
+};
+
+const getTableStructure = async (connection: Connection, _: string, tableName: string): Promise<string> => {
+  const client = newPostgresClient(connection);
+  await client.connect();
+  const { rows } = await client.query(
+    `SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+    [tableName]
+  );
+  await client.end();
+  const columnList = [];
+  // TODO(steven): transform it to standard schema string.
+  for (const row of rows) {
+    columnList.push(`\`${row["column_name"]}\` ${row["data_type"]} ${String(row["is_nullable"]).toUpperCase()} ${row["column_default"]},`);
+  }
+  return `CREATE TABLE \`${tableName}\` (
+    ${columnList.join("\n")}
+  );`;
+};
+
+const newConnector = (connection: Connection): Connector => {
+  return {
+    testConnection: () => testConnection(connection),
+    getDatabases: () => getDatabases(connection),
+    getTables: (databaseName: string) => getTables(connection, databaseName),
+    getTableStructure: (databaseName: string, tableName: string) => getTableStructure(connection, databaseName, tableName),
+  };
+};
+
+export default newConnector;

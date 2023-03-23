@@ -1,11 +1,11 @@
+import axios from "axios";
+import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, Table, UNKNOWN_ID } from "@/types";
 import { generateUUID } from "@/utils";
-import axios from "axios";
-import { uniqBy } from "lodash-es";
 
-export const connectionSampleData: Connection = {
+export const connectionMySQLSampleData: Connection = {
   id: UNKNOWN_ID,
   title: "",
   engineType: Engine.MySQL,
@@ -13,6 +13,17 @@ export const connectionSampleData: Connection = {
   port: "3306",
   username: "root",
   password: "",
+};
+
+export const connectionPostgreSQLSampleData: Connection = {
+  id: UNKNOWN_ID,
+  title: "",
+  engineType: Engine.PostgreSQL,
+  host: "127.0.0.1",
+  port: "5432",
+  username: "postgres",
+  password: "",
+  database: "test",
 };
 
 interface ConnectionContext {

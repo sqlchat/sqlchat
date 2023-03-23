@@ -60,9 +60,7 @@ const CreateConnectionModal = (props: Props) => {
               onChange={(e) => setPartialConnection({ engineType: e.target.value as Engine })}
             >
               <option value={Engine.MySQL}>MySQL</option>
-              <option className="hidden" value={Engine.PostgreSQL}>
-                PostgreSQL
-              </option>
+              <option value={Engine.PostgreSQL}>PostgreSQL</option>
             </select>
           </div>
           <div className="w-full flex flex-col">

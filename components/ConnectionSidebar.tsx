@@ -77,7 +77,8 @@ const ConnectionSidebar = () => {
               </button>
             ))}
             <button
-              className="w-10 h-10 !mt-5 ml-2 p-2 bg-gray-50 rounded-full text-gray-500 cursor-pointer hover:opacity-100"
+              className="tooltip tooltip-right w-10 h-10 !mt-5 ml-2 p-2 bg-gray-50 rounded-full text-gray-500 cursor-pointer"
+              data-tip="Create Connection"
               onClick={() => toggleCreateConnectionModal(true)}
             >
               <Icon.Ai.AiOutlinePlus className="w-auto h-full mx-auto" />
@@ -130,7 +131,7 @@ const ConnectionSidebar = () => {
               ) : (
                 <Icon.Io5.IoChatbubbleOutline className="w-5 h-auto mr-2 opacity-80 shrink-0" />
               )}
-              <span className="truncate">{chat.title}</span>
+              <span className="truncate">{chat.title || "SQL Chat"}</span>
             </div>
           ))}
           <button

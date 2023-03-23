@@ -1,6 +1,8 @@
-import { Connection } from "@/types";
 import mysql, { RowDataPacket } from "mysql2/promise";
+import { Connection } from "@/types";
 import { Connector } from "..";
+
+const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
 
 const convertToConnectionUrl = (connection: Connection): string => {
   // Connection URL format: mysql://USER:PASSWORD@HOST:PORT/DATABASE
@@ -21,7 +23,10 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const connectionUrl = convertToConnectionUrl(connection);
   const conn = await mysql.createConnection(connectionUrl);
-  const [rows] = await conn.query<RowDataPacket[]>("SELECT schema_name as db_name FROM information_schema.schemata;");
+  const [rows] = await conn.query<RowDataPacket[]>(
+    `SELECT schema_name as db_name FROM information_schema.schemata WHERE schema_name NOT IN (?);`,
+    [systemDatabases]
+  );
   conn.destroy();
   const databaseList = [];
   for (const row of rows) {
@@ -36,16 +41,17 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   const connectionUrl = convertToConnectionUrl(connection);
   const conn = await mysql.createConnection(connectionUrl);
   const [rows] = await conn.query<RowDataPacket[]>(
-    `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA='${databaseName}' AND TABLE_TYPE='BASE TABLE';`
+    `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA=? AND TABLE_TYPE='BASE TABLE';`,
+    [databaseName]
   );
   conn.destroy();
-  const databaseList = [];
+  const tableList = [];
   for (const row of rows) {
     if (row["table_name"]) {
-      databaseList.push(row["table_name"]);
+      tableList.push(row["table_name"]);
     }
   }
-  return databaseList;
+  return tableList;
 };
 
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {

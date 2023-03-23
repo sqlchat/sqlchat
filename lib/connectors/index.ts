@@ -1,5 +1,6 @@
-import { Connection } from "@/types";
+import { Connection, Engine } from "@/types";
 import mysql from "./mysql";
+import postgres from "./postgres";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
@@ -10,8 +11,10 @@ export interface Connector {
 
 export const newConnector = (connection: Connection): Connector => {
   switch (connection.engineType) {
-    case "MYSQL":
+    case Engine.MySQL:
       return mysql(connection);
+    case Engine.PostgreSQL:
+      return postgres(connection);
     default:
       throw new Error("Unsupported engine type.");
   }
