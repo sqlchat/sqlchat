@@ -110,7 +110,10 @@ const ChatView = () => {
   };
 
   return (
-    <main ref={chatViewRef} className="relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white">
+    <main
+      ref={chatViewRef}
+      className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
+    >
       <Header />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
