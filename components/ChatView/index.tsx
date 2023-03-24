@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-hot-toast";
 import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
-import { CreatorRole } from "@/types";
+import { CreatorRole, Message } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
 import Header from "./Header";
@@ -42,27 +42,58 @@ const ChatView = () => {
       const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
       prompt = promptGenerator(tables.map((table) => table.structure).join("/n"));
     }
-    const { data } = await axios.post<string>("/api/chat", {
-      messages: [
-        {
-          role: CreatorRole.System,
-          content: prompt,
-        },
-        ...messageList.map((message) => ({
-          role: message.creatorRole,
-          content: message.content,
-        })),
-      ],
+    const rawRes = await fetch("/api/chat", {
+      method: "POST",
+      body: JSON.stringify({
+        messages: [
+          {
+            role: CreatorRole.System,
+            content: prompt,
+          },
+          ...messageList.map((message) => ({
+            role: message.creatorRole,
+            content: message.content,
+          })),
+        ],
+      }),
     });
-    messageStore.addMessage({
+    setIsRequesting(false);
+
+    if (!rawRes.ok) {
+      const res = await rawRes.json();
+      toast.error(res.error.message);
+      return;
+    }
+    const data = rawRes.body;
+    if (!data) {
+      toast.error("No data return");
+      return;
+    }
+
+    const message: Message = {
       id: generateUUID(),
       chatId: currentChat.id,
       creatorId: currentChat.assistantId,
       creatorRole: CreatorRole.Assistant,
       createdAt: Date.now(),
-      content: data,
-    });
-    setIsRequesting(false);
+      content: "",
+    };
+    messageStore.addMessage(message);
+
+    const reader = data.getReader();
+    const decoder = new TextDecoder("utf-8");
+    let done = false;
+    while (!done) {
+      const { value, done: readerDone } = await reader.read();
+      if (value) {
+        const char = decoder.decode(value);
+        if (char) {
+          message.content = message.content + char;
+          messageStore.updateMessageContent(message.id, message.content);
+        }
+      }
+      done = readerDone;
+    }
   };
 
   return (

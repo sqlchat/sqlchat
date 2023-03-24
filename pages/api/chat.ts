@@ -1,4 +1,5 @@
 import { openAIApiKey } from "@/utils/openai";
+import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
 
 export const config = {
@@ -7,7 +8,7 @@ export const config = {
 
 const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
-  const res = await fetch(`https://api.openai.com/v1/chat/completions`, {
+  const rawRes = await fetch(`https://api.openai.com/v1/chat/completions`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${openAIApiKey}`,
@@ -20,17 +21,44 @@ const handler = async (req: NextRequest) => {
       temperature: 0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
+      stream: true,
     }),
   });
+  if (!rawRes.ok) {
+    return new Response(rawRes.body, {
+      status: rawRes.status,
+      statusText: rawRes.statusText,
+    });
+  }
 
-  const data = await res.json();
-  return new Response(JSON.stringify(data.choices[0].message?.content || ""), {
-    status: 200,
-    headers: {
-      "content-type": "application/json",
-      "cache-control": "public, s-maxage=1200, stale-while-revalidate=600",
+  const encoder = new TextEncoder();
+  const decoder = new TextDecoder();
+  const stream = new ReadableStream({
+    async start(controller) {
+      const streamParser = (event: ParsedEvent | ReconnectInterval) => {
+        if (event.type === "event") {
+          const data = event.data;
+          if (data === "[DONE]") {
+            controller.close();
+            return;
+          }
+          try {
+            const json = JSON.parse(data);
+            const text = json.choices[0].delta?.content;
+            const queue = encoder.encode(text);
+            controller.enqueue(queue);
+          } catch (e) {
+            controller.error(e);
+          }
+        }
+      };
+      const parser = createParser(streamParser);
+      for await (const chunk of rawRes.body as any) {
+        parser.feed(decoder.decode(chunk));
+      }
     },
   });
+  return new Response(stream);
 };
 
 export default handler;

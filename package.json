@@ -13,6 +13,7 @@
     "csstype": "^3.1.1",
     "daisyui": "^2.51.5",
     "dayjs": "^1.11.7",
+    "eventsource-parser": "^1.0.0",
     "highlight.js": "^11.7.0",
     "lodash-es": "^4.17.21",
     "marked": "^4.2.12",
