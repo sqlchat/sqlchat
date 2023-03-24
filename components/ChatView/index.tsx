@@ -7,6 +7,7 @@ import Icon from "../Icon";
 import Header from "./Header";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
+import EmptyView from "../EmptyView";
 
 const ChatView = () => {
   const connectionStore = useConnectionStore();
@@ -100,7 +101,7 @@ const ChatView = () => {
     <main ref={chatViewRef} className="relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white">
       <Header />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
-        {messageList.length === 0 ? <></> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
+        {messageList.length === 0 ? <EmptyView /> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
         {isRequesting && (
           <div className="w-full pt-4 pb-8 flex justify-center items-center text-gray-600">
             <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...
