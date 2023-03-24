@@ -1,5 +1,4 @@
 import { head } from "lodash-es";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useChatStore, useConnectionStore } from "@/store";
@@ -65,19 +64,21 @@ const ConnectionSidebar = () => {
   return (
     <>
       <aside className="w-80 h-full flex flex-row justify-start items-start border-r">
-        <div className="w-16 h-full bg-gray-200 pl-2 py-4 flex flex-col justify-between items-center">
-          <div className="w-full flex flex-col justify-start items-start space-y-2">
+        <div className="w-16 h-full bg-gray-200 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
+          <div className="w-full flex flex-col justify-start items-start">
             {connectionList.map((connection) => (
               <button
                 key={connection.id}
-                className={`w-full h-14 rounded-l-lg p-2 ${currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 shadow"}`}
+                className={`w-full h-14 rounded-l-lg p-2 mt-2 ${
+                  currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 shadow"
+                }`}
                 onClick={() => handleConnectionSelect(connection)}
               >
                 <EngineIcon engine={connection.engineType} className="w-auto h-full mx-auto" />
               </button>
             ))}
             <button
-              className="tooltip tooltip-right w-10 h-10 !mt-5 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
+              className="tooltip tooltip-right w-10 h-10 mt-4 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
               data-tip="Create Connection"
               onClick={() => toggleCreateConnectionModal(true)}
             >
@@ -95,9 +96,10 @@ const ConnectionSidebar = () => {
             </a>
           </div>
         </div>
-        <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 ${databaseList.length === 0 && "pt-4"}`}>
+        <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 pt-2 ${databaseList.length === 0 && "!pt-4"}`}>
           {databaseList.length > 0 && (
-            <div className="w-full sticky top-0 bg-gray-100 z-1 pt-5">
+            <div className="w-full sticky top-0 bg-gray-100 z-1">
+              <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
               <select
                 className="w-full select select-bordered"
                 value={currentConnectionCtx?.database?.name}
@@ -114,7 +116,7 @@ const ConnectionSidebar = () => {
           {chatList.map((chat) => (
             <div
               key={chat.id}
-              className={`w-full max-w-full mt-2 py-3 px-4 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent hover:bg-gray-50 ${
+              className={`w-full max-w-full mt-2 first:mt-4 py-3 px-4 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent hover:bg-gray-50 ${
                 chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
               }`}
               onClick={() => chatStore.setCurrentChat(chat)}
