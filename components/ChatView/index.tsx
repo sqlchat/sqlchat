@@ -1,3 +1,4 @@
+import { head } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
@@ -26,6 +27,17 @@ const ChatView = () => {
       chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
     });
   }, [currentChat, isRequesting]);
+
+  useEffect(() => {
+    if (!connectionStore.currentConnectionCtx) {
+      return;
+    }
+    if (currentChat?.connectionId === connectionStore.currentConnectionCtx.connection.id) {
+      return;
+    }
+    const chatList = chatStore.chatList.filter((chat) => chat.connectionId === connectionStore.currentConnectionCtx?.connection.id);
+    chatStore.setCurrentChat(head(chatList));
+  }, [connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentChat = async () => {
     if (!currentChat || !chatViewRef.current) {
@@ -101,7 +113,11 @@ const ChatView = () => {
     <main ref={chatViewRef} className="relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white">
       <Header />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
-        {messageList.length === 0 ? <EmptyView /> : messageList.map((message) => <MessageView key={message.id} message={message} />)}
+        {messageList.length === 0 ? (
+          <EmptyView className="-mt-12" />
+        ) : (
+          messageList.map((message) => <MessageView key={message.id} message={message} />)
+        )}
         {isRequesting && (
           <div className="w-full pt-4 pb-8 flex justify-center items-center text-gray-600">
             <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...

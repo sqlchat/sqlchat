@@ -17,7 +17,7 @@ interface ChatState {
   chatList: Chat[];
   currentChat?: Chat;
   createChat: (connectionId?: Id, databaseName?: string) => void;
-  setCurrentChat: (chat: Chat) => void;
+  setCurrentChat: (chat: Chat | undefined) => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -35,7 +35,7 @@ export const useChatStore = create<ChatState>()(
           currentChat: chat,
         }));
       },
-      setCurrentChat: (chat: Chat) => set(() => ({ currentChat: chat })),
+      setCurrentChat: (chat: Chat | undefined) => set(() => ({ currentChat: chat })),
     }),
     {
       name: "chat-storage",

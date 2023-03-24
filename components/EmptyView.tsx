@@ -1,8 +1,14 @@
 import Icon from "./Icon";
 
-const EmptyView = () => {
+interface Props {
+  className?: string;
+}
+
+const EmptyView = (props: Props) => {
+  const { className } = props;
+
   return (
-    <div className="w-full h-full flex flex-col justify-center items-center">
+    <div className={`${className || ""} w-full h-full flex flex-col justify-center items-center`}>
       <p className=" text-5xl font-medium leading-loose mb-8">SQLChat</p>
       <div className="w-full grid grid-cols-3 gap-4">
         <div className="w-full flex flex-col justify-start items-center">

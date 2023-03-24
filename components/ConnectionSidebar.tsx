@@ -6,9 +6,11 @@ import { Connection } from "@/types";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import CreateConnectionModal from "./CreateConnectionModal";
+import SettingModal from "./SettingModal";
 
 interface State {
   showCreateConnectionModal: boolean;
+  showSettingModal: boolean;
 }
 
 const ConnectionSidebar = () => {
@@ -16,6 +18,7 @@ const ConnectionSidebar = () => {
   const chatStore = useChatStore();
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
+    showSettingModal: false,
   });
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
@@ -24,16 +27,17 @@ const ConnectionSidebar = () => {
     (chat) => chat.connectionId === currentConnectionCtx?.connection.id && chat.databaseName === currentConnectionCtx?.database?.name
   );
 
-  useEffect(() => {
-    if (connectionList.length > 0) {
-      handleConnectionSelect(connectionList[0]);
-    }
-  }, []);
-
   const toggleCreateConnectionModal = (show = true) => {
     setState({
       ...state,
       showCreateConnectionModal: show,
+    });
+  };
+
+  const toggleSettingModal = (show = true) => {
+    setState({
+      ...state,
+      showSettingModal: show,
     });
   };
 
@@ -86,6 +90,13 @@ const ConnectionSidebar = () => {
             </button>
           </div>
           <div className="w-full flex flex-col justify-end items-center">
+            <button
+              className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
+              data-tip="Setting"
+              onClick={() => toggleSettingModal(true)}
+            >
+              <Icon.Io.IoMdSettings className="text-gray-600 w-6 h-auto" />
+            </button>
             <a
               className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
               href="https://github.com/bytebase/sqlchat"
@@ -98,7 +109,7 @@ const ConnectionSidebar = () => {
         </div>
         <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 pt-2 ${databaseList.length === 0 && "!pt-4"}`}>
           {databaseList.length > 0 && (
-            <div className="w-full sticky top-0 bg-gray-100 z-1">
+            <div className="w-full sticky top-0 bg-gray-100 z-1 mb-4">
               <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
               <select
                 className="w-full select select-bordered"
@@ -143,6 +154,8 @@ const ConnectionSidebar = () => {
         <CreateConnectionModal show={state.showCreateConnectionModal} close={() => toggleCreateConnectionModal(false)} />,
         document.body
       )}
+
+      {createPortal(<SettingModal show={state.showSettingModal} close={() => toggleSettingModal(false)} />, document.body)}
     </>
   );
 };

@@ -35,7 +35,7 @@ interface ConnectionState {
   connectionList: Connection[];
   databaseList: Database[];
   currentConnectionCtx?: ConnectionContext;
-  createConnection: (connection: Connection) => void;
+  createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext) => void;
   getOrFetchDatabaseList: (connection: Connection) => Promise<Database[]>;
   getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
@@ -47,16 +47,15 @@ export const useConnectionStore = create<ConnectionState>()(
       connectionList: [],
       databaseList: [],
       createConnection: (connection: Connection) => {
+        const createdConnection = {
+          ...connection,
+          id: generateUUID(),
+        };
         set((state) => ({
           ...state,
-          connectionList: [
-            ...state.connectionList,
-            {
-              ...connection,
-              id: generateUUID(),
-            },
-          ],
+          connectionList: [...state.connectionList, createdConnection],
         }));
+        return createdConnection;
       },
       setCurrentConnectionCtx: (connectionCtx: ConnectionContext) =>
         set((state) => ({

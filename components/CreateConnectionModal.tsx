@@ -1,4 +1,4 @@
-import { cloneDeep } from "lodash-es";
+import { cloneDeep, head } from "lodash-es";
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { testConnection, useConnectionStore } from "@/store";
@@ -41,7 +41,14 @@ const CreateConnectionModal = (props: Props) => {
       toast.error("Failed to connect");
       return;
     }
-    connectionStore.createConnection(connectionCreate);
+    const createdConnection = connectionStore.createConnection(connectionCreate);
+    // Set the created connection as the current connection.
+    const databaseList = await connectionStore.getOrFetchDatabaseList(createdConnection);
+    connectionStore.setCurrentConnectionCtx({
+      connection: createdConnection,
+      database: head(databaseList),
+    });
+    close();
   };
 
   return (
