@@ -117,7 +117,7 @@ const ChatView = () => {
       <Header />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
-          <EmptyView className="-mt-12" />
+          <EmptyView className="mt-16" />
         ) : (
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
