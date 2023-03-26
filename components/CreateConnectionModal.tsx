@@ -56,7 +56,7 @@ const CreateConnectionModal = (props: Props) => {
       <div className="modal-box relative">
         <h3 className="font-bold text-lg">Create Connection</h3>
         <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
-          <Icon.Io.IoMdClose className="w-5 h-auto" />
+          <Icon.IoMdClose className="w-5 h-auto" />
         </button>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
           <div className="w-full flex flex-col">

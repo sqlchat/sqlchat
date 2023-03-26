@@ -20,13 +20,13 @@ const MessageView = (props: Props) => {
             {message.content}
           </div>
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center ml-2 shrink-0">
-            <Icon.Ai.AiOutlineUser className="w-6 h-6" />
+            <Icon.AiOutlineUser className="w-6 h-6" />
           </div>
         </>
       ) : (
         <>
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center mr-2 shrink-0">
-            <Icon.Ai.AiOutlineRobot className="w-6 h-6" />
+            <Icon.AiOutlineRobot className="w-6 h-6" />
           </div>
           <div
             className="mt-0.5 w-auto max-w-full bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow prose prose-neutral"

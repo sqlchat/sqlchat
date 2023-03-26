@@ -40,7 +40,8 @@ const ChatView = () => {
   }, [connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentChat = async () => {
-    if (!currentChat || !chatViewRef.current) {
+    const currentChat = chatStore.getState().currentChat;
+    if (!currentChat) {
       return;
     }
     if (isRequesting) {
@@ -123,7 +124,7 @@ const ChatView = () => {
         )}
         {isRequesting && (
           <div className="w-full pt-4 pb-8 flex justify-center items-center text-gray-600">
-            <Icon.Bi.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...
+            <Icon.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...
           </div>
         )}
       </div>

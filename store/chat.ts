@@ -16,14 +16,16 @@ const getDefaultChat = (): Chat => {
 interface ChatState {
   chatList: Chat[];
   currentChat?: Chat;
-  createChat: (connectionId?: Id, databaseName?: string) => void;
+  getState: () => ChatState;
+  createChat: (connectionId?: Id, databaseName?: string) => Chat;
   setCurrentChat: (chat: Chat | undefined) => void;
 }
 
 export const useChatStore = create<ChatState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       chatList: [],
+      getState: () => get(),
       createChat: (connectionId?: Id, databaseName?: string) => {
         const chat: Chat = {
           ...getDefaultChat(),
@@ -34,6 +36,7 @@ export const useChatStore = create<ChatState>()(
           chatList: [...state.chatList, chat],
           currentChat: chat,
         }));
+        return chat;
       },
       setCurrentChat: (chat: Chat | undefined) => set(() => ({ currentChat: chat })),
     }),

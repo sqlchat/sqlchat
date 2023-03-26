@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
-import { useChatStore, useMessageStore, useUserStore } from "@/store";
+import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -13,6 +13,7 @@ interface Props {
 
 const MessageTextarea = (props: Props) => {
   const { disabled, sendMessage } = props;
+  const connectionStore = useConnectionStore();
   const userStore = useUserStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
@@ -31,9 +32,14 @@ const MessageTextarea = (props: Props) => {
   };
 
   const handleSend = async () => {
-    if (!chatStore.currentChat) {
-      toast.error("Please select a chat first.");
-      return;
+    let chat = chatStore.currentChat;
+    if (!chat) {
+      const currentConnectionCtx = connectionStore.currentConnectionCtx;
+      if (!currentConnectionCtx) {
+        chat = chatStore.createChat();
+      } else {
+        chat = chatStore.createChat(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+      }
     }
     if (!value) {
       toast.error("Please enter a message.");
@@ -45,7 +51,7 @@ const MessageTextarea = (props: Props) => {
 
     messageStore.addMessage({
       id: generateUUID(),
-      chatId: chatStore.currentChat.id,
+      chatId: chat.id,
       creatorId: userStore.currentUser.id,
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),
@@ -82,7 +88,7 @@ const MessageTextarea = (props: Props) => {
         disabled={disabled}
         onClick={handleSend}
       >
-        <Icon.Io.IoMdSend className="w-full h-auto text-indigo-600" />
+        <Icon.IoMdSend className="w-full h-auto text-indigo-600" />
       </button>
     </div>
   );

@@ -94,7 +94,7 @@ const ConnectionSidebar = () => {
                 data-tip="Create Connection"
                 onClick={() => toggleCreateConnectionModal(true)}
               >
-                <Icon.Ai.AiOutlinePlus className="w-auto h-full mx-auto" />
+                <Icon.AiOutlinePlus className="w-auto h-full mx-auto" />
               </button>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
@@ -103,7 +103,7 @@ const ConnectionSidebar = () => {
                 data-tip="Setting"
                 onClick={() => toggleSettingModal(true)}
               >
-                <Icon.Io.IoMdSettings className="text-gray-600 w-6 h-auto" />
+                <Icon.IoMdSettings className="text-gray-600 w-6 h-auto" />
               </button>
               <a
                 className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
@@ -111,7 +111,7 @@ const ConnectionSidebar = () => {
                 data-tip="GitHub"
                 target="_blank"
               >
-                <Icon.Io.IoLogoGithub className="text-gray-600 w-6 h-auto" />
+                <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
               </a>
             </div>
           </div>
@@ -141,9 +141,9 @@ const ConnectionSidebar = () => {
                 onClick={() => handleChatSelect(chat)}
               >
                 {chat.id === chatStore.currentChat?.id ? (
-                  <Icon.Io5.IoChatbubble className="w-5 h-auto mr-2 shrink-0" />
+                  <Icon.IoChatbubble className="w-5 h-auto mr-2 shrink-0" />
                 ) : (
-                  <Icon.Io5.IoChatbubbleOutline className="w-5 h-auto mr-2 opacity-80 shrink-0" />
+                  <Icon.IoChatbubbleOutline className="w-5 h-auto mr-2 opacity-80 shrink-0" />
                 )}
                 <span className="truncate">{chat.title || "SQL Chat"}</span>
               </div>
@@ -152,7 +152,7 @@ const ConnectionSidebar = () => {
               className="w-full my-4 py-3 px-4 border rounded-lg flex flex-row justify-center items-center text-gray-500 hover:text-gray-700 hover:bg-gray-50"
               onClick={handleCreateChat}
             >
-              <Icon.Ai.AiOutlinePlus className="w-5 h-auto mr-1" />
+              <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
               New Chat
             </button>
           </div>
