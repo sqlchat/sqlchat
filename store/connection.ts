@@ -2,29 +2,8 @@ import axios from "axios";
 import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Engine, Table, UNKNOWN_ID } from "@/types";
+import { Connection, Database, Table } from "@/types";
 import { generateUUID } from "@/utils";
-
-export const connectionMySQLSampleData: Connection = {
-  id: UNKNOWN_ID,
-  title: "",
-  engineType: Engine.MySQL,
-  host: "127.0.0.1",
-  port: "3306",
-  username: "root",
-  password: "",
-};
-
-export const connectionPostgreSQLSampleData: Connection = {
-  id: UNKNOWN_ID,
-  title: "",
-  engineType: Engine.PostgreSQL,
-  host: "127.0.0.1",
-  port: "5432",
-  username: "postgres",
-  password: "",
-  database: "test",
-};
 
 interface ConnectionContext {
   connection: Connection;
@@ -36,9 +15,10 @@ interface ConnectionState {
   databaseList: Database[];
   currentConnectionCtx?: ConnectionContext;
   createConnection: (connection: Connection) => Connection;
-  setCurrentConnectionCtx: (connectionCtx: ConnectionContext) => void;
+  setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
   getOrFetchDatabaseList: (connection: Connection) => Promise<Database[]>;
   getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
+  clearConnection: (filter: (connection: Connection) => boolean) => void;
 }
 
 export const useConnectionStore = create<ConnectionState>()(
@@ -57,7 +37,7 @@ export const useConnectionStore = create<ConnectionState>()(
         }));
         return createdConnection;
       },
-      setCurrentConnectionCtx: (connectionCtx: ConnectionContext) =>
+      setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) =>
         set((state) => ({
           ...state,
           currentConnectionCtx: connectionCtx,
@@ -97,6 +77,12 @@ export const useConnectionStore = create<ConnectionState>()(
           db: database.name,
         });
         return data;
+      },
+      clearConnection: (filter: (connection: Connection) => boolean) => {
+        set((state) => ({
+          ...state,
+          connectionList: state.connectionList.filter(filter),
+        }));
       },
     }),
     {

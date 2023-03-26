@@ -13,7 +13,7 @@ const ClearDataConfirmModal = (props: Props) => {
     toast.success("Message cleared. The page will be reloaded.");
     setTimeout(() => {
       window.location.reload();
-    }, 1500);
+    }, 300);
   };
 
   return (

@@ -50,10 +50,21 @@ const ConnectionSidebar = () => {
     });
   };
 
+  const handleDeleteConnection = (connection: Connection) => {
+    connectionStore.clearConnection((item) => item.id !== connection.id);
+    if (currentConnectionCtx?.connection.id === connection.id) {
+      connectionStore.setCurrentConnectionCtx(undefined);
+    }
+  };
+
   const handleDatabaseNameSelect = async (databaseName: string) => {
+    if (!currentConnectionCtx?.connection) {
+      return;
+    }
+
     const database = databaseList.find((database) => database.name === databaseName);
     connectionStore.setCurrentConnectionCtx({
-      connection: currentConnectionCtx!.connection,
+      connection: currentConnectionCtx.connection,
       database: database,
     });
   };
@@ -71,6 +82,13 @@ const ConnectionSidebar = () => {
     layoutStore.toggleSidebar(false);
   };
 
+  const handleDeleteChat = (chat: Chat) => {
+    chatStore.clearChat((item) => item.id !== chat.id);
+    if (chatStore.currentChat?.id === chat.id) {
+      chatStore.setCurrentChat(undefined);
+    }
+  };
+
   return (
     <>
       <aside className="drawer-side">
@@ -81,11 +99,20 @@ const ConnectionSidebar = () => {
               {connectionList.map((connection) => (
                 <button
                   key={connection.id}
-                  className={`w-full h-14 rounded-l-lg p-2 mt-2 ${
+                  className={`w-full h-14 rounded-l-lg p-2 mt-2 group ${
                     currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 shadow"
                   }`}
                   onClick={() => handleConnectionSelect(connection)}
                 >
+                  <span
+                    className="absolute -ml-1.5 -mt-1.5 hidden opacity-60 group-hover:block hover:opacity-80"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteConnection(connection);
+                    }}
+                  >
+                    <Icon.IoClose className="w-4 h-auto" />
+                  </span>
                   <EngineIcon engine={connection.engineType} className="w-auto h-full mx-auto" />
                 </button>
               ))}
@@ -135,17 +162,26 @@ const ConnectionSidebar = () => {
             {chatList.map((chat) => (
               <div
                 key={chat.id}
-                className={`w-full max-w-full mt-2 first:mt-4 py-3 px-4 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent hover:bg-gray-50 ${
+                className={`w-full mt-2 first:mt-4 py-3 px-4 pr-3 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
                   chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
                 }`}
                 onClick={() => handleChatSelect(chat)}
               >
                 {chat.id === chatStore.currentChat?.id ? (
-                  <Icon.IoChatbubble className="w-5 h-auto mr-2 shrink-0" />
+                  <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
                 ) : (
-                  <Icon.IoChatbubbleOutline className="w-5 h-auto mr-2 opacity-80 shrink-0" />
+                  <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
                 )}
                 <span className="truncate">{chat.title || "SQL Chat"}</span>
+                <span
+                  className="ml-0.5 shrink-0 opacity-60 hidden group-hover:block hover:opacity-80"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleDeleteChat(chat);
+                  }}
+                >
+                  <Icon.IoClose className="w-5 h-auto" />
+                </span>
               </div>
             ))}
             <button

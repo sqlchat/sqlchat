@@ -19,6 +19,7 @@ interface ChatState {
   getState: () => ChatState;
   createChat: (connectionId?: Id, databaseName?: string) => Chat;
   setCurrentChat: (chat: Chat | undefined) => void;
+  clearChat: (filter: (chat: Chat) => boolean) => void;
 }
 
 export const useChatStore = create<ChatState>()(
@@ -39,6 +40,12 @@ export const useChatStore = create<ChatState>()(
         return chat;
       },
       setCurrentChat: (chat: Chat | undefined) => set(() => ({ currentChat: chat })),
+      clearChat: (filter: (chat: Chat) => boolean) => {
+        set((state) => ({
+          ...state,
+          chatList: state.chatList.filter(filter),
+        }));
+      },
     }),
     {
       name: "chat-storage",

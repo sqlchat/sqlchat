@@ -36,14 +36,14 @@ const SettingModal = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
             <h3>Danger Zone</h3>
             <div className="w-full border border-red-200 p-4 rounded-lg">
-              <div className="w-full flex flex-row justify-between items-center gap-2">
-                <div>
-                  <h4 className="leading-8">Clear all data</h4>
-                  <p className="text-gray-500 text-sm">SQLChat saves all of your data in localstorage. Please be sure to clear data.</p>
-                </div>
-                <button className="btn btn-error btn-sm" onClick={() => toggleClearDataConfirmModal(true)}>
-                  Clear data
-                </button>
+              <div className="w-full flex flex-col justify-start items-start gap-2">
+                <h4 className="w-full flex flex-row justify-between items-center leading-8">
+                  <span>Clear all data</span>
+                  <button className="btn btn-sm btn-error" onClick={() => toggleClearDataConfirmModal(true)}>
+                    Clear
+                  </button>
+                </h4>
+                <p className="text-gray-500 text-sm">SQLChat saves all of your data in localstorage. Please be sure to clear data.</p>
               </div>
             </div>
           </div>
