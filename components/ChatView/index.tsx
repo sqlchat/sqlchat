@@ -6,9 +6,9 @@ import { CreatorRole, Message } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
 import Header from "./Header";
+import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
-import EmptyView from "../EmptyView";
 
 const ChatView = () => {
   const connectionStore = useConnectionStore();
