@@ -22,6 +22,7 @@ const CreateConnectionModal = (props: Props) => {
     username: "",
     password: "",
   });
+  const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
 
   const setPartialConnection = (state: Partial<Connection>) => {
@@ -32,11 +33,17 @@ const CreateConnectionModal = (props: Props) => {
   };
 
   const handleCreateConnection = async () => {
+    if (isRequesting) {
+      return;
+    }
+
+    setIsRequesting(true);
     const connectionCreate = cloneDeep(connection);
     if (!showDatabaseField) {
       connectionCreate.database = undefined;
     }
     const result = await testConnection(connectionCreate);
+    setIsRequesting(false);
     if (!result) {
       toast.error("Failed to connect");
       return;
@@ -122,7 +129,7 @@ const CreateConnectionModal = (props: Props) => {
           <button className="btn btn-outline" onClick={close}>
             Close
           </button>
-          <button className="btn" onClick={handleCreateConnection}>
+          <button className="btn" disabled={isRequesting} onClick={handleCreateConnection}>
             Save
           </button>
         </div>
