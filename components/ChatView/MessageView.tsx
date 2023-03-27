@@ -15,7 +15,11 @@ const MessageView = (props: Props) => {
   const isCurrentUser = message.creatorId === userStore.currentUser.id;
 
   return (
-    <div className={`w-full flex flex-row justify-start items-start my-4 ${isCurrentUser ? "justify-end pl-8 sm:pl-24" : "pr-8 sm:pr-24"}`}>
+    <div
+      className={`w-full max-w-full flex flex-row justify-start items-start my-4 ${
+        isCurrentUser ? "justify-end pl-8 sm:pl-24" : "pr-8 sm:pr-24"
+      }`}
+    >
       {isCurrentUser ? (
         <>
           <div className="mt-0.5 w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg rounded-tr-none shadow whitespace-pre-wrap">
@@ -31,7 +35,7 @@ const MessageView = (props: Props) => {
             <Icon.AiOutlineRobot className="w-6 h-6" />
           </div>
           <ReactMarkdown
-            className="mt-0.5 w-auto max-w-full bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow prose prose-neutral"
+            className="mt-0.5 w-auto max-w-[calc(100%-3rem)] bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow prose prose-neutral"
             remarkPlugins={[remarkGfm]}
             components={{
               pre({ node, className, children, ...props }) {
