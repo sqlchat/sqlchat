@@ -8,7 +8,7 @@ const getDefaultChat = (): Chat => {
   return {
     id: generateUUID(),
     assistantId: "sql-assistant",
-    title: "SQL Chat " + dayjs().format("LTS"),
+    title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
 };

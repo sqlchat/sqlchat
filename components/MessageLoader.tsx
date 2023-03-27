@@ -7,7 +7,7 @@ const MessageLoader = () => {
       <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center mr-2 shrink-0">
         <Icon.AiOutlineRobot className="w-6 h-6" />
       </div>
-      <div className="mt-0.5 w-12 bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow">
+      <div className="mt-0.5 w-12 bg-gray-100 px-4 py-2 rounded-lg">
         <ThreeDots wrapperClass="opacity-80" width="24" height="24" color="" />
       </div>
     </div>

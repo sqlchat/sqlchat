@@ -43,7 +43,6 @@ const SettingModal = (props: Props) => {
                     Clear
                   </button>
                 </h4>
-                <p className="text-gray-500 text-sm">SQLChat saves all of your data in localstorage. Please be sure to clear data.</p>
               </div>
             </div>
           </div>

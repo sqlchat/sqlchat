@@ -125,6 +125,14 @@ const ConnectionSidebar = () => {
               </button>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
+              <a
+                className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex lg:hidden flex-row justify-center items-center hover:bg-gray-100"
+                href="https://github.com/bytebase/sqlchat"
+                data-tip="GitHub"
+                target="_blank"
+              >
+                <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
+              </a>
               <button
                 className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
                 data-tip="Setting"
@@ -132,14 +140,6 @@ const ConnectionSidebar = () => {
               >
                 <Icon.IoMdSettings className="text-gray-600 w-6 h-auto" />
               </button>
-              <a
-                className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
-                href="https://github.com/bytebase/sqlchat"
-                data-tip="GitHub"
-                target="_blank"
-              >
-                <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
-              </a>
             </div>
           </div>
           <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 pt-2 ${databaseList.length === 0 && "!pt-4"}`}>

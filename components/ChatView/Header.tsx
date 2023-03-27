@@ -22,11 +22,18 @@ const Header = (props: Props) => {
         className || ""
       } sticky top-0 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-2 border-b bg-white z-1`}
     >
-      <div className="ml-2 flex justify-center items-center">
+      <div className="ml-2 flex justify-start items-center">
         <label htmlFor="connection-drawer" className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100">
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />
         </label>
         <span className="w-auto text-left block lg:hidden">{title}</span>
+        <a
+          className="ml-1 w-10 h-10 p-1 rounded-lg hidden lg:flex flex-row justify-center items-center hover:bg-gray-100"
+          href="https://github.com/bytebase/sqlchat"
+          target="_blank"
+        >
+          <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
+        </a>
       </div>
       <span className="w-auto text-center h-8 p-1 hidden lg:block">{title}</span>
       <div className="mr-2 sm:mr-4 relative flex flex-row justify-end items-center">

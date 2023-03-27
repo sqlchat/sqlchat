@@ -43,7 +43,7 @@ const EmptyView = (props: Props) => {
 
   return (
     <div className={`${className || ""} w-full h-full flex flex-col justify-start items-center`}>
-      <p className=" text-5xl font-medium leading-loose mb-8">SQLChat</p>
+      <p className=" text-5xl font-medium leading-loose mb-8">SQL Chat</p>
       <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="w-full flex flex-col justify-start items-center">
           <Icon.BsSun className="w-8 h-auto opacity-80" />
@@ -51,7 +51,7 @@ const EmptyView = (props: Props) => {
           {examples.map((example) => (
             <div
               key={example}
-              className="w-full rounded-lg px-4 py-3 text-sm mb-4 leading-6 cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="w-full rounded-lg px-4 py-3 text-sm mb-4 cursor-pointer bg-gray-50 hover:bg-gray-100"
               onClick={() => handleExampleClick(example)}
             >
               {`"${example}"`} →

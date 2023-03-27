@@ -25,7 +25,7 @@ const ClearDataConfirmModal = (props: Props) => {
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-          <p className="text-gray-500">SQLChat saves all of your data in localstorage. Please be sure to clear data.</p>
+          <p className="text-gray-500">SQL Chat saves all your data in your local browser. Are you sure to clear all of them?</p>
         </div>
         <div className="modal-action">
           <button className="btn btn-outline" onClick={close}>
