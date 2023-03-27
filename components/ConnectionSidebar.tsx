@@ -7,10 +7,12 @@ import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
+import ActionConfirmModal, { ActionConfirmModalProps } from "./ActionConfirmModal";
 
 interface State {
   showCreateConnectionModal: boolean;
   showSettingModal: boolean;
+  showDeleteConnectionModal: boolean;
 }
 
 const ConnectionSidebar = () => {
@@ -20,7 +22,9 @@ const ConnectionSidebar = () => {
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
     showSettingModal: false,
+    showDeleteConnectionModal: false,
   });
+  const [deleteConnectionModalContext, setDeleteConnectionModalContext] = useState<ActionConfirmModalProps>();
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
@@ -51,10 +55,27 @@ const ConnectionSidebar = () => {
   };
 
   const handleDeleteConnection = (connection: Connection) => {
-    connectionStore.clearConnection((item) => item.id !== connection.id);
-    if (currentConnectionCtx?.connection.id === connection.id) {
-      connectionStore.setCurrentConnectionCtx(undefined);
-    }
+    setState({
+      ...state,
+      showDeleteConnectionModal: true,
+    });
+    setDeleteConnectionModalContext({
+      title: "Delete Connection",
+      content: "Are you sure to delete this connection?",
+      confirmButtonStyle: "btn-error",
+      close: () => {
+        setState({
+          ...state,
+          showDeleteConnectionModal: false,
+        });
+      },
+      confirm: () => {
+        connectionStore.clearConnection((item) => item.id !== connection.id);
+        if (currentConnectionCtx?.connection.id === connection.id) {
+          connectionStore.setCurrentConnectionCtx(undefined);
+        }
+      },
+    });
   };
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -201,6 +222,18 @@ const ConnectionSidebar = () => {
       )}
 
       {createPortal(<SettingModal show={state.showSettingModal} close={() => toggleSettingModal(false)} />, document.body)}
+
+      {state.showDeleteConnectionModal &&
+        createPortal(
+          <ActionConfirmModal
+            title={deleteConnectionModalContext?.title ?? ""}
+            content={deleteConnectionModalContext?.content ?? ""}
+            confirmButtonStyle={deleteConnectionModalContext?.confirmButtonStyle ?? ""}
+            close={deleteConnectionModalContext?.close ?? (() => {})}
+            confirm={deleteConnectionModalContext?.confirm ?? (() => {})}
+          />,
+          document.body
+        )}
     </>
   );
 };
