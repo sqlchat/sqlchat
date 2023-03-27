@@ -12,7 +12,7 @@ const Header = () => {
   }, [title]);
 
   return (
-    <div className="sticky top-0 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-2 border-b bg-white">
+    <div className="sticky top-0 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-2 border-b bg-white z-1">
       <div className="ml-2 flex justify-center items-center">
         <label htmlFor="connection-drawer" className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100">
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />
