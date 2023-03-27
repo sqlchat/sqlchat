@@ -54,6 +54,9 @@ const MessageView = (props: Props) => {
                   </pre>
                 );
               },
+              code({ children }) {
+                return <code className="px-0">`{children}`</code>;
+              },
             }}
           >
             {message.content}

@@ -31,6 +31,7 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   const client = newPostgresClient(connection);
   await client.connect();
   await client.end();
+  // Because PostgreSQL needs to specify a database to connect to, we use the default database.
   return [connection.database!];
 };
 
@@ -55,17 +56,19 @@ const getTableStructure = async (connection: Connection, _: string, tableName: s
   const client = newPostgresClient(connection);
   await client.connect();
   const { rows } = await client.query(
-    `SELECT column_name, data_type, is_nullable, column_default FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
     [tableName]
   );
   await client.end();
   const columnList = [];
   // TODO(steven): transform it to standard schema string.
   for (const row of rows) {
-    columnList.push(`\`${row["column_name"]}\` ${row["data_type"]} ${String(row["is_nullable"]).toUpperCase()} ${row["column_default"]},`);
+    columnList.push(
+      `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+    );
   }
   return `CREATE TABLE \`${tableName}\` (
-    ${columnList.join("\n")}
+    ${columnList.join(",\n")}
   );`;
 };
 

@@ -20,7 +20,7 @@ export const getAssistantById = (id: Id) => {
 export const getPromptGeneratorOfAssistant = (assistant: User) => {
   if (assistant.id === "sql-assistant") {
     return (schema: string) =>
-      `Remember that you are an expert in SQL. And you know everything about databases. You will answer some questions about databases with a database schema like "${schema}".`;
+      `This is my database schema"${schema}". You will see the tables and columns in the database. And please answer the following questions about the database.`;
   }
   return () => "";
 };
