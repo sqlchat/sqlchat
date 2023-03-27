@@ -130,6 +130,7 @@ const CreateConnectionModal = (props: Props) => {
             Close
           </button>
           <button className="btn" disabled={isRequesting} onClick={handleCreateConnection}>
+            {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
             Save
           </button>
         </div>

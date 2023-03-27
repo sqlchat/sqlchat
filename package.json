@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-icons": "^4.8.0",
+    "react-loader-spinner": "^5.3.4",
     "react-markdown": "^8.0.6",
     "react-textarea-autosize": "^8.4.0",
     "remark-gfm": "^3.0.1",
