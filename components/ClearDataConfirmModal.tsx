@@ -10,10 +10,11 @@ const ClearDataConfirmModal = (props: Props) => {
 
   const handleClearData = () => {
     window.localStorage.clear();
+    close();
     toast.success("Message cleared. The page will be reloaded.");
     setTimeout(() => {
       window.location.reload();
-    }, 300);
+    }, 500);
   };
 
   return (

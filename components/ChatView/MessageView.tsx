@@ -1,7 +1,9 @@
-import { marked } from "marked";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { useUserStore } from "@/store";
 import { Message } from "@/types";
 import Icon from "../Icon";
+import { CodeBlock } from "../CodeBlock";
 
 interface Props {
   message: Message;
@@ -28,10 +30,32 @@ const MessageView = (props: Props) => {
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center mr-2 shrink-0">
             <Icon.AiOutlineRobot className="w-6 h-6" />
           </div>
-          <div
+          <ReactMarkdown
             className="mt-0.5 w-auto max-w-full bg-gray-100 px-4 py-2 rounded-lg rounded-tl-none shadow prose prose-neutral"
-            dangerouslySetInnerHTML={{ __html: marked.parse(message.content) }}
-          ></div>
+            remarkPlugins={[remarkGfm]}
+            components={{
+              pre({ node, className, children, ...props }) {
+                return (
+                  <pre className={`${className || ""} p-0 w-full`} {...props}>
+                    {children}
+                  </pre>
+                );
+              },
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                const language = match ? match[1] : "plain";
+                return !inline ? (
+                  <CodeBlock key={Math.random()} language={language || "plain"} value={String(children).replace(/\n$/, "")} {...props} />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
         </>
       )}
     </div>
