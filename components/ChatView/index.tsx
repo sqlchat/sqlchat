@@ -1,23 +1,37 @@
-import { head } from "lodash-es";
+import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
 import { CreatorRole, Message } from "@/types";
 import { generateUUID } from "@/utils";
-import Icon from "../Icon";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
+import MessageLoader from "../MessageLoader";
 
 const ChatView = () => {
   const connectionStore = useConnectionStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
   const [isRequesting, setIsRequesting] = useState<boolean>(false);
+  const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const chatViewRef = useRef<HTMLDivElement>(null);
   const currentChat = chatStore.currentChat;
   const messageList = messageStore.messageList.filter((message) => message.chatId === currentChat?.id);
+  const lastMessage = last(messageList);
+
+  // Toggle header shadow.
+  useEffect(() => {
+    const handleChatViewScroll = () => {
+      setShowHeaderShadow((chatViewRef.current?.scrollTop || 0) > 0);
+    };
+    chatViewRef.current?.addEventListener("scroll", handleChatViewScroll);
+
+    return () => {
+      chatViewRef.current?.removeEventListener("scroll", handleChatViewScroll);
+    };
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -26,7 +40,22 @@ const ChatView = () => {
       }
       chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
     });
-  }, [currentChat, isRequesting]);
+  }, [currentChat, messageList.length, lastMessage?.isGenerated]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (!chatViewRef.current) {
+        return;
+      }
+      if (!lastMessage) {
+        return;
+      }
+
+      if (!lastMessage.isGenerated) {
+        chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+      }
+    });
+  }, [lastMessage?.isGenerated, lastMessage?.content]);
 
   useEffect(() => {
     if (!connectionStore.currentConnectionCtx) {
@@ -91,6 +120,7 @@ const ChatView = () => {
       creatorRole: CreatorRole.Assistant,
       createdAt: Date.now(),
       content: "",
+      isGenerated: false,
     };
     messageStore.addMessage(message);
 
@@ -103,11 +133,16 @@ const ChatView = () => {
         const char = decoder.decode(value);
         if (char) {
           message.content = message.content + char;
-          messageStore.updateMessageContent(message.id, message.content);
+          messageStore.updateMessage(message.id, {
+            content: message.content,
+          });
         }
       }
       done = readerDone;
     }
+    messageStore.updateMessage(message.id, {
+      isGenerated: true,
+    });
   };
 
   return (
@@ -115,18 +150,14 @@ const ChatView = () => {
       ref={chatViewRef}
       className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
     >
-      <Header />
+      <Header className={showHeaderShadow ? "shadow" : ""} />
       <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
-          <EmptyView className="mt-16" />
+          <EmptyView className="mt-16" sendMessage={sendMessageToCurrentChat} />
         ) : (
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
-        {isRequesting && (
-          <div className="w-full pt-4 pb-8 flex justify-center items-center text-gray-600">
-            <Icon.BiLoader className="w-5 h-auto mr-2 animate-spin" /> Requesting...
-          </div>
-        )}
+        {isRequesting && <MessageLoader />}
       </div>
       <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
         <MessageTextarea disabled={isRequesting} sendMessage={sendMessageToCurrentChat} />

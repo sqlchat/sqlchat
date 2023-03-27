@@ -1,11 +1,45 @@
+import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import { CreatorRole } from "@/types";
+import { generateUUID } from "@/utils";
 import Icon from "./Icon";
+
+// examples are used to show some examples to the user.
+const examples = ["Give me an example schema about employee", "How to create a view in MySQL?"];
 
 interface Props {
   className?: string;
+  sendMessage: () => Promise<void>;
 }
 
 const EmptyView = (props: Props) => {
-  const { className } = props;
+  const { className, sendMessage } = props;
+  const connectionStore = useConnectionStore();
+  const chatStore = useChatStore();
+  const userStore = useUserStore();
+  const messageStore = useMessageStore();
+
+  const handleExampleClick = async (content: string) => {
+    let chat = chatStore.currentChat;
+    if (!chat) {
+      const currentConnectionCtx = connectionStore.currentConnectionCtx;
+      if (!currentConnectionCtx) {
+        chat = chatStore.createChat();
+      } else {
+        chat = chatStore.createChat(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+      }
+    }
+
+    messageStore.addMessage({
+      id: generateUUID(),
+      chatId: chat.id,
+      creatorId: userStore.currentUser.id,
+      creatorRole: CreatorRole.User,
+      createdAt: Date.now(),
+      content: content,
+      isGenerated: true,
+    });
+    await sendMessage();
+  };
 
   return (
     <div className={`${className || ""} w-full h-full flex flex-col justify-start items-center`}>
@@ -14,8 +48,15 @@ const EmptyView = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-center">
           <Icon.BsSun className="w-8 h-auto opacity-80" />
           <span className="mt-2 mb-4">Examples</span>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">This is the latest placeholder</div>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">Another example</div>
+          {examples.map((example) => (
+            <div
+              key={example}
+              className="w-full rounded-lg px-4 py-3 text-sm mb-4 leading-6 cursor-pointer bg-gray-50 hover:bg-gray-100"
+              onClick={() => handleExampleClick(example)}
+            >
+              {`"${example}"`} →
+            </div>
+          ))}
         </div>
         <div className="w-full flex flex-col justify-start items-center">
           <Icon.BsLightning className="w-8 h-auto opacity-80" />

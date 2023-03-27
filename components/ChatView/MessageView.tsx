@@ -1,3 +1,4 @@
+import { ReactElement } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useUserStore } from "@/store";
@@ -39,21 +40,18 @@ const MessageView = (props: Props) => {
             remarkPlugins={[remarkGfm]}
             components={{
               pre({ node, className, children, ...props }) {
+                const child = children[0] as ReactElement;
+                const match = /language-(\w+)/.exec(child.props.className || "");
+                const language = match ? match[1] : "plain";
                 return (
                   <pre className={`${className || ""} p-0 w-full`} {...props}>
-                    {children}
+                    <CodeBlock
+                      key={Math.random()}
+                      language={language || "plain"}
+                      value={String(child.props.children).replace(/\n$/, "")}
+                      {...props}
+                    />
                   </pre>
-                );
-              },
-              code({ node, inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || "");
-                const language = match ? match[1] : "plain";
-                return !inline ? (
-                  <CodeBlock key={Math.random()} language={language || "plain"} value={String(children).replace(/\n$/, "")} {...props} />
-                ) : (
-                  <code className={className} {...props}>
-                    {children}
-                  </code>
                 );
               },
             }}

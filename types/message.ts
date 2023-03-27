@@ -13,4 +13,5 @@ export interface Message {
   creatorRole: CreatorRole;
   createdAt: Timestamp;
   content: string;
+  isGenerated: boolean;
 }

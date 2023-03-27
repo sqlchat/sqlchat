@@ -56,6 +56,7 @@ const MessageTextarea = (props: Props) => {
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),
       content: value,
+      isGenerated: true,
     });
     setValue("");
     textareaRef.current!.value = "";
