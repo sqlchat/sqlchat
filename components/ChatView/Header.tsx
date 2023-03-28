@@ -28,7 +28,7 @@ const Header = (props: Props) => {
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />
         </label>
         <span className="w-auto text-left block lg:hidden">{title}</span>
-        <GitHubStarBadge className="ml-2" />
+        <GitHubStarBadge className="hidden lg:flex ml-2" />
       </div>
       <span className="w-auto text-center h-8 p-1 hidden lg:block">{title}</span>
       <div className="mr-2 sm:mr-3 relative flex flex-row justify-end items-center">
