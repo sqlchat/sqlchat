@@ -40,7 +40,6 @@ const ChatPage: NextPage = () => {
     <div>
       <Head>
         <title>SQL Chat</title>
-        <meta name="description" content="" />
         <link rel="icon" href="/chat-logo-bot.webp" />
         <meta name="description" content="Chat-based SQL Client" />
         <meta name="twitter:card" content="summary_large_image" />
