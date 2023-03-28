@@ -3,12 +3,16 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
 import { CreatorRole, Message } from "@/types";
-import { generateUUID } from "@/utils";
+import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
 import MessageLoader from "../MessageLoader";
+
+// The maximum number of tokens that can be sent to the OpenAI API.
+// reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
+const MAX_TOKENS = 4000;
 
 const ChatView = () => {
   const connectionStore = useConnectionStore();
@@ -86,24 +90,38 @@ const ChatView = () => {
     setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
     let prompt = "";
+    let tokens = 0;
     if (connectionStore.currentConnectionCtx?.database) {
       const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
       const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
-      prompt = promptGenerator(tables.map((table) => table.structure).join("/n"));
+      let schema = "";
+      for (const table of tables) {
+        if (tokens < MAX_TOKENS / 2) {
+          tokens += countTextTokens(schema + table.structure);
+          schema += table.structure;
+        }
+      }
+      prompt = promptGenerator(schema);
     }
+    let formatedMessageList = [];
+    for (let i = messageList.length - 1; i >= 0; i--) {
+      const message = messageList[i];
+      if (tokens < MAX_TOKENS) {
+        tokens += countTextTokens(message.content);
+        formatedMessageList.unshift({
+          role: message.creatorRole,
+          content: message.content,
+        });
+      }
+    }
+    formatedMessageList.unshift({
+      role: CreatorRole.System,
+      content: prompt,
+    });
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
-        messages: [
-          {
-            role: CreatorRole.System,
-            content: prompt,
-          },
-          ...messageList.map((message) => ({
-            role: message.creatorRole,
-            content: message.content,
-          })),
-        ],
+        messages: formatedMessageList,
       }),
     });
     setIsRequesting(false);
