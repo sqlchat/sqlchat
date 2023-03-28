@@ -150,7 +150,7 @@ const ChatView = () => {
       className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
     >
       <Header className={showHeaderShadow ? "shadow" : ""} />
-      <div className="p-2 w-full h-auto grow max-w-3xl py-1 px-4 sm:px-8 mx-auto">
+      <div className="p-2 w-full h-auto grow max-w-4xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
           <EmptyView className="mt-16" sendMessage={sendMessageToCurrentChat} />
         ) : (
@@ -158,7 +158,7 @@ const ChatView = () => {
         )}
         {isRequesting && <MessageLoader />}
       </div>
-      <div className="sticky bottom-0 w-full max-w-3xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
+      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
         <MessageTextarea disabled={isRequesting} sendMessage={sendMessageToCurrentChat} />
       </div>
     </main>

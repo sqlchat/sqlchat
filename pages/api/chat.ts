@@ -17,7 +17,7 @@ const handler = async (req: NextRequest) => {
     body: JSON.stringify({
       model: "gpt-3.5-turbo",
       messages: reqBody.messages,
-      max_tokens: 2000,
+      max_tokens: 1000,
       temperature: 0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
