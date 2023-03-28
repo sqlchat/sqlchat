@@ -2,16 +2,13 @@ import { toast } from "react-hot-toast";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useConnectionStore, useQueryStore } from "@/store";
+import { checkStatementIsSelect } from "@/utils";
 import Icon from "./Icon";
 
 interface Props {
   language: string;
   value: string;
 }
-
-const checkStatementIsSelect = (statement: string) => {
-  return statement.toUpperCase().trim().startsWith("SELECT");
-};
 
 export const CodeBlock = (props: Props) => {
   const { language, value } = props;

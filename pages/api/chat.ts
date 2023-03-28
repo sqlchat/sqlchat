@@ -1,4 +1,4 @@
-import { openAIApiKey } from "@/utils/openai";
+import { openAIApiKey } from "@/utils";
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
 
