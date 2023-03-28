@@ -50,19 +50,28 @@ const CreateConnectionModal = (props: Props) => {
     if (!showDatabaseField) {
       connectionCreate.database = undefined;
     }
-    const result = await testConnection(connectionCreate);
-    setIsRequesting(false);
-    if (!result) {
-      toast.error("Failed to connect");
+    try {
+      const result = await testConnection(connectionCreate);
+      if (!result) {
+        setIsRequesting(false);
+        toast.error("Failed to test connection");
+        return;
+      }
+      const createdConnection = connectionStore.createConnection(connectionCreate);
+      // Set the created connection as the current connection.
+      const databaseList = await connectionStore.getOrFetchDatabaseList(createdConnection);
+      connectionStore.setCurrentConnectionCtx({
+        connection: createdConnection,
+        database: head(databaseList),
+      });
+    } catch (error) {
+      console.error(error);
+      setIsRequesting(false);
+      toast.error("Failed to create connection");
       return;
     }
-    const createdConnection = connectionStore.createConnection(connectionCreate);
-    // Set the created connection as the current connection.
-    const databaseList = await connectionStore.getOrFetchDatabaseList(createdConnection);
-    connectionStore.setCurrentConnectionCtx({
-      connection: createdConnection,
-      database: head(databaseList),
-    });
+
+    setIsRequesting(false);
     close();
   };
 
