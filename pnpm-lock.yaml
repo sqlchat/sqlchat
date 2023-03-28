@@ -5,6 +5,7 @@ specifiers:
   '@emotion/styled': ^11.10.6
   '@mui/material': ^5.11.14
   '@mui/styled-engine-sc': ^5.11.11
+  '@nem035/gpt-3-encoder': ^1.1.7
   '@tailwindcss/typography': ^0.5.9
   '@types/lodash-es': ^4.17.7
   '@types/node': ^18.11.18
@@ -74,6 +75,7 @@ dependencies:
   zustand: 4.3.6_react@18.2.0
 
 devDependencies:
+  '@nem035/gpt-3-encoder': 1.1.7
   '@tailwindcss/typography': 0.5.9_tailwindcss@3.2.7
   '@types/lodash-es': 4.17.7
   '@types/node': 18.15.3
@@ -579,6 +581,10 @@ packages:
       react: 18.2.0
       react-is: 18.2.0
     dev: false
+
+  /@nem035/gpt-3-encoder/1.1.7:
+    resolution: {integrity: sha512-dtOenP4ZAmsKXkobTDUCcbkQvPJbuJ6Kp/LHqWDYLK//XNgGs3Re8ymcQzyVhtph8JckdI3K8FR5Q+6mX7HnpQ==}
+    dev: true
 
   /@next/env/13.2.4:
     resolution: {integrity: sha512-+Mq3TtpkeeKFZanPturjcXt+KHfKYnLlX6jMLyCrmpq6OOs4i1GqBOAauSkii9QeKCMTYzGppar21JU57b/GEA==}
