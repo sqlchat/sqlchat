@@ -47,6 +47,7 @@ const ChatPage: NextPage = () => {
         <meta name="og:description" property="og:description" content="Chat-based SQL Client" />
         <meta name="og:image" property="og:image" content="https://www.sqlchat.ai/chat-logo-and-text.webp" />
         <meta name="og:url" property="og:url" content="https://www.sqlchat.ai" />
+        <script defer data-domain="chatsql.ai" src="https://plausible.io/js/script.js"></script>
       </Head>
 
       <main className="drawer drawer-mobile w-full h-full">
