@@ -7,7 +7,7 @@
 
 ## What
 
-SQL Chat is a chat based SQL Client.
+SQL Chat is a chat-based SQL Client.
 
 ![Screenshot](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/screenshot1.webp)
 ## Why
