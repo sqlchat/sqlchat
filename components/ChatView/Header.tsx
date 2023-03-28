@@ -39,7 +39,7 @@ const Header = (props: Props) => {
       <div className="mr-2 sm:mr-4 relative flex flex-row justify-end items-center">
         <a
           href="https://www.bytebase.com?source=sqlchat"
-          className="flex flex-row justify-center items-center px-2 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 hover:shadow"
+          className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100"
           target="_blank"
         >
           <span className="text-sm text-gray-600 hidden sm:block">Crafted by</span>
