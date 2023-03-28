@@ -4,6 +4,7 @@ import postgres from "./postgres";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
+  execute: (databaseName: string, statement: string) => Promise<any>;
   getDatabases: () => Promise<string[]>;
   getTables: (databaseName: string) => Promise<string[]>;
   getTableStructure: (databaseName: string, tableName: string) => Promise<string>;

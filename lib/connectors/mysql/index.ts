@@ -20,6 +20,15 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   }
 };
 
+const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
+  connection.database = databaseName;
+  const connectionUrl = convertToConnectionUrl(connection);
+  const conn = await mysql.createConnection(connectionUrl);
+  const [rows] = await conn.query<RowDataPacket[]>(statement);
+  conn.destroy();
+  return rows;
+};
+
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const connectionUrl = convertToConnectionUrl(connection);
   const conn = await mysql.createConnection(connectionUrl);
@@ -68,6 +77,7 @@ const getTableStructure = async (connection: Connection, databaseName: string, t
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
+    execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
     getTableStructure: (databaseName: string, tableName: string) => getTableStructure(connection, databaseName, tableName),

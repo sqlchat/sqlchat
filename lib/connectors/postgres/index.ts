@@ -27,6 +27,14 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   }
 };
 
+const execute = async (connection: Connection, _: string, statement: string): Promise<any> => {
+  const client = newPostgresClient(connection);
+  await client.connect();
+  const { rows } = await client.query(statement);
+  await client.end();
+  return rows;
+};
+
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const client = newPostgresClient(connection);
   await client.connect();
@@ -75,6 +83,7 @@ const getTableStructure = async (connection: Connection, _: string, tableName: s
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
+    execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
     getTableStructure: (databaseName: string, tableName: string) => getTableStructure(connection, databaseName, tableName),
