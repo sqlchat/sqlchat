@@ -12,9 +12,9 @@ type RawQueryResult = {
 
 const QueryDrawer = () => {
   const queryStore = useQueryStore();
-  const context = queryStore.context;
   const [rawResults, setRawResults] = useState<RawQueryResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const context = queryStore.context;
   const columns = Object.keys(head(rawResults) || {}).map((key) => {
     return {
       name: key,
@@ -23,6 +23,10 @@ const QueryDrawer = () => {
   });
 
   useEffect(() => {
+    if (!queryStore.showDrawer) {
+      return;
+    }
+
     if (!context) {
       toast.error("No execution context found.");
       setIsLoading(false);
@@ -56,7 +60,7 @@ const QueryDrawer = () => {
     };
 
     executeStatement();
-  }, [context]);
+  }, [context, queryStore.showDrawer]);
 
   const close = () => queryStore.toggleDrawer(false);
 
