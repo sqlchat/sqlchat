@@ -12,7 +12,7 @@ interface LayoutState {
   toggleSidebar: (show?: boolean) => void;
 }
 
-export const useLayoutStore = create<LayoutState>()((set, get) => ({
+export const useLayoutStore = create<LayoutState>()((set) => ({
   showSidebar: true,
   toggleSidebar: (show) => {
     if (isUndefined(show)) {

@@ -3,6 +3,7 @@ import Head from "next/head";
 import dynamic from "next/dynamic";
 import React, { useEffect } from "react";
 import { ResponsiveWidth, useLayoutStore } from "@/store";
+import QueryDrawer from "@/components/QueryDrawer";
 
 // Use dynamic import to avoid page hydrated.
 // reference: https://github.com/pmndrs/zustand/issues/1145#issuecomment-1316431268
@@ -51,6 +52,7 @@ const ChatPage: NextPage = () => {
         />
         <ChatView />
         <ConnectionSidebar />
+        <QueryDrawer />
       </main>
     </div>
   );

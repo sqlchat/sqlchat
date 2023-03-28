@@ -1,23 +1,18 @@
+import { Drawer } from "@mui/material";
 import { head } from "lodash-es";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { toast } from "react-hot-toast";
-import { Connection } from "@/types";
+import { useQueryStore } from "@/store";
 import Icon from "./Icon";
-
-interface Props {
-  connection: Connection;
-  databaseName: string;
-  statement: string;
-  close: () => void;
-}
 
 type RawQueryResult = {
   [key: string]: any;
 };
 
-const ExecuteStatementModal = (props: Props) => {
-  const { close, connection, databaseName, statement } = props;
+const QueryDrawer = () => {
+  const queryStore = useQueryStore();
+  const context = queryStore.context;
   const [rawResults, setRawResults] = useState<RawQueryResult[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const columns = Object.keys(head(rawResults) || {}).map((key) => {
@@ -28,6 +23,16 @@ const ExecuteStatementModal = (props: Props) => {
   });
 
   useEffect(() => {
+    if (!context) {
+      toast.error("No execution context found.");
+      setIsLoading(false);
+      setRawResults([]);
+      return;
+    }
+
+    setIsLoading(true);
+    setRawResults([]);
+    const { connection, database, statement } = context;
     const executeStatement = async () => {
       try {
         const response = await fetch("/api/connection/execute", {
@@ -37,7 +42,7 @@ const ExecuteStatementModal = (props: Props) => {
           },
           body: JSON.stringify({
             connection,
-            db: databaseName,
+            db: database?.name,
             statement,
           }),
         });
@@ -51,15 +56,17 @@ const ExecuteStatementModal = (props: Props) => {
     };
 
     executeStatement();
-  }, []);
+  }, [context]);
+
+  const close = () => queryStore.toggleDrawer(false);
 
   return (
-    <div className="modal modal-middle modal-open">
-      <div className="modal-box w-full">
-        <h3 className="font-bold text-lg">Execute query</h3>
-        <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
+    <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
+      <div className="w-screen sm:w-[640px] max-w-full flex flex-col justify-start items-start p-4">
+        <button className="btn btn-sm btn-circle" onClick={close}>
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
+        <h3 className="font-bold text-lg mt-4">Execute query</h3>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
           {isLoading ? (
             <div className="w-full flex justify-center py-6 pt-8">
@@ -69,13 +76,13 @@ const ExecuteStatementModal = (props: Props) => {
             <div className="w-full flex justify-center py-6 pt-8">No data return.</div>
           ) : (
             <div className="w-full">
-              <DataTable className="w-full" columns={columns} data={rawResults} pagination responsive />
+              <DataTable className="w-full border" columns={columns} data={rawResults} pagination responsive />
             </div>
           )}
         </div>
       </div>
-    </div>
+    </Drawer>
   );
 };
 
-export default ExecuteStatementModal;
+export default QueryDrawer;
