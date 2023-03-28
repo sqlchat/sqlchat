@@ -193,7 +193,7 @@ const ConnectionSidebar = () => {
                 ) : (
                   <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
                 )}
-                <span className="truncate">{chat.title || "SQL Chat"}</span>
+                <span className="truncate grow">{chat.title || "SQL Chat"}</span>
                 <span
                   className="ml-0.5 shrink-0 opacity-60 hidden group-hover:block hover:opacity-80"
                   onClick={(e) => {

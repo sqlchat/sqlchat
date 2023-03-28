@@ -37,7 +37,7 @@ export const CodeBlock = (props: Props) => {
           </button>
         </div>
       </div>
-      <SyntaxHighlighter language={language} style={oneDark} customStyle={{ margin: 0 }}>
+      <SyntaxHighlighter language={language.toLowerCase()} style={oneDark} customStyle={{ margin: 0 }}>
         {value}
       </SyntaxHighlighter>
     </div>
