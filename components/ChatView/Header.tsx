@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useChatStore } from "@/store";
 import Icon from "../Icon";
-import GitHubStarBadge from "../GitHubStarBadge";
 
 interface Props {
   className?: string;
@@ -14,7 +13,7 @@ const Header = (props: Props) => {
   const title = currentChat?.title || "SQL Chat";
 
   useEffect(() => {
-    document.title = `${title} - SQL Chat`;
+    document.title = `${title}`;
   }, [title]);
 
   return (
@@ -28,7 +27,13 @@ const Header = (props: Props) => {
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />
         </label>
         <span className="w-auto text-left block lg:hidden">{title}</span>
-        <GitHubStarBadge className="hidden lg:flex ml-2" />
+        <a
+          className="ml-1 w-10 h-10 p-1 rounded-lg hidden lg:flex flex-row justify-center items-center hover:bg-gray-100"
+          href="https://github.com/bytebase/sqlchat"
+          target="_blank"
+        >
+          <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
+        </a>
       </div>
       <span className="w-auto text-center h-8 p-1 hidden lg:block">{title}</span>
       <div className="mr-2 sm:mr-3 relative flex flex-row justify-end items-center">
@@ -37,7 +42,7 @@ const Header = (props: Props) => {
           className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100"
           target="_blank"
         >
-          <img className="h-5 sm:h-6 w-auto" src="/craft-by-bytebase.webp" alt="" />
+          <img className="h-6 w-auto ml-1" src="/craft-by-bytebase.webp" alt="" />
         </a>
       </div>
     </div>

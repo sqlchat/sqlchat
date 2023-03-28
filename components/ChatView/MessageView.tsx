@@ -47,7 +47,7 @@ const MessageView = (props: Props) => {
     >
       {isCurrentUser ? (
         <>
-          <div className="mt-0.5 w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap">
+          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap">
             {message.content}
           </div>
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center ml-2 shrink-0">
@@ -56,11 +56,11 @@ const MessageView = (props: Props) => {
         </>
       ) : (
         <>
-          <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center mr-2 shrink-0">
-            <Icon.AiOutlineRobot className="w-6 h-6" />
+          <div className="w-10 h-10 p-1 flex justify-center items-center mr-2 shrink-0">
+            <img src="/chat-logo-bot.webp" alt="" />
           </div>
           <ReactMarkdown
-            className="mt-0.5 w-auto max-w-[calc(100%-4rem)] bg-gray-100 px-4 py-2 rounded-lg prose prose-neutral"
+            className="w-auto max-w-[calc(100%-4rem)] bg-gray-100 px-4 py-2 rounded-lg prose prose-neutral"
             remarkPlugins={[remarkGfm]}
             components={{
               pre({ node, className, children, ...props }) {

@@ -140,7 +140,7 @@ const ConnectionSidebar = () => {
                 className={`w-full h-14 rounded-l-lg p-2 mt-1 group ${currentConnectionCtx === undefined && "bg-gray-100 shadow"}`}
                 onClick={() => connectionStore.setCurrentConnectionCtx(undefined)}
               >
-                <Icon.AiOutlineRobot className="w-7 h-auto mx-auto" />
+                <img src="/chat-logo-bot.webp" className="w-7 h-auto mx-auto" alt="" />
               </button>
               {connectionList.map((connection) => (
                 <button
@@ -180,62 +180,65 @@ const ConnectionSidebar = () => {
               </button>
             </div>
           </div>
-          <div className={`w-64 h-full overflow-y-auto bg-gray-100 px-4 pt-2 ${databaseList.length === 0 && "!pt-4"}`}>
-            {databaseList.length > 0 && (
-              <div className="w-full sticky top-0 bg-gray-100 z-1 mb-4">
-                <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
-                <select
-                  className="w-full select select-bordered"
-                  value={currentConnectionCtx?.database?.name}
-                  onChange={(e) => handleDatabaseNameSelect(e.target.value)}
+          <div className="p-4 w-64 h-full overflow-y-auto bg-gray-100">
+            <img className="px-4" src="/chat-logo.webp" alt="" />
+            <div className={`${databaseList.length > 0 && "pt-2"}`}>
+              {databaseList.length > 0 && (
+                <div className="w-full sticky top-0 bg-gray-100 z-1 mb-4">
+                  <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
+                  <select
+                    className="w-full select select-bordered"
+                    value={currentConnectionCtx?.database?.name}
+                    onChange={(e) => handleDatabaseNameSelect(e.target.value)}
+                  >
+                    {databaseList.map((database) => (
+                      <option key={database.name} value={database.name}>
+                        {database.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+              {chatList.map((chat) => (
+                <div
+                  key={chat.id}
+                  className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
+                    chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
+                  }`}
+                  onClick={() => handleChatSelect(chat)}
                 >
-                  {databaseList.map((database) => (
-                    <option key={database.name} value={database.name}>
-                      {database.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-            {chatList.map((chat) => (
-              <div
-                key={chat.id}
-                className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
-                  chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
-                }`}
-                onClick={() => handleChatSelect(chat)}
+                  {chat.id === chatStore.currentChat?.id ? (
+                    <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
+                  ) : (
+                    <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
+                  )}
+                  <span className="truncate grow">{chat.title || "SQL Chat"}</span>
+                  <span className="ml-0.5 shrink-0 hidden group-hover:flex flex-row justify-end items-center space-x-1">
+                    <Icon.FiEdit3
+                      className="w-4 h-auto opacity-60 hover:opacity-80"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEditChatTitle(chat);
+                      }}
+                    />
+                    <Icon.IoClose
+                      className="w-5 h-auto opacity-60 hover:opacity-80"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteChat(chat);
+                      }}
+                    />
+                  </span>
+                </div>
+              ))}
+              <button
+                className="w-full my-4 py-3 px-4 border rounded-lg flex flex-row justify-center items-center text-gray-500 hover:text-gray-700 hover:bg-gray-50"
+                onClick={handleCreateChat}
               >
-                {chat.id === chatStore.currentChat?.id ? (
-                  <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
-                ) : (
-                  <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
-                )}
-                <span className="truncate grow">{chat.title || "SQL Chat"}</span>
-                <span className="ml-0.5 shrink-0 hidden group-hover:flex flex-row justify-end items-center space-x-1">
-                  <Icon.FiEdit3
-                    className="w-4 h-auto opacity-60 hover:opacity-80"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEditChatTitle(chat);
-                    }}
-                  />
-                  <Icon.IoClose
-                    className="w-5 h-auto opacity-60 hover:opacity-80"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteChat(chat);
-                    }}
-                  />
-                </span>
-              </div>
-            ))}
-            <button
-              className="w-full my-4 py-3 px-4 border rounded-lg flex flex-row justify-center items-center text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-              onClick={handleCreateChat}
-            >
-              <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
-              New Chat
-            </button>
+                <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
+                New Chat
+              </button>
+            </div>
           </div>
         </div>
       </aside>

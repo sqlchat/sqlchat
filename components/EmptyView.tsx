@@ -43,7 +43,9 @@ const EmptyView = (props: Props) => {
 
   return (
     <div className={`${className || ""} w-full h-full flex flex-col justify-start items-center`}>
-      <p className=" text-5xl font-medium leading-loose mb-8">SQL Chat</p>
+      <p className="w-96 font-medium leading-loose mb-8">
+        <img src="/chat-logo-and-text.webp" alt="" />
+      </p>
       <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="w-full flex flex-col justify-start items-center">
           <Icon.BsSun className="w-8 h-auto opacity-80" />
