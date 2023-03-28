@@ -66,7 +66,7 @@ const QueryDrawer = () => {
 
   return (
     <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
-      <div className="w-screen lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
+      <div className="w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
         <button className="btn btn-sm btn-circle" onClick={close}>
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
