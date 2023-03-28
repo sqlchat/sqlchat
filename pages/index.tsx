@@ -41,7 +41,13 @@ const ChatPage: NextPage = () => {
       <Head>
         <title>SQL Chat</title>
         <meta name="description" content="" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/chat-logo-bot.webp" />
+        <meta name="description" content="Chat-based SQL Client" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="og:title" property="og:title" content="SQL Chat" />
+        <meta name="og:description" property="og:description" content="Chat-based SQL Client" />
+        <meta name="og:image" property="og:image" content="https://www.sqlchat.ai/chat-logo-and-text.webp" />
+        <meta name="og:url" property="og:url" content="https://www.sqlchat.ai" />
       </Head>
 
       <main className="drawer drawer-mobile w-full h-full">
