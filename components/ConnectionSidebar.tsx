@@ -118,7 +118,7 @@ const ConnectionSidebar = () => {
           <div className="w-16 h-full bg-gray-200 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
             <div className="w-full flex flex-col justify-start items-start">
               <button
-                className={`w-full h-14 rounded-l-lg p-2 mt-2 group ${currentConnectionCtx === undefined && "bg-gray-100 shadow"}`}
+                className={`w-full h-14 rounded-l-lg p-2 mt-1 group ${currentConnectionCtx === undefined && "bg-gray-100 shadow"}`}
                 onClick={() => connectionStore.setCurrentConnectionCtx(undefined)}
               >
                 <Icon.AiOutlineRobot className="w-7 h-auto mx-auto" />
