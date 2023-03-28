@@ -59,12 +59,18 @@ const ChatView = () => {
 
   useEffect(() => {
     if (!connectionStore.currentConnectionCtx) {
+      chatStore.setCurrentChat(undefined);
       return;
     }
     if (currentChat?.connectionId === connectionStore.currentConnectionCtx.connection.id) {
+      chatStore.setCurrentChat(undefined);
       return;
     }
-    const chatList = chatStore.chatList.filter((chat) => chat.connectionId === connectionStore.currentConnectionCtx?.connection.id);
+    const chatList = chatStore.chatList.filter(
+      (chat) =>
+        chat.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+        chat.databaseName === connectionStore.currentConnectionCtx?.database?.name
+    );
     chatStore.setCurrentChat(head(chatList));
   }, [connectionStore.currentConnectionCtx]);
 
