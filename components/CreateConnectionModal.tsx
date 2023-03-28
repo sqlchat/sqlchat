@@ -1,5 +1,5 @@
 import { cloneDeep, head } from "lodash-es";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { testConnection, useConnectionStore } from "@/store";
 import { Connection, Engine } from "@/types";
@@ -10,20 +10,28 @@ interface Props {
   close: () => void;
 }
 
+const defaultConnection: Connection = {
+  id: "",
+  title: "",
+  engineType: Engine.MySQL,
+  host: "",
+  port: "",
+  username: "",
+  password: "",
+};
+
 const CreateConnectionModal = (props: Props) => {
   const { show, close } = props;
   const connectionStore = useConnectionStore();
-  const [connection, setConnection] = useState<Connection>({
-    id: "",
-    title: "",
-    engineType: Engine.MySQL,
-    host: "",
-    port: "",
-    username: "",
-    password: "",
-  });
+  const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
+
+  useEffect(() => {
+    if (show) {
+      setConnection(defaultConnection);
+    }
+  }, [show]);
 
   const setPartialConnection = (state: Partial<Connection>) => {
     setConnection({
@@ -83,6 +91,7 @@ const CreateConnectionModal = (props: Props) => {
               type="text"
               placeholder="Connect host"
               className="input input-bordered w-full"
+              value={connection.host}
               onChange={(e) => setPartialConnection({ host: e.target.value })}
             />
           </div>
@@ -92,6 +101,7 @@ const CreateConnectionModal = (props: Props) => {
               type="text"
               placeholder="Connect port"
               className="input input-bordered w-full"
+              value={connection.port}
               onChange={(e) => setPartialConnection({ port: e.target.value })}
             />
           </div>
@@ -101,6 +111,7 @@ const CreateConnectionModal = (props: Props) => {
               type="text"
               placeholder="Connect username"
               className="input input-bordered w-full"
+              value={connection.username}
               onChange={(e) => setPartialConnection({ username: e.target.value })}
             />
           </div>
@@ -110,6 +121,7 @@ const CreateConnectionModal = (props: Props) => {
               type="text"
               placeholder="Connect password"
               className="input input-bordered w-full"
+              value={connection.password}
               onChange={(e) => setPartialConnection({ password: e.target.value })}
             />
           </div>
@@ -118,8 +130,9 @@ const CreateConnectionModal = (props: Props) => {
               <label className="block text-sm font-medium text-gray-700 mb-1">Database Name</label>
               <input
                 type="text"
-                placeholder="Type here"
+                placeholder="Connect database"
                 className="input input-bordered w-full"
+                value={connection.database}
                 onChange={(e) => setPartialConnection({ database: e.target.value })}
               />
             </div>
