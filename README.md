@@ -39,6 +39,13 @@ pnpm i && pnpm dev
 [![Star History Chart](https://api.star-history.com/svg?repos=bytebase/sqlchat&type=Date)](https://star-history.com/#bytebase/sqlchat&Date)
 
 
+## Community
+
+[![Hang out on Discord](https://img.shields.io/badge/%20-Hang%20out%20on%20Discord-5865F2?style=for-the-badge&logo=discord&labelColor=EEEEEE)](https://discord.gg/huyw7gRsyA)
+
+[![Follow us on Twitter](https://img.shields.io/badge/Follow%20us%20on%20Twitter-1DA1F2?style=for-the-badge&logo=twitter&labelColor=EEEEEE)](https://twitter.com/Bytebase)
+
+
 ## License
 
 This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
