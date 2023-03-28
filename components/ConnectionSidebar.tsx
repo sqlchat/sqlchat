@@ -8,11 +8,13 @@ import EngineIcon from "./EngineIcon";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import ActionConfirmModal, { ActionConfirmModalProps } from "./ActionConfirmModal";
+import EditChatTitleModal from "./EditChatTitleModal";
 
 interface State {
   showCreateConnectionModal: boolean;
   showSettingModal: boolean;
   showDeleteConnectionModal: boolean;
+  showEditChatTitleModal: boolean;
 }
 
 const ConnectionSidebar = () => {
@@ -23,8 +25,10 @@ const ConnectionSidebar = () => {
     showCreateConnectionModal: false,
     showSettingModal: false,
     showDeleteConnectionModal: false,
+    showEditChatTitleModal: false,
   });
   const [deleteConnectionModalContext, setDeleteConnectionModalContext] = useState<ActionConfirmModalProps>();
+  const [editChatTitleModalContext, setEditChatTitleModalContext] = useState<Chat>();
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
@@ -43,6 +47,13 @@ const ConnectionSidebar = () => {
     setState({
       ...state,
       showSettingModal: show,
+    });
+  };
+
+  const toggleEditChatTitleModal = (show = true) => {
+    setState({
+      ...state,
+      showEditChatTitleModal: show,
     });
   };
 
@@ -101,6 +112,14 @@ const ConnectionSidebar = () => {
   const handleChatSelect = (chat: Chat) => {
     chatStore.setCurrentChat(chat);
     layoutStore.toggleSidebar(false);
+  };
+
+  const handleEditChatTitle = (chat: Chat) => {
+    setEditChatTitleModalContext(chat);
+    setState({
+      ...state,
+      showEditChatTitleModal: true,
+    });
   };
 
   const handleDeleteChat = (chat: Chat) => {
@@ -181,7 +200,7 @@ const ConnectionSidebar = () => {
             {chatList.map((chat) => (
               <div
                 key={chat.id}
-                className={`w-full mt-2 first:mt-4 py-3 px-4 pr-3 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
+                className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
                   chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
                 }`}
                 onClick={() => handleChatSelect(chat)}
@@ -192,14 +211,21 @@ const ConnectionSidebar = () => {
                   <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
                 )}
                 <span className="truncate grow">{chat.title || "SQL Chat"}</span>
-                <span
-                  className="ml-0.5 shrink-0 opacity-60 hidden group-hover:block hover:opacity-80"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleDeleteChat(chat);
-                  }}
-                >
-                  <Icon.IoClose className="w-5 h-auto" />
+                <span className="ml-0.5 shrink-0 hidden group-hover:flex flex-row justify-end items-center space-x-1">
+                  <Icon.FiEdit3
+                    className="w-4 h-auto opacity-60 hover:opacity-80"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleEditChatTitle(chat);
+                    }}
+                  />
+                  <Icon.IoClose
+                    className="w-5 h-auto opacity-60 hover:opacity-80"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeleteChat(chat);
+                    }}
+                  />
                 </span>
               </div>
             ))}
@@ -232,6 +258,10 @@ const ConnectionSidebar = () => {
           />,
           document.body
         )}
+
+      {state.showEditChatTitleModal &&
+        editChatTitleModalContext &&
+        createPortal(<EditChatTitleModal close={() => toggleEditChatTitleModal(false)} chat={editChatTitleModalContext} />, document.body)}
     </>
   );
 };

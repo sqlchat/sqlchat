@@ -58,6 +58,13 @@ const ChatView = () => {
   }, [lastMessage?.isGenerated, lastMessage?.content]);
 
   useEffect(() => {
+    if (
+      currentChat?.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+      currentChat?.databaseName === connectionStore.currentConnectionCtx?.database?.name
+    ) {
+      return;
+    }
+
     // Auto select the first chat when the current connection changes.
     const chatList = chatStore.chatList.filter(
       (chat) =>
@@ -65,7 +72,7 @@ const ChatView = () => {
         chat.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
     chatStore.setCurrentChat(head(chatList));
-  }, [connectionStore.currentConnectionCtx]);
+  }, [currentChat, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentChat = async () => {
     const currentChat = chatStore.getState().currentChat;
