@@ -43,6 +43,11 @@ export const useConnectionStore = create<ConnectionState>()(
           currentConnectionCtx: connectionCtx,
         })),
       getOrFetchDatabaseList: async (connection: Connection) => {
+        const state = get();
+        if (state.databaseList.some((database) => database.connectionId === connection.id)) {
+          return state.databaseList.filter((database) => database.connectionId === connection.id);
+        }
+
         const { data } = await axios.post<string[]>("/api/connection/db", {
           connection,
         });
@@ -54,7 +59,6 @@ export const useConnectionStore = create<ConnectionState>()(
               tableList: {},
             } as Database)
         );
-        const state = get();
         const databaseList = uniqBy(
           [...state.databaseList, ...fetchedDatabaseList],
           (database) => `${database.connectionId}_${database.name}`

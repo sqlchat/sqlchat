@@ -58,14 +58,7 @@ const ChatView = () => {
   }, [lastMessage?.isGenerated, lastMessage?.content]);
 
   useEffect(() => {
-    if (!connectionStore.currentConnectionCtx) {
-      chatStore.setCurrentChat(undefined);
-      return;
-    }
-    if (currentChat?.connectionId === connectionStore.currentConnectionCtx.connection.id) {
-      chatStore.setCurrentChat(undefined);
-      return;
-    }
+    // Auto select the first chat when the current connection changes.
     const chatList = chatStore.chatList.filter(
       (chat) =>
         chat.connectionId === connectionStore.currentConnectionCtx?.connection.id &&

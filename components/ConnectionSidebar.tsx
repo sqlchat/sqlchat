@@ -152,14 +152,6 @@ const ConnectionSidebar = () => {
               </button>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
-              <a
-                className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex lg:hidden flex-row justify-center items-center hover:bg-gray-100"
-                href="https://github.com/bytebase/sqlchat"
-                data-tip="GitHub"
-                target="_blank"
-              >
-                <Icon.IoLogoGithub className="text-gray-600 w-6 h-auto" />
-              </a>
               <button
                 className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
                 data-tip="Setting"
