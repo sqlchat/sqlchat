@@ -20,7 +20,7 @@ const Header = (props: Props) => {
     <div
       className={`${
         className || ""
-      } sticky top-0 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-2 border-b bg-white z-1`}
+      } sticky top-0 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b bg-white z-1`}
     >
       <div className="ml-2 flex justify-start items-center">
         <label htmlFor="connection-drawer" className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100">
@@ -42,8 +42,7 @@ const Header = (props: Props) => {
           className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100"
           target="_blank"
         >
-          <span className="text-sm text-gray-600 hidden sm:block">Crafted by</span>
-          <img className="h-5 w-auto ml-1" src="/bytebase-logo-full.png" alt="" />
+          <img className="h-6 w-auto ml-1" src="/craft-by-bytebase.webp" alt="" />
         </a>
       </div>
     </div>
