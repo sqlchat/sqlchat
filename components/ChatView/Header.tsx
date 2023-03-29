@@ -18,7 +18,11 @@ const Header = (props: Props) => {
   }, [title]);
 
   return (
-    <div className={`${className || ""} w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b z-1`}>
+    <div
+      className={`${
+        className || ""
+      } w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b z-1 transition-all duration-300`}
+    >
       <div className="ml-2 flex justify-start items-center">
         <label htmlFor="connection-drawer" className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100">
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />

@@ -36,6 +36,8 @@ const CreateConnectionModal = (props: Props) => {
   useEffect(() => {
     if (show) {
       setConnection(isEditing ? editConnection : defaultConnection);
+      setIsRequesting(false);
+      setShowDeleteConnectionModal(false);
     }
   }, [show]);
 
@@ -108,7 +110,7 @@ const CreateConnectionModal = (props: Props) => {
             <Icon.IoMdClose className="w-5 h-auto" />
           </button>
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-            <DataStorageBanner className="rounded-lg bg-white border py-2" alwaysShow={true} />
+            <DataStorageBanner className="rounded-lg bg-white border py-2 !justify-start" alwaysShow={true} />
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
               <select
