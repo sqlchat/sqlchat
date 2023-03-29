@@ -11,13 +11,9 @@ const convertToConnectionUrl = (connection: Connection): string => {
 
 const testConnection = async (connection: Connection): Promise<boolean> => {
   const connectionUrl = convertToConnectionUrl(connection);
-  try {
-    const conn = await mysql.createConnection(connectionUrl);
-    conn.destroy();
-    return true;
-  } catch (error) {
-    return false;
-  }
+  const conn = await mysql.createConnection(connectionUrl);
+  conn.destroy();
+  return true;
 };
 
 const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {

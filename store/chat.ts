@@ -1,5 +1,4 @@
 import dayjs from "dayjs";
-import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Chat, Id } from "@/types";
@@ -43,13 +42,9 @@ export const useChatStore = create<ChatState>()(
       },
       setCurrentChat: (chat: Chat | undefined) => set(() => ({ currentChat: chat })),
       updateChat: (chatId: Id, chat: Partial<Chat>) => {
-        const rawChat = get().chatList.find((chat) => chat.id === chatId);
-        if (!rawChat) {
-          return;
-        }
-        Object.assign(rawChat, chat);
         set((state) => ({
-          chatList: uniqBy([...state.chatList], (chat) => chat.id),
+          ...state,
+          chatList: state.chatList.map((item) => (item.id === chatId ? { ...item, ...chat } : item)),
         }));
       },
       clearChat: (filter: (chat: Chat) => boolean) => {
