@@ -6,11 +6,10 @@ interface Props {
   alwaysShow?: boolean;
 }
 
-const LocalStorageBanner = (props: Props) => {
+const DataStorageBanner = (props: Props) => {
   const { className, alwaysShow } = props;
   const [hideBanner, setHideBanner] = useLocalStorage("hide-local-storage-banner", false);
   const show = alwaysShow || !hideBanner;
-  console.log(show);
 
   return (
     <div
@@ -23,7 +22,7 @@ const LocalStorageBanner = (props: Props) => {
         Connection settings are stored in your local browser
       </span>
       {!alwaysShow && (
-        <button className="absolute right-2 sm:right-4 opacity-80 hover:opacity-100">
+        <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
           <Icon.BiX className="w-6 h-auto" />
         </button>
       )}
@@ -31,4 +30,4 @@ const LocalStorageBanner = (props: Props) => {
   );
 };
 
-export default LocalStorageBanner;
+export default DataStorageBanner;

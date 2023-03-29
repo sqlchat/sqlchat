@@ -4,6 +4,7 @@ import { toast } from "react-hot-toast";
 import { testConnection, useConnectionStore } from "@/store";
 import { Connection, Engine } from "@/types";
 import Icon from "./Icon";
+import DataStorageBanner from "./DataStorageBanner";
 
 interface Props {
   show: boolean;
@@ -83,6 +84,7 @@ const CreateConnectionModal = (props: Props) => {
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
+          <DataStorageBanner className="rounded-lg bg-white border py-2" alwaysShow={true} />
           <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
             <select
