@@ -7,8 +7,7 @@
 
 ## What
 
-SQL Chat is a chat-based SQL Client to answer database questions and query database using natural
-language.
+SQL Chat is a chat-based SQL client to ask database questions and query database using natural language.
 
 ![Screenshot](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/screenshot1.webp)
 
@@ -33,7 +32,7 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 - All database conenction configs are stored locally in your browser. You can also visit settings to
   clear the data.
 
-- Only the database schema will be sent to the OpenAI API. No table data will be sent to OpenAI API.
+- Only the database schema will be sent to the OpenAI API. No table data will be sent to there.
 
 ## Local Development
 
