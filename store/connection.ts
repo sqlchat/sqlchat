@@ -76,7 +76,7 @@ export const useConnectionStore = create<ConnectionState>()(
             } as Database)
         );
         const databaseList = uniqBy(
-          [...state.databaseList, ...fetchedDatabaseList],
+          [...fetchedDatabaseList, ...state.databaseList],
           (database) => `${database.connectionId}_${database.name}`
         );
         set((state) => ({

@@ -68,6 +68,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleConnectionSelect = async (connection: Connection) => {
+    const databaseList = await connectionStore.getOrFetchDatabaseList(connection);
     connectionStore.setCurrentConnectionCtx({
       connection,
       database: head(databaseList),
@@ -87,6 +88,7 @@ const ConnectionSidebar = () => {
       return;
     }
 
+    const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection);
     const database = databaseList.find((database) => database.name === databaseName);
     connectionStore.setCurrentConnectionCtx({
       connection: currentConnectionCtx.connection,
