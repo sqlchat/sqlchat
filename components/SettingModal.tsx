@@ -1,7 +1,7 @@
-import { Popover } from "@mui/material";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import Icon from "./Icon";
+import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataConfirmModal from "./ClearDataConfirmModal";
 
 interface Props {
@@ -18,8 +18,6 @@ const SettingModal = (props: Props) => {
   const [state, setState] = useState<State>({
     showClearDataConfirmModal: false,
   });
-  const [wechatAnchorEl, setWeChatAnchorEl] = useState<HTMLElement | null>(null);
-  const openWeChatQrCodePopover = Boolean(wechatAnchorEl);
 
   const toggleClearDataConfirmModal = (show = true) => {
     setState({
@@ -46,24 +44,7 @@ const SettingModal = (props: Props) => {
                 <Icon.BsDiscord className="w-4 h-auto mr-1" />
                 Join Discord Channel
               </a>
-              <div
-                className="w-auto px-4 py-2 mr-2 mb-2 rounded-full cursor-pointer bg-green-600 text-white text-sm font-medium flex flex-row justify-center items-center hover:shadow"
-                onClick={(e) => setWeChatAnchorEl(e.currentTarget)}
-              >
-                <Icon.BsWechat className="w-4 h-auto mr-1" />
-                Join WeChat Group
-              </div>
-              <Popover
-                open={openWeChatQrCodePopover}
-                anchorEl={wechatAnchorEl}
-                onClose={() => setWeChatAnchorEl(null)}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-              >
-                <img className="w-64 h-auto" src="/wechat-qrcode.webp" alt="" />
-              </Popover>
+              <WeChatQRCodeView />
             </div>
 
             <h3>Danger Zone</h3>
