@@ -17,7 +17,7 @@ const DataStorageBanner = (props: Props) => {
         className || ""
       } relative w-full flex flex-row justify-start sm:justify-center items-center px-4 py-1 bg-gray-100`}
     >
-      <span className="text-sm leading-6 sm:pr-4">
+      <span className="text-sm leading-6 pr-4">
         <Icon.IoInformationCircleOutline className="inline-block h-5 w-auto -mt-0.5 mr-0.5 opacity-80" />
         Connection settings are stored in your local browser
       </span>
