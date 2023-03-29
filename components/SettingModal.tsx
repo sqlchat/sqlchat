@@ -36,13 +36,11 @@ const SettingModal = (props: Props) => {
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
             <h3>Danger Zone</h3>
             <div className="w-full border border-red-200 p-4 rounded-lg">
-              <div className="w-full flex flex-col justify-start items-start gap-2">
-                <h4 className="w-full flex flex-row justify-between items-center leading-8">
-                  <span>Clear all data</span>
-                  <button className="btn btn-sm btn-error" onClick={() => toggleClearDataConfirmModal(true)}>
-                    Clear
-                  </button>
-                </h4>
+              <div className="w-full flex flex-row justify-between items-center gap-2">
+                <span>Clear all data</span>
+                <button className="btn btn-sm btn-error" onClick={() => toggleClearDataConfirmModal(true)}>
+                  Clear
+                </button>
               </div>
             </div>
           </div>
