@@ -15,8 +15,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const connector = newConnector(connection);
     await connector.testConnection();
     res.status(200).json({});
-  } catch (error) {
-    res.status(400).json({});
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message || "Failed to test connection.",
+      code: error.code || "UNKNOWN",
+    });
   }
 };
 

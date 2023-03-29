@@ -2,7 +2,7 @@ import axios from "axios";
 import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Engine, Table } from "@/types";
+import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
 import { generateUUID } from "@/utils";
 
 interface ConnectionContext {
@@ -92,11 +92,14 @@ export const useConnectionStore = create<ConnectionState>()(
           return [];
         }
 
-        const { data } = await axios.post<Table[]>("/api/connection/db_schema", {
+        const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
           connection,
           db: database.name,
         });
-        return data;
+        if (result.message) {
+          throw result.message;
+        }
+        return result.data;
       },
       getConnectionById: (connectionId: string) => {
         return get().connectionList.find((connection) => connection.id === connectionId);
@@ -119,10 +122,3 @@ export const useConnectionStore = create<ConnectionState>()(
     }
   )
 );
-
-export const testConnection = async (connection: Connection) => {
-  const { data: result } = await axios.post<boolean>("/api/connection/test", {
-    connection,
-  });
-  return result;
-};

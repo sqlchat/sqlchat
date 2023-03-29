@@ -93,15 +93,19 @@ const ChatView = () => {
     let prompt = "";
     let tokens = 0;
     if (connectionStore.currentConnectionCtx?.database) {
-      const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
       let schema = "";
-      for (const table of tables) {
-        if (tokens < MAX_TOKENS / 2) {
-          tokens += countTextTokens(schema + table.structure);
-          schema += table.structure;
+      try {
+        const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
+        for (const table of tables) {
+          if (tokens < MAX_TOKENS / 2) {
+            tokens += countTextTokens(schema + table.structure);
+            schema += table.structure;
+          }
         }
+      } catch (error: any) {
+        toast.error(error.message);
       }
+      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
       prompt = promptGenerator(schema);
     }
     let formatedMessageList = [];

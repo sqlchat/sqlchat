@@ -23,10 +23,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         structure,
       });
     }
-    res.status(200).json(tableStructures);
-  } catch (error) {
+    res.status(200).json({
+      data: tableStructures,
+    });
+  } catch (error: any) {
     res.status(400).json({
-      error: error,
+      message: error.message || "Failed to get database schema.",
+      code: error.code || "UNKNOWN",
     });
   }
 };

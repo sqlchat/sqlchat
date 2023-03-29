@@ -2,8 +2,8 @@ import { cloneDeep, head } from "lodash-es";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-hot-toast";
-import { testConnection, useConnectionStore } from "@/store";
-import { Connection, Engine } from "@/types";
+import { useConnectionStore } from "@/store";
+import { Connection, Engine, ResponseObject } from "@/types";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
@@ -32,6 +32,7 @@ const CreateConnectionModal = (props: Props) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
+  const allowSave = connection.host !== "" && connection.username !== "";
 
   useEffect(() => {
     if (show) {
@@ -60,11 +61,25 @@ const CreateConnectionModal = (props: Props) => {
     }
 
     try {
-      await testConnection(tempConnection);
+      const response = await fetch("/api/connection/test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          connection: tempConnection,
+        }),
+      });
+      const result = (await response.json()) as ResponseObject<boolean>;
+      if (result.message) {
+        toast.error(result.message);
+        return;
+      }
     } catch (error) {
+      console.error(error);
+      toast.error("Failed to test connection");
+    } finally {
       setIsRequesting(false);
-      toast.error("Failed to test connection, please check your connection configuration");
-      return;
     }
 
     try {
@@ -187,7 +202,7 @@ const CreateConnectionModal = (props: Props) => {
               <button className="btn btn-outline" onClick={close}>
                 Close
               </button>
-              <button className="btn" disabled={isRequesting} onClick={handleCreateConnection}>
+              <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
                 {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
                 Save
               </button>

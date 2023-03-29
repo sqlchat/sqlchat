@@ -5,6 +5,7 @@ import DataTable from "react-data-table-component";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { useQueryStore } from "@/store";
+import { ResponseObject } from "@/types";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 
@@ -63,12 +64,17 @@ const QueryDrawer = () => {
           statement,
         }),
       });
-      const result = await response.json();
-      setIsLoading(false);
-      setRawResults(result);
+      const result = (await response.json()) as ResponseObject<RawQueryResult[]>;
+      if (result.message) {
+        toast.error(result.message);
+      } else {
+        setRawResults(result.data);
+      }
     } catch (error) {
       console.error(error);
       toast.error("Failed to execute statement");
+    } finally {
+      setIsLoading(false);
     }
   };
 

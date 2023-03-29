@@ -21,9 +21,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const connector = newConnector(connection);
     const result = await connector.execute(db, statement);
-    res.status(200).json(result);
-  } catch (error) {
-    res.status(400).json([]);
+    res.status(200).json({
+      data: result,
+    });
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message || "Failed to execute statement.",
+      code: error.code || "UNKNOWN",
+    });
   }
 };
 
