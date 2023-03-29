@@ -3,10 +3,11 @@ import { ReactElement, useState } from "react";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useMessageStore, useUserStore } from "@/store";
+import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { Message } from "@/types";
 import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
+import EngineIcon from "../EngineIcon";
 
 interface Props {
   message: Message;
@@ -15,10 +16,13 @@ interface Props {
 const MessageView = (props: Props) => {
   const message = props.message;
   const userStore = useUserStore();
+  const chatStore = useChatStore();
+  const connectionStore = useConnectionStore();
   const messageStore = useMessageStore();
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isCurrentUser = message.creatorId === userStore.currentUser.id;
   const showMenu = Boolean(menuAnchorEl);
+  const connection = connectionStore.getConnectionById(chatStore.getChatById(message.chatId)?.connectionId || "");
 
   const handleMoreMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (menuAnchorEl) {
@@ -47,17 +51,19 @@ const MessageView = (props: Props) => {
     >
       {isCurrentUser ? (
         <>
-          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap">
-            {message.content}
-          </div>
+          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap">{message.content}</div>
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center ml-2 shrink-0">
             <Icon.AiOutlineUser className="w-6 h-6" />
           </div>
         </>
       ) : (
         <>
-          <div className="w-10 h-10 p-1 flex justify-center items-center mr-2 shrink-0">
-            <img src="/chat-logo-bot.webp" alt="" />
+          <div className="flex justify-center items-center mr-2 shrink-0">
+            {connection ? (
+              <EngineIcon className="w-10 h-auto p-1 border rounded-full" engine={connection.engineType} />
+            ) : (
+              <img className="w-10 h-auto p-1" src="/chat-logo-bot.webp" alt="" />
+            )}
           </div>
           <ReactMarkdown
             className="w-auto max-w-[calc(100%-4rem)] bg-gray-100 px-4 py-2 rounded-lg prose prose-neutral"
