@@ -13,18 +13,10 @@ const newPostgresClient = (connection: Connection) => {
 };
 
 const testConnection = async (connection: Connection): Promise<boolean> => {
-  if (!connection.database) {
-    return false;
-  }
-
-  try {
-    const client = newPostgresClient(connection);
-    await client.connect();
-    await client.end();
-    return true;
-  } catch (error) {
-    return false;
-  }
+  const client = newPostgresClient(connection);
+  await client.connect();
+  await client.end();
+  return true;
 };
 
 const execute = async (connection: Connection, _: string, statement: string): Promise<any> => {

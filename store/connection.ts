@@ -2,7 +2,7 @@ import axios from "axios";
 import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Table } from "@/types";
+import { Connection, Database, Engine, Table } from "@/types";
 import { generateUUID } from "@/utils";
 
 interface ConnectionContext {
@@ -10,21 +10,33 @@ interface ConnectionContext {
   database?: Database;
 }
 
+const samplePGConnection: Connection = {
+  id: "sample-pg",
+  title: "Sample PostgreSQL",
+  engineType: Engine.PostgreSQL,
+  host: "db.aqbxmomjsyqbacfsujwd.supabase.co",
+  port: "",
+  username: "readonly_user",
+  password: "bytebase-sqlchat",
+  database: "employee",
+};
+
 interface ConnectionState {
   connectionList: Connection[];
   databaseList: Database[];
   currentConnectionCtx?: ConnectionContext;
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
-  getOrFetchDatabaseList: (connection: Connection) => Promise<Database[]>;
+  getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
   getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
+  updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
 }
 
 export const useConnectionStore = create<ConnectionState>()(
   persist(
     (set, get) => ({
-      connectionList: [],
+      connectionList: [samplePGConnection],
       databaseList: [],
       createConnection: (connection: Connection) => {
         const createdConnection = {
@@ -42,10 +54,13 @@ export const useConnectionStore = create<ConnectionState>()(
           ...state,
           currentConnectionCtx: connectionCtx,
         })),
-      getOrFetchDatabaseList: async (connection: Connection) => {
+      getOrFetchDatabaseList: async (connection: Connection, skipCache = false) => {
         const state = get();
-        if (state.databaseList.some((database) => database.connectionId === connection.id)) {
-          return state.databaseList.filter((database) => database.connectionId === connection.id);
+
+        if (!skipCache) {
+          if (state.databaseList.some((database) => database.connectionId === connection.id)) {
+            return state.databaseList.filter((database) => database.connectionId === connection.id);
+          }
         }
 
         const { data } = await axios.post<string[]>("/api/connection/db", {
@@ -81,6 +96,12 @@ export const useConnectionStore = create<ConnectionState>()(
           db: database.name,
         });
         return data;
+      },
+      updateConnection: (connectionId: string, connection: Partial<Connection>) => {
+        set((state) => ({
+          ...state,
+          connectionList: state.connectionList.map((item) => (item.id === connectionId ? { ...item, ...connection } : item)),
+        }));
       },
       clearConnection: (filter: (connection: Connection) => boolean) => {
         set((state) => ({

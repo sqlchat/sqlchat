@@ -7,13 +7,11 @@ import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
-import ActionConfirmModal, { ActionConfirmModalProps } from "./ActionConfirmModal";
 import EditChatTitleModal from "./EditChatTitleModal";
 
 interface State {
   showCreateConnectionModal: boolean;
   showSettingModal: boolean;
-  showDeleteConnectionModal: boolean;
   showEditChatTitleModal: boolean;
 }
 
@@ -24,10 +22,9 @@ const ConnectionSidebar = () => {
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
     showSettingModal: false,
-    showDeleteConnectionModal: false,
     showEditChatTitleModal: false,
   });
-  const [deleteConnectionModalContext, setDeleteConnectionModalContext] = useState<ActionConfirmModalProps>();
+  const [editConnectionModalContext, setEditConnectionModalContext] = useState<Connection>();
   const [editChatTitleModalContext, setEditChatTitleModalContext] = useState<Chat>();
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
@@ -41,6 +38,7 @@ const ConnectionSidebar = () => {
       ...state,
       showCreateConnectionModal: show,
     });
+    setEditConnectionModalContext(undefined);
   };
 
   const toggleSettingModal = (show = true) => {
@@ -65,28 +63,12 @@ const ConnectionSidebar = () => {
     });
   };
 
-  const handleDeleteConnection = (connection: Connection) => {
+  const handleEditConnection = (connection: Connection) => {
     setState({
       ...state,
-      showDeleteConnectionModal: true,
+      showCreateConnectionModal: true,
     });
-    setDeleteConnectionModalContext({
-      title: "Delete Connection",
-      content: "Are you sure to delete this connection?",
-      confirmButtonStyle: "btn-error",
-      close: () => {
-        setState({
-          ...state,
-          showDeleteConnectionModal: false,
-        });
-      },
-      confirm: () => {
-        connectionStore.clearConnection((item) => item.id !== connection.id);
-        if (currentConnectionCtx?.connection.id === connection.id) {
-          connectionStore.setCurrentConnectionCtx(undefined);
-        }
-      },
-    });
+    setEditConnectionModalContext(connection);
   };
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -145,19 +127,19 @@ const ConnectionSidebar = () => {
               {connectionList.map((connection) => (
                 <button
                   key={connection.id}
-                  className={`w-full h-14 rounded-l-lg p-2 mt-2 group ${
+                  className={`relative w-full h-14 rounded-l-lg p-2 mt-2 group ${
                     currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 shadow"
                   }`}
                   onClick={() => handleConnectionSelect(connection)}
                 >
                   <span
-                    className="absolute -ml-1.5 -mt-1.5 hidden opacity-60 group-hover:block hover:opacity-80"
+                    className="absolute right-0.5 -mt-1.5 opacity-60 hidden group-hover:block hover:opacity-80"
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleDeleteConnection(connection);
+                      handleEditConnection(connection);
                     }}
                   >
-                    <Icon.IoClose className="w-4 h-auto" />
+                    <Icon.FiEdit3 className="w-3.5 h-auto" />
                   </span>
                   <EngineIcon engine={connection.engineType} className="w-auto h-full mx-auto" />
                 </button>
@@ -239,7 +221,7 @@ const ConnectionSidebar = () => {
                 New Chat
               </button>
             </div>
-            <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-4 py-2">
+            <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-6 py-2">
               <a
                 href="https://discord.com/invite/huyw7gRsyA"
                 className="text-indigo-600 text-sm font-medium flex flex-row justify-center items-center hover:underline"
@@ -254,23 +236,15 @@ const ConnectionSidebar = () => {
       </aside>
 
       {createPortal(
-        <CreateConnectionModal show={state.showCreateConnectionModal} close={() => toggleCreateConnectionModal(false)} />,
+        <CreateConnectionModal
+          show={state.showCreateConnectionModal}
+          connection={editConnectionModalContext}
+          close={() => toggleCreateConnectionModal(false)}
+        />,
         document.body
       )}
 
       {createPortal(<SettingModal show={state.showSettingModal} close={() => toggleSettingModal(false)} />, document.body)}
-
-      {state.showDeleteConnectionModal &&
-        createPortal(
-          <ActionConfirmModal
-            title={deleteConnectionModalContext?.title ?? ""}
-            content={deleteConnectionModalContext?.content ?? ""}
-            confirmButtonStyle={deleteConnectionModalContext?.confirmButtonStyle ?? ""}
-            close={deleteConnectionModalContext?.close ?? (() => {})}
-            confirm={deleteConnectionModalContext?.confirm ?? (() => {})}
-          />,
-          document.body
-        )}
 
       {state.showEditChatTitleModal &&
         editChatTitleModalContext &&

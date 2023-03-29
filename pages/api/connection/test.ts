@@ -13,10 +13,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const connection = req.body.connection as Connection;
   try {
     const connector = newConnector(connection);
-    const result = await connector.testConnection();
-    res.status(200).json(result);
+    await connector.testConnection();
+    res.status(200).json({});
   } catch (error) {
-    res.status(400).json(false);
+    res.status(400).json({});
   }
 };
 
