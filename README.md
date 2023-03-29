@@ -36,9 +36,13 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 ## Local Development
 
-```bash
-pnpm i && pnpm dev
-```
+1. Create a `.env` file in the root directory with your `OPENAI_API_KEY`;
+
+2. Install dependencies and start the dev server;
+
+   ```bash
+   pnpm i && pnpm dev
+   ```
 
 ## Star History
 
