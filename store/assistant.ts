@@ -18,8 +18,9 @@ export const getAssistantById = (id: Id) => {
 
 // getPromptOfAssistant define the special prompt for each assistant.
 export const getPromptGeneratorOfAssistant = (assistant: User) => {
-  const basicPrompt = `Please follow the instructions to answer the questions.
+  const basicPrompt = `Please follow the instructions to answer the questions:
 1. Set the language to the markdown code block for each code block. For example, \`SELECT * FROM table\` is SQL.
+2. Please be careful to return only key information, and try not to make it too long.
 `;
   if (assistant.id === "sql-assistant") {
     return (schema: string) =>

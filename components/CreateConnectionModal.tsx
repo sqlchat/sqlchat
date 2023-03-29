@@ -32,7 +32,8 @@ const CreateConnectionModal = (props: Props) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
-  const allowSave = connection.host !== "" && connection.username !== "";
+  const allowSave =
+    connection.host !== "" && connection.username !== "" && (connection.engineType === Engine.PostgreSQL ? connection.database : true);
 
   useEffect(() => {
     if (show) {
