@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import dynamic from "next/dynamic";
+import Script from "next/script";
 import React, { useEffect } from "react";
 import { ResponsiveWidth, useLayoutStore } from "@/store";
 
@@ -47,7 +48,6 @@ const ChatPage: NextPage = () => {
         <meta name="og:description" property="og:description" content="Chat-based SQL Client" />
         <meta name="og:image" property="og:image" content="https://www.sqlchat.ai/chat-logo-and-text.webp" />
         <meta name="og:url" property="og:url" content="https://www.sqlchat.ai" />
-        <script defer data-domain="chatsql.ai" src="https://plausible.io/js/script.js"></script>
       </Head>
 
       <main className="drawer drawer-mobile w-full h-full">
@@ -58,10 +58,12 @@ const ChatPage: NextPage = () => {
           checked={layoutStore.showSidebar}
           onChange={(e) => layoutStore.toggleSidebar(e.target.checked)}
         />
-        <ChatView />
         <ConnectionSidebar />
+        <ChatView />
         <QueryDrawer />
       </main>
+
+      <Script defer data-domain="sqlchat.ai" src="https://plausible.io/js/script.js" />
     </div>
   );
 };

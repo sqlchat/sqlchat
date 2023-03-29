@@ -9,6 +9,7 @@ import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
 import MessageLoader from "../MessageLoader";
+import LocalStorageBanner from "../LocalStorageBanner";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
@@ -174,7 +175,10 @@ const ChatView = () => {
       ref={chatViewRef}
       className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
     >
-      <Header className={showHeaderShadow ? "shadow" : ""} />
+      <div className="sticky top-0 z-1 bg-white w-full flex flex-col justify-start items-start">
+        <LocalStorageBanner />
+        <Header className={showHeaderShadow ? "shadow" : ""} />
+      </div>
       <div className="p-2 w-full h-auto grow max-w-4xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
           <EmptyView className="mt-16" sendMessage={sendMessageToCurrentChat} />

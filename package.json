@@ -29,6 +29,7 @@
     "react-loader-spinner": "^5.3.4",
     "react-markdown": "^8.0.6",
     "react-textarea-autosize": "^8.4.0",
+    "react-use": "^17.4.0",
     "remark-gfm": "^3.0.1",
     "styled-components": "^5.3.9",
     "uuid": "^9.0.0",

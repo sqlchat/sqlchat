@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import Icon from "./Icon";
 import ClearDataConfirmModal from "./ClearDataConfirmModal";
+import LocalStorageBanner from "./LocalStorageBanner";
 
 interface Props {
   show: boolean;
@@ -34,15 +35,14 @@ const SettingModal = (props: Props) => {
             <Icon.IoMdClose className="w-5 h-auto" />
           </button>
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
+            <LocalStorageBanner className="rounded-lg bg-white border" alwaysShow={true} />
             <h3>Danger Zone</h3>
             <div className="w-full border border-red-200 p-4 rounded-lg">
-              <div className="w-full flex flex-col justify-start items-start gap-2">
-                <h4 className="w-full flex flex-row justify-between items-center leading-8">
-                  <span>Clear all data</span>
-                  <button className="btn btn-sm btn-error" onClick={() => toggleClearDataConfirmModal(true)}>
-                    Clear
-                  </button>
-                </h4>
+              <div className="w-full flex flex-row justify-between items-center gap-2">
+                <span>Clear all data</span>
+                <button className="btn btn-sm btn-error" onClick={() => toggleClearDataConfirmModal(true)}>
+                  Clear
+                </button>
               </div>
             </div>
           </div>
