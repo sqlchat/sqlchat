@@ -48,10 +48,6 @@ const QueryDrawer = () => {
       return;
     }
 
-    if (isLoading) {
-      return;
-    }
-
     setIsLoading(true);
     setRawResults([]);
     const { connection, database } = context;
