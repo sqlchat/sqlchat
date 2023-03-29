@@ -58,8 +58,9 @@ const ChatPage: NextPage = () => {
           checked={layoutStore.showSidebar}
           onChange={(e) => layoutStore.toggleSidebar(e.target.checked)}
         />
-        <ConnectionSidebar />
         <ChatView />
+        {/* Render sidebar after chatview to prevent z-index problem */}
+        <ConnectionSidebar />
         <QueryDrawer />
       </main>
 

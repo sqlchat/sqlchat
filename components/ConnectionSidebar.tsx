@@ -133,7 +133,7 @@ const ConnectionSidebar = () => {
     <>
       <aside className="drawer-side">
         <label htmlFor="connection-drawer" className="drawer-overlay"></label>
-        <div className="w-80 h-full border-r flex flex-row justify-start items-start">
+        <div className="w-80 h-full overflow-y-hidden border-r flex flex-row justify-start items-start">
           <div className="w-16 h-full bg-gray-200 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
             <div className="w-full flex flex-col justify-start items-start">
               <button
@@ -180,9 +180,9 @@ const ConnectionSidebar = () => {
               </button>
             </div>
           </div>
-          <div className="p-4 w-64 h-full overflow-y-auto bg-gray-100">
-            <img className="px-4" src="/chat-logo.webp" alt="" />
-            <div className={`${databaseList.length > 0 && "pt-2"}`}>
+          <div className="relative p-4 pb-0 w-64 h-full overflow-y-auto flex flex-col justify-start items-start bg-gray-100">
+            <img className="px-4 shrink-0" src="/chat-logo.webp" alt="" />
+            <div className={`${databaseList.length > 0 && "pt-2"} grow w-full`}>
               {databaseList.length > 0 && (
                 <div className="w-full sticky top-0 bg-gray-100 z-1 mb-4">
                   <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
@@ -238,6 +238,16 @@ const ConnectionSidebar = () => {
                 <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
                 New Chat
               </button>
+            </div>
+            <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-4 py-2">
+              <a
+                href="https://discord.com/invite/huyw7gRsyA"
+                className="text-indigo-600 text-sm font-medium flex flex-row justify-center items-center hover:underline"
+                target="_blank"
+              >
+                <Icon.BsDiscord className="w-4 h-auto mr-1" />
+                Join Discord Channel
+              </a>
             </div>
           </div>
         </div>

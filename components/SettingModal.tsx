@@ -34,6 +34,14 @@ const SettingModal = (props: Props) => {
             <Icon.IoMdClose className="w-5 h-auto" />
           </button>
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
+            <a
+              href="https://discord.com/invite/huyw7gRsyA"
+              className="w-auto px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium flex flex-row justify-center items-center hover:underline hover:shadow"
+              target="_blank"
+            >
+              <Icon.BsDiscord className="w-4 h-auto mr-1" />
+              Join Discord Channel
+            </a>
             <h3>Danger Zone</h3>
             <div className="w-full border border-red-200 p-4 rounded-lg">
               <div className="w-full flex flex-row justify-between items-center gap-2">
