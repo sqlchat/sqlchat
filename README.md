@@ -54,6 +54,8 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 [![Follow us on Twitter](https://img.shields.io/badge/Follow%20us%20on%20Twitter-1DA1F2?style=for-the-badge&logo=twitter&labelColor=EEEEEE)](https://twitter.com/Bytebase)
 
+![WeChat Group QRCode](https://sqlchat.ai/wechat-qrcode.webp)
+
 ## License
 
 This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
