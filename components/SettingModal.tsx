@@ -35,7 +35,7 @@ const SettingModal = (props: Props) => {
           </button>
           <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
             <a
-              href="https://discord.com/invite/huyw7gRsyA"
+              href="https://discord.gg/6R3qb32h"
               className="w-auto px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium flex flex-row justify-center items-center hover:underline hover:shadow"
               target="_blank"
             >

@@ -223,7 +223,7 @@ const ConnectionSidebar = () => {
             </div>
             <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-6 py-2">
               <a
-                href="https://discord.com/invite/huyw7gRsyA"
+                href="https://discord.gg/6R3qb32h"
                 className="text-indigo-600 text-sm font-medium flex flex-row justify-center items-center hover:underline"
                 target="_blank"
               >

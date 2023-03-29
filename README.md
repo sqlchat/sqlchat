@@ -10,6 +10,7 @@
 SQL Chat is a chat-based SQL Client.
 
 ![Screenshot](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/screenshot1.webp)
+
 ## Why
 
 As we enter the [Developer Tools 2.0 era](https://www.sequoiacap.com/article/ai-powered-developer-tools/),
@@ -20,13 +21,14 @@ more intuitive. Of course, only if that works, and our goal is to deliver that e
 ## How
 
 SQL Chat is built by Next.js, it supports following databases and will add more over the time:
-* MySQL
-* PostgreSQL
+
+- MySQL
+- PostgreSQL
 
 ## Data Privacy
 
 All database conenction configs are stored locally in your browser. You can also visit settings to
-clear the data. 
+clear the data.
 
 ## Local Development
 
@@ -38,13 +40,11 @@ pnpm i && pnpm dev
 
 [![Star History Chart](https://api.star-history.com/svg?repos=bytebase/sqlchat&type=Date)](https://star-history.com/#bytebase/sqlchat&Date)
 
-
 ## Community
 
-[![Hang out on Discord](https://img.shields.io/badge/%20-Hang%20out%20on%20Discord-5865F2?style=for-the-badge&logo=discord&labelColor=EEEEEE)](https://discord.gg/huyw7gRsyA)
+[![Hang out on Discord](https://img.shields.io/badge/%20-Hang%20out%20on%20Discord-5865F2?style=for-the-badge&logo=discord&labelColor=EEEEEE)](https://discord.gg/6R3qb32h)
 
 [![Follow us on Twitter](https://img.shields.io/badge/Follow%20us%20on%20Twitter-1DA1F2?style=for-the-badge&logo=twitter&labelColor=EEEEEE)](https://twitter.com/Bytebase)
-
 
 ## License
 
