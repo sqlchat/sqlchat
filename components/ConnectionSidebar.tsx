@@ -1,5 +1,5 @@
 import { head } from "lodash-es";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useChatStore, useConnectionStore, useLayoutStore } from "@/store";
 import { Chat, Connection } from "@/types";
@@ -26,12 +26,24 @@ const ConnectionSidebar = () => {
   });
   const [editConnectionModalContext, setEditConnectionModalContext] = useState<Connection>();
   const [editChatTitleModalContext, setEditChatTitleModalContext] = useState<Chat>();
+  const [isRequestingDatabase, setIsRequestingDatabase] = useState<boolean>(false);
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const chatList = chatStore.chatList.filter(
     (chat) => chat.connectionId === currentConnectionCtx?.connection.id && chat.databaseName === currentConnectionCtx?.database?.name
   );
+
+  useEffect(() => {
+    if (currentConnectionCtx?.connection) {
+      setIsRequestingDatabase(true);
+      connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
+        setIsRequestingDatabase(false);
+      });
+    } else {
+      setIsRequestingDatabase(false);
+    }
+  }, [currentConnectionCtx?.connection]);
 
   const toggleCreateConnectionModal = (show = true) => {
     setState({
@@ -56,7 +68,6 @@ const ConnectionSidebar = () => {
   };
 
   const handleConnectionSelect = async (connection: Connection) => {
-    const databaseList = await connectionStore.getOrFetchDatabaseList(connection);
     connectionStore.setCurrentConnectionCtx({
       connection,
       database: head(databaseList),
@@ -164,9 +175,14 @@ const ConnectionSidebar = () => {
           </div>
           <div className="relative p-4 pb-0 w-64 h-full overflow-y-auto flex flex-col justify-start items-start bg-gray-100">
             <img className="px-4 shrink-0" src="/chat-logo.webp" alt="" />
-            <div className={`${databaseList.length > 0 && "pt-2"} grow w-full`}>
+            <div className="w-full grow">
+              {isRequestingDatabase && (
+                <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600">
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> Loading
+                </div>
+              )}
               {databaseList.length > 0 && (
-                <div className="w-full sticky top-0 bg-gray-100 z-1 mb-4">
+                <div className="w-full sticky top-0 z-1 mb-4 mt-2">
                   <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
                   <select
                     className="w-full select select-bordered"

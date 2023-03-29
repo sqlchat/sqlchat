@@ -63,7 +63,7 @@ const CreateConnectionModal = (props: Props) => {
       await testConnection(tempConnection);
     } catch (error) {
       setIsRequesting(false);
-      toast.error("Failed to test connection, please check your connection settings");
+      toast.error("Failed to test connection, please check your connection configuration");
       return;
     }
 
