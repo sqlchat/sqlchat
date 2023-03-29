@@ -8,6 +8,7 @@ dayjs.extend(localizedFormat);
 
 import "@/styles/tailwind.css";
 import "@/styles/global.css";
+import "@/styles/data-table.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
