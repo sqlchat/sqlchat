@@ -19,6 +19,7 @@ interface ChatState {
   getState: () => ChatState;
   createChat: (connectionId?: Id, databaseName?: string) => Chat;
   setCurrentChat: (chat: Chat | undefined) => void;
+  getChatById: (chatId: Id) => Chat | undefined;
   updateChat: (chatId: Id, chat: Partial<Chat>) => void;
   clearChat: (filter: (chat: Chat) => boolean) => void;
 }
@@ -41,6 +42,9 @@ export const useChatStore = create<ChatState>()(
         return chat;
       },
       setCurrentChat: (chat: Chat | undefined) => set(() => ({ currentChat: chat })),
+      getChatById: (chatId: Id) => {
+        return get().chatList.find((item) => item.id === chatId);
+      },
       updateChat: (chatId: Id, chat: Partial<Chat>) => {
         set((state) => ({
           ...state,

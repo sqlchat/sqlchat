@@ -29,6 +29,7 @@ interface ConnectionState {
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
   getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
   getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
+  getConnectionById: (connectionId: string) => Connection | undefined;
   updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
 }
@@ -96,6 +97,9 @@ export const useConnectionStore = create<ConnectionState>()(
           db: database.name,
         });
         return data;
+      },
+      getConnectionById: (connectionId: string) => {
+        return get().connectionList.find((connection) => connection.id === connectionId);
       },
       updateConnection: (connectionId: string, connection: Partial<Connection>) => {
         set((state) => ({
