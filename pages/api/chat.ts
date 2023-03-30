@@ -1,4 +1,4 @@
-import { openAIApiKey } from "@/utils";
+import { openAIApiEndpoint, openAIApiKey } from "@/utils";
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
 
@@ -8,7 +8,7 @@ export const config = {
 
 const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
-  const rawRes = await fetch(`https://api.openai.com/v1/chat/completions`, {
+  const rawRes = await fetch(`${openAIApiEndpoint}/v1/chat/completions`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${openAIApiKey}`,
