@@ -132,10 +132,18 @@ const ChatView = () => {
     setIsRequesting(false);
 
     if (!rawRes.ok) {
-      const res = await rawRes.json();
-      toast.error(res.error.message);
+      console.error(rawRes);
+      let errorMessage = "Failed to request message, please check your network.";
+      try {
+        const res = await rawRes.json();
+        errorMessage = res.error.message;
+      } catch (error) {
+        // do nth
+      }
+      toast.error(errorMessage);
       return;
     }
+
     const data = rawRes.body;
     if (!data) {
       toast.error("No data return");
