@@ -52,7 +52,9 @@ const MessageView = (props: Props) => {
     >
       {isCurrentUser ? (
         <>
-          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap">{message.content}</div>
+          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap break-all">
+            {message.content}
+          </div>
           <div className="w-10 h-10 p-1 border rounded-full flex justify-center items-center ml-2 shrink-0">
             <Icon.AiOutlineUser className="w-6 h-6" />
           </div>
