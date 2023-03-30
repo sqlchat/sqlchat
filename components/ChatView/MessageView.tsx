@@ -1,4 +1,5 @@
 import { Menu, MenuItem } from "@mui/material";
+import dayjs from "dayjs";
 import { ReactElement, useState } from "react";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
@@ -65,32 +66,35 @@ const MessageView = (props: Props) => {
               <img className="w-10 h-auto p-1" src="/chat-logo-bot.webp" alt="" />
             )}
           </div>
-          <ReactMarkdown
-            className="w-auto max-w-[calc(100%-4rem)] bg-gray-100 px-4 py-2 rounded-lg prose prose-neutral"
-            remarkPlugins={[remarkGfm]}
-            components={{
-              pre({ node, className, children, ...props }) {
-                const child = children[0] as ReactElement;
-                const match = /language-(\w+)/.exec(child.props.className || "");
-                const language = match ? match[1] : "text";
-                return (
-                  <pre className={`${className || ""} w-full p-0 my-1`} {...props}>
-                    <CodeBlock
-                      key={Math.random()}
-                      language={language || "text"}
-                      value={String(child.props.children).replace(/\n$/, "")}
-                      {...props}
-                    />
-                  </pre>
-                );
-              },
-              code({ children }) {
-                return <code className="px-0">`{children}`</code>;
-              },
-            }}
-          >
-            {message.content}
-          </ReactMarkdown>
+          <div className="w-auto max-w-[calc(100%-4rem)] flex flex-col justify-start items-start">
+            <ReactMarkdown
+              className="w-auto max-w-full bg-gray-100 px-4 py-2 rounded-lg prose prose-neutral"
+              remarkPlugins={[remarkGfm]}
+              components={{
+                pre({ node, className, children, ...props }) {
+                  const child = children[0] as ReactElement;
+                  const match = /language-(\w+)/.exec(child.props.className || "");
+                  const language = match ? match[1] : "text";
+                  return (
+                    <pre className={`${className || ""} w-full p-0 my-1`} {...props}>
+                      <CodeBlock
+                        key={Math.random()}
+                        language={language || "text"}
+                        value={String(child.props.children).replace(/\n$/, "")}
+                        {...props}
+                      />
+                    </pre>
+                  );
+                },
+                code({ children }) {
+                  return <code className="px-0">`{children}`</code>;
+                },
+              }}
+            >
+              {message.content}
+            </ReactMarkdown>
+            <span className="self-end text-sm text-gray-400 pt-1 pr-1">{dayjs(message.createdAt).format("lll")}</span>
+          </div>
           <div className={`invisible group-hover:visible ${showMenu && "!visible"}`}>
             <button
               className="w-6 h-6 ml-1 mt-2 flex justify-center items-center text-gray-400 hover:text-gray-500"
@@ -108,11 +112,11 @@ const MessageView = (props: Props) => {
               }}
             >
               <MenuItem onClick={copyMessage}>
-                <Icon.BiClipboard className="w-4 h-auto mr-1 opacity-70" />
+                <Icon.BiClipboard className="w-4 h-auto mr-2 opacity-70" />
                 Copy
               </MenuItem>
               <MenuItem onClick={() => deleteMessage(message)}>
-                <Icon.BiTrash className="w-4 h-auto mr-1 opacity-70" />
+                <Icon.BiTrash className="w-4 h-auto mr-2 opacity-70" />
                 Delete
               </MenuItem>
             </Menu>
