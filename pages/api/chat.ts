@@ -6,9 +6,11 @@ export const config = {
   runtime: "edge",
 };
 
+const apiEndpoint = new URL(`${openAIApiEndpoint}/v1/chat/completions`);
+
 const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
-  const rawRes = await fetch(`${openAIApiEndpoint}/v1/chat/completions`, {
+  const res = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${openAIApiKey}`,
@@ -23,10 +25,10 @@ const handler = async (req: NextRequest) => {
       stream: true,
     }),
   });
-  if (!rawRes.ok) {
-    return new Response(rawRes.body, {
-      status: rawRes.status,
-      statusText: rawRes.statusText,
+  if (!res.ok) {
+    return new Response(res.body, {
+      status: res.status,
+      statusText: res.statusText,
     });
   }
 
@@ -52,7 +54,7 @@ const handler = async (req: NextRequest) => {
         }
       };
       const parser = createParser(streamParser);
-      for await (const chunk of rawRes.body as any) {
+      for await (const chunk of res.body as any) {
         parser.feed(decoder.decode(chunk));
       }
     },

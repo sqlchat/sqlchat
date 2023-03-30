@@ -36,9 +36,15 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 ## Local Development
 
-1. Create a `.env` file in the root directory with your `OPENAI_API_KEY`;
+1. Make a copy of the example environment variables file;
 
-2. Install dependencies and start the dev server;
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
+
+3. Install dependencies and start the dev server;
 
    ```bash
    pnpm i && pnpm dev
