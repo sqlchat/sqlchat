@@ -69,6 +69,7 @@ const CreateConnectionModal = (props: Props) => {
       } else {
         setSSLType("none");
       }
+      setSelectedSSLField("ca");
       setIsRequesting(false);
       setShowDeleteConnectionModal(false);
     }
@@ -91,6 +92,7 @@ const CreateConnectionModal = (props: Props) => {
       ...connection,
       ssl,
     });
+    setSelectedSSLField("ca");
   }, [sslType]);
 
   const setPartialConnection = (state: Partial<Connection>) => {
@@ -297,7 +299,7 @@ const CreateConnectionModal = (props: Props) => {
                   <div className="text-sm space-x-3 mb-2">
                     <span
                       className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                        selectedSSLField === "ca" && " border-indigo-600 opacity-100"
+                        selectedSSLField === "ca" && "!border-indigo-600 !opacity-100"
                       } `}
                       onClick={() => setSelectedSSLField("ca")}
                     >
@@ -307,7 +309,7 @@ const CreateConnectionModal = (props: Props) => {
                       <>
                         <span
                           className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                            selectedSSLField === "key" && " border-indigo-600 opacity-100"
+                            selectedSSLField === "key" && "!border-indigo-600 !opacity-100"
                           }`}
                           onClick={() => setSelectedSSLField("key")}
                         >
@@ -315,7 +317,7 @@ const CreateConnectionModal = (props: Props) => {
                         </span>
                         <span
                           className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                            selectedSSLField === "cert" && " border-indigo-600 opacity-100"
+                            selectedSSLField === "cert" && "!border-indigo-600 !opacity-100"
                           }`}
                           onClick={() => setSelectedSSLField("cert")}
                         >
