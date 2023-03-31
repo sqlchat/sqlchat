@@ -1,7 +1,8 @@
 import { cloneDeep, head } from "lodash-es";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { toast } from "react-hot-toast";
+import TextareaAutosize from "react-textarea-autosize";
 import { useConnectionStore } from "@/store";
 import { Connection, Engine, ResponseObject } from "@/types";
 import Icon from "./Icon";
@@ -15,6 +16,8 @@ interface Props {
 }
 
 type SSLType = "none" | "ca-only" | "full";
+
+type SSLFieldType = "ca" | "cert" | "key";
 
 const SSLTypeOptions = [
   {
@@ -47,24 +50,89 @@ const CreateConnectionModal = (props: Props) => {
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
   const [sslType, setSSLType] = useState<SSLType>("none");
+  const [selectedSSLField, setSelectedSSLField] = useState<SSLFieldType>("ca");
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
-  const allowSave =
-    connection.host !== "" && connection.username !== "" && (connection.engineType === Engine.PostgreSQL ? connection.database : true);
+  const allowSave = connection.host !== "" && connection.username !== "";
 
   useEffect(() => {
     if (show) {
-      setConnection(isEditing ? editConnection : defaultConnection);
+      const connection = isEditing ? editConnection : defaultConnection;
+      setConnection(connection);
+      if (connection.ssl) {
+        if (connection.ssl.ca && connection.ssl.cert && connection.ssl.key) {
+          setSSLType("full");
+        } else {
+          setSSLType("ca-only");
+        }
+      } else {
+        setSSLType("none");
+      }
       setIsRequesting(false);
       setShowDeleteConnectionModal(false);
     }
   }, [show]);
 
+  useEffect(() => {
+    let ssl = undefined;
+    if (sslType === "ca-only") {
+      ssl = {
+        ca: "",
+      };
+    } else if (sslType === "full") {
+      ssl = {
+        ca: "",
+        cert: "",
+        key: "",
+      };
+    }
+    setConnection({
+      ...connection,
+      ssl,
+    });
+  }, [sslType]);
+
   const setPartialConnection = (state: Partial<Connection>) => {
     setConnection({
       ...connection,
       ...state,
+    });
+  };
+
+  const handleSSLFileInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.currentTarget.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+
+    const file = files[0];
+    if (file.type.startsWith("audio/") || file.type.startsWith("video/") || file.type.startsWith("image/")) {
+      toast.error(`Invalid file type:${file.type}`);
+      return;
+    }
+
+    const fr = new FileReader();
+    fr.addEventListener("load", () => {
+      setPartialConnection({
+        ssl: {
+          ...connection.ssl,
+          [selectedSSLField]: fr.result as string,
+        },
+      });
+    });
+    fr.addEventListener("error", () => {
+      toast.error("Failed to read file");
+    });
+    fr.readAsText(file);
+  };
+
+  const handleSSLValueChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setPartialConnection({
+      ssl: {
+        ...connection.ssl,
+        [selectedSSLField]: event.target.value,
+      },
     });
   };
 
@@ -208,12 +276,11 @@ const CreateConnectionModal = (props: Props) => {
                 onChange={(e) => setPartialConnection({ password: e.target.value })}
               />
             </div>
-            {/* TODO: implement SSL textarea */}
-            <div className="hidden w-full flex-col">
+            <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">SSL</label>
               <div className="w-full flex flex-row justify-start items-start flex-wrap">
                 {SSLTypeOptions.map((option) => (
-                  <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-2 mb-2">
+                  <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-2">
                     <input
                       type="radio"
                       className="radio w-4 h-4 mr-1"
@@ -225,6 +292,60 @@ const CreateConnectionModal = (props: Props) => {
                   </label>
                 ))}
               </div>
+              {sslType !== "none" && (
+                <>
+                  <div className="text-sm space-x-3 mb-2">
+                    <span
+                      className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                        selectedSSLField === "ca" && " border-indigo-600 opacity-100"
+                      } `}
+                      onClick={() => setSelectedSSLField("ca")}
+                    >
+                      CA Certificate
+                    </span>
+                    {sslType === "full" && (
+                      <>
+                        <span
+                          className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                            selectedSSLField === "key" && " border-indigo-600 opacity-100"
+                          }`}
+                          onClick={() => setSelectedSSLField("key")}
+                        >
+                          Client Key
+                        </span>
+                        <span
+                          className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                            selectedSSLField === "cert" && " border-indigo-600 opacity-100"
+                          }`}
+                          onClick={() => setSelectedSSLField("cert")}
+                        >
+                          Client Certificate
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full h-auto relative">
+                    <TextareaAutosize
+                      className="w-full border resize-none rounded-lg text-sm p-3"
+                      minRows={3}
+                      maxRows={3}
+                      value={(connection.ssl && connection.ssl[selectedSSLField]) ?? ""}
+                      onChange={handleSSLValueChange}
+                    />
+                    <div
+                      className={`${
+                        connection.ssl && connection.ssl[selectedSSLField] && "hidden"
+                      } absolute top-3 left-4 text-gray-400 text-sm leading-6 pointer-events-none`}
+                    >
+                      <span className="">Input or </span>
+                      <label className="pointer-events-auto border border-dashed px-2 py-1 rounded-lg cursor-pointer hover:border-gray-600 hover:text-gray-600">
+                        upload file
+                        <input className="hidden" type="file" onChange={handleSSLFileInputChange} />
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
           <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">
