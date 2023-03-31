@@ -1,33 +1,45 @@
+import { ConnectionOptions } from "mysql2";
 import mysql, { RowDataPacket } from "mysql2/promise";
 import { Connection } from "@/types";
 import { Connector } from "..";
 
 const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
 
-const convertToConnectionUrl = (connection: Connection): string => {
-  // Connection URL format: mysql://USER:PASSWORD@HOST:PORT/DATABASE
-  return `mysql://${connection.username}:${connection.password}@${connection.host}:${connection.port}/${connection.database ?? ""}`;
+const getMySQLConnection = async (connection: Connection): Promise<mysql.Connection> => {
+  const connectionOptions: ConnectionOptions = {
+    host: connection.host,
+    port: parseInt(connection.port),
+    user: connection.username,
+    password: connection.password,
+    database: connection.database,
+  };
+  if (connection.ssl) {
+    connectionOptions.ssl = {
+      ca: connection.ssl?.ca,
+      cert: connection.ssl?.cert,
+      key: connection.ssl?.key,
+    };
+  }
+  const conn = await mysql.createConnection(connectionOptions);
+  return conn;
 };
 
 const testConnection = async (connection: Connection): Promise<boolean> => {
-  const connectionUrl = convertToConnectionUrl(connection);
-  const conn = await mysql.createConnection(connectionUrl);
+  const conn = await getMySQLConnection(connection);
   conn.destroy();
   return true;
 };
 
 const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
   connection.database = databaseName;
-  const connectionUrl = convertToConnectionUrl(connection);
-  const conn = await mysql.createConnection(connectionUrl);
+  const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(statement);
   conn.destroy();
   return rows;
 };
 
 const getDatabases = async (connection: Connection): Promise<string[]> => {
-  const connectionUrl = convertToConnectionUrl(connection);
-  const conn = await mysql.createConnection(connectionUrl);
+  const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(
     `SELECT schema_name as db_name FROM information_schema.schemata WHERE schema_name NOT IN (?);`,
     [systemDatabases]
@@ -43,8 +55,7 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
 };
 
 const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
-  const connectionUrl = convertToConnectionUrl(connection);
-  const conn = await mysql.createConnection(connectionUrl);
+  const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(
     `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA=? AND TABLE_TYPE='BASE TABLE';`,
     [databaseName]
@@ -60,8 +71,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
 };
 
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
-  const connectionUrl = convertToConnectionUrl(connection);
-  const conn = await mysql.createConnection(connectionUrl);
+  const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
   conn.destroy();
   if (rows.length !== 1) {

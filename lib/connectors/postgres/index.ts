@@ -1,15 +1,23 @@
-import { Client } from "pg";
+import { Client, ClientConfig } from "pg";
 import { Connection } from "@/types";
 import { Connector } from "..";
 
 const newPostgresClient = (connection: Connection) => {
-  return new Client({
+  const clientConfig: ClientConfig = {
     host: connection.host,
     port: Number(connection.port),
     user: connection.username,
     password: connection.password,
     database: connection.database,
-  });
+  };
+  if (connection.ssl) {
+    clientConfig.ssl = {
+      ca: connection.ssl?.ca,
+      cert: connection.ssl?.cert,
+      key: connection.ssl?.key,
+    };
+  }
+  return new Client(clientConfig);
 };
 
 const testConnection = async (connection: Connection): Promise<boolean> => {
