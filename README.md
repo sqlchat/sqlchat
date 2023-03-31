@@ -62,6 +62,14 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 <img width="256" src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/wechat-qrcode.webp" alt="sqlchat">
 
+## Sponsors
+
+<p>
+  <a href="https://www.bytebase.com">
+    <img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/bytebase.webp" width=300>
+  </a>
+</p>
+
 ## License
 
 This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
