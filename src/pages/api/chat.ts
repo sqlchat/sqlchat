@@ -1,6 +1,6 @@
-import { openAIApiEndpoint, openAIApiKey } from "@/utils";
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
+import { openAIApiEndpoint, openAIApiKey } from "@/utils";
 
 export const config = {
   runtime: "edge",

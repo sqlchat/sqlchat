@@ -1,4 +1,4 @@
-import { Id } from "./";
+import { Id } from ".";
 
 export enum Engine {
   MySQL = "MYSQL",

@@ -1,4 +1,4 @@
-import { Id, Timestamp } from "./";
+import { Id, Timestamp } from ".";
 
 export enum CreatorRole {
   System = "system",

@@ -1,4 +1,4 @@
-import { Id, Timestamp } from "./";
+import { Id, Timestamp } from ".";
 
 export interface Chat {
   id: string;

@@ -1,4 +1,4 @@
-import { Id } from "./";
+import { Id } from ".";
 
 export interface Database {
   connectionId: Id;

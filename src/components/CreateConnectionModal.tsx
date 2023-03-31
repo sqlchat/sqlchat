@@ -14,6 +14,23 @@ interface Props {
   close: () => void;
 }
 
+type SSLType = "none" | "ca-only" | "full";
+
+const SSLTypeOptions = [
+  {
+    label: "None",
+    value: "none",
+  },
+  {
+    label: "CA Only",
+    value: "ca-only",
+  },
+  {
+    label: "Full",
+    value: "full",
+  },
+];
+
 const defaultConnection: Connection = {
   id: "",
   title: "",
@@ -29,6 +46,7 @@ const CreateConnectionModal = (props: Props) => {
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
+  const [sslType, setSSLType] = useState<SSLType>("none");
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
@@ -189,6 +207,24 @@ const CreateConnectionModal = (props: Props) => {
                 value={connection.password}
                 onChange={(e) => setPartialConnection({ password: e.target.value })}
               />
+            </div>
+            {/* TODO: implement SSL textarea */}
+            <div className="hidden w-full flex-col">
+              <label className="block text-sm font-medium text-gray-700 mb-1">SSL</label>
+              <div className="w-full flex flex-row justify-start items-start flex-wrap">
+                {SSLTypeOptions.map((option) => (
+                  <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-2 mb-2">
+                    <input
+                      type="radio"
+                      className="radio w-4 h-4 mr-1"
+                      value={option.value}
+                      checked={sslType === option.value}
+                      onChange={(e) => setSSLType(e.target.value as SSLType)}
+                    />
+                    <span className="text-sm">{option.label}</span>
+                  </label>
+                ))}
+              </div>
             </div>
           </div>
           <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">
