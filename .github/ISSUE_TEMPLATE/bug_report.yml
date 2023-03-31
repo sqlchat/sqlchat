@@ -7,7 +7,7 @@ body:
       value: |
         Thanks for taking the time to fill out this bug report!
 
-        - Check to make sure someone hasn't already opened a similar [issue](https://github.com/bytebase/sqlchat/issues).
+        - Check to make sure someone hasn't already opened a similar [issue](https://github.com/sqlchat/sqlchat/issues).
   - type: textarea
     attributes:
       label: Describe the bug

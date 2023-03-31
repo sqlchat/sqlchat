@@ -15,7 +15,7 @@ const GitHubStarBadge = (props: Props) => {
     const getRepoStarCount = async () => {
       let starCount = 0;
       try {
-        const { data } = await axios.get(`https://api.github.com/repos/bytebase/sqlchat`, {
+        const { data } = await axios.get(`https://api.github.com/repos/sqlchat/sqlchat`, {
           headers: {
             Accept: "application/vnd.github.v3.star+json",
             Authorization: "",
@@ -38,7 +38,7 @@ const GitHubStarBadge = (props: Props) => {
       className={`${
         className || ""
       } border rounded flex flex-row justify-start items-center text-black text-xs bg-white shadow-inner overflow-clip hover:opacity-80`}
-      href="https://github.com/bytebase/sqlchat"
+      href="https://github.com/sqlchat/sqlchat"
       target="_blank"
       aria-label="Star SQL Chat on GitHub"
     >

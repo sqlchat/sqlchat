@@ -1,4 +1,4 @@
-![SQL Chat banner](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/banner.webp)
+![SQL Chat banner](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/banner.webp)
 
 <div align="center">
   <h3>SQL Chat</h3>
@@ -9,9 +9,9 @@
 
 SQL Chat is a chat-based SQL client to ask database questions and query database using natural language.
 
-![Screenshot](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/screenshot1.webp)
+![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot1.webp)
 
-![Screenshot](https://raw.githubusercontent.com/bytebase/sqlchat/main/public/screenshot2.webp)
+![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot2.webp)
 
 ## Why
 
@@ -52,7 +52,7 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=bytebase/sqlchat&type=Date)](https://star-history.com/#bytebase/sqlchat&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=sqlchat/sqlchat&type=Date)](https://star-history.com/#sqlchat/sqlchat&Date)
 
 ## Community
 
@@ -60,7 +60,7 @@ SQL Chat is built by Next.js, it supports following databases and will add more 
 
 [![Follow us on Twitter](https://img.shields.io/badge/Follow%20us%20on%20Twitter-1DA1F2?style=for-the-badge&logo=twitter&labelColor=EEEEEE)](https://twitter.com/Bytebase)
 
-<img width="256" src="https://raw.githubusercontent.com/bytebase/sqlchat/main/public/wechat-qrcode.webp" alt="sqlchat">
+<img width="256" src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/wechat-qrcode.webp" alt="sqlchat">
 
 ## License
 
