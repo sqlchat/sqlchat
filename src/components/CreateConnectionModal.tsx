@@ -58,7 +58,17 @@ const CreateConnectionModal = (props: Props) => {
 
   useEffect(() => {
     if (show) {
-      setConnection(isEditing ? editConnection : defaultConnection);
+      const connection = isEditing ? editConnection : defaultConnection;
+      setConnection(connection);
+      if (connection.ssl) {
+        if (connection.ssl.ca && connection.ssl.cert && connection.ssl.key) {
+          setSSLType("full");
+        } else {
+          setSSLType("ca-only");
+        }
+      } else {
+        setSSLType("none");
+      }
       setIsRequesting(false);
       setShowDeleteConnectionModal(false);
     }
