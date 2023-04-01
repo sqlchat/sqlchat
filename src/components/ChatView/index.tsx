@@ -8,7 +8,6 @@ import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import MessageTextarea from "./MessageTextarea";
-import MessageLoader from "../MessageLoader";
 import DataStorageBanner from "../DataStorageBanner";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
@@ -19,17 +18,29 @@ const ChatView = () => {
   const connectionStore = useConnectionStore();
   const chatStore = useChatStore();
   const messageStore = useMessageStore();
-  const [isRequesting, setIsRequesting] = useState<boolean>(false);
+  const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const chatViewRef = useRef<HTMLDivElement>(null);
   const currentChat = chatStore.currentChat;
   const messageList = messageStore.messageList.filter((message) => message.chatId === currentChat?.id);
   const lastMessage = last(messageList);
 
-  // Toggle header shadow.
   useEffect(() => {
+    messageStore.messageList.map((message) => {
+      if (message.status === "LOADING" && message.content === "") {
+        messageStore.updateMessage(message.id, {
+          content: "Failed to send the message.",
+          status: "FAILED",
+        });
+      }
+    });
+
     const handleChatViewScroll = () => {
+      if (!chatViewRef.current) {
+        return;
+      }
       setShowHeaderShadow((chatViewRef.current?.scrollTop || 0) > 0);
+      setIsStickyAtBottom(chatViewRef.current.scrollTop + chatViewRef.current.clientHeight >= chatViewRef.current.scrollHeight);
     };
     chatViewRef.current?.addEventListener("scroll", handleChatViewScroll);
 
@@ -39,28 +50,21 @@ const ChatView = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!chatViewRef.current) {
-        return;
-      }
-      chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
-    });
-  }, [currentChat, messageList.length, lastMessage?.isGenerated]);
+    if (!chatViewRef.current) {
+      return;
+    }
+    chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+  }, [currentChat, lastMessage?.id]);
 
   useEffect(() => {
-    setTimeout(() => {
-      if (!chatViewRef.current) {
-        return;
-      }
-      if (!lastMessage) {
-        return;
-      }
+    if (!chatViewRef.current) {
+      return;
+    }
 
-      if (!lastMessage.isGenerated) {
-        chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
-      }
-    });
-  }, [lastMessage?.isGenerated, lastMessage?.content]);
+    if (lastMessage?.status === "LOADING" && isStickyAtBottom) {
+      chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+    }
+  }, [lastMessage?.status, lastMessage?.content, isStickyAtBottom]);
 
   useEffect(() => {
     if (
@@ -84,14 +88,25 @@ const ChatView = () => {
     if (!currentChat) {
       return;
     }
-    if (isRequesting) {
+    if (lastMessage?.status === "LOADING") {
       return;
     }
 
-    setIsRequesting(true);
     const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
     let prompt = "";
     let tokens = 0;
+
+    const message: Message = {
+      id: generateUUID(),
+      chatId: currentChat.id,
+      creatorId: currentChat.assistantId,
+      creatorRole: CreatorRole.Assistant,
+      createdAt: Date.now(),
+      content: "",
+      status: "LOADING",
+    };
+    messageStore.addMessage(message);
+
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
@@ -123,13 +138,13 @@ const ChatView = () => {
       role: CreatorRole.System,
       content: prompt,
     });
+
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
       }),
     });
-    setIsRequesting(false);
 
     if (!rawRes.ok) {
       console.error(rawRes);
@@ -140,7 +155,10 @@ const ChatView = () => {
       } catch (error) {
         // do nth
       }
-      toast.error(errorMessage);
+      messageStore.updateMessage(message.id, {
+        content: errorMessage,
+        status: "FAILED",
+      });
       return;
     }
 
@@ -149,17 +167,6 @@ const ChatView = () => {
       toast.error("No data return");
       return;
     }
-
-    const message: Message = {
-      id: generateUUID(),
-      chatId: currentChat.id,
-      creatorId: currentChat.assistantId,
-      creatorRole: CreatorRole.Assistant,
-      createdAt: Date.now(),
-      content: "",
-      isGenerated: false,
-    };
-    messageStore.addMessage(message);
 
     const reader = data.getReader();
     const decoder = new TextDecoder("utf-8");
@@ -178,7 +185,7 @@ const ChatView = () => {
       done = readerDone;
     }
     messageStore.updateMessage(message.id, {
-      isGenerated: true,
+      status: "DONE",
     });
   };
 
@@ -197,10 +204,9 @@ const ChatView = () => {
         ) : (
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
-        {isRequesting && <MessageLoader />}
       </div>
       <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
-        <MessageTextarea disabled={isRequesting} sendMessage={sendMessageToCurrentChat} />
+        <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentChat} />
       </div>
     </main>
   );

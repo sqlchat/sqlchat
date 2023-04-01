@@ -6,6 +6,8 @@ export enum CreatorRole {
   Assistant = "assistant",
 }
 
+type MessageStatus = "LOADING" | "DONE" | "FAILED";
+
 export interface Message {
   id: Id;
   chatId: string;
@@ -13,5 +15,5 @@ export interface Message {
   creatorRole: CreatorRole;
   createdAt: Timestamp;
   content: string;
-  isGenerated: boolean;
+  status: MessageStatus;
 }

@@ -36,7 +36,7 @@ const EmptyView = (props: Props) => {
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),
       content: content,
-      isGenerated: true,
+      status: "DONE",
     });
     await sendMessage();
   };
