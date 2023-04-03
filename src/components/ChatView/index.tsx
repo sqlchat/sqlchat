@@ -27,11 +27,17 @@ const ChatView = () => {
 
   useEffect(() => {
     messageStore.messageList.map((message) => {
-      if (message.status === "LOADING" && message.content === "") {
-        messageStore.updateMessage(message.id, {
-          content: "Failed to send the message.",
-          status: "FAILED",
-        });
+      if (message.status === "LOADING") {
+        if (message.content === "") {
+          messageStore.updateMessage(message.id, {
+            content: "Failed to send the message.",
+            status: "FAILED",
+          });
+        } else {
+          messageStore.updateMessage(message.id, {
+            status: "DONE",
+          });
+        }
       }
     });
 
