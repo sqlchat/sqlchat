@@ -18,7 +18,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const settingStore = useSettingStore();
 
   useEffect(() => {
-    i18n.changeLanguage(settingStore.setting.locale);
+    const locale = settingStore.setting.locale;
+    i18n.changeLanguage(locale);
+    document.documentElement.setAttribute("lang", locale);
   }, [settingStore.setting.locale]);
 
   return (
