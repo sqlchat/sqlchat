@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
 import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { CreatorRole } from "@/types";
@@ -13,6 +14,7 @@ interface Props {
 
 const MessageTextarea = (props: Props) => {
   const { disabled, sendMessage } = props;
+  const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const userStore = useUserStore();
   const chatStore = useChatStore();
@@ -75,7 +77,7 @@ const MessageTextarea = (props: Props) => {
       <TextareaAutosize
         ref={textareaRef}
         className="w-full h-full outline-none border-none bg-transparent leading-6 py-2 px-2 resize-none hide-scrollbar"
-        placeholder="Type a message..."
+        placeholder={t("editor.placeholder") || ""}
         rows={1}
         minRows={1}
         maxRows={5}

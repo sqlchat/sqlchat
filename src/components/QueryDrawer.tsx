@@ -3,6 +3,7 @@ import { head } from "lodash-es";
 import { useEffect, useState } from "react";
 import DataTable from "react-data-table-component";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
 import { useQueryStore } from "@/store";
 import { ResponseObject } from "@/types";
@@ -14,6 +15,7 @@ type RawQueryResult = {
 };
 
 const QueryDrawer = () => {
+  const { t } = useTranslation();
   const queryStore = useQueryStore();
   const [rawResults, setRawResults] = useState<RawQueryResult[]>([]);
   const context = queryStore.context;
@@ -86,16 +88,16 @@ const QueryDrawer = () => {
         <button className="btn btn-sm btn-circle" onClick={close}>
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
-        <h3 className="font-bold text-2xl mt-4">Execute query</h3>
+        <h3 className="font-bold text-2xl mt-4">{t("execution.title")}</h3>
         {!context ? (
           <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
             <Icon.BiSad className="w-7 h-auto opacity-70" />
-            <span className="text-sm font-mono text-gray-500 mt-2">No connection selected.</span>
+            <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.no-connection")}</span>
           </div>
         ) : (
           <>
             <div className="w-full flex flex-row justify-start items-center mt-4">
-              <span className="opacity-70">Connection: </span>
+              <span className="opacity-70">{t("connection.self")}: </span>
               <EngineIcon className="w-6 h-auto" engine={context.connection.engineType} />
               <span>{context.database?.name}</span>
             </div>
@@ -120,12 +122,12 @@ const QueryDrawer = () => {
               {isLoading ? (
                 <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
                   <Icon.BiLoaderAlt className="w-7 h-auto opacity-70 animate-spin" />
-                  <span className="text-sm font-mono text-gray-500 mt-2">Executing</span>
+                  <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.executing")}</span>
                 </div>
               ) : rawResults.length === 0 ? (
                 <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
                   <Icon.BsBox2 className="w-7 h-auto opacity-70" />
-                  <span className="text-sm font-mono text-gray-500 mt-2">No data return.</span>
+                  <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.no-data")}</span>
                 </div>
               ) : (
                 <div className="w-full">

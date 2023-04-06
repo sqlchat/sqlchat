@@ -1,10 +1,12 @@
 import { head } from "lodash-es";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { useChatStore, useConnectionStore, useLayoutStore } from "@/store";
 import { Chat, Connection } from "@/types";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
+import LocaleSwitch from "./LocaleSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import EditChatTitleModal from "./EditChatTitleModal";
@@ -16,6 +18,7 @@ interface State {
 }
 
 const ConnectionSidebar = () => {
+  const { t } = useTranslation();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
   const chatStore = useChatStore();
@@ -159,16 +162,17 @@ const ConnectionSidebar = () => {
               ))}
               <button
                 className="tooltip tooltip-right w-10 h-10 mt-4 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
-                data-tip="Create Connection"
+                data-tip={t("connection.new")}
                 onClick={() => toggleCreateConnectionModal(true)}
               >
                 <Icon.AiOutlinePlus className="w-auto h-full mx-auto" />
               </button>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
+              <LocaleSwitch />
               <button
                 className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
-                data-tip="Setting"
+                data-tip={t("common.setting")}
                 onClick={() => toggleSettingModal(true)}
               >
                 <Icon.IoMdSettings className="text-gray-600 w-6 h-auto" />
@@ -180,12 +184,12 @@ const ConnectionSidebar = () => {
             <div className="w-full grow">
               {isRequestingDatabase && (
                 <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600">
-                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> Loading
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                 </div>
               )}
               {databaseList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 mb-4 mt-2">
-                  <p className="text-sm leading-6 mb-1 text-gray-500">Select your database:</p>
+                  <p className="text-sm leading-6 mb-1 text-gray-500">{t("connection.select-database")}</p>
                   <select
                     className="w-full select select-bordered"
                     value={currentConnectionCtx?.database?.name}
@@ -236,7 +240,7 @@ const ConnectionSidebar = () => {
                 onClick={handleCreateChat}
               >
                 <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
-                New Chat
+                {t("chat.new")}
               </button>
             </div>
             <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-6 py-2">
@@ -246,7 +250,7 @@ const ConnectionSidebar = () => {
                 target="_blank"
               >
                 <Icon.BsDiscord className="w-4 h-auto mr-1" />
-                Join Discord Channel
+                {t("social.join-discord-channel")}
               </a>
             </div>
           </div>

@@ -1,0 +1,40 @@
+{
+  "common": {
+    "clear": "Clear",
+    "close": "Close",
+    "confirm": "Confirm",
+    "save": "Save",
+    "loading": "Loading",
+    "setting": "Setting",
+    "copy": "Copy",
+    "delete": "Delete"
+  },
+  "chat": {
+    "new": "New Chat",
+    "chat-title": "Chat title",
+    "edit-title": "Edit chat title"
+  },
+  "connection": {
+    "self": "Connection",
+    "new": "Create Connection",
+    "select-database": "Select your database:"
+  },
+  "execution": {
+    "title": "Execute query",
+    "message": {
+      "executing": "Executing query...",
+      "no-connection": "No connection selected",
+      "no-data": "No data returned"
+    }
+  },
+  "editor": {
+    "placeholder": "Enter your question here..."
+  },
+  "social": {
+    "join-discord-channel": "Join Discord Channel",
+    "join-wechat-group": "Join WeChat Group"
+  },
+  "banner": {
+    "data-storage": "Connection settings are stored in your local browser"
+  }
+}

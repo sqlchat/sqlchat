@@ -2,6 +2,7 @@ import { Menu, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
 import { ReactElement, useState } from "react";
 import { ThreeDots } from "react-loader-spinner";
+import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -17,6 +18,7 @@ interface Props {
 
 const MessageView = (props: Props) => {
   const message = props.message;
+  const { t } = useTranslation();
   const userStore = useUserStore();
   const chatStore = useChatStore();
   const connectionStore = useConnectionStore();
@@ -124,11 +126,11 @@ const MessageView = (props: Props) => {
                 >
                   <MenuItem onClick={copyMessage}>
                     <Icon.BiClipboard className="w-4 h-auto mr-2 opacity-70" />
-                    Copy
+                    {t("common.copy")}
                   </MenuItem>
                   <MenuItem onClick={() => deleteMessage(message)}>
                     <Icon.BiTrash className="w-4 h-auto mr-2 opacity-70" />
-                    Delete
+                    {t("common.delete")}
                   </MenuItem>
                 </Menu>
               </div>

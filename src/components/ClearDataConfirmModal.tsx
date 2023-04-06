@@ -1,4 +1,5 @@
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
 
 interface Props {
@@ -7,11 +8,12 @@ interface Props {
 
 const ClearDataConfirmModal = (props: Props) => {
   const { close } = props;
+  const { t } = useTranslation();
 
   const handleClearData = () => {
     window.localStorage.clear();
     close();
-    toast.success("Message cleared. The page will be reloaded.");
+    toast.success("Data cleared. The page will be reloaded.");
     setTimeout(() => {
       window.location.reload();
     }, 500);
@@ -29,10 +31,10 @@ const ClearDataConfirmModal = (props: Props) => {
         </div>
         <div className="modal-action">
           <button className="btn btn-outline" onClick={close}>
-            Close
+            {t("common.close")}
           </button>
           <button className="btn btn-error" onClick={handleClearData}>
-            Clear data
+            {t("common.clear")}
           </button>
         </div>
       </div>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "react-use";
 import Icon from "./Icon";
 
@@ -8,6 +9,7 @@ interface Props {
 
 const DataStorageBanner = (props: Props) => {
   const { className, alwaysShow } = props;
+  const { t } = useTranslation();
   const [hideBanner, setHideBanner] = useLocalStorage("hide-local-storage-banner", false);
   const show = alwaysShow || !hideBanner;
 
@@ -19,7 +21,7 @@ const DataStorageBanner = (props: Props) => {
     >
       <span className="text-sm leading-6 pr-4">
         <Icon.IoInformationCircleOutline className="inline-block h-5 w-auto -mt-0.5 mr-0.5 opacity-80" />
-        Connection settings are stored in your local browser
+        {t("banner.data-storage")}
       </span>
       {!alwaysShow && (
         <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
