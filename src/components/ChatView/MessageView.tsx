@@ -87,7 +87,7 @@ const MessageView = (props: Props) => {
                     pre({ node, className, children, ...props }) {
                       const child = children[0] as ReactElement;
                       const match = /language-(\w+)/.exec(child.props.className || "");
-                      const language = match ? match[1] : "text";
+                      const language = match ? match[1] : "SQL";
                       return (
                         <pre className={`${className || ""} w-full p-0 my-1`} {...props}>
                           <CodeBlock
