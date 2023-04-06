@@ -1,0 +1,40 @@
+{
+  "common": {
+    "clear": "清除",
+    "close": "关闭",
+    "confirm": "确认",
+    "save": "保存",
+    "loading": "加载中",
+    "setting": "设置",
+    "copy": "复制",
+    "delete": "删除"
+  },
+  "chat": {
+    "new": "新建会话",
+    "chat-title": "会话标题",
+    "edit-title": "编辑会话标题"
+  },
+  "connection": {
+    "self": "连接",
+    "new": "创建连接",
+    "select-database": "选择您的数据库："
+  },
+  "execution": {
+    "title": "执行查询",
+    "message": {
+      "executing": "正在执行查询...",
+      "no-connection": "未选择连接",
+      "no-data": "未返回数据"
+    }
+  },
+  "editor": {
+    "placeholder": "在此输入您的问题..."
+  },
+  "social": {
+    "join-discord-channel": "加入 Discord 频道",
+    "join-wechat-group": "加入微信群"
+  },
+  "banner": {
+    "data-storage": "连接设置存储在您的本地浏览器中"
+  }
+}

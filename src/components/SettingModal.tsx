@@ -1,6 +1,8 @@
+import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
+import LocaleSelector from "./LocaleSelector";
 
 interface Props {
   show: boolean;
@@ -9,6 +11,7 @@ interface Props {
 
 const SettingModal = (props: Props) => {
   const { show, close } = props;
+  const { t } = useTranslation();
 
   return (
     <div className={`modal modal-middle ${show && "modal-open"}`}>
@@ -25,9 +28,16 @@ const SettingModal = (props: Props) => {
               target="_blank"
             >
               <Icon.BsDiscord className="w-4 h-auto mr-1" />
-              Join Discord Channel
+              {t("social.join-discord-channel")}
             </a>
             <WeChatQRCodeView />
+          </div>
+
+          <div className="w-full border border-gray-200 p-4 rounded-lg">
+            <div className="w-full flex flex-row justify-between items-center gap-2">
+              <span>Language</span>
+              <LocaleSelector />
+            </div>
           </div>
 
           <h3>Danger Zone</h3>

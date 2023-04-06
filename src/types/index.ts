@@ -4,4 +4,5 @@ export * from "./connection";
 export * from "./database";
 export * from "./chat";
 export * from "./message";
+export * from "./setting";
 export * from "./api";

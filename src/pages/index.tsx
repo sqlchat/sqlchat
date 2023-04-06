@@ -17,7 +17,7 @@ const QueryDrawer = dynamic(() => import("@/components/QueryDrawer"), {
   ssr: false,
 });
 
-const ChatPage: NextPage = () => {
+const IndexPage: NextPage = () => {
   const layoutStore = useLayoutStore();
 
   useEffect(() => {
@@ -69,4 +69,4 @@ const ChatPage: NextPage = () => {
   );
 };
 
-export default ChatPage;
+export default IndexPage;

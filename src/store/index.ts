@@ -5,3 +5,4 @@ export * from "./chat";
 export * from "./message";
 export * from "./layout";
 export * from "./query";
+export * from "./setting";

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
 
 export interface ActionConfirmModalProps {
@@ -10,6 +11,7 @@ export interface ActionConfirmModalProps {
 
 const ActionConfirmModal = (props: ActionConfirmModalProps) => {
   const { close, confirm, title, content, confirmButtonStyle } = props;
+  const { t } = useTranslation();
 
   return (
     <div className="modal modal-middle modal-open">
@@ -23,7 +25,7 @@ const ActionConfirmModal = (props: ActionConfirmModalProps) => {
         </div>
         <div className="modal-action">
           <button className="btn btn-outline" onClick={close}>
-            Close
+            {t("common.close")}
           </button>
           <button
             className={`btn ${confirmButtonStyle}`}
@@ -32,7 +34,7 @@ const ActionConfirmModal = (props: ActionConfirmModalProps) => {
               close();
             }}
           >
-            Confirm
+            {t("common.confirm")}
           </button>
         </div>
       </div>

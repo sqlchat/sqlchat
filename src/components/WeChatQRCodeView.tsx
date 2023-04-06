@@ -1,8 +1,10 @@
 import { Popover } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
 
 const WeChatQRCodeView = () => {
+  const { t } = useTranslation();
   const [wechatAnchorEl, setWeChatAnchorEl] = useState<HTMLElement | null>(null);
   const openWeChatQrCodePopover = Boolean(wechatAnchorEl);
 
@@ -13,7 +15,7 @@ const WeChatQRCodeView = () => {
         onClick={(e) => setWeChatAnchorEl(e.currentTarget)}
       >
         <Icon.BsWechat className="w-4 h-auto mr-1" />
-        Join WeChat Group
+        {t("social.join-wechat-group")}
       </div>
       <Popover
         open={openWeChatQrCodePopover}
