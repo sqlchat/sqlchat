@@ -10,7 +10,7 @@ import { ResponsiveWidth, useLayoutStore } from "@/store";
 const ConnectionSidebar = dynamic(() => import("@/components/ConnectionSidebar"), {
   ssr: false,
 });
-const ChatView = dynamic(() => import("@/components/ChatView"), {
+const ConversationView = dynamic(() => import("@/components/ConversationView"), {
   ssr: false,
 });
 const QueryDrawer = dynamic(() => import("@/components/QueryDrawer"), {
@@ -61,7 +61,7 @@ const IndexPage: NextPage = () => {
           checked={layoutStore.showSidebar}
           onChange={(e) => layoutStore.toggleSidebar(e.target.checked)}
         />
-        <ChatView />
+        <ConversationView />
         {/* Render sidebar after chatview to prevent z-index problem */}
         <ConnectionSidebar />
         <QueryDrawer />

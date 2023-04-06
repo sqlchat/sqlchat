@@ -1,6 +1,6 @@
 import { Id, Timestamp } from ".";
 
-export interface Chat {
+export interface Conversation {
   id: string;
   connectionId?: Id;
   databaseName?: string;

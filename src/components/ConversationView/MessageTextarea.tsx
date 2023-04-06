@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -17,7 +17,7 @@ const MessageTextarea = (props: Props) => {
   const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const userStore = useUserStore();
-  const chatStore = useChatStore();
+  const conversationStore = useConversationStore();
   const messageStore = useMessageStore();
   const [value, setValue] = useState<string>("");
   const [isInIME, setIsInIME] = useState(false);
@@ -34,13 +34,13 @@ const MessageTextarea = (props: Props) => {
   };
 
   const handleSend = async () => {
-    let chat = chatStore.currentChat;
-    if (!chat) {
+    let conversation = conversationStore.currentConversation;
+    if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {
-        chat = chatStore.createChat();
+        conversation = conversationStore.createConversation();
       } else {
-        chat = chatStore.createChat(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+        conversation = conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
       }
     }
     if (!value) {
@@ -53,7 +53,7 @@ const MessageTextarea = (props: Props) => {
 
     messageStore.addMessage({
       id: generateUUID(),
-      chatId: chat.id,
+      conversationId: conversation.id,
       creatorId: userStore.currentUser.id,
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),

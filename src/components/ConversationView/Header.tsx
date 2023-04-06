@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useChatStore } from "@/store";
+import { useConversationStore } from "@/store";
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
 
@@ -9,9 +9,9 @@ interface Props {
 
 const Header = (props: Props) => {
   const { className } = props;
-  const chatStore = useChatStore();
-  const currentChat = chatStore.currentChat;
-  const title = currentChat?.title || "SQL Chat";
+  const conversationStore = useConversationStore();
+  const currentConversation = conversationStore.currentConversation;
+  const title = currentConversation?.title || "SQL Chat";
 
   useEffect(() => {
     document.title = `${title}`;

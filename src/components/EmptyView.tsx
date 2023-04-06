@@ -1,4 +1,4 @@
-import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "./Icon";
@@ -14,24 +14,24 @@ interface Props {
 const EmptyView = (props: Props) => {
   const { className, sendMessage } = props;
   const connectionStore = useConnectionStore();
-  const chatStore = useChatStore();
+  const conversationStore = useConversationStore();
   const userStore = useUserStore();
   const messageStore = useMessageStore();
 
   const handleExampleClick = async (content: string) => {
-    let chat = chatStore.currentChat;
-    if (!chat) {
+    let conversation = conversationStore.currentConversation;
+    if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {
-        chat = chatStore.createChat();
+        conversation = conversationStore.createConversation();
       } else {
-        chat = chatStore.createChat(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+        conversation = conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
       }
     }
 
     messageStore.addMessage({
       id: generateUUID(),
-      chatId: chat.id,
+      conversationId: conversation.id,
       creatorId: userStore.currentUser.id,
       creatorRole: CreatorRole.User,
       createdAt: Date.now(),

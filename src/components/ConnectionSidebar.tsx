@@ -2,39 +2,41 @@ import { head } from "lodash-es";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
-import { useChatStore, useConnectionStore, useLayoutStore } from "@/store";
-import { Chat, Connection } from "@/types";
+import { useConversationStore, useConnectionStore, useLayoutStore } from "@/store";
+import { Conversation, Connection } from "@/types";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import LocaleSwitch from "./LocaleSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
-import EditChatTitleModal from "./EditChatTitleModal";
+import EditConversationTitleModal from "./EditConversationTitleModal";
 
 interface State {
   showCreateConnectionModal: boolean;
   showSettingModal: boolean;
-  showEditChatTitleModal: boolean;
+  showEditConversationTitleModal: boolean;
 }
 
 const ConnectionSidebar = () => {
   const { t } = useTranslation();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
-  const chatStore = useChatStore();
+  const conversationStore = useConversationStore();
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
     showSettingModal: false,
-    showEditChatTitleModal: false,
+    showEditConversationTitleModal: false,
   });
   const [editConnectionModalContext, setEditConnectionModalContext] = useState<Connection>();
-  const [editChatTitleModalContext, setEditChatTitleModalContext] = useState<Chat>();
+  const [editConversationTitleModalContext, setEditConversationTitleModalContext] = useState<Conversation>();
   const [isRequestingDatabase, setIsRequestingDatabase] = useState<boolean>(false);
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
-  const chatList = chatStore.chatList.filter(
-    (chat) => chat.connectionId === currentConnectionCtx?.connection.id && chat.databaseName === currentConnectionCtx?.database?.name
+  const conversationList = conversationStore.conversationList.filter(
+    (conversation) =>
+      conversation.connectionId === currentConnectionCtx?.connection.id &&
+      conversation.databaseName === currentConnectionCtx?.database?.name
   );
 
   useEffect(() => {
@@ -63,10 +65,10 @@ const ConnectionSidebar = () => {
     });
   };
 
-  const toggleEditChatTitleModal = (show = true) => {
+  const toggleEditConversationTitleModal = (show = true) => {
     setState({
       ...state,
-      showEditChatTitleModal: show,
+      showEditConversationTitleModal: show,
     });
   };
 
@@ -99,31 +101,31 @@ const ConnectionSidebar = () => {
     });
   };
 
-  const handleCreateChat = () => {
+  const handleCreateConversation = () => {
     if (!currentConnectionCtx) {
-      chatStore.createChat();
+      conversationStore.createConversation();
     } else {
-      chatStore.createChat(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+      conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
     }
   };
 
-  const handleChatSelect = (chat: Chat) => {
-    chatStore.setCurrentChat(chat);
+  const handleConversationSelect = (conversation: Conversation) => {
+    conversationStore.setCurrentConversation(conversation);
     layoutStore.toggleSidebar(false);
   };
 
-  const handleEditChatTitle = (chat: Chat) => {
-    setEditChatTitleModalContext(chat);
+  const handleEditConversationTitle = (conversation: Conversation) => {
+    setEditConversationTitleModalContext(conversation);
     setState({
       ...state,
-      showEditChatTitleModal: true,
+      showEditConversationTitleModal: true,
     });
   };
 
-  const handleDeleteChat = (chat: Chat) => {
-    chatStore.clearChat((item) => item.id !== chat.id);
-    if (chatStore.currentChat?.id === chat.id) {
-      chatStore.setCurrentChat(undefined);
+  const handleDeleteConversation = (conversation: Conversation) => {
+    conversationStore.clearConversation((item) => item.id !== conversation.id);
+    if (conversationStore.currentConversation?.id === conversation.id) {
+      conversationStore.setCurrentConversation(undefined);
     }
   };
 
@@ -203,33 +205,33 @@ const ConnectionSidebar = () => {
                   </select>
                 </div>
               )}
-              {chatList.map((chat) => (
+              {conversationList.map((conversation) => (
                 <div
-                  key={chat.id}
+                  key={conversation.id}
                   className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer border border-transparent group hover:bg-gray-50 ${
-                    chat.id === chatStore.currentChat?.id && "!bg-white border-gray-200 font-medium"
+                    conversation.id === conversationStore.currentConversation?.id && "!bg-white border-gray-200 font-medium"
                   }`}
-                  onClick={() => handleChatSelect(chat)}
+                  onClick={() => handleConversationSelect(conversation)}
                 >
-                  {chat.id === chatStore.currentChat?.id ? (
+                  {conversation.id === conversationStore.currentConversation?.id ? (
                     <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
                   ) : (
                     <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
                   )}
-                  <span className="truncate grow">{chat.title || "SQL Chat"}</span>
+                  <span className="truncate grow">{conversation.title || "SQL Chat"}</span>
                   <span className="ml-0.5 shrink-0 hidden group-hover:flex flex-row justify-end items-center space-x-1">
                     <Icon.FiEdit3
                       className="w-4 h-auto opacity-60 hover:opacity-80"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleEditChatTitle(chat);
+                        handleEditConversationTitle(conversation);
                       }}
                     />
                     <Icon.IoClose
                       className="w-5 h-auto opacity-60 hover:opacity-80"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleDeleteChat(chat);
+                        handleDeleteConversation(conversation);
                       }}
                     />
                   </span>
@@ -237,10 +239,10 @@ const ConnectionSidebar = () => {
               ))}
               <button
                 className="w-full my-4 py-3 px-4 border rounded-lg flex flex-row justify-center items-center text-gray-500 hover:text-gray-700 hover:bg-gray-50"
-                onClick={handleCreateChat}
+                onClick={handleCreateConversation}
               >
                 <Icon.AiOutlinePlus className="w-5 h-auto mr-1" />
-                {t("chat.new")}
+                {t("conversation.new-chat")}
               </button>
             </div>
             <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 backdrop-blur bg-opacity-60 pb-6 py-2">
@@ -268,9 +270,15 @@ const ConnectionSidebar = () => {
 
       {createPortal(<SettingModal show={state.showSettingModal} close={() => toggleSettingModal(false)} />, document.body)}
 
-      {state.showEditChatTitleModal &&
-        editChatTitleModalContext &&
-        createPortal(<EditChatTitleModal close={() => toggleEditChatTitleModal(false)} chat={editChatTitleModalContext} />, document.body)}
+      {state.showEditConversationTitleModal &&
+        editConversationTitleModalContext &&
+        createPortal(
+          <EditConversationTitleModal
+            close={() => toggleEditConversationTitleModal(false)}
+            conversation={editConversationTitleModalContext}
+          />,
+          document.body
+        )}
     </>
   );
 };

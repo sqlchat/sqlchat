@@ -10,7 +10,7 @@ type MessageStatus = "LOADING" | "DONE" | "FAILED";
 
 export interface Message {
   id: Id;
-  chatId: string;
+  conversationId: string;
   creatorId: Id;
   creatorRole: CreatorRole;
   createdAt: Timestamp;

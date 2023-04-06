@@ -1,7 +1,7 @@
 import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getAssistantById, getPromptGeneratorOfAssistant, useChatStore, useMessageStore, useConnectionStore } from "@/store";
+import { getAssistantById, getPromptGeneratorOfAssistant, useConversationStore, useMessageStore, useConnectionStore } from "@/store";
 import { CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
@@ -14,15 +14,15 @@ import DataStorageBanner from "../DataStorageBanner";
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
 const MAX_TOKENS = 4000;
 
-const ChatView = () => {
+const ConversationView = () => {
   const connectionStore = useConnectionStore();
-  const chatStore = useChatStore();
+  const conversationStore = useConversationStore();
   const messageStore = useMessageStore();
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
-  const chatViewRef = useRef<HTMLDivElement>(null);
-  const currentChat = chatStore.currentChat;
-  const messageList = messageStore.messageList.filter((message) => message.chatId === currentChat?.id);
+  const conversationViewRef = useRef<HTMLDivElement>(null);
+  const currentConversation = conversationStore.currentConversation;
+  const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
   const lastMessage = last(messageList);
 
   useEffect(() => {
@@ -41,71 +41,73 @@ const ChatView = () => {
       }
     });
 
-    const handleChatViewScroll = () => {
-      if (!chatViewRef.current) {
+    const handleConversationViewScroll = () => {
+      if (!conversationViewRef.current) {
         return;
       }
-      setShowHeaderShadow((chatViewRef.current?.scrollTop || 0) > 0);
-      setIsStickyAtBottom(chatViewRef.current.scrollTop + chatViewRef.current.clientHeight >= chatViewRef.current.scrollHeight);
+      setShowHeaderShadow((conversationViewRef.current?.scrollTop || 0) > 0);
+      setIsStickyAtBottom(
+        conversationViewRef.current.scrollTop + conversationViewRef.current.clientHeight >= conversationViewRef.current.scrollHeight
+      );
     };
-    chatViewRef.current?.addEventListener("scroll", handleChatViewScroll);
+    conversationViewRef.current?.addEventListener("scroll", handleConversationViewScroll);
 
     return () => {
-      chatViewRef.current?.removeEventListener("scroll", handleChatViewScroll);
+      conversationViewRef.current?.removeEventListener("scroll", handleConversationViewScroll);
     };
   }, []);
 
   useEffect(() => {
-    if (!chatViewRef.current) {
+    if (!conversationViewRef.current) {
       return;
     }
-    chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
-  }, [currentChat, lastMessage?.id]);
+    conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
+  }, [currentConversation, lastMessage?.id]);
 
   useEffect(() => {
-    if (!chatViewRef.current) {
+    if (!conversationViewRef.current) {
       return;
     }
 
     if (lastMessage?.status === "LOADING" && isStickyAtBottom) {
-      chatViewRef.current.scrollTop = chatViewRef.current.scrollHeight;
+      conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
     }
   }, [lastMessage?.status, lastMessage?.content, isStickyAtBottom]);
 
   useEffect(() => {
     if (
-      currentChat?.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
-      currentChat?.databaseName === connectionStore.currentConnectionCtx?.database?.name
+      currentConversation?.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+      currentConversation?.databaseName === connectionStore.currentConnectionCtx?.database?.name
     ) {
       return;
     }
 
-    // Auto select the first chat when the current connection changes.
-    const chatList = chatStore.chatList.filter(
-      (chat) =>
-        chat.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
-        chat.databaseName === connectionStore.currentConnectionCtx?.database?.name
+    // Auto select the first conversation when the current connection changes.
+    const conversationList = conversationStore.conversationList.filter(
+      (conversation) =>
+        conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+        conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
-    chatStore.setCurrentChat(head(chatList));
-  }, [currentChat, connectionStore.currentConnectionCtx]);
+    conversationStore.setCurrentConversation(head(conversationList));
+  }, [currentConversation, connectionStore.currentConnectionCtx]);
 
-  const sendMessageToCurrentChat = async () => {
-    const currentChat = chatStore.getState().currentChat;
-    if (!currentChat) {
+  const sendMessageToCurrentConversation = async () => {
+    const currentConversation = conversationStore.getState().currentConversation;
+    if (!currentConversation) {
       return;
     }
     if (lastMessage?.status === "LOADING") {
       return;
     }
 
-    const messageList = messageStore.getState().messageList.filter((message) => message.chatId === currentChat.id);
+    const messageList = messageStore.getState().messageList.filter((message) => message.conversationId === currentConversation.id);
     let prompt = "";
     let tokens = 0;
 
     const message: Message = {
       id: generateUUID(),
-      chatId: currentChat.id,
-      creatorId: currentChat.assistantId,
+      conversationId: currentConversation.id,
+      creatorId: currentConversation.assistantId,
       creatorRole: CreatorRole.Assistant,
       createdAt: Date.now(),
       content: "",
@@ -126,7 +128,7 @@ const ChatView = () => {
       } catch (error: any) {
         toast.error(error.message);
       }
-      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentChat.assistantId)!);
+      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
       prompt = promptGenerator(schema);
     }
     let formatedMessageList = [];
@@ -197,7 +199,7 @@ const ChatView = () => {
 
   return (
     <main
-      ref={chatViewRef}
+      ref={conversationViewRef}
       className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
     >
       <div className="sticky top-0 z-1 bg-white w-full flex flex-col justify-start items-start">
@@ -206,16 +208,16 @@ const ChatView = () => {
       </div>
       <div className="p-2 w-full h-auto grow max-w-4xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
-          <EmptyView className="mt-16" sendMessage={sendMessageToCurrentChat} />
+          <EmptyView className="mt-16" sendMessage={sendMessageToCurrentConversation} />
         ) : (
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
       </div>
       <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
-        <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentChat} />
+        <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
     </main>
   );
 };
 
-export default ChatView;
+export default ConversationView;

@@ -9,9 +9,9 @@
     "copy": "复制",
     "delete": "删除"
   },
-  "chat": {
-    "new": "新建会话",
-    "chat-title": "会话标题",
+  "conversation": {
+    "new-chat": "新建会话",
+    "conversation-title": "会话标题",
     "edit-title": "编辑会话标题"
   },
   "connection": {

@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useChatStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
 import { Message } from "@/types";
 import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
@@ -20,13 +20,13 @@ const MessageView = (props: Props) => {
   const message = props.message;
   const { t } = useTranslation();
   const userStore = useUserStore();
-  const chatStore = useChatStore();
+  const conversationStore = useConversationStore();
   const connectionStore = useConnectionStore();
   const messageStore = useMessageStore();
   const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isCurrentUser = message.creatorId === userStore.currentUser.id;
   const showMenu = Boolean(menuAnchorEl);
-  const connection = connectionStore.getConnectionById(chatStore.getChatById(message.chatId)?.connectionId || "");
+  const connection = connectionStore.getConnectionById(conversationStore.getConversationById(message.conversationId)?.connectionId || "");
 
   const handleMoreMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (menuAnchorEl) {

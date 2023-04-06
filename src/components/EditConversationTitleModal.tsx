@@ -1,20 +1,20 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useChatStore } from "@/store";
-import { Chat } from "@/types";
+import { useConversationStore } from "@/store";
+import { Conversation } from "@/types";
 import Icon from "./Icon";
 
 interface Props {
-  chat: Chat;
+  conversation: Conversation;
   close: () => void;
 }
 
-const EditMessageTitleModal = (props: Props) => {
-  const { close, chat } = props;
+const EditConversationTitleModal = (props: Props) => {
+  const { close, conversation } = props;
   const { t } = useTranslation();
-  const chatStore = useChatStore();
-  const [title, setTitle] = useState(chat.title);
+  const conversationStore = useConversationStore();
+  const [title, setTitle] = useState(conversation.title);
   const allowSave = title !== "";
 
   const handleSaveEdit = () => {
@@ -23,24 +23,24 @@ const EditMessageTitleModal = (props: Props) => {
       return;
     }
 
-    chatStore.updateChat(chat.id, {
+    conversationStore.updateConversation(conversation.id, {
       title: formatedTitle,
     });
-    toast.success("Chat title updated");
+    toast.success("Conversation title updated");
     close();
   };
 
   return (
     <div className="modal modal-middle modal-open">
       <div className="modal-box relative">
-        <h3 className="font-bold text-lg">{t("chat.edit-title")}</h3>
+        <h3 className="font-bold text-lg">{t("conversation.edit-title")}</h3>
         <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
           <input
             type="text"
-            placeholder={t("chat.chat-title") || ""}
+            placeholder={t("conversation.conversation-title") || ""}
             className="input input-bordered w-full"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -59,4 +59,4 @@ const EditMessageTitleModal = (props: Props) => {
   );
 };
 
-export default EditMessageTitleModal;
+export default EditConversationTitleModal;

@@ -9,10 +9,10 @@
     "copy": "Copy",
     "delete": "Delete"
   },
-  "chat": {
-    "new": "New Chat",
-    "chat-title": "Chat title",
-    "edit-title": "Edit chat title"
+  "conversation": {
+    "new-chat": "New Chat",
+    "conversation-title": "Conversation title",
+    "edit-title": "Edit conversation title"
   },
   "connection": {
     "self": "Connection",
