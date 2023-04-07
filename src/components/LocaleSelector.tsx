@@ -9,7 +9,7 @@ const LocaleSelector = () => {
   };
 
   return (
-    <select className="select select-bordered !h-auto !min-h-fit" value={locale} onChange={handleLocaleChange}>
+    <select className="select select-bordered select-sm" value={locale} onChange={handleLocaleChange}>
       <option value="en">English</option>
       <option value="zh">简体中文</option>
     </select>
