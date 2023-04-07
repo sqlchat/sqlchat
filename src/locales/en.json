@@ -17,7 +17,7 @@
   "connection": {
     "self": "Connection",
     "new": "Create Connection",
-    "select-database": "Select your database:"
+    "select-database": "Select your database"
   },
   "execution": {
     "title": "Execute query",
@@ -29,6 +29,20 @@
   },
   "editor": {
     "placeholder": "Enter your question here..."
+  },
+  "setting": {
+    "self": "Setting",
+    "basic": {
+      "self": "Basic",
+      "language": "Language"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI API configuration"
+    },
+    "data": {
+      "self": "Data",
+      "clear-all-data": "Clear all data"
+    }
   },
   "social": {
     "join-discord-channel": "Join Discord Channel",

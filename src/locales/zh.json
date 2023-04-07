@@ -17,7 +17,7 @@
   "connection": {
     "self": "连接",
     "new": "创建连接",
-    "select-database": "选择您的数据库："
+    "select-database": "选择数据库"
   },
   "execution": {
     "title": "执行查询",
@@ -29,6 +29,20 @@
   },
   "editor": {
     "placeholder": "在此输入您的问题..."
+  },
+  "setting": {
+    "self": "设置",
+    "basic": {
+      "self": "基础",
+      "language": "语言"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI API 配置"
+    },
+    "data": {
+      "self": "数据",
+      "clear-all-data": "清除所有数据"
+    }
   },
   "social": {
     "join-discord-channel": "加入 Discord 频道",

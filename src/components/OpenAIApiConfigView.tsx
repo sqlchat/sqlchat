@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDebounce } from "react-use";
 import { useSettingStore } from "@/store";
 import { OpenAIApiConfig } from "@/types";
 
 const OpenAIApiConfigView = () => {
+  const { t } = useTranslation();
   const settingStore = useSettingStore();
   const [openAIApiConfig, setOpenAIApiConfig] = useState(settingStore.setting.openAIApiConfig);
 
@@ -24,7 +26,7 @@ const OpenAIApiConfigView = () => {
 
   return (
     <>
-      <h3>OpenAI API configuration</h3>
+      <h3 className="pl-4 text-sm text-gray-500">{t("setting.openai-api-configuration.self")}</h3>
       <div className="w-full border border-gray-200 p-4 rounded-lg">
         <div className="flex flex-col">
           <label htmlFor="openai-api-key">Key</label>

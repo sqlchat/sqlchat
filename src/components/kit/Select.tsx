@@ -18,10 +18,10 @@ const Select = (props: Props) => {
 
   return (
     <SelectUI.Root value={value} onValueChange={onValueChange}>
-      <SelectUI.Trigger className={`${className || ""} flex flex-row justify-between items-center border px-2 py-1 rounded-lg`}>
+      <SelectUI.Trigger className={`${className || ""} flex flex-row justify-between items-center border px-3 py-2 rounded-lg`}>
         <SelectUI.Value placeholder={placeholder} />
-        <SelectUI.Icon className="w-5 h-auto">
-          <Icon.BiChevronRight className="w-full h-auto opacity-60" />
+        <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
+          <Icon.BiChevronDown className="w-full h-auto opacity-60" />
         </SelectUI.Icon>
       </SelectUI.Trigger>
       <SelectUI.Portal>
@@ -34,7 +34,7 @@ const Select = (props: Props) => {
         >
           <SelectUI.Viewport className="bg-white border shadow p-1 rounded-lg">
             <SelectUI.Group>
-              {placeholder && <SelectUI.Label className="w-full px-2 py-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
+              {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (
                 <SelectItem key={item.label} value={item.value}>
                   {item.label}
@@ -50,15 +50,17 @@ const Select = (props: Props) => {
 
 interface SelectItemProps {
   value: string;
+  children: ReactNode;
   disabled?: boolean;
-  children?: ReactNode;
+  className?: string;
 }
-export type Ref = HTMLDivElement;
 
-const SelectItem = forwardRef<Ref, SelectItemProps>(({ children, ...props }, forwardedRef) => {
+const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(({ children, className, ...props }, forwardedRef) => {
   return (
     <SelectUI.Item
-      className="w-full px-2 py-1 rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100"
+      className={`${
+        className || ""
+      } w-full px-3 py-2 rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100`}
       {...props}
       ref={forwardedRef}
     >

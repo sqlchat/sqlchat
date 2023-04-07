@@ -191,7 +191,7 @@ const ConnectionSidebar = () => {
                 </div>
               )}
               {databaseList.length > 0 && (
-                <div className="w-full sticky top-0 z-1 mb-4 mt-2">
+                <div className="w-full sticky top-0 z-1 my-4">
                   <Select
                     className="w-full bg-white px-4 py-3"
                     value={currentConnectionCtx?.database?.name}

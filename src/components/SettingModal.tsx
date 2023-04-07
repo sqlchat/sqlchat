@@ -17,7 +17,7 @@ const SettingModal = (props: Props) => {
   return (
     <div className={`modal modal-middle ${show && "modal-open"}`}>
       <div className="modal-box relative">
-        <h3 className="font-bold text-lg">Setting</h3>
+        <h3 className="font-bold text-lg">{t("setting.self")}</h3>
         <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
@@ -34,19 +34,20 @@ const SettingModal = (props: Props) => {
             <WeChatQRCodeView />
           </div>
 
+          <h3 className="pl-4 text-sm text-gray-500">{t("setting.basic.self")}</h3>
           <div className="w-full border border-gray-200 p-4 rounded-lg">
             <div className="w-full flex flex-row justify-between items-center gap-2">
-              <span>Language</span>
+              <span>{t("setting.basic.language")}</span>
               <LocaleSelector />
             </div>
           </div>
 
           <OpenAIApiConfigView />
 
-          <h3>Danger Zone</h3>
+          <h3 className="pl-4 text-sm text-gray-500">{t("setting.data.self")}</h3>
           <div className="w-full border border-red-200 p-4 rounded-lg">
             <div className="w-full flex flex-row justify-between items-center gap-2">
-              <span>Clear all data</span>
+              <span>{t("setting.data.clear-all-data")}</span>
               <ClearDataButton />
             </div>
           </div>
