@@ -1,3 +1,4 @@
+import { merge } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Setting } from "@/types";
@@ -5,12 +6,17 @@ import { Setting } from "@/types";
 const getDefaultSetting = (): Setting => {
   return {
     locale: "en",
+    openAIApiConfig: {
+      key: "",
+      endpoint: "",
+    },
   };
 };
 
 interface SettingState {
   setting: Setting;
   setLocale: (locale: Setting["locale"]) => void;
+  setOpenAIApiConfig: (openAIApiConfig: Setting["openAIApiConfig"]) => void;
 }
 
 export const useSettingStore = create<SettingState>()(
@@ -26,9 +32,18 @@ export const useSettingStore = create<SettingState>()(
           },
         });
       },
+      setOpenAIApiConfig: (openAIApiConfig: Setting["openAIApiConfig"]) => {
+        set({
+          setting: {
+            ...get().setting,
+            openAIApiConfig,
+          },
+        });
+      },
     }),
     {
       name: "setting-storage",
+      merge: (persistedState, currentState) => merge(currentState, persistedState),
     }
   )
 );

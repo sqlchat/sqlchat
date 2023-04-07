@@ -6,14 +6,19 @@ export const config = {
   runtime: "edge",
 };
 
-const apiEndpoint = new URL(`${openAIApiEndpoint}/v1/chat/completions`);
+const getApiEndpoint = (apiEndpoint: string) => {
+  return new URL(`${apiEndpoint}/v1/chat/completions`);
+};
 
 const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
+  const openAIApiConfig = reqBody.openAIApiConfig;
+  const apiKey = openAIApiConfig?.key || openAIApiKey;
+  const apiEndpoint = getApiEndpoint(openAIApiConfig?.endpoint || openAIApiEndpoint);
   const res = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${openAIApiKey}`,
+      Authorization: `Bearer ${apiKey}`,
     },
     method: "POST",
     body: JSON.stringify({

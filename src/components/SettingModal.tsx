@@ -3,6 +3,7 @@ import Icon from "./Icon";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
+import OpenAIApiConfigView from "./OpenAIApiConfigView";
 
 interface Props {
   show: boolean;
@@ -39,6 +40,8 @@ const SettingModal = (props: Props) => {
               <LocaleSelector />
             </div>
           </div>
+
+          <OpenAIApiConfigView />
 
           <h3>Danger Zone</h3>
           <div className="w-full border border-red-200 p-4 rounded-lg">

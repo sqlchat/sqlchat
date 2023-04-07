@@ -1,7 +1,14 @@
 import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { getAssistantById, getPromptGeneratorOfAssistant, useConversationStore, useMessageStore, useConnectionStore } from "@/store";
+import {
+  getAssistantById,
+  getPromptGeneratorOfAssistant,
+  useConversationStore,
+  useMessageStore,
+  useConnectionStore,
+  useSettingStore,
+} from "@/store";
 import { CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
@@ -15,6 +22,7 @@ import DataStorageBanner from "../DataStorageBanner";
 const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
+  const settingStore = useSettingStore();
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
   const messageStore = useMessageStore();
@@ -151,6 +159,7 @@ const ConversationView = () => {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
+        openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
     });
 
