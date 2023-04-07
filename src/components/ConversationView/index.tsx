@@ -8,6 +8,7 @@ import {
   useMessageStore,
   useConnectionStore,
   useSettingStore,
+  useLayoutStore,
 } from "@/store";
 import { CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
@@ -23,6 +24,7 @@ const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
   const settingStore = useSettingStore();
+  const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
   const messageStore = useMessageStore();
@@ -207,9 +209,11 @@ const ConversationView = () => {
   };
 
   return (
-    <main
+    <div
       ref={conversationViewRef}
-      className="drawer-content relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white"
+      className={`${
+        layoutStore.showSidebar && "sm:pl-80"
+      } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white transition-all duration-300`}
     >
       <div className="sticky top-0 z-1 bg-white w-full flex flex-col justify-start items-start">
         <DataStorageBanner />
@@ -225,7 +229,7 @@ const ConversationView = () => {
       <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
-    </main>
+    </div>
   );
 };
 

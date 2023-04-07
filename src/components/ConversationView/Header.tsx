@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useConversationStore } from "@/store";
+import { useConversationStore, useLayoutStore } from "@/store";
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
 
@@ -9,6 +9,7 @@ interface Props {
 
 const Header = (props: Props) => {
   const { className } = props;
+  const layoutStore = useLayoutStore();
   const conversationStore = useConversationStore();
   const currentConversation = conversationStore.currentConversation;
   const title = currentConversation?.title || "SQL Chat";
@@ -24,9 +25,12 @@ const Header = (props: Props) => {
       } w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b z-1 transition-all duration-300`}
     >
       <div className="ml-2 flex justify-start items-center">
-        <label htmlFor="connection-drawer" className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100">
+        <button
+          className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100"
+          onClick={() => layoutStore.toggleSidebar()}
+        >
           <Icon.IoIosMenu className="text-gray-600 w-full h-auto" />
-        </label>
+        </button>
         <span className="w-auto text-left block lg:hidden">{title}</span>
         <GitHubStarBadge className="hidden lg:flex ml-2" />
       </div>

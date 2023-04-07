@@ -1,8 +1,9 @@
+import { Drawer } from "@mui/material";
 import { head } from "lodash-es";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
-import { useConversationStore, useConnectionStore, useLayoutStore } from "@/store";
+import { useConversationStore, useConnectionStore, useLayoutStore, ResponsiveWidth } from "@/store";
 import { Conversation, Connection } from "@/types";
 import Select from "./kit/Select";
 import Icon from "./Icon";
@@ -39,6 +40,25 @@ const ConnectionSidebar = () => {
       conversation.connectionId === currentConnectionCtx?.connection.id &&
       conversation.databaseName === currentConnectionCtx?.database?.name
   );
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      if (window.innerWidth < ResponsiveWidth.sm) {
+        layoutStore.toggleSidebar(false);
+        layoutStore.setIsMobileView(true);
+      } else {
+        layoutStore.toggleSidebar(true);
+        layoutStore.setIsMobileView(false);
+      }
+    };
+
+    handleWindowResize();
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (currentConnectionCtx?.connection) {
@@ -112,7 +132,9 @@ const ConnectionSidebar = () => {
 
   const handleConversationSelect = (conversation: Conversation) => {
     conversationStore.setCurrentConversation(conversation);
-    layoutStore.toggleSidebar(false);
+    if (layoutStore.isMobileView) {
+      layoutStore.toggleSidebar(false);
+    }
   };
 
   const handleEditConversationTitle = (conversation: Conversation) => {
@@ -132,8 +154,11 @@ const ConnectionSidebar = () => {
 
   return (
     <>
-      <aside className="drawer-side">
-        <label htmlFor="connection-drawer" className="drawer-overlay"></label>
+      <Drawer
+        variant={layoutStore.isMobileView ? "temporary" : "persistent"}
+        open={layoutStore.showSidebar}
+        onClose={() => layoutStore.toggleSidebar(false)}
+      >
         <div className="w-80 h-full overflow-y-hidden border-r flex flex-row justify-start items-start">
           <div className="w-16 h-full bg-gray-200 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
             <div className="w-full flex flex-col justify-start items-start">
@@ -258,7 +283,7 @@ const ConnectionSidebar = () => {
             </div>
           </div>
         </div>
-      </aside>
+      </Drawer>
 
       {createPortal(
         <CreateConnectionModal
