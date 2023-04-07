@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useConversationStore, useConnectionStore, useLayoutStore } from "@/store";
 import { Conversation, Connection } from "@/types";
+import Select from "./kit/Select";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import LocaleSwitch from "./LocaleSwitch";
@@ -191,18 +192,18 @@ const ConnectionSidebar = () => {
               )}
               {databaseList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 mb-4 mt-2">
-                  <p className="text-sm leading-6 mb-1 text-gray-500">{t("connection.select-database")}</p>
-                  <select
-                    className="w-full select select-bordered"
+                  <Select
+                    className="w-full bg-white px-4 py-3"
                     value={currentConnectionCtx?.database?.name}
-                    onChange={(e) => handleDatabaseNameSelect(e.target.value)}
-                  >
-                    {databaseList.map((database) => (
-                      <option key={database.name} value={database.name}>
-                        {database.name}
-                      </option>
-                    ))}
-                  </select>
+                    itemList={databaseList.map((database) => {
+                      return {
+                        label: database.name,
+                        value: database.name,
+                      };
+                    })}
+                    onValueChange={(databaseName) => handleDatabaseNameSelect(databaseName)}
+                    placeholder={t("connection.select-database") || ""}
+                  />
                 </div>
               )}
               {conversationList.map((conversation) => (

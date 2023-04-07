@@ -1,19 +1,32 @@
 import { useSettingStore } from "@/store";
+import { Locale } from "@/types";
+import Select from "./kit/Select";
+
+interface LocaleItem {
+  value: Locale;
+  label: string;
+}
+
+const localeItemList: LocaleItem[] = [
+  {
+    value: "en",
+    label: "English",
+  },
+  {
+    value: "zh",
+    label: "中文",
+  },
+];
 
 const LocaleSelector = () => {
   const settingStore = useSettingStore();
   const locale = settingStore.setting.locale;
 
-  const handleLocaleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    settingStore.setLocale(event.target.value as any);
+  const handleLocaleChange = (locale: Locale) => {
+    settingStore.setLocale(locale);
   };
 
-  return (
-    <select className="select select-bordered select-sm" value={locale} onChange={handleLocaleChange}>
-      <option value="en">English</option>
-      <option value="zh">简体中文</option>
-    </select>
-  );
+  return <Select className="w-24" value={locale} itemList={localeItemList} onValueChange={handleLocaleChange} />;
 };
 
 export default LocaleSelector;

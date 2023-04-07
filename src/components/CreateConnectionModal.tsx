@@ -5,6 +5,7 @@ import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { useConnectionStore } from "@/store";
 import { Connection, Engine, ResponseObject } from "@/types";
+import Select from "./kit/Select";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
@@ -217,14 +218,15 @@ const CreateConnectionModal = (props: Props) => {
             <DataStorageBanner className="rounded-lg bg-white border py-2 !justify-start" alwaysShow={true} />
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
-              <select
-                className="select select-bordered w-full"
+              <Select
+                className="w-full px-4 py-3"
                 value={connection.engineType}
-                onChange={(e) => setPartialConnection({ engineType: e.target.value as Engine })}
-              >
-                <option value={Engine.MySQL}>MySQL</option>
-                <option value={Engine.PostgreSQL}>PostgreSQL</option>
-              </select>
+                itemList={[
+                  { value: Engine.MySQL, label: "MySQL" },
+                  { value: Engine.PostgreSQL, label: "PostgreSQL" },
+                ]}
+                onValueChange={(value) => setPartialConnection({ engineType: value as Engine })}
+              />
             </div>
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Host</label>
