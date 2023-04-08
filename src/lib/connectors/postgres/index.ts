@@ -38,12 +38,20 @@ const execute = async (connection: Connection, _: string, statement: string): Pr
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const client = newPostgresClient(connection);
   await client.connect();
+  const { rows } = await client.query(`SELECT datname FROM pg_database;`);
   await client.end();
-  // Because PostgreSQL needs to specify a database to connect to, we use the default database.
-  return [connection.database!];
+  const databaseList = [];
+  for (const row of rows) {
+    if (row["datname"]) {
+      databaseList.push(row["datname"]);
+    }
+  }
+  await client.end();
+  return databaseList;
 };
 
 const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+  connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
   const { rows } = await client.query(
@@ -60,7 +68,8 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, _: string, tableName: string): Promise<string> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
+  connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
   const { rows } = await client.query(
