@@ -38,6 +38,11 @@ const execute = async (connection: Connection, _: string, statement: string): Pr
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const client = newPostgresClient(connection);
   await client.connect();
+  if (connection.database) {
+    await client.end();
+    return [connection.database];
+  }
+
   const { rows } = await client.query(`SELECT datname FROM pg_database;`);
   await client.end();
   const databaseList = [];
