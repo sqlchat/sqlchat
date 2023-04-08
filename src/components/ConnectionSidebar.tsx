@@ -155,6 +155,7 @@ const ConnectionSidebar = () => {
   return (
     <>
       <Drawer
+        className="!z-10"
         variant={layoutStore.isMobileView ? "temporary" : "persistent"}
         open={layoutStore.showSidebar}
         onClose={() => layoutStore.toggleSidebar(false)}
