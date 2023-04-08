@@ -159,7 +159,7 @@ const ConnectionSidebar = () => {
         open={layoutStore.showSidebar}
         onClose={() => layoutStore.toggleSidebar(false)}
       >
-        <div className="w-80 h-full overflow-y-hidden border-r flex flex-row justify-start items-start">
+        <div className="w-80 h-full overflow-y-hidden flex flex-row justify-start items-start">
           <div className="w-16 h-full bg-gray-200 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
             <div className="w-full flex flex-col justify-start items-start">
               <button
