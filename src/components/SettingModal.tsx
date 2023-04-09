@@ -24,7 +24,7 @@ const SettingModal = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
           <div className="w-full flex flex-row justify-start items-start flex-wrap">
             <a
-              href="https://discord.gg/6R3qb32h"
+              href="https://discord.gg/z6kakemDjm"
               className="w-auto px-4 py-2 rounded-full bg-indigo-600 text-white text-sm font-medium flex flex-row justify-center items-center mr-2 mb-2 hover:underline hover:shadow"
               target="_blank"
             >
