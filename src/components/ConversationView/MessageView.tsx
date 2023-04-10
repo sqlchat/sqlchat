@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import { useConversationStore, useConnectionStore, useMessageStore, useUserStore, useSettingStore } from "@/store";
 import { Message } from "@/types";
 import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
@@ -19,6 +19,7 @@ interface Props {
 const MessageView = (props: Props) => {
   const message = props.message;
   const { t } = useTranslation();
+  const settingStore = useSettingStore();
   const userStore = useUserStore();
   const conversationStore = useConversationStore();
   const connectionStore = useConnectionStore();
@@ -106,7 +107,9 @@ const MessageView = (props: Props) => {
                 >
                   {message.content}
                 </ReactMarkdown>
-                <span className="self-end text-sm text-gray-400 pt-1 pr-1">{dayjs(message.createdAt).format("lll")}</span>
+                <span className="self-end text-sm text-gray-400 pt-1 pr-1">
+                  {dayjs(message.createdAt).locale(settingStore.setting.locale).format("lll")}
+                </span>
               </div>
               <div className={`invisible group-hover:visible ${showMenu && "!visible"}`}>
                 <button

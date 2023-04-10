@@ -5,8 +5,10 @@ import { AppProps } from "next/app";
 import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-dayjs.extend(localizedFormat);
 import { useSettingStore } from "@/store";
+
+dayjs.extend(localizedFormat);
+import "dayjs/locale/zh";
 
 import "@/locales/i18n";
 import "@/styles/tailwind.css";
