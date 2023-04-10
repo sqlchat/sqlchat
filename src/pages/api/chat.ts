@@ -7,7 +7,9 @@ export const config = {
 };
 
 const getApiEndpoint = (apiEndpoint: string) => {
-  return new URL(`${apiEndpoint}/v1/chat/completions`);
+  const url = new URL(apiEndpoint);
+  url.pathname = '/v1/chat/completions';
+  return url;
 };
 
 const handler = async (req: NextRequest) => {
