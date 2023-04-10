@@ -1,18 +1,21 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
-    "beforeBuildCommand": "npm run build",
+    "beforeBuildCommand": "npm run build && npm run export",
     "beforeDevCommand": "npm run dev",
     "devPath": "http://localhost:3000",
-    "distDir": "../.next"
+    "distDir": "../out"
   },
   "package": {
-    "productName": "sqlchat",
+    "productName": "SQL Chat",
     "version": "0.1.0"
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": false,
+      "http": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
@@ -23,7 +26,7 @@
       },
       "externalBin": [],
       "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.sqlchat.ai",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -33,7 +36,7 @@
         "signingIdentity": null
       },
       "resources": [],
-      "shortDescription": "",
+      "shortDescription": "SQL Chat",
       "targets": "all",
       "windows": {
         "certificateThumbprint": null,
