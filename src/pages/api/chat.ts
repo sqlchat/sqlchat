@@ -8,7 +8,7 @@ export const config = {
 
 const getApiEndpoint = (apiEndpoint: string) => {
   const url = new URL(apiEndpoint);
-  url.pathname = '/v1/chat/completions';
+  url.pathname += 'v1/chat/completions';
   return url;
 };
 
@@ -16,7 +16,10 @@ const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
   const openAIApiConfig = reqBody.openAIApiConfig;
   const apiKey = openAIApiConfig?.key || openAIApiKey;
-  const apiEndpoint = getApiEndpoint(openAIApiConfig?.endpoint || openAIApiEndpoint);
+  const endpoint = openAIApiConfig?.endpoint ?? openAIApiEndpoint;
+  const url = new URL(req.url);
+  const finalEndpoint = endpoint === '/' ? url.origin : endpoint ;
+  const apiEndpoint = getApiEndpoint(finalEndpoint);
   const res = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
