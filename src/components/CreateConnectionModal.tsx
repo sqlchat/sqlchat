@@ -330,7 +330,7 @@ const CreateConnectionModal = (props: Props) => {
         <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">
           <div>
             {isEditing && (
-              <button className="btn btn-ghost" onClick={() => setShowDeleteConnectionModal(true)}>
+              <button className="btn btn-outline" onClick={() => setShowDeleteConnectionModal(true)}>
                 Delete
               </button>
             )}
@@ -339,7 +339,7 @@ const CreateConnectionModal = (props: Props) => {
             <button className="btn btn-outline" onClick={close}>
               Close
             </button>
-            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
+            <button className="btn btn-primary" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
               {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
               Save
             </button>

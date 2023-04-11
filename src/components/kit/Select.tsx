@@ -26,7 +26,7 @@ const Select = (props: Props) => {
       </SelectUI.Trigger>
       <SelectUI.Portal>
         <SelectUI.Content
-          className="z-[999999] -mt-px"
+          className="z-[999] -mt-px"
           style={{
             width: "var(--radix-select-trigger-width)",
           }}

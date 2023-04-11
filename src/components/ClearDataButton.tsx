@@ -8,7 +8,7 @@ const ClearDataButton = () => {
 
   return (
     <>
-      <button className="btn btn-sm btn-error" onClick={() => setShowClearDataConfirmModal(true)}>
+      <button className="btn btn-error" onClick={() => setShowClearDataConfirmModal(true)}>
         {t("common.clear")}
       </button>
 
