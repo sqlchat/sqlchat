@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Icon from "./Icon";
+import Dialog from "./kit/Dialog";
 
 export interface ActionConfirmModalProps {
   title: string;
@@ -14,31 +14,25 @@ const ActionConfirmModal = (props: ActionConfirmModalProps) => {
   const { t } = useTranslation();
 
   return (
-    <div className="modal modal-middle modal-open">
-      <div className="modal-box relative">
-        <h3 className="font-bold text-lg">{title}</h3>
-        <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
-          <Icon.IoMdClose className="w-5 h-auto" />
-        </button>
-        <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-          <p className="text-gray-500">{content}</p>
-        </div>
-        <div className="modal-action">
-          <button className="btn btn-outline" onClick={close}>
-            {t("common.close")}
-          </button>
-          <button
-            className={`btn ${confirmButtonStyle}`}
-            onClick={() => {
-              confirm();
-              close();
-            }}
-          >
-            {t("common.confirm")}
-          </button>
-        </div>
+    <Dialog title={title} onClose={close}>
+      <div className="w-full flex flex-col justify-start items-start mt-2">
+        <p className="text-gray-500">{content}</p>
       </div>
-    </div>
+      <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+        <button className="btn btn-outline" onClick={close}>
+          {t("common.close")}
+        </button>
+        <button
+          className={`btn ${confirmButtonStyle}`}
+          onClick={() => {
+            confirm();
+            close();
+          }}
+        >
+          {t("common.confirm")}
+        </button>
+      </div>
+    </Dialog>
   );
 };
 

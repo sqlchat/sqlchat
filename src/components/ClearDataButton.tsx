@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import ClearDataConfirmModal from "./ClearDataConfirmModal";
 
@@ -13,8 +12,7 @@ const ClearDataButton = () => {
         {t("common.clear")}
       </button>
 
-      {showClearDataConfirmModal &&
-        createPortal(<ClearDataConfirmModal close={() => setShowClearDataConfirmModal(false)} />, document.body)}
+      {showClearDataConfirmModal && <ClearDataConfirmModal close={() => setShowClearDataConfirmModal(false)} />}
     </>
   );
 };

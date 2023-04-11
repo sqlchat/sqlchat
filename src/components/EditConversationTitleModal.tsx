@@ -3,8 +3,8 @@ import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useConversationStore } from "@/store";
 import { Conversation } from "@/types";
-import Icon from "./Icon";
 import TextField from "./kit/TextField";
+import Dialog from "./kit/Dialog";
 
 interface Props {
   conversation: Conversation;
@@ -32,25 +32,19 @@ const EditConversationTitleModal = (props: Props) => {
   };
 
   return (
-    <div className="modal modal-middle modal-open">
-      <div className="modal-box relative">
-        <h3 className="font-bold text-lg">{t("conversation.edit-title")}</h3>
-        <button className="btn btn-sm btn-circle absolute right-4 top-4" onClick={close}>
-          <Icon.IoMdClose className="w-5 h-auto" />
-        </button>
-        <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-          <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
-        </div>
-        <div className="modal-action">
-          <button className="btn btn-outline" onClick={close}>
-            {t("common.close")}
-          </button>
-          <button className="btn" disabled={!allowSave} onClick={handleSaveEdit}>
-            {t("common.save")}
-          </button>
-        </div>
+    <Dialog title={t("conversation.edit-title")} onClose={close}>
+      <div className="w-full flex flex-col justify-start items-start mt-2">
+        <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
       </div>
-    </div>
+      <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+        <button className="btn btn-outline" onClick={close}>
+          {t("common.close")}
+        </button>
+        <button className="btn" disabled={!allowSave} onClick={handleSaveEdit}>
+          {t("common.save")}
+        </button>
+      </div>
+    </Dialog>
   );
 };
 

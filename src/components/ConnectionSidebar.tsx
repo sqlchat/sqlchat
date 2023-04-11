@@ -1,7 +1,6 @@
 import { Drawer } from "@mui/material";
 import { head } from "lodash-es";
 import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
 import { useTranslation } from "react-i18next";
 import { useConversationStore, useConnectionStore, useLayoutStore, ResponsiveWidth } from "@/store";
 import { Conversation, Connection } from "@/types";
@@ -290,26 +289,18 @@ const ConnectionSidebar = () => {
         </div>
       </Drawer>
 
-      {createPortal(
-        <CreateConnectionModal
-          show={state.showCreateConnectionModal}
-          connection={editConnectionModalContext}
-          close={() => toggleCreateConnectionModal(false)}
-        />,
-        document.body
+      {state.showCreateConnectionModal && (
+        <CreateConnectionModal connection={editConnectionModalContext} close={() => toggleCreateConnectionModal(false)} />
       )}
 
-      {createPortal(<SettingModal show={state.showSettingModal} close={() => toggleSettingModal(false)} />, document.body)}
+      {state.showSettingModal && <SettingModal close={() => toggleSettingModal(false)} />}
 
-      {state.showEditConversationTitleModal &&
-        editConversationTitleModalContext &&
-        createPortal(
-          <EditConversationTitleModal
-            close={() => toggleEditConversationTitleModal(false)}
-            conversation={editConversationTitleModalContext}
-          />,
-          document.body
-        )}
+      {state.showEditConversationTitleModal && editConversationTitleModalContext && (
+        <EditConversationTitleModal
+          close={() => toggleEditConversationTitleModal(false)}
+          conversation={editConversationTitleModalContext}
+        />
+      )}
     </>
   );
 };
