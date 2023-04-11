@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useConversationStore, useConnectionStore, useLayoutStore, ResponsiveWidth } from "@/store";
 import { Conversation, Connection } from "@/types";
 import Select from "./kit/Select";
+import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import LocaleSwitch from "./LocaleSwitch";
@@ -189,23 +190,26 @@ const ConnectionSidebar = () => {
                   <EngineIcon engine={connection.engineType} className="w-auto h-full mx-auto" />
                 </button>
               ))}
-              <button
-                className="tooltip tooltip-right w-10 h-10 mt-4 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
-                data-tip={t("connection.new")}
-                onClick={() => toggleCreateConnectionModal(true)}
-              >
-                <Icon.AiOutlinePlus className="w-auto h-full mx-auto" />
-              </button>
+              <Tooltip title={t("connection.new")} side="right">
+                <button
+                  className="w-10 h-10 mt-4 ml-2 p-2 bg-gray-100 rounded-full text-gray-500 cursor-pointer"
+                  onClick={() => toggleCreateConnectionModal(true)}
+                >
+                  <Icon.AiOutlinePlus className="w-auto h-full mx-auto" />
+                </button>
+              </Tooltip>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
               <LocaleSwitch />
-              <button
-                className="tooltip tooltip-right w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
-                data-tip={t("common.setting")}
-                onClick={() => toggleSettingModal(true)}
-              >
-                <Icon.IoMdSettings className="text-gray-600 w-6 h-auto" />
-              </button>
+              <Tooltip title={t("common.setting")} side="right">
+                <button
+                  className=" w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
+                  data-tip={t("common.setting")}
+                  onClick={() => toggleSettingModal(true)}
+                >
+                  <Icon.IoMdSettings className="text-gray-600 w-6 h-auto" />
+                </button>
+              </Tooltip>
             </div>
           </div>
           <div className="relative p-4 pb-0 w-64 h-full overflow-y-auto flex flex-col justify-start items-start bg-gray-100">
