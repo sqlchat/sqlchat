@@ -9,6 +9,7 @@ import Select from "./kit/Select";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
+import TextField from "./kit/TextField";
 
 interface Props {
   show: boolean;
@@ -219,7 +220,7 @@ const CreateConnectionModal = (props: Props) => {
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
               <Select
-                className="w-full px-4 py-3"
+                className="w-full"
                 value={connection.engineType}
                 itemList={[
                   { value: Engine.MySQL, label: "MySQL" },
@@ -230,54 +231,36 @@ const CreateConnectionModal = (props: Props) => {
             </div>
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Host</label>
-              <input
-                type="text"
-                placeholder="Connect host"
-                className="input input-bordered w-full"
-                value={connection.host}
-                onChange={(e) => setPartialConnection({ host: e.target.value })}
-              />
+              <TextField placeholder="Connect host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
             </div>
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Port</label>
-              <input
-                type="text"
-                placeholder="Connect port"
-                className="input input-bordered w-full"
-                value={connection.port}
-                onChange={(e) => setPartialConnection({ port: e.target.value })}
-              />
+              <TextField placeholder="Connect port" value={connection.port} onChange={(value) => setPartialConnection({ port: value })} />
             </div>
             {showDatabaseField && (
               <div className="w-full flex flex-col">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Database Name</label>
-                <input
-                  type="text"
+                <TextField
                   placeholder="Connect database"
-                  className="input input-bordered w-full"
-                  value={connection.database}
-                  onChange={(e) => setPartialConnection({ database: e.target.value })}
+                  value={connection.database || ""}
+                  onChange={(value) => setPartialConnection({ database: value })}
                 />
               </div>
             )}
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
-              <input
-                type="text"
+              <TextField
                 placeholder="Connect username"
-                className="input input-bordered w-full"
-                value={connection.username}
-                onChange={(e) => setPartialConnection({ username: e.target.value })}
+                value={connection.username || ""}
+                onChange={(value) => setPartialConnection({ username: value })}
               />
             </div>
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-              <input
-                type="text"
+              <TextField
                 placeholder="Connect password"
-                className="input input-bordered w-full"
-                value={connection.password}
-                onChange={(e) => setPartialConnection({ password: e.target.value })}
+                value={connection.password || ""}
+                onChange={(value) => setPartialConnection({ password: value })}
               />
             </div>
             <div className="w-full flex flex-col">
