@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useConversationStore } from "@/store";
 import { Conversation } from "@/types";
 import Icon from "./Icon";
+import TextField from "./kit/TextField";
 
 interface Props {
   conversation: Conversation;
@@ -38,13 +39,7 @@ const EditConversationTitleModal = (props: Props) => {
           <Icon.IoMdClose className="w-5 h-auto" />
         </button>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-          <input
-            type="text"
-            placeholder={t("conversation.conversation-title") || ""}
-            className="input input-bordered w-full"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
+          <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
         </div>
         <div className="modal-action">
           <button className="btn btn-outline" onClick={close}>
