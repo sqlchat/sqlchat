@@ -18,7 +18,11 @@ const Select = (props: Props) => {
 
   return (
     <SelectUI.Root value={value} onValueChange={onValueChange}>
-      <SelectUI.Trigger className={`${className || ""} flex flex-row justify-between items-center border px-3 py-2 rounded-lg`}>
+      <SelectUI.Trigger
+        className={`${
+          className || ""
+        } flex flex-row justify-between items-center dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
+      >
         <SelectUI.Value placeholder={placeholder} />
         <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
           <Icon.BiChevronDown className="w-full h-auto opacity-60" />
@@ -32,7 +36,7 @@ const Select = (props: Props) => {
           }}
           position="popper"
         >
-          <SelectUI.Viewport className="bg-white border shadow p-1 rounded-lg">
+          <SelectUI.Viewport className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 shadow p-1 rounded-lg">
             <SelectUI.Group>
               {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (
@@ -60,7 +64,7 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(({ children, clas
     <SelectUI.Item
       className={`${
         className || ""
-      } w-full px-3 py-2 rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100`}
+      } w-full px-3 py-2 rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800`}
       {...props}
       ref={forwardedRef}
     >

@@ -53,7 +53,7 @@ const EmptyView = (props: Props) => {
           {examples.map((example) => (
             <div
               key={example}
-              className="w-full rounded-lg px-4 py-3 text-sm mb-4 cursor-pointer bg-gray-50 hover:bg-gray-100"
+              className="w-full rounded-lg px-4 py-3 text-sm mb-4 cursor-pointer bg-gray-50 dark:bg-zinc-700 hover:opacity-80"
               onClick={() => handleExampleClick(example)}
             >
               {`"${example}"`} →
@@ -63,14 +63,20 @@ const EmptyView = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-center">
           <Icon.BsLightning className="w-8 h-auto opacity-80" />
           <span className="mt-2 mb-4">Capabilities</span>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">Remembers what user said earlier in the conversation</div>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">Allows user to provide follow-up corrections</div>
+          <div className="w-full bg-gray-50 dark:bg-zinc-700 rounded-lg px-4 py-3 text-sm mb-4">
+            Remembers what user said earlier in the conversation
+          </div>
+          <div className="w-full bg-gray-50 dark:bg-zinc-700 rounded-lg px-4 py-3 text-sm mb-4">
+            Allows user to provide follow-up corrections
+          </div>
         </div>
         <div className="w-full hidden sm:flex flex-col justify-start items-center">
           <Icon.BsEmojiNeutral className="w-8 h-auto opacity-80" />
           <span className="mt-2 mb-4">Limitations</span>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">May occasionally generate incorrect information</div>
-          <div className="w-full bg-gray-50 rounded-lg px-4 py-3 text-sm mb-4">
+          <div className="w-full bg-gray-50 dark:bg-zinc-700 rounded-lg px-4 py-3 text-sm mb-4">
+            May occasionally generate incorrect information
+          </div>
+          <div className="w-full bg-gray-50 dark:bg-zinc-700 rounded-lg px-4 py-3 text-sm mb-4">
             May occasionally produce harmful instructions or biased content
           </div>
         </div>

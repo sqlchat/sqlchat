@@ -1,3 +1,7 @@
 .rdt_Pagination {
-  border-top: none !important;
+  @apply !border-t-0;
+}
+
+.rdt_Table {
+  @apply dark:bg-zinc-800;
 }

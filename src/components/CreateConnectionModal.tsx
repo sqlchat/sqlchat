@@ -208,7 +208,7 @@ const CreateConnectionModal = (props: Props) => {
     <>
       <Dialog title={isEditing ? "Edit Connection" : "Create Connection"} onClose={close}>
         <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
-          <DataStorageBanner className="rounded-lg bg-white border py-2 !justify-start" alwaysShow={true} />
+          <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
             <Select

@@ -17,7 +17,7 @@ const DataStorageBanner = (props: Props) => {
     <div
       className={`${!show && "!hidden"} ${
         className || ""
-      } relative w-full flex flex-row justify-start sm:justify-center items-center px-4 py-1 bg-gray-100`}
+      } relative w-full flex flex-row justify-start sm:justify-center items-center px-4 py-1 bg-gray-100 dark:bg-zinc-700`}
     >
       <span className="text-sm leading-6 pr-4">
         <Icon.IoInformationCircleOutline className="inline-block h-5 w-auto -mt-0.5 mr-0.5 opacity-80" />
