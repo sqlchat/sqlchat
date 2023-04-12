@@ -33,7 +33,7 @@ const IndexPage: NextPage = () => {
 
       <h1 className="sr-only">SQL Chat</h1>
 
-      <main className="w-full h-full flex flex-row">
+      <main className="w-full h-full flex flex-row dark:bg-zinc-800">
         <ConnectionSidebar />
         <ConversationView />
         <QueryDrawer />
