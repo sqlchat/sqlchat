@@ -6,6 +6,7 @@ import { Setting } from "@/types";
 const getDefaultSetting = (): Setting => {
   return {
     locale: "en",
+    theme: "system",
     openAIApiConfig: {
       key: "",
       endpoint: "",
@@ -15,20 +16,30 @@ const getDefaultSetting = (): Setting => {
 
 interface SettingState {
   setting: Setting;
+  getState: () => SettingState;
   setLocale: (locale: Setting["locale"]) => void;
+  setTheme: (theme: Setting["theme"]) => void;
   setOpenAIApiConfig: (openAIApiConfig: Setting["openAIApiConfig"]) => void;
 }
 
 export const useSettingStore = create<SettingState>()(
   persist(
     (set, get) => ({
-      getState: () => get(),
       setting: getDefaultSetting(),
+      getState: () => get(),
       setLocale: (locale: Setting["locale"]) => {
         set({
           setting: {
             ...get().setting,
             locale,
+          },
+        });
+      },
+      setTheme: (theme: Setting["theme"]) => {
+        set({
+          setting: {
+            ...get().setting,
+            theme,
           },
         });
       },

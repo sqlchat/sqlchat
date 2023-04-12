@@ -84,7 +84,7 @@ const QueryDrawer = () => {
 
   return (
     <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
-      <div className="w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
+      <div className="dark:text-gray-300 w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
         <button className="w-8 h-8 p-1 bg-zinc-600 text-gray-100 rounded-full hover:opacity-80" onClick={close}>
           <Icon.IoMdClose className="w-full h-auto" />
         </button>
@@ -101,7 +101,7 @@ const QueryDrawer = () => {
               <EngineIcon className="w-6 h-auto" engine={context.connection.engineType} />
               <span>{context.database?.name}</span>
             </div>
-            <div className="w-full h-auto mt-4 px-2 flex flex-row justify-between items-end border rounded-lg overflow-clip">
+            <div className="w-full h-auto mt-4 px-2 flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg overflow-clip">
               <TextareaAutosize
                 className="w-full h-full outline-none border-none bg-transparent leading-6 pl-2 py-2 resize-none hide-scrollbar text-sm font-mono break-all"
                 value={statement}
@@ -112,7 +112,7 @@ const QueryDrawer = () => {
                 onChange={(e) => setStatement(e.target.value)}
               />
               <button
-                className="w-8 p-1 -translate-y-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-8 p-1 -translate-y-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
                 onClick={() => executeStatement(statement)}
               >
                 <Icon.IoPlay className="w-full h-auto text-indigo-600" />
@@ -131,7 +131,14 @@ const QueryDrawer = () => {
                 </div>
               ) : (
                 <div className="w-full">
-                  <DataTable className="w-full border !rounded-lg" columns={columns} data={rawResults} fixedHeader pagination responsive />
+                  <DataTable
+                    className="w-full border !rounded-lg dark:border-zinc-700"
+                    columns={columns}
+                    data={rawResults}
+                    fixedHeader
+                    pagination
+                    responsive
+                  />
                 </div>
               )}
             </div>

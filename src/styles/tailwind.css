@@ -19,7 +19,7 @@
 }
 
 .btn-outline {
-  @apply border-none hover:bg-gray-100;
+  @apply border-none hover:bg-gray-100 dark:hover:bg-zinc-800;
 }
 
 .btn-error {

@@ -1,0 +1,3 @@
+.MuiPaper-root {
+  @apply dark:bg-zinc-800;
+}

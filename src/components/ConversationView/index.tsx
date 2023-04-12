@@ -213,9 +213,9 @@ const ConversationView = () => {
       ref={conversationViewRef}
       className={`${
         layoutStore.showSidebar && "sm:pl-80"
-      } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white transition-all duration-300`}
+      } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800 transition-all duration-300`}
     >
-      <div className="sticky top-0 z-1 bg-white w-full flex flex-col justify-start items-start">
+      <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>
@@ -226,7 +226,7 @@ const ConversationView = () => {
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
       </div>
-      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white bg-opacity-80 backdrop-blur">
+      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
     </div>

@@ -3,6 +3,5 @@ body,
 body > div:first-child,
 div#__next,
 div#__next > div {
-  width: 100%;
-  height: 100%;
+  @apply w-full h-full dark:text-gray-300;
 }

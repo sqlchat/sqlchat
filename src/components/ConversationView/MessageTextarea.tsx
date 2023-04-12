@@ -73,7 +73,7 @@ const MessageTextarea = (props: Props) => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-row justify-between items-end border rounded-lg mb-2 px-2 py-1 relative shadow bg-white">
+    <div className="w-full h-auto flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg mb-2 px-2 py-1 relative shadow bg-white dark:bg-zinc-800">
       <TextareaAutosize
         ref={textareaRef}
         className="w-full h-full outline-none border-none bg-transparent leading-6 py-2 px-2 resize-none hide-scrollbar"
@@ -87,7 +87,7 @@ const MessageTextarea = (props: Props) => {
         onKeyDown={handleKeyDown}
       />
       <button
-        className="w-8 p-1 -translate-y-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 disabled:cursor-not-allowed disabled:opacity-60"
+        className="w-8 p-1 -translate-y-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
         disabled={disabled}
         onClick={handleSend}
       >
