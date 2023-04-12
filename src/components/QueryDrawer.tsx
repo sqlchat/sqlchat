@@ -132,7 +132,7 @@ const QueryDrawer = () => {
               ) : (
                 <div className="w-full">
                   <DataTable
-                    className="w-full border !rounded-lg dark:bg-zinc-800"
+                    className="w-full border !rounded-lg dark:border-zinc-700"
                     columns={columns}
                     data={rawResults}
                     fixedHeader

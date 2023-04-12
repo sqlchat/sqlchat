@@ -1,7 +1,6 @@
 import { Menu, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
 import { ReactElement, useState } from "react";
-import { ThreeDots } from "react-loader-spinner";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
@@ -11,6 +10,7 @@ import { Message } from "@/types";
 import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
 import EngineIcon from "../EngineIcon";
+import ThreeDotsLoader from "./ThreeDotsLoader";
 
 interface Props {
   message: Message;
@@ -56,7 +56,7 @@ const MessageView = (props: Props) => {
     >
       {isCurrentUser ? (
         <>
-          <div className="w-auto max-w-full bg-indigo-600 text-white px-4 py-2 rounded-lg whitespace-pre-wrap break-all">
+          <div className="w-auto max-w-full bg-indigo-600 text-white dark:text-gray-200 px-4 py-2 rounded-lg whitespace-pre-wrap break-all">
             {message.content}
           </div>
           <div className="w-10 h-10 p-1 border dark:border-zinc-700 rounded-full flex justify-center items-center ml-2 shrink-0">
@@ -74,7 +74,7 @@ const MessageView = (props: Props) => {
           </div>
           {message.status === "LOADING" && message.content === "" ? (
             <div className="mt-0.5 w-12 bg-gray-100 dark:bg-zinc-700 px-4 py-2 rounded-lg">
-              <ThreeDots wrapperClass="opacity-80" width="24" height="24" color="" />
+              <ThreeDotsLoader />
             </div>
           ) : (
             <>
