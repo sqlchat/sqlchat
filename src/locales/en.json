@@ -36,6 +36,12 @@
       "self": "Basic",
       "language": "Language"
     },
+    "theme": {
+      "self": "Theme",
+      "system": "Follow system",
+      "light": "Light",
+      "dark": "Dark"
+    },
     "openai-api-configuration": {
       "self": "OpenAI API configuration"
     },

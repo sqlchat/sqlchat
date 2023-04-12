@@ -40,7 +40,7 @@ const Select = (props: Props) => {
             <SelectUI.Group>
               {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (
-                <SelectItem key={item.label} value={item.value}>
+                <SelectItem key={item.label} className="whitespace-nowrap" value={item.value}>
                   {item.label}
                 </SelectItem>
               ))}

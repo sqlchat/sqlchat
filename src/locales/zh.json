@@ -36,6 +36,12 @@
       "self": "基础",
       "language": "语言"
     },
+    "theme": {
+      "self": "主题",
+      "system": "跟随系统",
+      "light": "浅色",
+      "dark": "深色"
+    },
     "openai-api-configuration": {
       "self": "OpenAI API 配置"
     },

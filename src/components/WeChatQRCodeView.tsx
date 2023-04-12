@@ -1,34 +1,21 @@
-import { Popover } from "@mui/material";
-import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
+import Popover from "./kit/Popover";
 
 const WeChatQRCodeView = () => {
   const { t } = useTranslation();
-  const [wechatAnchorEl, setWeChatAnchorEl] = useState<HTMLElement | null>(null);
-  const openWeChatQrCodePopover = Boolean(wechatAnchorEl);
 
   return (
-    <>
-      <div
-        className="w-auto px-4 py-2 mr-2 mb-2 rounded-full cursor-pointer bg-green-600 text-white text-sm font-medium flex flex-row justify-center items-center hover:shadow"
-        onClick={(e) => setWeChatAnchorEl(e.currentTarget)}
-      >
-        <Icon.BsWechat className="w-4 h-auto mr-1" />
-        {t("social.join-wechat-group")}
-      </div>
-      <Popover
-        open={openWeChatQrCodePopover}
-        anchorEl={wechatAnchorEl}
-        onClose={() => setWeChatAnchorEl(null)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        <img className="w-64 h-auto" src="/wechat-qrcode.webp" alt="wechat qrcode" />
-      </Popover>
-    </>
+    <Popover
+      tigger={
+        <div className="w-auto px-4 py-2 rounded-full cursor-pointer bg-green-600 text-white text-sm font-medium flex flex-row justify-center items-center hover:shadow">
+          <Icon.BsWechat className="w-4 h-auto mr-1" />
+          {t("social.join-wechat-group")}
+        </div>
+      }
+    >
+      <img className="w-40 h-auto" src="/wechat-qrcode.webp" alt="wechat qrcode" />
+    </Popover>
   );
 };
 
