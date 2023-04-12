@@ -11,10 +11,14 @@ const Popover = (props: Props) => {
   const { className, children, tigger } = props;
 
   return (
-    <PopoverUI.Root>
+    <PopoverUI.Root modal={false}>
       <PopoverUI.Trigger asChild>{tigger}</PopoverUI.Trigger>
       <PopoverUI.Portal>
-        <PopoverUI.Content className={`${className || ""} z-[9999] p-2 bg-white dark:bg-zinc-700 shadow-lg rounded-lg`} sideOffset={5}>
+        <PopoverUI.Content
+          asChild
+          className={`${className || ""} z-[9999] p-2 bg-white dark:bg-zinc-700 shadow-lg rounded-lg`}
+          sideOffset={5}
+        >
           {children}
         </PopoverUI.Content>
       </PopoverUI.Portal>

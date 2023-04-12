@@ -8,11 +8,12 @@ import Dialog from "./kit/Dialog";
 
 interface Props {
   conversation: Conversation;
+  open: boolean;
   close: () => void;
 }
 
 const EditConversationTitleModal = (props: Props) => {
-  const { close, conversation } = props;
+  const { close, conversation, open } = props;
   const { t } = useTranslation();
   const conversationStore = useConversationStore();
   const [title, setTitle] = useState(conversation.title);
@@ -32,7 +33,7 @@ const EditConversationTitleModal = (props: Props) => {
   };
 
   return (
-    <Dialog title={t("conversation.edit-title")} onClose={close}>
+    <Dialog title={t("conversation.edit-title")} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
         <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
       </div>

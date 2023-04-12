@@ -5,16 +5,17 @@ export interface ActionConfirmModalProps {
   title: string;
   content: string;
   confirmButtonStyle: string;
+  open: boolean;
   close: () => void;
   confirm: () => void;
 }
 
 const ActionConfirmModal = (props: ActionConfirmModalProps) => {
-  const { close, confirm, title, content, confirmButtonStyle } = props;
+  const { close, confirm, title, content, open, confirmButtonStyle } = props;
   const { t } = useTranslation();
 
   return (
-    <Dialog title={title} onClose={close}>
+    <Dialog title={title} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
         <p className="text-gray-500">{content}</p>
       </div>

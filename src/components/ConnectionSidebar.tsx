@@ -159,6 +159,7 @@ const ConnectionSidebar = () => {
         variant={layoutStore.isMobileView ? "temporary" : "persistent"}
         open={layoutStore.showSidebar}
         onClose={() => layoutStore.toggleSidebar(false)}
+        ModalProps={{ disablePortal: true }}
       >
         <div className="w-80 h-full overflow-y-hidden flex flex-row justify-start items-start">
           <div className="w-16 h-full bg-gray-200 dark:bg-zinc-600 pl-2 py-4 pt-6 flex flex-col justify-between items-center">
@@ -291,15 +292,18 @@ const ConnectionSidebar = () => {
         </div>
       </Drawer>
 
-      {state.showCreateConnectionModal && (
-        <CreateConnectionModal connection={editConnectionModalContext} close={() => toggleCreateConnectionModal(false)} />
-      )}
+      <CreateConnectionModal
+        connection={editConnectionModalContext}
+        open={state.showCreateConnectionModal}
+        close={() => toggleCreateConnectionModal(false)}
+      />
 
-      {state.showSettingModal && <SettingModal close={() => toggleSettingModal(false)} />}
+      <SettingModal open={state.showSettingModal} close={() => toggleSettingModal(false)} />
 
-      {state.showEditConversationTitleModal && editConversationTitleModalContext && (
+      {editConversationTitleModalContext && (
         <EditConversationTitleModal
           close={() => toggleEditConversationTitleModal(false)}
+          open={state.showEditConversationTitleModal}
           conversation={editConversationTitleModalContext}
         />
       )}

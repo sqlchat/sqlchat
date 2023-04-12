@@ -8,15 +8,16 @@ import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
 
 interface Props {
+  open: boolean;
   close: () => void;
 }
 
 const SettingModal = (props: Props) => {
-  const { close } = props;
+  const { open, close } = props;
   const { t } = useTranslation();
 
   return (
-    <Dialog title={t("setting.self")} onClose={close}>
+    <Dialog title={t("setting.self")} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
         <div className="w-full flex flex-row justify-start items-start flex-wrap gap-2">
           <a
