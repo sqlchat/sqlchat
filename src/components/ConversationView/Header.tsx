@@ -24,7 +24,7 @@ const Header = (props: Props) => {
     <div
       className={`${
         className || ""
-      } w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b dark:border-zinc-700 z-1 transition-all duration-300`}
+      } w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3 py-1 border-b dark:border-zinc-700 z-1`}
     >
       <div className="ml-2 flex justify-start items-center">
         <button
