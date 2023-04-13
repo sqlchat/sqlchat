@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useConversationStore, useLayoutStore } from "@/store";
+import useDarkMode from "@/hooks/useDarkmode";
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
 
@@ -11,6 +12,7 @@ const Header = (props: Props) => {
   const { className } = props;
   const layoutStore = useLayoutStore();
   const conversationStore = useConversationStore();
+  const isDarkMode = useDarkMode();
   const currentConversation = conversationStore.currentConversation;
   const title = currentConversation?.title || "SQL Chat";
 
@@ -41,7 +43,7 @@ const Header = (props: Props) => {
           className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
           target="_blank"
         >
-          <img className="h-5 sm:h-6 w-auto" src="/craft-by-bytebase.webp" alt="" />
+          <img className="h-5 sm:h-6 w-auto" src={isDarkMode ? "/craft-by-bytebase-dark-mode.webp" : "/craft-by-bytebase.webp"} alt="" />
         </a>
       </div>
     </div>

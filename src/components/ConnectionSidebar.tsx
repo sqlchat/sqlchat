@@ -9,6 +9,7 @@ import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import LocaleSwitch from "./LocaleSwitch";
+import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import EditConversationTitleModal from "./EditConversationTitleModal";
@@ -202,6 +203,7 @@ const ConnectionSidebar = () => {
               </Tooltip>
             </div>
             <div className="w-full flex flex-col justify-end items-center">
+              <DarkModeSwitch />
               <LocaleSwitch />
               <Tooltip title={t("common.setting")} side="right">
                 <button
