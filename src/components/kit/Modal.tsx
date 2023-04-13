@@ -4,21 +4,20 @@ import Icon from "../Icon";
 
 interface Props {
   title: string;
-  open: boolean;
   children: ReactNode;
   onClose: () => void;
   className?: string;
 }
 
 const Modal = (props: Props) => {
-  const { children, open, title, onClose, className } = props;
+  const { children, title, onClose, className } = props;
 
   return (
-    <ModalUI className="!z-100" open={open} onClose={onClose}>
+    <ModalUI className="!z-100" open={true} onClose={onClose}>
       <div
         className={`${
           className || ""
-        } flex flex-col bg-white dark:bg-zinc-800 rounded-xl p-4 fixed top-[50%] left-[50%] h-auto max-h-[85vh] w-[90vw] max-w-lg translate-x-[-50%] translate-y-[-50%] z-100`}
+        } flex flex-col bg-white dark:bg-zinc-800 rounded-xl p-4 fixed top-[50%] left-[50%] h-auto max-h-[85vh] w-[90vw] max-w-[90vw] sm:max-w-lg translate-x-[-50%] translate-y-[-50%] z-100`}
       >
         <p className="text-lg pl-1 text-black dark:text-gray-300 font-medium mb-2">{title}</p>
         <button

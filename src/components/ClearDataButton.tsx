@@ -12,7 +12,7 @@ const ClearDataButton = () => {
         {t("common.clear")}
       </button>
 
-      <ClearDataConfirmModal open={showClearDataConfirmModal} close={() => setShowClearDataConfirmModal(false)} />
+      {showClearDataConfirmModal && <ClearDataConfirmModal close={() => setShowClearDataConfirmModal(false)} />}
     </>
   );
 };

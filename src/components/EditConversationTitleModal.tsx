@@ -8,12 +8,11 @@ import Modal from "./kit/Modal";
 
 interface Props {
   conversation: Conversation;
-  open: boolean;
   close: () => void;
 }
 
 const EditConversationTitleModal = (props: Props) => {
-  const { close, conversation, open } = props;
+  const { close, conversation } = props;
   const { t } = useTranslation();
   const conversationStore = useConversationStore();
   const [title, setTitle] = useState(conversation.title);
@@ -33,7 +32,7 @@ const EditConversationTitleModal = (props: Props) => {
   };
 
   return (
-    <Modal title={t("conversation.edit-title")} open={open} onClose={close}>
+    <Modal title={t("conversation.edit-title")} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
         <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
       </div>

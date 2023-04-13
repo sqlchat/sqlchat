@@ -294,18 +294,15 @@ const ConnectionSidebar = () => {
         </div>
       </Drawer>
 
-      <CreateConnectionModal
-        connection={editConnectionModalContext}
-        open={state.showCreateConnectionModal}
-        close={() => toggleCreateConnectionModal(false)}
-      />
+      {state.showCreateConnectionModal && (
+        <CreateConnectionModal connection={editConnectionModalContext} close={() => toggleCreateConnectionModal(false)} />
+      )}
 
-      <SettingModal open={state.showSettingModal} close={() => toggleSettingModal(false)} />
+      {state.showSettingModal && <SettingModal close={() => toggleSettingModal(false)} />}
 
-      {editConversationTitleModalContext && (
+      {editConversationTitleModalContext && state.showEditConversationTitleModal && (
         <EditConversationTitleModal
           close={() => toggleEditConversationTitleModal(false)}
-          open={state.showEditConversationTitleModal}
           conversation={editConversationTitleModalContext}
         />
       )}

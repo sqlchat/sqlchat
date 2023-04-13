@@ -3,12 +3,11 @@ import { useTranslation } from "react-i18next";
 import Modal from "./kit/Modal";
 
 interface Props {
-  open: boolean;
   close: () => void;
 }
 
 const ClearDataConfirmModal = (props: Props) => {
-  const { open, close } = props;
+  const { close } = props;
   const { t } = useTranslation();
 
   const handleClearData = () => {
@@ -21,7 +20,7 @@ const ClearDataConfirmModal = (props: Props) => {
   };
 
   return (
-    <Modal title="Clear all data" className="!w-96" open={open} onClose={close}>
+    <Modal title="Clear all data" className="!w-96" onClose={close}>
       <div>
         <div className="w-full flex flex-col justify-start items-start mt-2">
           <p className="text-gray-500">SQL Chat saves all your data in your local browser. Are you sure to clear all of them?</p>

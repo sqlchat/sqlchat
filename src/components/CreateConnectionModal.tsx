@@ -13,7 +13,6 @@ import ActionConfirmModal from "./ActionConfirmModal";
 
 interface Props {
   connection?: Connection;
-  open: boolean;
   close: () => void;
 }
 
@@ -47,7 +46,7 @@ const defaultConnection: Connection = {
 };
 
 const CreateConnectionModal = (props: Props) => {
-  const { connection: editConnection, open, close } = props;
+  const { connection: editConnection, close } = props;
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
@@ -207,7 +206,7 @@ const CreateConnectionModal = (props: Props) => {
 
   return (
     <>
-      <Modal title={isEditing ? "Edit Connection" : "Create Connection"} open={open} onClose={close}>
+      <Modal title={isEditing ? "Edit Connection" : "Create Connection"} onClose={close}>
         <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
@@ -348,14 +347,15 @@ const CreateConnectionModal = (props: Props) => {
         </div>
       </Modal>
 
-      <ActionConfirmModal
-        title="Delete Connection"
-        content="Are you sure you want to delete this connection?"
-        confirmButtonStyle="btn-error"
-        open={showDeleteConnectionModal}
-        close={() => setShowDeleteConnectionModal(false)}
-        confirm={() => handleDeleteConnection()}
-      />
+      {showDeleteConnectionModal && (
+        <ActionConfirmModal
+          title="Delete Connection"
+          content="Are you sure you want to delete this connection?"
+          confirmButtonStyle="btn-error"
+          close={() => setShowDeleteConnectionModal(false)}
+          confirm={() => handleDeleteConnection()}
+        />
+      )}
     </>
   );
 };
