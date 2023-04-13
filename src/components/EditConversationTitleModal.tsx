@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useConversationStore } from "@/store";
 import { Conversation } from "@/types";
 import TextField from "./kit/TextField";
-import Dialog from "./kit/Dialog";
+import Modal from "./kit/Modal";
 
 interface Props {
   conversation: Conversation;
@@ -33,7 +33,7 @@ const EditConversationTitleModal = (props: Props) => {
   };
 
   return (
-    <Dialog title={t("conversation.edit-title")} open={open} onClose={close}>
+    <Modal title={t("conversation.edit-title")} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
         <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
       </div>
@@ -45,7 +45,7 @@ const EditConversationTitleModal = (props: Props) => {
           {t("common.save")}
         </button>
       </div>
-    </Dialog>
+    </Modal>
   );
 };
 

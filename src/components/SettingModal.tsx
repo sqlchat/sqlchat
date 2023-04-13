@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Dialog from "./kit/Dialog";
+import Modal from "./kit/Modal";
 import Icon from "./Icon";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
@@ -17,7 +17,7 @@ const SettingModal = (props: Props) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog title={t("setting.self")} open={open} onClose={close}>
+    <Modal title={t("setting.self")} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
         <div className="w-full flex flex-row justify-start items-start flex-wrap gap-2">
           <a
@@ -53,7 +53,7 @@ const SettingModal = (props: Props) => {
           </div>
         </div>
       </div>
-    </Dialog>
+    </Modal>
   );
 };
 

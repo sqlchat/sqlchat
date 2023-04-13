@@ -1,6 +1,6 @@
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import Dialog from "./kit/Dialog";
+import Modal from "./kit/Modal";
 
 interface Props {
   open: boolean;
@@ -21,19 +21,21 @@ const ClearDataConfirmModal = (props: Props) => {
   };
 
   return (
-    <Dialog title="Clear all data" open={open} onClose={close}>
-      <div className="w-full flex flex-col justify-start items-start mt-2">
-        <p className="text-gray-500">SQL Chat saves all your data in your local browser. Are you sure to clear all of them?</p>
+    <Modal title="Clear all data" className="!w-96" open={open} onClose={close}>
+      <div>
+        <div className="w-full flex flex-col justify-start items-start mt-2">
+          <p className="text-gray-500">SQL Chat saves all your data in your local browser. Are you sure to clear all of them?</p>
+        </div>
+        <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
+          <button className="btn btn-outline" onClick={close}>
+            {t("common.close")}
+          </button>
+          <button className="btn btn-error" onClick={handleClearData}>
+            {t("common.clear")}
+          </button>
+        </div>
       </div>
-      <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
-        <button className="btn btn-outline" onClick={close}>
-          {t("common.close")}
-        </button>
-        <button className="btn btn-error" onClick={handleClearData}>
-          {t("common.clear")}
-        </button>
-      </div>
-    </Dialog>
+    </Modal>
   );
 };
 

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Dialog from "./kit/Dialog";
+import Modal from "./kit/Modal";
 
 export interface ActionConfirmModalProps {
   title: string;
@@ -15,7 +15,7 @@ const ActionConfirmModal = (props: ActionConfirmModalProps) => {
   const { t } = useTranslation();
 
   return (
-    <Dialog title={title} open={open} onClose={close}>
+    <Modal title={title} open={open} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
         <p className="text-gray-500">{content}</p>
       </div>
@@ -33,7 +33,7 @@ const ActionConfirmModal = (props: ActionConfirmModalProps) => {
           {t("common.confirm")}
         </button>
       </div>
-    </Dialog>
+    </Modal>
   );
 };
 

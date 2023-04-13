@@ -6,7 +6,7 @@ import { useConnectionStore } from "@/store";
 import { Connection, Engine, ResponseObject } from "@/types";
 import Select from "./kit/Select";
 import TextField from "./kit/TextField";
-import Dialog from "./kit/Dialog";
+import Modal from "./kit/Modal";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
@@ -207,7 +207,7 @@ const CreateConnectionModal = (props: Props) => {
 
   return (
     <>
-      <Dialog title={isEditing ? "Edit Connection" : "Create Connection"} open={open} onClose={close}>
+      <Modal title={isEditing ? "Edit Connection" : "Create Connection"} open={open} onClose={close}>
         <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
@@ -346,7 +346,7 @@ const CreateConnectionModal = (props: Props) => {
             </button>
           </div>
         </div>
-      </Dialog>
+      </Modal>
 
       <ActionConfirmModal
         title="Delete Connection"

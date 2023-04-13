@@ -13,7 +13,6 @@
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.14",
     "@mui/styled-engine-sc": "^5.11.11",
-    "@radix-ui/react-dialog": "^1.0.3",
     "@radix-ui/react-popover": "^1.0.5",
     "@radix-ui/react-select": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.0.5",
