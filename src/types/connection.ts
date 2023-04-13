@@ -5,7 +5,7 @@ export enum Engine {
   PostgreSQL = "POSTGRESQL",
 }
 
-interface SSLOptions {
+export interface SSLOptions {
   ca?: string;
   cert?: string;
   key?: string;

@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { useConnectionStore } from "@/store";
-import { Connection, Engine, ResponseObject } from "@/types";
+import { Connection, Engine, ResponseObject, SSLOptions } from "@/types";
 import Select from "./kit/Select";
 import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
@@ -66,16 +66,11 @@ const CreateConnectionModal = (props: Props) => {
       } else {
         setSSLType("ca-only");
       }
-    } else {
-      setSSLType("none");
     }
-    setSelectedSSLField("ca");
-    setIsRequesting(false);
-    setShowDeleteConnectionModal(false);
   }, []);
 
   useEffect(() => {
-    let ssl = undefined;
+    let ssl: SSLOptions | undefined = undefined;
     if (sslType === "ca-only") {
       ssl = {
         ca: "",
@@ -87,10 +82,10 @@ const CreateConnectionModal = (props: Props) => {
         key: "",
       };
     }
-    setConnection({
+    setConnection((connection) => ({
       ...connection,
-      ssl,
-    });
+      ssl: ssl,
+    }));
     setSelectedSSLField("ca");
   }, [sslType]);
 
