@@ -44,7 +44,6 @@
   "devDependencies": {
     "@nem035/gpt-3-encoder": "^1.1.7",
     "@tailwindcss/typography": "^0.5.9",
-    "@tauri-apps/cli": "^1.2.3",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^18.11.18",
     "@types/pg": "^8.6.6",
