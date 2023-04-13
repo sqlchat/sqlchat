@@ -11,7 +11,7 @@ const TextField = (props: Props) => {
 
   return (
     <input
-      className={`${className || ""} w-full border px-3 py-2 rounded-lg dark:border-zinc-700 dark:bg-zinc-800 outline-none `}
+      className={`${className || ""} w-full border px-3 py-2 rounded-lg dark:border-zinc-700 dark:bg-zinc-800 focus:outline-2`}
       type="text"
       disabled={disabled}
       placeholder={placeholder}

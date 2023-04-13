@@ -208,7 +208,7 @@ const CreateConnectionModal = (props: Props) => {
   return (
     <>
       <Dialog title={isEditing ? "Edit Connection" : "Create Connection"} open={open} onClose={close}>
-        <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
+        <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
@@ -340,7 +340,7 @@ const CreateConnectionModal = (props: Props) => {
             <button className="btn btn-outline" onClick={close}>
               Close
             </button>
-            <button className="btn btn-primary" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
+            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
               {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
               Save
             </button>

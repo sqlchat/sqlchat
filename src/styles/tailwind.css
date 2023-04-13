@@ -15,17 +15,13 @@
 }
 
 .btn {
-  @apply hide-scrollbar text-base px-3 py-2 rounded-lg border outline-none hover:opacity-80 disabled:!opacity-60 disabled:cursor-not-allowed;
+  @apply hide-scrollbar text-base px-3 py-2 rounded-lg border border-none outline-none bg-zinc-600 text-gray-200 hover:opacity-80 disabled:!opacity-60 disabled:cursor-not-allowed;
 }
 
 .btn-outline {
-  @apply border-none hover:bg-gray-100 dark:hover:bg-zinc-800;
+  @apply border-none bg-transparent text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800;
 }
 
 .btn-error {
   @apply bg-red-100 text-red-600 border-red-600;
-}
-
-.btn-primary {
-  @apply bg-indigo-100 text-indigo-600 border-indigo-600;
 }
