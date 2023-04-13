@@ -101,7 +101,7 @@ const MessageView = (props: Props) => {
                       );
                     },
                     code({ children }) {
-                      return <code className="px-0">`{children}`</code>;
+                      return <code className="px-0">{children}</code>;
                     },
                   }}
                 >
