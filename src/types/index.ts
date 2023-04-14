@@ -6,3 +6,4 @@ export * from "./conversation";
 export * from "./message";
 export * from "./setting";
 export * from "./api";
+export * from "./connector";

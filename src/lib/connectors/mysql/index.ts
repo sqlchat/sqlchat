@@ -1,6 +1,6 @@
 import { ConnectionOptions } from "mysql2";
 import mysql, { RowDataPacket } from "mysql2/promise";
-import { Connection } from "@/types";
+import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
 const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
@@ -33,9 +33,19 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
 const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
   connection.database = databaseName;
   const conn = await getMySQLConnection(connection);
-  const [rows] = await conn.query<RowDataPacket[]>(statement);
+  const [rows] = await conn.execute(statement);
   conn.destroy();
-  return rows;
+
+  const executionResult: ExecutionResult = {
+    rawResult: [],
+    affectedRows: 0,
+  };
+  if (Array.isArray(rows)) {
+    executionResult.rawResult = rows;
+  } else {
+    executionResult.affectedRows = rows.affectedRows;
+  }
+  return executionResult;
 };
 
 const getDatabases = async (connection: Connection): Promise<string[]> => {

@@ -1,5 +1,5 @@
 import { ConnectionPool } from "mssql";
-import { Connection } from "@/types";
+import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
@@ -37,7 +37,12 @@ const execute = async (connection: Connection, databaseName: string, statement: 
   const request = pool.request();
   const result = await request.query(`USE ${databaseName}; ${statement}`);
   await pool.close();
-  return result.recordset;
+
+  const executionResult: ExecutionResult = {
+    rawResult: result.recordset,
+    affectedRows: result.rowsAffected.length,
+  };
+  return executionResult;
 };
 
 const getDatabases = async (connection: Connection): Promise<string[]> => {

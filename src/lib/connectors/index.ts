@@ -1,11 +1,11 @@
-import { Connection, Engine } from "@/types";
+import { Connection, Engine, ExecutionResult } from "@/types";
 import mysql from "./mysql";
 import postgres from "./postgres";
 import mssql from "./mssql";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
-  execute: (databaseName: string, statement: string) => Promise<any>;
+  execute: (databaseName: string, statement: string) => Promise<ExecutionResult>;
   getDatabases: () => Promise<string[]>;
   getTables: (databaseName: string) => Promise<string[]>;
   getTableStructure: (databaseName: string, tableName: string) => Promise<string>;
@@ -17,8 +17,8 @@ export const newConnector = (connection: Connection): Connector => {
       return mysql(connection);
     case Engine.PostgreSQL:
       return postgres(connection);
-      case Engine.MSSQL:
-        return mssql(connection);
+    case Engine.MSSQL:
+      return mssql(connection);
     default:
       throw new Error("Unsupported engine type.");
   }
