@@ -212,6 +212,7 @@ const CreateConnectionModal = (props: Props) => {
               itemList={[
                 { value: Engine.MySQL, label: "MySQL" },
                 { value: Engine.PostgreSQL, label: "PostgreSQL" },
+                { value: Engine.MSSQL, label: "MSSQL" },
               ]}
               onValueChange={(value) => setPartialConnection({ engineType: value as Engine })}
             />
