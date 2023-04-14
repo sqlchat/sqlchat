@@ -1,0 +1,60 @@
+{
+  "common": {
+    "clear": "Limpiar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "loading": "Cargando",
+    "setting": "Configuración",
+    "copy": "Copiar",
+    "delete": "Borrar"
+  },
+  "conversation": {
+    "new-chat": "Nuevo Chat",
+    "conversation-title": "Titulo de conversación",
+    "edit-title": "Editar Titulo de conversación"
+  },
+  "connection": {
+    "self": "Conexión",
+    "new": "Crear Conexión",
+    "select-database": "Selecciona tu base de datos"
+  },
+  "execution": {
+    "title": "Ejecutar consulta",
+    "message": {
+      "executing": "Ejecutando consulta...",
+      "no-connection": "No se ha seleccionado una conexión",
+      "no-data": "No hay datos para mostrar"
+    }
+  },
+  "editor": {
+    "placeholder": "Ingresa tu pregunta aquí..."
+  },
+  "setting": {
+    "self": "Configuración",
+    "basic": {
+      "self": "Básico",
+      "language": "Idioma"
+    },
+    "theme": {
+      "self": "Tema",
+      "system": "Usar tema del sistema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "openai-api-configuration": {
+      "self": "Configuración del API de OpenAI"
+    },
+    "data": {
+      "self": "Datos",
+      "clear-all-data": "Limpiar todos los datos"
+    }
+  },
+  "social": {
+    "join-discord-channel": "Unirse al canal de Discord",
+    "join-wechat-group": "Unirse al grupo de WeChat"
+  },
+  "banner": {
+    "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador."
+  }
+}
