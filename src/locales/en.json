@@ -8,7 +8,8 @@
     "loading": "Loading",
     "setting": "Setting",
     "copy": "Copy",
-    "delete": "Delete"
+    "delete": "Delete",
+    "execute": "Execute"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -21,7 +22,7 @@
     "select-database": "Select your database"
   },
   "execution": {
-    "title": "Execute query",
+    "title": "Execute SQL",
     "message": {
       "executing": "Executing query...",
       "no-connection": "No connection selected",

@@ -8,7 +8,8 @@
     "loading": "加载中",
     "setting": "设置",
     "copy": "复制",
-    "delete": "删除"
+    "delete": "删除",
+    "execute": "执行"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -21,7 +22,7 @@
     "select-database": "选择数据库"
   },
   "execution": {
-    "title": "执行查询",
+    "title": "执行 SQL",
     "message": {
       "executing": "正在执行查询...",
       "no-connection": "未选择连接",

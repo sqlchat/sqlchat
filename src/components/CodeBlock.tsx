@@ -1,9 +1,10 @@
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useConnectionStore, useQueryStore } from "@/store";
-import { checkStatementIsSelect } from "@/utils";
 import Icon from "./Icon";
+import Tooltip from "./kit/Tooltip";
 
 interface Props {
   language: string;
@@ -12,14 +13,14 @@ interface Props {
 
 export const CodeBlock = (props: Props) => {
   const { language, value } = props;
+  const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const queryStore = useQueryStore();
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   // Only show execute button in the following situations:
-  // * SQL code, and it is a SELECT statement;
+  // * SQL code;
   // * Connection setup;
-  const showExecuteButton =
-    language.toUpperCase() === "SQL" && checkStatementIsSelect(value) && currentConnectionCtx?.connection && currentConnectionCtx?.database;
+  const showExecuteButton = currentConnectionCtx?.connection && currentConnectionCtx?.database && language.toUpperCase() === "SQL";
 
   const copyToClipboard = () => {
     if (!navigator.clipboard || !navigator.clipboard.writeText) {
@@ -50,19 +51,23 @@ export const CodeBlock = (props: Props) => {
       <div className="flex items-center justify-between py-2 px-4">
         <span className="text-xs text-white font-mono">{language}</span>
         <div className="flex items-center space-x-2">
-          <button
-            className="flex justify-center items-center rounded bg-none w-6 h-6 p-1 text-xs text-white bg-gray-500 opacity-70 hover:opacity-100"
-            onClick={copyToClipboard}
-          >
-            <Icon.BiClipboard className="w-full h-auto" />
-          </button>
-          {showExecuteButton && (
+          <Tooltip title={t("common.copy")} side="top">
             <button
               className="flex justify-center items-center rounded bg-none w-6 h-6 p-1 text-xs text-white bg-gray-500 opacity-70 hover:opacity-100"
-              onClick={handleExecuteQuery}
+              onClick={copyToClipboard}
             >
-              <Icon.IoPlay className="w-full h-auto" />
+              <Icon.BiClipboard className="w-full h-auto" />
             </button>
+          </Tooltip>
+          {showExecuteButton && (
+            <Tooltip title={t("common.execute")} side="top">
+              <button
+                className="flex justify-center items-center rounded bg-none w-6 h-6 p-1 text-xs text-white bg-gray-500 opacity-70 hover:opacity-100"
+                onClick={handleExecuteQuery}
+              >
+                <Icon.IoPlay className="w-full h-auto" />
+              </button>
+            </Tooltip>
           )}
         </div>
       </div>
