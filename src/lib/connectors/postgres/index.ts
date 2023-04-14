@@ -1,5 +1,5 @@
 import { Client, ClientConfig } from "pg";
-import { Connection } from "@/types";
+import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
 const newPostgresClient = (connection: Connection) => {
@@ -27,12 +27,18 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   return true;
 };
 
-const execute = async (connection: Connection, _: string, statement: string): Promise<any> => {
+const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
+  connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
-  const { rows } = await client.query(statement);
+  const { rows, rowCount } = await client.query(statement);
   await client.end();
-  return rows;
+
+  const executionResult: ExecutionResult = {
+    rawResult: rows,
+    affectedRows: rowCount,
+  };
+  return executionResult;
 };
 
 const getDatabases = async (connection: Connection): Promise<string[]> => {

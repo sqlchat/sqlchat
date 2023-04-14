@@ -57,6 +57,7 @@
     "join-wechat-group": "Join WeChat Group"
   },
   "banner": {
-    "data-storage": "Connection settings are stored in your local browser"
+    "data-storage": "Connection settings are stored in your local browser",
+    "non-select-sql-warning": "The current statement may be non-SELECT SQL, which will result in a database schema or data change. Make sure you know what you are doing."
   }
 }
