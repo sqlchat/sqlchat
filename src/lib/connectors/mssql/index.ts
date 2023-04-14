@@ -1,18 +1,18 @@
-import { ConnectionPool, ConnectionPoolConfig } from "mssql";
+import { ConnectionPool } from "mssql";
 import { Connection } from "@/types";
 import { Connector } from "..";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
 
 const getMSSQLConnection = async (connection: Connection): Promise<ConnectionPool> => {
-  const connectionOptions: ConnectionPoolConfig = {
+  const connectionOptions: any = {
     server: connection.host,
     port: parseInt(connection.port),
     user: connection.username,
     password: connection.password,
     database: connection.database,
     options: {
-      encrypt: connection.ssl?.encrypt === true,
+      encrypt: connection.encrypt === true,
     },
   };
   if (connection.ssl) {
@@ -70,7 +70,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: ConnectionPool, databaseName: string, tableName: string): Promise<string> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
   const { recordset } = await request.query(
