@@ -72,15 +72,24 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
+const getTableStructure = async (connection: ConnectionPool, databaseName: string, tableName: string): Promise<string> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
-  const result = await request.query(`USE ${databaseName}; EXEC sp_help '${tableName}';`);
-  await pool.close();
-  if (result.recordset.length !== 1) {
-    throw new Error("Unexpected number of rows.");
+  const { recordset } = await request.query(
+    `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='${tableName}';`
+  );
+
+  const columnList = [];
+  // Transform to standard schema string.
+  for (const row of recordset) {
+    columnList.push(
+      `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+    );
   }
-  return result.recordset[0]["Create Table"] || "";
+
+  return `CREATE TABLE [${tableName}] (
+    ${columnList.join(",\n")}
+  );`;
 };
 
 const newConnector = (connection: Connection): Connector => {
