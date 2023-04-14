@@ -228,7 +228,7 @@ const ConnectionSidebar = () => {
               {databaseList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 my-4">
                   <Select
-                    className="w-full px-4 py-3"
+                    className="w-full px-4 py-3 text-base"
                     value={currentConnectionCtx?.database?.name}
                     itemList={databaseList.map((database) => {
                       return {

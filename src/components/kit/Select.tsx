@@ -1,5 +1,5 @@
-import React, { ReactNode, forwardRef } from "react";
 import * as SelectUI from "@radix-ui/react-select";
+import React from "react";
 import Icon from "../Icon";
 
 interface Props<T = any> {
@@ -21,7 +21,7 @@ const Select = (props: Props) => {
       <SelectUI.Trigger
         className={`${
           className || ""
-        } flex flex-row justify-between items-center dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
+        } flex flex-row justify-between items-center text-sm whitespace-nowrap dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
       >
         <SelectUI.Value placeholder={placeholder} />
         <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
@@ -32,7 +32,7 @@ const Select = (props: Props) => {
         <SelectUI.Content
           className="z-[999] mt-1"
           style={{
-            width: "var(--radix-select-trigger-width)",
+            minWidth: "var(--radix-select-trigger-width)",
           }}
           position="popper"
         >
@@ -40,9 +40,18 @@ const Select = (props: Props) => {
             <SelectUI.Group>
               {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (
-                <SelectItem key={item.label} className="whitespace-nowrap" value={item.value}>
-                  {item.label}
-                </SelectItem>
+                <SelectUI.Item
+                  key={item.label}
+                  className={`${
+                    className || ""
+                  } w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800`}
+                  value={item.value}
+                >
+                  <SelectUI.ItemText className="truncate">{item.label}</SelectUI.ItemText>
+                  <SelectUI.ItemIndicator className="w-5 h-auto">
+                    <Icon.BiCheck className="w-full h-auto" />
+                  </SelectUI.ItemIndicator>
+                </SelectUI.Item>
               ))}
             </SelectUI.Group>
           </SelectUI.Viewport>
@@ -51,30 +60,5 @@ const Select = (props: Props) => {
     </SelectUI.Root>
   );
 };
-
-interface SelectItemProps {
-  value: string;
-  children: ReactNode;
-  disabled?: boolean;
-  className?: string;
-}
-
-const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(({ children, className, ...props }, forwardedRef) => {
-  return (
-    <SelectUI.Item
-      className={`${
-        className || ""
-      } w-full px-3 py-2 rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800`}
-      {...props}
-      ref={forwardedRef}
-    >
-      <SelectUI.ItemText>{children}</SelectUI.ItemText>
-      <SelectUI.ItemIndicator className="w-5 h-auto">
-        <Icon.BiCheck className="w-full h-auto" />
-      </SelectUI.ItemIndicator>
-    </SelectUI.Item>
-  );
-});
-SelectItem.displayName = "SelectItem";
 
 export default Select;
