@@ -17,7 +17,7 @@ const Tooltip = (props: Props) => {
         <TooltipUI.Trigger asChild>{children}</TooltipUI.Trigger>
         <TooltipUI.Portal>
           <TooltipUI.Content
-            className="bg-zinc-800 text-gray-200 dark:bg-black text-sm p-1 px-2 rounded-md z-[999]"
+            className="bg-zinc-800 text-gray-200 dark:bg-black text-sm p-1 px-2 rounded-md z-[99999]"
             side={side}
             sideOffset={6}
           >

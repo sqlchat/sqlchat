@@ -6,6 +6,7 @@ import TextareaAutosize from "react-textarea-autosize";
 import { useQueryStore } from "@/store";
 import { ExecutionResult, ResponseObject } from "@/types";
 import { checkStatementIsSelect, getMessageFromExecutionResult } from "@/utils";
+import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import DataTableView from "./ExecutionView/DataTableView";
@@ -104,7 +105,7 @@ const QueryDrawer = () => {
             {showExecutionWarningBanner && <ExecutionWarningBanner className="rounded-lg mt-4" />}
             <div className="w-full h-auto mt-4 px-2 flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg overflow-clip">
               <TextareaAutosize
-                className="w-full h-full outline-none border-none bg-transparent leading-6 pl-2 py-2 resize-none hide-scrollbar text-sm font-mono break-all"
+                className="w-full h-full outline-none border-none bg-transparent leading-6 pl-2 py-2 resize-none hide-scrollbar text-sm font-mono break-all whitespace-pre-wrap"
                 value={statement}
                 rows={1}
                 minRows={1}
@@ -112,12 +113,14 @@ const QueryDrawer = () => {
                 placeholder="Enter your SQL statement here..."
                 onChange={(e) => setStatement(e.target.value)}
               />
-              <button
-                className="w-8 p-1 -translate-y-1 cursor-pointer rounded-md hover:shadow hover:bg-gray-100 dark:hover:bg-zinc-700 disabled:cursor-not-allowed disabled:opacity-60"
-                onClick={() => executeStatement(statement)}
-              >
-                <Icon.IoPlay className="w-full h-auto text-indigo-600" />
-              </button>
+              <Tooltip title={t("common.execute")} side="top">
+                <button
+                  className="w-6 p-1 -translate-y-2 cursor-pointer rounded-md hover:shadow opacity-90 hover:opacity-100 bg-indigo-600 text-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                  onClick={() => executeStatement(statement)}
+                >
+                  <Icon.IoPlay className="w-full h-auto" />
+                </button>
+              </Tooltip>
             </div>
             <div className="w-full flex flex-col justify-start items-start mt-4">
               {isLoading ? (
