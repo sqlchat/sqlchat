@@ -321,6 +321,22 @@ const CreateConnectionModal = (props: Props) => {
                 </div>
               </>
             )}
+            {connection.engineType === Engine.MSSQL && (
+              <div className="w-full flex flex-col">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Encrypt?</label>
+                <div className="w-full flex flex-row justify-start items-start flex-wrap">
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                      checked={connection.ssl && connection.ssl['encrypt']}
+                      onChange={(e) => setPartialConnection({ ssl: { ...connection.ssl, encrypt: e.target.checked } })}
+                    />
+                    <span className="ml-2 text-sm">Encrypt connection?</span>
+                  </label>
+                </div>
+              </div>
+            )}
           </div>
         </div>
         <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">

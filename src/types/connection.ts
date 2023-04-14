@@ -10,8 +10,7 @@ export interface SSLOptions {
   ca?: string;
   cert?: string;
   key?: string;
-  enabled?: boolean;
-  trustServerCertificate?: boolean;
+  encrypt?: boolean;
 }
 
 export interface Connection {

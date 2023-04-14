@@ -12,8 +12,7 @@ const getMSSQLConnection = async (connection: Connection): Promise<ConnectionPoo
     password: connection.password,
     database: connection.database,
     options: {
-      encrypt: connection.ssl?.enabled === true,
-      trustServerCertificate: true,
+      encrypt: connection.ssl?.encrypt === true,
     },
   };
   if (connection.ssl) {
@@ -21,7 +20,6 @@ const getMSSQLConnection = async (connection: Connection): Promise<ConnectionPoo
       ca: connection.ssl?.ca,
       cert: connection.ssl?.cert,
       key: connection.ssl?.key,
-      rejectUnauthorized: false,
     };
   }
   const pool = await new ConnectionPool(connectionOptions).connect();
