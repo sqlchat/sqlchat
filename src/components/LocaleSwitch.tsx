@@ -7,13 +7,13 @@ const LocaleSwitch = () => {
 
   const handleLocaleChange = () => {
     if (locale === "en") {
-    settingStore.setLocale("zh");
+      settingStore.setLocale("zh");
     } else if (locale === "zh") {
-    settingStore.setLocale("es");
+      settingStore.setLocale("es");
     } else {
-    settingStore.setLocale("en");
+      settingStore.setLocale("en");
     }
-    };
+  };
 
   return (
     <button
