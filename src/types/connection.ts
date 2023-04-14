@@ -10,7 +10,6 @@ export interface SSLOptions {
   ca?: string;
   cert?: string;
   key?: string;
-  encrypt?: boolean;
 }
 
 export interface Connection {
@@ -23,5 +22,7 @@ export interface Connection {
   password: string;
   // database is only required for PostgreSQL.
   database?: string;
+  // encrypt is only required for MSSQL.
+  encrypt?: boolean;
   ssl?: SSLOptions;
 }

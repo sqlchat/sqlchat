@@ -255,7 +255,7 @@ const CreateConnectionModal = (props: Props) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">SSL</label>
             <div className="w-full flex flex-row justify-start items-start flex-wrap">
               {SSLTypeOptions.map((option) => (
-                <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-2">
+                <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3">
                   <input
                     type="radio"
                     className="radio w-4 h-4 mr-1"
@@ -323,16 +323,16 @@ const CreateConnectionModal = (props: Props) => {
             )}
             {connection.engineType === Engine.MSSQL && (
               <div className="w-full flex flex-col">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Encrypt?</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Encrypt</label>
                 <div className="w-full flex flex-row justify-start items-start flex-wrap">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
                       className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                      checked={connection.ssl && connection.ssl['encrypt']}
-                      onChange={(e) => setPartialConnection({ ssl: { ...connection.ssl, encrypt: e.target.checked } })}
+                      checked={connection.encrypt}
+                      onChange={(e) => setPartialConnection({ encrypt: e.target.checked })}
                     />
-                    <span className="ml-2 text-sm">Encrypt connection?</span>
+                    <span className="ml-2 text-sm">Encrypt connection</span>
                   </label>
                 </div>
               </div>
