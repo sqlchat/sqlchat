@@ -38,13 +38,11 @@ const Select = (props: Props) => {
         >
           <SelectUI.Viewport className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 drop-shadow-lg p-1 rounded-lg">
             <SelectUI.Group>
-              {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
+              {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-2 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (
                 <SelectUI.Item
+                  className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
                   key={item.label}
-                  className={`${
-                    className || ""
-                  } w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800`}
                   value={item.value}
                 >
                   <SelectUI.ItemText className="truncate">{item.label}</SelectUI.ItemText>
