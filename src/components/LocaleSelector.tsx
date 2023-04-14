@@ -16,6 +16,10 @@ const localeItemList: LocaleItem[] = [
     value: "zh",
     label: "中文",
   },
+  {
+    value: "es",
+    label: "Español",
+  },
 ];
 
 const LocaleSelector = () => {

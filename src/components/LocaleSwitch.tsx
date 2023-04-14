@@ -8,6 +8,8 @@ const LocaleSwitch = () => {
   const handleLocaleChange = () => {
     if (locale === "en") {
       settingStore.setLocale("zh");
+    } else if (locale === "zh") {
+      settingStore.setLocale("es");
     } else {
       settingStore.setLocale("en");
     }
