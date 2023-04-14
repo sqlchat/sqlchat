@@ -1,4 +1,3 @@
-import { Menu, MenuItem } from "@mui/material";
 import dayjs from "dayjs";
 import { ReactElement, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { useConversationStore, useConnectionStore, useMessageStore, useUserStore, useSettingStore } from "@/store";
 import { Message } from "@/types";
+import Dropdown, { DropdownItem } from "../kit/Dropdown";
 import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
 import EngineIcon from "../EngineIcon";
@@ -112,30 +112,30 @@ const MessageView = (props: Props) => {
                 </span>
               </div>
               <div className={`invisible group-hover:visible ${showMenu && "!visible"}`}>
-                <button
-                  className="w-6 h-6 ml-1 mt-2 flex justify-center items-center text-gray-400 hover:text-gray-500"
-                  onClick={handleMoreMenuClick}
+                <Dropdown
+                  tigger={
+                    <button className="w-6 h-6 ml-1 mt-2 flex justify-center items-center text-gray-400 hover:text-gray-500">
+                      <Icon.IoMdMore className="w-5 h-auto" />
+                    </button>
+                  }
                 >
-                  <Icon.IoMdMore className="w-5 h-auto" />
-                </button>
-                <Menu
-                  className="mt-1"
-                  anchorEl={menuAnchorEl}
-                  open={showMenu}
-                  onClose={() => setMenuAnchorEl(null)}
-                  MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                  }}
-                >
-                  <MenuItem onClick={copyMessage}>
-                    <Icon.BiClipboard className="w-4 h-auto mr-2 opacity-70" />
-                    {t("common.copy")}
-                  </MenuItem>
-                  <MenuItem onClick={() => deleteMessage(message)}>
-                    <Icon.BiTrash className="w-4 h-auto mr-2 opacity-70" />
-                    {t("common.delete")}
-                  </MenuItem>
-                </Menu>
+                  <div className="p-1 flex flex-col justify-start items-start bg-white dark:bg-zinc-900 rounded-lg">
+                    <DropdownItem
+                      className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                      onClick={copyMessage}
+                    >
+                      <Icon.BiClipboard className="w-4 h-auto mr-2 opacity-70" />
+                      {t("common.copy")}
+                    </DropdownItem>
+                    <DropdownItem
+                      className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                      onClick={() => deleteMessage(message)}
+                    >
+                      <Icon.BiTrash className="w-4 h-auto mr-2 opacity-70" />
+                      {t("common.delete")}
+                    </DropdownItem>
+                  </div>
+                </Dropdown>
               </div>
             </>
           )}

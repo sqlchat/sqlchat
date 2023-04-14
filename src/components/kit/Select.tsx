@@ -30,13 +30,13 @@ const Select = (props: Props) => {
       </SelectUI.Trigger>
       <SelectUI.Portal>
         <SelectUI.Content
-          className="z-[999] -mt-px"
+          className="z-[999] mt-1"
           style={{
             width: "var(--radix-select-trigger-width)",
           }}
           position="popper"
         >
-          <SelectUI.Viewport className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 shadow p-1 rounded-lg">
+          <SelectUI.Viewport className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 drop-shadow-lg p-1 rounded-lg">
             <SelectUI.Group>
               {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-1 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
               {itemList.map((item) => (

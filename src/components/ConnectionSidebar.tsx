@@ -6,6 +6,7 @@ import { useConversationStore, useConnectionStore, useLayoutStore, ResponsiveWid
 import { Conversation, Connection } from "@/types";
 import Select from "./kit/Select";
 import Tooltip from "./kit/Tooltip";
+import Dropdown, { DropdownItem } from "./kit/Dropdown";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
 import LocaleSwitch from "./LocaleSwitch";
@@ -243,7 +244,7 @@ const ConnectionSidebar = () => {
               {conversationList.map((conversation) => (
                 <div
                   key={conversation.id}
-                  className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer dark:text-gray-300 border border-transparent group hover:bg-gray-50 dark:hover:bg-zinc-800 ${
+                  className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer dark:text-gray-300 border border-transparent group hover:bg-white dark:hover:bg-zinc-800 ${
                     conversation.id === conversationStore.currentConversation?.id && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
                   }`}
                   onClick={() => handleConversationSelect(conversation)}
@@ -254,22 +255,30 @@ const ConnectionSidebar = () => {
                     <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
                   )}
                   <span className="truncate grow">{conversation.title || "SQL Chat"}</span>
-                  <span className="ml-0.5 shrink-0 hidden group-hover:flex flex-row justify-end items-center space-x-1">
-                    <Icon.FiEdit3
-                      className="w-4 h-auto opacity-60 hover:opacity-80"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEditConversationTitle(conversation);
-                      }}
-                    />
-                    <Icon.IoClose
-                      className="w-5 h-auto opacity-60 hover:opacity-80"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteConversation(conversation);
-                      }}
-                    />
-                  </span>
+                  <Dropdown
+                    tigger={
+                      <button className="w-4 h-4 shrink-0 group-hover:visible invisible flex justify-center items-center text-gray-400 hover:text-gray-500">
+                        <Icon.FiMoreHorizontal className="w-full h-auto" />
+                      </button>
+                    }
+                  >
+                    <div className="p-1 flex flex-col justify-start items-start bg-white dark:bg-zinc-900 shadow-lg rounded-lg">
+                      <DropdownItem
+                        className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                        onClick={() => handleEditConversationTitle(conversation)}
+                      >
+                        <Icon.FiEdit3 className="w-4 h-auto mr-1 opacity-70" />
+                        {t("common.edit")}
+                      </DropdownItem>
+                      <DropdownItem
+                        className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                        onClick={() => handleDeleteConversation(conversation)}
+                      >
+                        <Icon.IoTrash className="w-4 h-auto mr-1 opacity-70" />
+                        {t("common.delete")}
+                      </DropdownItem>
+                    </div>
+                  </Dropdown>
                 </div>
               ))}
               <button

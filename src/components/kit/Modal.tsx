@@ -17,7 +17,7 @@ const Modal = (props: Props) => {
       <div
         className={`${
           className || ""
-        } flex flex-col bg-white dark:bg-zinc-800 rounded-xl p-4 fixed top-[50%] left-[50%] h-auto max-h-[85vh] w-[90vw] max-w-[90vw] sm:max-w-lg translate-x-[-50%] translate-y-[-50%] z-100`}
+        } flex flex-col bg-white dark:bg-zinc-800 rounded-xl p-4 fixed top-[50%] left-[50%] h-auto max-h-[85vh] w-[90vw] max-w-[90vw] sm:max-w-lg translate-x-[-50%] translate-y-[-50%] z-100 outline-none`}
       >
         <p className="text-lg pl-1 text-black dark:text-gray-300 font-medium mb-2">{title}</p>
         <button
