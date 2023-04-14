@@ -3,12 +3,14 @@ import { Id } from ".";
 export enum Engine {
   MySQL = "MYSQL",
   PostgreSQL = "POSTGRESQL",
+  MSSQL = "MSSQL",
 }
 
 export interface SSLOptions {
   ca?: string;
   cert?: string;
   key?: string;
+  encrypt?: boolean;
 }
 
 export interface Connection {

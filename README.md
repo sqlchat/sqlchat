@@ -26,6 +26,7 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 - MySQL
 - PostgreSQL
+- MSSQL
 
 ## Data Privacy
 
