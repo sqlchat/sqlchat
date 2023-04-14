@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { ReactElement, useState } from "react";
+import { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
@@ -24,28 +24,16 @@ const MessageView = (props: Props) => {
   const conversationStore = useConversationStore();
   const connectionStore = useConnectionStore();
   const messageStore = useMessageStore();
-  const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLButtonElement | null>(null);
   const isCurrentUser = message.creatorId === userStore.currentUser.id;
-  const showMenu = Boolean(menuAnchorEl);
   const connection = connectionStore.getConnectionById(conversationStore.getConversationById(message.conversationId)?.connectionId || "");
-
-  const handleMoreMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (menuAnchorEl) {
-      setMenuAnchorEl(null);
-    } else {
-      setMenuAnchorEl(event.currentTarget);
-    }
-  };
 
   const copyMessage = () => {
     navigator.clipboard.writeText(message.content);
     toast.success("Copied to clipboard");
-    setMenuAnchorEl(null);
   };
 
   const deleteMessage = (message: Message) => {
     messageStore.clearMessage((item) => item.id !== message.id);
-    setMenuAnchorEl(null);
   };
 
   return (
@@ -56,8 +44,36 @@ const MessageView = (props: Props) => {
     >
       {isCurrentUser ? (
         <>
-          <div className="w-auto max-w-full bg-indigo-600 text-white dark:text-gray-200 px-4 py-2 rounded-lg whitespace-pre-wrap break-all">
-            {message.content}
+          <div className="invisible group-hover:visible">
+            <Dropdown
+              tigger={
+                <button className="w-6 h-6 mr-1 mt-2 shrink-0 flex justify-center items-center text-gray-400 hover:text-gray-500">
+                  <Icon.IoMdMore className="w-5 h-auto" />
+                </button>
+              }
+            >
+              <div className="p-1 flex flex-col justify-start items-start bg-white dark:bg-zinc-900 rounded-lg">
+                <DropdownItem
+                  className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                  onClick={copyMessage}
+                >
+                  <Icon.BiClipboard className="w-4 h-auto mr-2 opacity-70" />
+                  {t("common.copy")}
+                </DropdownItem>
+                <DropdownItem
+                  className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                  onClick={() => deleteMessage(message)}
+                >
+                  <Icon.BiTrash className="w-4 h-auto mr-2 opacity-70" />
+                  {t("common.delete")}
+                </DropdownItem>
+              </div>
+            </Dropdown>
+          </div>
+          <div className="w-auto max-w-[calc(100%-2rem)] flex flex-col justify-start items-start">
+            <div className="w-full bg-indigo-600 text-white dark:text-gray-200 px-4 py-2 rounded-lg whitespace-pre-wrap break-all">
+              {message.content}
+            </div>
           </div>
           <div className="w-10 h-10 p-1 border dark:border-zinc-700 rounded-full flex justify-center items-center ml-2 shrink-0">
             <Icon.AiOutlineUser className="w-6 h-6" />
@@ -78,7 +94,7 @@ const MessageView = (props: Props) => {
             </div>
           ) : (
             <>
-              <div className="w-auto max-w-[calc(100%-4rem)] flex flex-col justify-start items-start">
+              <div className="w-auto max-w-[calc(100%-2rem)] flex flex-col justify-start items-start">
                 <ReactMarkdown
                   className={`w-auto max-w-full bg-gray-100 dark:bg-zinc-700 px-4 py-2 rounded-lg prose prose-neutral dark:prose-invert ${
                     message.status === "FAILED" && "border border-red-400 bg-red-100 text-red-500"
@@ -111,10 +127,10 @@ const MessageView = (props: Props) => {
                   {dayjs(message.createdAt).locale(settingStore.setting.locale).format("lll")}
                 </span>
               </div>
-              <div className={`invisible group-hover:visible ${showMenu && "!visible"}`}>
+              <div className="invisible group-hover:visible">
                 <Dropdown
                   tigger={
-                    <button className="w-6 h-6 ml-1 mt-2 flex justify-center items-center text-gray-400 hover:text-gray-500">
+                    <button className="w-6 h-6 ml-1 mt-2 shrink-0 flex justify-center items-center text-gray-400 hover:text-gray-500">
                       <Icon.IoMdMore className="w-5 h-auto" />
                     </button>
                   }
