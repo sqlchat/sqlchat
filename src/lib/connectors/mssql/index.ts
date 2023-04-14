@@ -37,8 +37,7 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
 const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
-  request.query(`USE ${databaseName}; ${statement}`);
-  const result = await request;
+  const result = await request.query(`USE ${databaseName}; ${statement}`);
   await pool.close();
   return result.recordset;
 };
@@ -76,7 +75,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
-  const result = await request.query(`EXEC sp_help '${tableName}';`);
+  const result = await request.query(`USE ${databaseName}; EXEC sp_help '${tableName}';`);
   await pool.close();
   if (result.recordset.length !== 1) {
     throw new Error("Unexpected number of rows.");
