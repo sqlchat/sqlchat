@@ -38,6 +38,10 @@ const execute = async (connection: Connection, databaseName: string, statement: 
     rawResult: rows,
     affectedRows: rowCount,
   };
+  // For those SELECT statement, we should set the affectedRows to undefined.
+  if (executionResult.rawResult.length === rowCount) {
+    executionResult.affectedRows = undefined;
+  }
   return executionResult;
 };
 
