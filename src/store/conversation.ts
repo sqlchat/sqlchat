@@ -35,6 +35,9 @@ export const useConversationStore = create<ConversationState>()(
           connectionId,
           databaseName,
         };
+        if (connectionId) {
+          conversation.assistantId = "sql-chat-bot";
+        }
         set((state) => ({
           conversationList: [...state.conversationList, conversation],
           currentConversation: conversation,
