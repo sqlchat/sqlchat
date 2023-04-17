@@ -60,6 +60,22 @@ export const useConversationStore = create<ConversationState>()(
     }),
     {
       name: "conversation-storage",
+      version: 1,
+      migrate: (persistedState: any, version: number) => {
+        let state = persistedState as ConversationState;
+        if (version === 0) {
+          for (const conversation of state.conversationList) {
+            if (!conversation.connectionId) {
+              conversation.assistantId = "general-bot";
+            } else {
+              conversation.assistantId = "sql-chat-bot";
+            }
+          }
+          state.currentConversation = undefined;
+        }
+
+        return state;
+      },
     }
   )
 );

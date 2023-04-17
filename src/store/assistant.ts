@@ -1,30 +1,18 @@
 import { first } from "lodash-es";
-import { Id, User } from "@/types";
+import { Assistant, Id } from "@/types";
+import * as customAssistantList from "../../assistants";
 
-// Assistant is a special user.
-export const assistantList: User[] = [
-  {
-    id: "sql-assistant",
-    name: "SQL Chat",
-    description: "🤖️ I'm an expert in SQL. I can answer your questions about databases and SQL.",
-    avatar: "",
-  },
-];
+const assistantList: Assistant[] = Object.keys(customAssistantList).map((name) => {
+  return {
+    ...((customAssistantList as any)[name].default as Assistant),
+  };
+});
 
 export const getAssistantById = (id: Id) => {
-  const user = assistantList.find((user) => user.id === id);
-  return user || (first(assistantList) as User);
+  const assistant = assistantList.find((assistant) => assistant.id === id);
+  return assistant || (first(assistantList) as Assistant);
 };
 
-// getPromptOfAssistant define the special prompt for each assistant.
-export const getPromptGeneratorOfAssistant = (assistant: User) => {
-  const basicPrompt = `Please follow the instructions to answer the questions:
-1. Set the language to the markdown code block for each code block. For example, \`SELECT * FROM table\` is SQL.
-2. Please be careful to return only key information, and try not to make it too long.
-`;
-  if (assistant.id === "sql-assistant") {
-    return (schema: string) =>
-      `This is my database schema"${schema}". You will see the tables and columns in the database. And please answer the following questions about the database.\n${basicPrompt}`;
-  }
-  return () => `\n${basicPrompt}`;
+export const getPromptGeneratorOfAssistant = (assistant: Assistant) => {
+  return assistant.getPrompt;
 };
