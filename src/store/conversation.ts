@@ -7,7 +7,7 @@ import { generateUUID } from "@/utils";
 const getDefaultConversation = (): Conversation => {
   return {
     id: generateUUID(),
-    assistantId: "sql-assistant",
+    assistantId: "general-bot",
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
