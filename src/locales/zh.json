@@ -14,12 +14,16 @@
   "conversation": {
     "new-chat": "新建会话",
     "conversation-title": "会话标题",
-    "edit-title": "编辑会话标题"
+    "update": "更新会话",
+    "title": "标题"
   },
   "connection": {
     "self": "连接",
     "new": "创建连接",
     "select-database": "选择数据库"
+  },
+  "assistant": {
+    "self": "机器人"
   },
   "execution": {
     "title": "执行 SQL",

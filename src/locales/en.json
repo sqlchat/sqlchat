@@ -14,12 +14,16 @@
   "conversation": {
     "new-chat": "New Chat",
     "conversation-title": "Conversation title",
-    "edit-title": "Edit conversation title"
+    "update": "Update conversation",
+    "title": "Title"
   },
   "connection": {
     "self": "Connection",
     "new": "Create Connection",
     "select-database": "Select your database"
+  },
+  "assistant": {
+    "self": "Bot"
   },
   "execution": {
     "title": "Execute SQL",

@@ -1,22 +1,31 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-import { useConversationStore } from "@/store";
+import { assistantList, useConversationStore } from "@/store";
 import { Conversation } from "@/types";
 import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
+import Select from "./kit/Select";
 
 interface Props {
   conversation: Conversation;
   close: () => void;
 }
 
-const EditConversationTitleModal = (props: Props) => {
+const UpdateConversationModal = (props: Props) => {
   const { close, conversation } = props;
   const { t } = useTranslation();
   const conversationStore = useConversationStore();
   const [title, setTitle] = useState(conversation.title);
+  const [assistantId, setAssistantId] = useState(conversation.assistantId);
   const allowSave = title !== "";
+  const assistantItems = assistantList.map((assistant) => {
+    return {
+      value: assistant.id,
+      label: assistant.name,
+    };
+  });
+  const currentAssistant = assistantList.find((assistant) => assistant.id === assistantId);
 
   const handleSaveEdit = () => {
     const formatedTitle = title.trim();
@@ -26,15 +35,26 @@ const EditConversationTitleModal = (props: Props) => {
 
     conversationStore.updateConversation(conversation.id, {
       title: formatedTitle,
+      assistantId: assistantId,
     });
-    toast.success("Conversation title updated");
+    toast.success("Conversation updated");
     close();
   };
 
   return (
-    <Modal title={t("conversation.edit-title")} onClose={close}>
+    <Modal title={t("conversation.update")} onClose={close}>
       <div className="w-full flex flex-col justify-start items-start mt-2">
+        <label className="block text-sm font-medium text-gray-700 mb-1">{t("conversation.title")}</label>
         <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
+      </div>
+      <div className="w-full flex flex-col justify-start items-start mt-2">
+        <label className="block text-sm font-medium text-gray-700 mb-1">{t("assistant.self")}</label>
+        <Select className="w-full" value={assistantId} itemList={assistantItems} onValueChange={(value) => setAssistantId(value)} />
+        {currentAssistant && (
+          <div className="w-full flex flex-col justify-start items-start">
+            <p className="block text-sm text-gray-700 mt-1 ml-3">{currentAssistant.description}</p>
+          </div>
+        )}
       </div>
       <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
         <button className="btn btn-outline" onClick={close}>
@@ -48,4 +68,4 @@ const EditConversationTitleModal = (props: Props) => {
   );
 };
 
-export default EditConversationTitleModal;
+export default UpdateConversationModal;

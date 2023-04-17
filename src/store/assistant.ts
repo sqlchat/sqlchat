@@ -2,7 +2,7 @@ import { first } from "lodash-es";
 import { Assistant, Id } from "@/types";
 import * as customAssistantList from "../../assistants";
 
-const assistantList: Assistant[] = Object.keys(customAssistantList).map((name) => {
+export const assistantList: Assistant[] = Object.keys(customAssistantList).map((name) => {
   return {
     ...((customAssistantList as any)[name].default as Assistant),
   };

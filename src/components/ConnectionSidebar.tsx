@@ -13,12 +13,12 @@ import LocaleSwitch from "./LocaleSwitch";
 import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
-import EditConversationTitleModal from "./EditConversationTitleModal";
+import UpdateConversationModal from "./UpdateConversationModal";
 
 interface State {
   showCreateConnectionModal: boolean;
   showSettingModal: boolean;
-  showEditConversationTitleModal: boolean;
+  showUpdateConversationModal: boolean;
 }
 
 const ConnectionSidebar = () => {
@@ -29,10 +29,10 @@ const ConnectionSidebar = () => {
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
     showSettingModal: false,
-    showEditConversationTitleModal: false,
+    showUpdateConversationModal: false,
   });
   const [editConnectionModalContext, setEditConnectionModalContext] = useState<Connection>();
-  const [editConversationTitleModalContext, setEditConversationTitleModalContext] = useState<Conversation>();
+  const [updateConversationModalContext, setUpdateConversationModalContext] = useState<Conversation>();
   const [isRequestingDatabase, setIsRequestingDatabase] = useState<boolean>(false);
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
@@ -88,10 +88,10 @@ const ConnectionSidebar = () => {
     });
   };
 
-  const toggleEditConversationTitleModal = (show = true) => {
+  const toggleUpdateConversationModal = (show = true) => {
     setState({
       ...state,
-      showEditConversationTitleModal: show,
+      showUpdateConversationModal: show,
     });
   };
 
@@ -139,11 +139,11 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleEditConversationTitle = (conversation: Conversation) => {
-    setEditConversationTitleModalContext(conversation);
+  const handleEditConversation = (conversation: Conversation) => {
+    setUpdateConversationModalContext(conversation);
     setState({
       ...state,
-      showEditConversationTitleModal: true,
+      showUpdateConversationModal: true,
     });
   };
 
@@ -265,16 +265,16 @@ const ConnectionSidebar = () => {
                     <div className="p-1 flex flex-col justify-start items-start bg-white dark:bg-zinc-900 shadow-lg rounded-lg">
                       <DropdownItem
                         className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
-                        onClick={() => handleEditConversationTitle(conversation)}
+                        onClick={() => handleEditConversation(conversation)}
                       >
-                        <Icon.FiEdit3 className="w-4 h-auto mr-1 opacity-70" />
+                        <Icon.FiEdit3 className="w-4 h-auto mr-2 opacity-70" />
                         {t("common.edit")}
                       </DropdownItem>
                       <DropdownItem
                         className="w-full p-1 px-2 flex flex-row justify-start items-center rounded-lg cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
                         onClick={() => handleDeleteConversation(conversation)}
                       >
-                        <Icon.IoTrash className="w-4 h-auto mr-1 opacity-70" />
+                        <Icon.IoTrash className="w-4 h-auto mr-2 opacity-70" />
                         {t("common.delete")}
                       </DropdownItem>
                     </div>
@@ -309,11 +309,8 @@ const ConnectionSidebar = () => {
 
       {state.showSettingModal && <SettingModal close={() => toggleSettingModal(false)} />}
 
-      {editConversationTitleModalContext && state.showEditConversationTitleModal && (
-        <EditConversationTitleModal
-          close={() => toggleEditConversationTitleModal(false)}
-          conversation={editConversationTitleModalContext}
-        />
+      {updateConversationModalContext && state.showUpdateConversationModal && (
+        <UpdateConversationModal close={() => toggleUpdateConversationModal(false)} conversation={updateConversationModalContext} />
       )}
     </>
   );
