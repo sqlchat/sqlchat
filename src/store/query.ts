@@ -1,5 +1,7 @@
+import { merge } from "lodash-es";
 import { create } from "zustand";
-import { Connection, Database } from "@/types";
+import { persist } from "zustand/middleware";
+import { Connection, Database, Timestamp } from "@/types";
 
 interface ExecuteQueryContext {
   connection: Connection;
@@ -7,25 +9,45 @@ interface ExecuteQueryContext {
   statement: string;
 }
 
+interface QueryHistory {
+  context: ExecuteQueryContext;
+  createdAt: Timestamp;
+}
+
 interface QueryState {
-  context?: ExecuteQueryContext;
   showDrawer: boolean;
+  queryHistory: QueryHistory[];
+  context?: ExecuteQueryContext;
   toggleDrawer: (show?: boolean) => void;
   setContext: (context: ExecuteQueryContext | undefined) => void;
 }
 
-export const useQueryStore = create<QueryState>()((set) => ({
-  showDrawer: false,
-  toggleDrawer: (show) => {
-    set((state) => ({
-      ...state,
-      showDrawer: show ?? !state.showDrawer,
-    }));
-  },
-  setContext: (context) => {
-    set((state) => ({
-      ...state,
-      context,
-    }));
-  },
-}));
+export const useQueryStore = create<QueryState>()(
+  persist(
+    (set) => ({
+      showDrawer: false,
+      queryHistory: [],
+      toggleDrawer: (show) => {
+        set((state) => ({
+          ...state,
+          showDrawer: show ?? !state.showDrawer,
+        }));
+      },
+      setContext: (context) => {
+        set((state) => ({
+          ...state,
+          context,
+        }));
+      },
+    }),
+    {
+      name: "query-storage",
+      merge: (persistedState, currentState) => {
+        return {
+          ...merge(currentState, persistedState),
+          context: undefined,
+        };
+      },
+    }
+  )
+);

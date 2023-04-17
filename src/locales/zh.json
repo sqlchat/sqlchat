@@ -23,7 +23,8 @@
     "select-database": "选择数据库"
   },
   "assistant": {
-    "self": "机器人"
+    "self": "机器人",
+    "create-your-bot": "找不到需要的机器人？创建一个"
   },
   "execution": {
     "title": "执行 SQL",

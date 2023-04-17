@@ -23,7 +23,8 @@
     "select-database": "Select your database"
   },
   "assistant": {
-    "self": "Bot"
+    "self": "Bot",
+    "create-your-bot": "Can't find the bot you need? Create one"
   },
   "execution": {
     "title": "Execute SQL",

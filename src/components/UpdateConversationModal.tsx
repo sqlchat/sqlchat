@@ -6,6 +6,7 @@ import { Conversation } from "@/types";
 import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
 import Select from "./kit/Select";
+import Icon from "./Icon";
 
 interface Props {
   conversation: Conversation;
@@ -52,9 +53,16 @@ const UpdateConversationModal = (props: Props) => {
         <Select className="w-full" value={assistantId} itemList={assistantItems} onValueChange={(value) => setAssistantId(value)} />
         {currentAssistant && (
           <div className="w-full flex flex-col justify-start items-start">
-            <p className="block text-sm text-gray-700 mt-1 ml-3">{currentAssistant.description}</p>
+            <p className="block text-sm text-gray-700 mt-2 mx-3">{currentAssistant.description}</p>
           </div>
         )}
+        <a
+          className="mt-1 mx-3 text-sm text-blue-600 underline hover:opacity-80"
+          href="https://github.com/sqlchat/sqlchat/tree/main/assistants"
+          target="_blank"
+        >
+          {t("assistant.create-your-bot")} <Icon.FiExternalLink className="inline-block -mt-0.5" />
+        </a>
       </div>
       <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
         <button className="btn btn-outline" onClick={close}>
