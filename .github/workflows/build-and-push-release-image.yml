@@ -1,11 +1,11 @@
-name: build-and-push-dev-ci-image
+name: build-and-push-release-image
 
 on:
   push:
-    branches: [main]
+    branches: [release]
 
 jobs:
-  build-and-push-dev-ci-image:
+  build-and-push-release-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,7 +38,7 @@ jobs:
           flavor: |
             latest=false
           tags: |
-            type=raw,value=dev-ci
+            type=raw,value=latest
 
       - name: Build and Push
         id: docker_build
