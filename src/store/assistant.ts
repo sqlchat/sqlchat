@@ -2,6 +2,9 @@ import { first } from "lodash-es";
 import { Assistant, Id } from "@/types";
 import * as customAssistantList from "../../assistants";
 
+export const GeneralBotId = "general-bot";
+export const SQLChatBotId = "sql-chat-bot";
+
 export const assistantList: Assistant[] = Object.keys(customAssistantList).map((name) => {
   return {
     ...((customAssistantList as any)[name].default as Assistant),

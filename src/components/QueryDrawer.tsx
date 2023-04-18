@@ -21,7 +21,7 @@ const QueryDrawer = () => {
   const [isLoading, setIsLoading] = useState(false);
   const context = queryStore.context;
   const executionMessage = executionResult ? getMessageFromExecutionResult(executionResult) : "";
-  const showExecutionWarningBanner = !checkStatementIsSelect(statement);
+  const showExecutionWarningBanner = statement.trim() && !checkStatementIsSelect(statement);
 
   useEffect(() => {
     if (!queryStore.showDrawer) {
