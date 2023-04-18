@@ -20,6 +20,7 @@ const Tooltip = (props: Props) => {
             className="bg-zinc-800 text-gray-200 dark:bg-black text-sm p-1 px-2 rounded-md z-[99999]"
             side={side}
             sideOffset={6}
+            hidden={title === ""}
           >
             {title}
             <TooltipUI.Arrow />

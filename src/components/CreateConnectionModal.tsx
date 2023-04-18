@@ -218,6 +218,10 @@ const CreateConnectionModal = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <TextField placeholder="Title" value={connection.title} onChange={(value) => setPartialConnection({ title: value })} />
+          </div>
+          <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">Host</label>
             <TextField placeholder="Connect host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
           </div>
