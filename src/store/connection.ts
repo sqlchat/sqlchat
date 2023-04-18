@@ -14,11 +14,11 @@ const samplePGConnection: Connection = {
   id: "sample-pg",
   title: "Sample PostgreSQL",
   engineType: Engine.PostgreSQL,
-  host: "db.aqbxmomjsyqbacfsujwd.supabase.co",
-  port: "",
+  host: "db.swxkyqvcefxcjecynews.supabase.co",
+  port: "5432",
   username: "readonly_user",
-  password: "bytebase-sqlchat",
-  database: "employee",
+  password: "sqlchat",
+  database: "sample-employee",
 };
 
 interface ConnectionState {
