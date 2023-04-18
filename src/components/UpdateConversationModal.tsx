@@ -7,6 +7,7 @@ import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
 import Select from "./kit/Select";
 import Icon from "./Icon";
+import BetaBadge from "./BetaBadge";
 
 interface Props {
   conversation: Conversation;
@@ -49,7 +50,9 @@ const UpdateConversationModal = (props: Props) => {
         <TextField placeholder={t("conversation.conversation-title") || ""} value={title} onChange={(value) => setTitle(value)} />
       </div>
       <div className="w-full flex flex-col justify-start items-start mt-2">
-        <label className="block text-sm font-medium text-gray-700 mb-1">{t("assistant.self")}</label>
+        <label className="text-sm font-medium text-gray-700 mb-1 flex flex-row justify-start items-center">
+          {t("assistant.self")} <BetaBadge />
+        </label>
         <Select className="w-full" value={assistantId} itemList={assistantItems} onValueChange={(value) => setAssistantId(value)} />
         {currentAssistant && (
           <div className="w-full flex flex-col justify-start items-start">
