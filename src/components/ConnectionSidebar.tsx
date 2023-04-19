@@ -9,7 +9,6 @@ import Tooltip from "./kit/Tooltip";
 import Dropdown, { DropdownItem } from "./kit/Dropdown";
 import Icon from "./Icon";
 import EngineIcon from "./EngineIcon";
-import LocaleSwitch from "./LocaleSwitch";
 import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
@@ -206,7 +205,6 @@ const ConnectionSidebar = () => {
             </div>
             <div className="w-full flex flex-col justify-end items-center">
               <DarkModeSwitch />
-              <LocaleSwitch />
               <Tooltip title={t("common.setting")} side="right">
                 <button
                   className=" w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100 dark:hover:bg-zinc-700"
