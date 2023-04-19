@@ -32,6 +32,10 @@ const localeItemList: LocaleItem[] = [
     value: "de",
     label: "Deutsch",
   },
+  {
+    value: "th",
+    label: "ยาสุฟุมิ",
+  },
 ];
 
 const LocaleSelector = () => {
