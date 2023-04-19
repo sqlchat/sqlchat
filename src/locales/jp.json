@@ -1,0 +1,77 @@
+{
+  "common": {
+    "clear": "クリア",
+    "close": "閉じる",
+    "confirm": "確認",
+    "save": "保存",
+    "edit": "編集",
+    "loading": "読み込み中",
+    "setting": "設定",
+    "copy": "コピー",
+    "delete": "削除",
+    "execute": "実行"
+  },
+  "conversation": {
+    "new-chat": "新しいチャット",
+    "conversation-title": "会話タイトル",
+    "update": "会話を更新",
+    "title": "タイトル"
+  },
+  "connection": {
+    "self": "接続",
+    "new": "接続を作成",
+    "edit": "接続を編集",
+    "select-database": "データベースを選択",
+    "database-type": "データベースタイプ",
+    "title": "タイトル",
+    "host": "ホスト",
+    "port": "ポート",
+    "database-name": "データベース名",
+    "username": "ユーザー名",
+    "password": "パスワード"
+  },
+  "assistant": {
+    "self": "ボット",
+    "create-your-bot": "必要なボットが見つからない場合は、作成してください"
+  },
+  "execution": {
+    "title": "SQLを実行",
+    "message": {
+      "executing": "クエリを実行中...",
+      "no-connection": "接続が選択されていません",
+      "no-data": "データが返されませんでした"
+    }
+  },
+  "editor": {
+    "placeholder": "ここに質問を入力してください..."
+  },
+  "setting": {
+    "self": "設定",
+    "basic": {
+      "self": "基本",
+      "language": "言語"
+    },
+    "theme": {
+      "self": "テーマ",
+      "system": "システムに従う",
+      "light": "ライト",
+      "dark": "ダーク"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI APIの設定"
+    },
+    "data": {
+      "self": "データ",
+      "clear-all-data": "すべてのデータをクリア"
+    }
+  },
+  "social": {
+    "join-discord-channel": "Discordチャンネルに参加",
+    "join-wechat-group": "WeChatグループに参加"
+  },
+  "banner": {
+    "data-storage": "接続設定はローカルブラウザに保存されます",
+    "non-select-sql-warning": "現在のステートメントは非SELECT SQLである可能性があり、データベースのスキーマまたはデータの変更につながる可能性があります。自分が何をしているか確認してください。",
+    "product-hunt": "🚀🚀🚀 Product Huntでローンチしました。投票してください！ 🚀🚀🚀"
+  }
+}

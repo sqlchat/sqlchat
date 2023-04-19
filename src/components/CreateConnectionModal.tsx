@@ -355,11 +355,11 @@ const CreateConnectionModal = (props: Props) => {
           </div>
           <div className="space-x-2 flex flex-row justify-center">
             <button className="btn btn-outline" onClick={close}>
-              Close
+              {t("common.close")}
             </button>
             <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
               {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
-              Save
+              {t("common.save")}
             </button>
           </div>
         </div>

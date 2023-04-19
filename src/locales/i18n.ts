@@ -3,6 +3,7 @@ import { initReactI18next } from "react-i18next";
 import enLocale from "./en.json";
 import zhLocale from "./zh.json";
 import esLocale from "./es.json";
+import jpLocale from "./jp.json";
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -14,6 +15,9 @@ i18n.use(initReactI18next).init({
     },
     es: {
       translation: esLocale,
+    },
+    jp: {
+      translation: jpLocale,
     },
   },
   fallbackLng: "en",

@@ -10,6 +10,8 @@ const LocaleSwitch = () => {
       settingStore.setLocale("zh");
     } else if (locale === "zh") {
       settingStore.setLocale("es");
+    } else if (locale === "es") {
+      settingStore.setLocale("jp");
     } else {
       settingStore.setLocale("en");
     }
