@@ -12,6 +12,8 @@ const LocaleSwitch = () => {
       settingStore.setLocale("es");
     } else if (locale === "es") {
       settingStore.setLocale("jp");
+    } else if (locale === "jp") {
+      settingStore.setLocale("de");
     } else {
       settingStore.setLocale("en");
     }

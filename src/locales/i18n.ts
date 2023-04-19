@@ -4,6 +4,7 @@ import enLocale from "./en.json";
 import zhLocale from "./zh.json";
 import esLocale from "./es.json";
 import jpLocale from "./jp.json";
+import deLocale from "./de.json";
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -18,6 +19,9 @@ i18n.use(initReactI18next).init({
     },
     jp: {
       translation: jpLocale,
+    },
+    de: {
+      translation: deLocale,
     },
   },
   fallbackLng: "en",
