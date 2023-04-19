@@ -253,6 +253,7 @@ const CreateConnectionModal = (props: Props) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.password")}</label>
             <TextField
               placeholder="Connection password"
+              type="password"
               value={connection.password || ""}
               onChange={(value) => setPartialConnection({ password: value })}
             />
