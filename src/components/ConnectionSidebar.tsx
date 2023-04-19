@@ -289,12 +289,28 @@ const ConnectionSidebar = () => {
               </button>
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-6 py-2">
+              {/* TODO: remove this after releasing */}
               <a
+                className="hidden dark:hidden"
                 href="https://www.producthunt.com/posts/sql-chat?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat"
                 target="_blank"
               >
                 <img
                   src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=389982&theme=light"
+                  alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
+                  style={{ width: "250px", height: "54px" }}
+                  width="250"
+                  height="54"
+                />
+              </a>
+              {/* TODO: remove this after releasing */}
+              <a
+                className="!hidden dark:block"
+                href="https://www.producthunt.com/posts/sql-chat?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat"
+                target="_blank"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=389982&theme=dark"
                   alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
                   style={{ width: "250px", height: "54px" }}
                   width="250"

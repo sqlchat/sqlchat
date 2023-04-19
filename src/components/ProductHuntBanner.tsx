@@ -16,7 +16,7 @@ const ProductHuntBanner = (props: Props) => {
     <div
       className={`${!show && "!hidden"} ${
         className || ""
-      } relative w-full flex bg-[#c65a33] text-white flex-row justify-start sm:justify-center items-center px-4 py-1`}
+      } relative w-full flex bg-[#f26150] text-white flex-row justify-start sm:justify-center items-center px-4 py-1`}
     >
       <a
         className="text-sm leading-6 pr-4 cursor-pointer hover:underline"
