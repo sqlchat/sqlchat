@@ -62,6 +62,32 @@ You can set the following environment variables to customize the deployment:
    pnpm i && pnpm dev
    ```
 
+## Common questions
+
+<details><summary>How to self host SQL Chat?</summary>
+<p>
+
+- You can deploy SQL Chat to Vercel with one click
+
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
+
+- You can deploy your SQL Chat with docker in seconds
+
+  ```bash
+  docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+  ```
+
+</p>
+</details>
+
+<details><summary>It always says that I have a network connection issue?</summary>
+<p>
+
+Please make sure you have a stable network connection which can access the OpenAI API endpoint. If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
+
+</p>
+</details>
+
 ## Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=sqlchat/sqlchat&type=Date)](https://star-history.com/#sqlchat/sqlchat&Date)
