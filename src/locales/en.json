@@ -20,7 +20,15 @@
   "connection": {
     "self": "Connection",
     "new": "Create Connection",
-    "select-database": "Select your database"
+    "edit": "Edit Connection",
+    "select-database": "Select your database",
+    "database-type": "Database type",
+    "title": "Title",
+    "host": "Host",
+    "port": "Port",
+    "database-name": "Database name",
+    "username": "Username",
+    "password": "Password"
   },
   "assistant": {
     "self": "Bot",

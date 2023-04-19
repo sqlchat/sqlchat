@@ -10,6 +10,7 @@ import Modal from "./kit/Modal";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   connection?: Connection;
@@ -47,6 +48,7 @@ const defaultConnection: Connection = {
 
 const CreateConnectionModal = (props: Props) => {
   const { connection: editConnection, close } = props;
+  const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
@@ -201,11 +203,11 @@ const CreateConnectionModal = (props: Props) => {
 
   return (
     <>
-      <Modal title={isEditing ? "Edit Connection" : "Create Connection"} onClose={close}>
+      <Modal title={isEditing ? t("connection.edit") : t("connection.new")} onClose={close}>
         <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Database Type</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-type")}</label>
             <Select
               className="w-full"
               value={connection.engineType}
@@ -218,39 +220,39 @@ const CreateConnectionModal = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.title")}</label>
             <TextField placeholder="Title" value={connection.title} onChange={(value) => setPartialConnection({ title: value })} />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Host</label>
-            <TextField placeholder="Connect host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.host")}</label>
+            <TextField placeholder="Connection host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Port</label>
-            <TextField placeholder="Connect port" value={connection.port} onChange={(value) => setPartialConnection({ port: value })} />
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.port")}</label>
+            <TextField placeholder="Connection port" value={connection.port} onChange={(value) => setPartialConnection({ port: value })} />
           </div>
           {showDatabaseField && (
             <div className="w-full flex flex-col">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Database Name</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-name")}</label>
               <TextField
-                placeholder="Connect database"
+                placeholder="Connection database"
                 value={connection.database || ""}
                 onChange={(value) => setPartialConnection({ database: value })}
               />
             </div>
           )}
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.username")}</label>
             <TextField
-              placeholder="Connect username"
+              placeholder="Connection username"
               value={connection.username || ""}
               onChange={(value) => setPartialConnection({ username: value })}
             />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.password")}</label>
             <TextField
-              placeholder="Connect password"
+              placeholder="Connection password"
               value={connection.password || ""}
               onChange={(value) => setPartialConnection({ password: value })}
             />
