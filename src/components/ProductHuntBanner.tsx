@@ -18,7 +18,11 @@ const ProductHuntBanner = (props: Props) => {
         className || ""
       } relative w-full flex bg-[#c65a33] text-white flex-row justify-start sm:justify-center items-center px-4 py-1`}
     >
-      <a className="text-sm leading-6 pr-4 cursor-pointer hover:underline" href="" target="_blank">
+      <a
+        className="text-sm leading-6 pr-4 cursor-pointer hover:underline"
+        href="https://www.producthunt.com/posts/sql-chat"
+        target="_blank"
+      >
         {t("banner.product-hunt")}
       </a>
       <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
