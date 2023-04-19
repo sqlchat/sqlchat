@@ -39,7 +39,7 @@ const MessageView = (props: Props) => {
   return (
     <div
       className={`w-full max-w-full flex flex-row justify-start items-start my-4 group ${
-        isCurrentUser ? "justify-end pl-8 sm:pl-24" : "pr-8 sm:pr-24"
+        isCurrentUser ? "justify-end sm:pl-24" : "sm:pr-24"
       }`}
     >
       {isCurrentUser ? (
