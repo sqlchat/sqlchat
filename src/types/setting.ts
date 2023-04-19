@@ -1,4 +1,4 @@
-export type Locale = "en" | "zh" | "es" | "jp" | "de";
+export type Locale = "en" | "zh" | "zhHant" | "es" | "jp" | "de";
 
 export type Theme = "light" | "dark" | "system";
 

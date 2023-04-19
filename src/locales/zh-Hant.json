@@ -1,0 +1,77 @@
+{
+  "common": {
+    "clear": "清除",
+    "close": "關閉",
+    "confirm": "確認",
+    "save": "儲存",
+    "edit": "編輯",
+    "loading": "載入中",
+    "setting": "設定",
+    "copy": "複製",
+    "delete": "刪除",
+    "execute": "執行"
+  },
+  "conversation": {
+    "new-chat": "新聊天",
+    "conversation-title": "對話標題",
+    "update": "更新對話",
+    "title": "標題"
+  },
+  "connection": {
+    "self": "連線",
+    "new": "建立連線",
+    "edit": "編輯連線",
+    "select-database": "選擇您的資料庫",
+    "database-type": "資料庫類型",
+    "title": "標題",
+    "host": "主機",
+    "port": "埠號",
+    "database-name": "資料庫名稱",
+    "username": "使用者名稱",
+    "password": "密碼"
+  },
+  "assistant": {
+    "self": "機器人",
+    "create-your-bot": "找不到您需要的機器人？建立一個"
+  },
+  "execution": {
+    "title": "執行 SQL",
+    "message": {
+      "executing": "正在執行查詢...",
+      "no-connection": "未選擇連線",
+      "no-data": "未返回任何資料"
+    }
+  },
+  "editor": {
+    "placeholder": "在此輸入您的問題..."
+  },
+  "setting": {
+    "self": "設定",
+    "basic": {
+      "self": "基本",
+      "language": "語言"
+    },
+    "theme": {
+      "self": "主題",
+      "system": "跟隨系統",
+      "light": "亮色",
+      "dark": "暗色"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI API 設定"
+    },
+    "data": {
+      "self": "資料",
+      "clear-all-data": "清除所有資料"
+    }
+  },
+  "social": {
+    "join-discord-channel": "加入 Discord 頻道",
+    "join-wechat-group": "加入微信群組"
+  },
+  "banner": {
+    "data-storage": "連線設定儲存在您的本地瀏覽器中",
+    "non-select-sql-warning": "當前語句可能是非 SELECT SQL 語句，這將導致資料庫結構或資料的更改。請確保您知道自己在做什麼。",
+    "product-hunt": "🚀🚀🚀 我們剛在 Product Hunt 上推出，請給我們一個投票！🚀🚀🚀"
+  }
+}

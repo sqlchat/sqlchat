@@ -14,7 +14,11 @@ const localeItemList: LocaleItem[] = [
   },
   {
     value: "zh",
-    label: "中文",
+    label: "简体中文",
+  },
+  {
+    value: "zhHant",
+    label: "繁體中文",
   },
   {
     value: "es",
