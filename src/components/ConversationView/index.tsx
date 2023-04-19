@@ -217,8 +217,7 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        {/* TODO(steven): remove this after released */}
-        <ProductHuntBanner className="hidden" />
+        <ProductHuntBanner />
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>

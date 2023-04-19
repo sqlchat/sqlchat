@@ -288,10 +288,22 @@ const ConnectionSidebar = () => {
                 {t("conversation.new-chat")}
               </button>
             </div>
-            <div className="sticky bottom-0 w-full flex justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-6 py-2">
+            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-6 py-2">
+              <a
+                href="https://www.producthunt.com/posts/sql-chat?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat"
+                target="_blank"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=389982&theme=light"
+                  alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
+                  style={{ width: "250px", height: "54px" }}
+                  width="250"
+                  height="54"
+                />
+              </a>
               <a
                 href="https://discord.gg/z6kakemDjm"
-                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center hover:underline"
+                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mt-4 hover:underline"
                 target="_blank"
               >
                 <Icon.BsDiscord className="w-4 h-auto mr-1" />
