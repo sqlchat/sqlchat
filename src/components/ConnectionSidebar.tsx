@@ -132,7 +132,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleConversationSelect = (conversation: Conversation) => {
-    conversationStore.setCurrentConversation(conversation.id);
+    conversationStore.setCurrentConversationId(conversation.id);
     if (layoutStore.isMobileView) {
       layoutStore.toggleSidebar(false);
     }
@@ -149,7 +149,7 @@ const ConnectionSidebar = () => {
   const handleDeleteConversation = (conversation: Conversation) => {
     conversationStore.clearConversation((item) => item.id !== conversation.id);
     if (conversationStore.currentConversationId === conversation.id) {
-      conversationStore.setCurrentConversation(undefined);
+      conversationStore.setCurrentConversationId(undefined);
     }
   };
 
