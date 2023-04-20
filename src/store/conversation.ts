@@ -19,7 +19,7 @@ interface ConversationState {
   conversationList: Conversation[];
   currentConversationId?: Id;
   createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
-  setCurrentConversation: (Conversation: Id | undefined) => void;
+  setCurrentConversation: (conversationId: Id | undefined) => void;
   getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
