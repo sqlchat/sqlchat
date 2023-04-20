@@ -12,12 +12,25 @@
   "conversation": {
     "new-chat": "Nuevo Chat",
     "conversation-title": "Titulo de conversación",
+    "update": "Actualizar conversación",
     "edit-title": "Editar Titulo de conversación"
   },
   "connection": {
     "self": "Conexión",
     "new": "Crear Conexión",
-    "select-database": "Selecciona tu base de datos"
+    "edit": "Editar Conexión",
+    "select-database": "Selecciona tu base de datos",
+    "database-type": "Tipo de Base de Datos",
+    "title": "Nombre",
+    "host": "Servidor",
+    "port": "Puerto",
+    "database-name": "Nombre de Base de Datos",
+    "username": "Usuario",
+    "password": "Contraseña"
+  },
+  "assistant": {
+    "self": "Bot",
+    "create-your-bot": "¿No encuentras el bot que necesitas? Crea uno"
   },
   "execution": {
     "title": "Ejecutar consulta",
@@ -55,6 +68,8 @@
     "join-wechat-group": "Unirse al grupo de WeChat"
   },
   "banner": {
-    "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador."
+    "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador.",
+    "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
+    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt. de inaugurar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
   }
 }
