@@ -80,6 +80,14 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
+const getResultByQuery = async (connection: Connection, sql: string): Promise<RowDataPacket[]> => {
+  const conn = await getMySQLConnection(connection);
+  // check query security
+  const [rows] = await conn.query<RowDataPacket[]>(sql);
+  conn.destroy();
+  return rows;
+};
+
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
   const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
