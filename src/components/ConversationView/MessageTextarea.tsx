@@ -34,7 +34,7 @@ const MessageTextarea = (props: Props) => {
   };
 
   const handleSend = async () => {
-    let conversation = conversationStore.currentConversation;
+    let conversation = conversationStore.getConversationById(conversationStore.currentConversationId);
     if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {
