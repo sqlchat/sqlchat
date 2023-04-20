@@ -70,6 +70,6 @@
   "banner": {
     "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador.",
     "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
-    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt. de inaugurar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
+    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
   }
 }
