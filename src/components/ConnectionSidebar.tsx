@@ -132,7 +132,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleConversationSelect = (conversation: Conversation) => {
-    conversationStore.setCurrentConversation(conversation);
+    conversationStore.setCurrentConversationId(conversation.id);
     if (layoutStore.isMobileView) {
       layoutStore.toggleSidebar(false);
     }
@@ -148,8 +148,8 @@ const ConnectionSidebar = () => {
 
   const handleDeleteConversation = (conversation: Conversation) => {
     conversationStore.clearConversation((item) => item.id !== conversation.id);
-    if (conversationStore.currentConversation?.id === conversation.id) {
-      conversationStore.setCurrentConversation(undefined);
+    if (conversationStore.currentConversationId === conversation.id) {
+      conversationStore.setCurrentConversationId(undefined);
     }
   };
 
@@ -244,11 +244,11 @@ const ConnectionSidebar = () => {
                 <div
                   key={conversation.id}
                   className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer dark:text-gray-300 border border-transparent group hover:bg-white dark:hover:bg-zinc-800 ${
-                    conversation.id === conversationStore.currentConversation?.id && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
+                    conversation.id === conversationStore.currentConversationId && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
                   }`}
                   onClick={() => handleConversationSelect(conversation)}
                 >
-                  {conversation.id === conversationStore.currentConversation?.id ? (
+                  {conversation.id === conversationStore.currentConversationId ? (
                     <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
                   ) : (
                     <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />

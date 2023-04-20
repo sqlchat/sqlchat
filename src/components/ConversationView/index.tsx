@@ -32,7 +32,7 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
-  const currentConversation = conversationStore.currentConversation;
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
   const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
   const lastMessage = last(messageList);
 
@@ -99,11 +99,10 @@ const ConversationView = () => {
         conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
         conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
-    conversationStore.setCurrentConversation(head(conversationList));
+    conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {
-    const currentConversation = conversationStore.getState().currentConversation;
     if (!currentConversation) {
       return;
     }
