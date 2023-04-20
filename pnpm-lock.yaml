@@ -31,6 +31,9 @@ dependencies:
   axios:
     specifier: ^1.3.4
     version: 1.3.4
+  copy-to-clipboard:
+    specifier: ^3.3.3
+    version: 3.3.3
   csstype:
     specifier: ^3.1.1
     version: 3.1.1

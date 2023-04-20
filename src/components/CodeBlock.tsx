@@ -1,3 +1,4 @@
+import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -23,13 +24,8 @@ export const CodeBlock = (props: Props) => {
   const showExecuteButton = currentConnectionCtx?.connection && currentConnectionCtx?.database && language.toUpperCase() === "SQL";
 
   const copyToClipboard = () => {
-    if (!navigator.clipboard || !navigator.clipboard.writeText) {
-      toast.error("Failed to copy to clipboard");
-      return;
-    }
-    navigator.clipboard.writeText(value).then(() => {
-      toast.success("Copied to clipboard");
-    });
+    copy(value);
+    toast.success("Copied to clipboard");
   };
 
   const handleExecuteQuery = () => {
