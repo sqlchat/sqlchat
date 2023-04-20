@@ -99,7 +99,7 @@ const ConversationView = () => {
         conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
         conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
-    conversationStore.setCurrentConversation(head(conversationList)?.id);
+    conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {

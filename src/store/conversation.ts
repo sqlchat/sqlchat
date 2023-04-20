@@ -19,7 +19,7 @@ interface ConversationState {
   conversationList: Conversation[];
   currentConversationId?: Id;
   createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
-  setCurrentConversation: (conversationId: Id | undefined) => void;
+  setCurrentConversationId: (conversationId: Id | undefined) => void;
   getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
@@ -45,7 +45,7 @@ export const useConversationStore = create<ConversationState>()(
         }));
         return conversation;
       },
-      setCurrentConversation: (conversation: Id | undefined) => set(() => ({ currentConversationId: conversation })),
+      setCurrentConversationId: (conversation: Id | undefined) => set(() => ({ currentConversationId: conversation })),
       getConversationById: (conversationId: Id | undefined) => {
         return get().conversationList.find((item) => item.id === conversationId);
       },
