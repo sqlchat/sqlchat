@@ -38,7 +38,7 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 ## Deploy with Docker
 
 ```bash
-docker run -d --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
 You can set the following environment variables to customize the deployment:
@@ -78,7 +78,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 - You can deploy your SQL Chat with docker in seconds
 
   ```bash
-  docker run -d --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+  docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
   ```
 
 </p>
