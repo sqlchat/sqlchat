@@ -33,7 +33,13 @@ const ConversationView = () => {
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+<<<<<<< HEAD
   const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
+=======
+  const messageList = currentConversation
+    ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
+    : [];
+>>>>>>> origin/main
   const lastMessage = last(messageList);
 
   useEffect(() => {
@@ -112,7 +118,8 @@ const ConversationView = () => {
     }
 
     const messageList = messageStore.getState().messageList.filter((message) => message.conversationId === currentConversation.id);
-    let prompt = "";
+    const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
+    let prompt = promptGenerator();
     let tokens = 0;
 
     const message: Message = {
@@ -139,7 +146,6 @@ const ConversationView = () => {
       } catch (error: any) {
         toast.error(error.message);
       }
-      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
       prompt = promptGenerator(schema);
     }
     let formatedMessageList = [];
@@ -217,8 +223,7 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        {/* TODO: remove this after releasing */}
-        <ProductHuntBanner className="hidden" />
+        <ProductHuntBanner />
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>

@@ -38,13 +38,17 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 ## Deploy with Docker
 
 ```bash
-docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
 You can set the following environment variables to customize the deployment:
 
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
+
+```bash
+docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+```
 
 ## Local Development
 
@@ -74,7 +78,7 @@ You can set the following environment variables to customize the deployment:
 - You can deploy your SQL Chat with docker in seconds
 
   ```bash
-  docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+  docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
   ```
 
 </p>

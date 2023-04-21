@@ -41,7 +41,7 @@ export const useConversationStore = create<ConversationState>()(
         }
         set((state) => ({
           conversationList: [...state.conversationList, conversation],
-          currentConversation: conversation,
+          currentConversationId: conversation.id,
         }));
         return conversation;
       },
