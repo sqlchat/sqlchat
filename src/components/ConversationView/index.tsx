@@ -105,6 +105,7 @@ const ConversationView = () => {
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {
+    const currentConversation = conversationStore.getConversationById(conversationStore.getState().currentConversationId)
     if (!currentConversation) {
       return;
     }
