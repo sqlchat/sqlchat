@@ -9,6 +9,7 @@ import {
   useConnectionStore,
   useSettingStore,
   useLayoutStore,
+  useQueryStore
 } from "@/store";
 import { CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
@@ -32,7 +33,9 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
+  const queryStore = useQueryStore();
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const messageList = currentConversation
     ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
     : [];
@@ -144,7 +147,6 @@ const ConversationView = () => {
       }
       prompt = promptGenerator(schema);
     }
-    console.log("prompt ", prompt);
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
@@ -207,10 +209,29 @@ const ConversationView = () => {
       }
       done = readerDone;
     }
+    // if message is select statement, then execute it
+    if (message.content.toLowerCase().startsWith("select")) {
+      handleExecuteQuery(message.content);
+    }
+
     messageStore.updateMessage(message.id, {
       status: "DONE",
     });
   };
+
+  const handleExecuteQuery = (statement:string)=>{
+    if (!currentConnectionCtx) {
+      toast.error("Please select a connection first");
+      return;
+    }
+
+    queryStore.setContext({
+      connection: currentConnectionCtx.connection,
+      database: currentConnectionCtx.database,
+      statement: statement,
+    });
+    queryStore.toggleDrawer(true);
+  }
 
   return (
     <div
