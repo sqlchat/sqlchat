@@ -33,13 +33,9 @@ const ConversationView = () => {
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
-<<<<<<< HEAD
-  const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
-=======
   const messageList = currentConversation
     ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
     : [];
->>>>>>> origin/main
   const lastMessage = last(messageList);
 
   useEffect(() => {
