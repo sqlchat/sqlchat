@@ -35,7 +35,13 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 - Only the database schema will be sent to the OpenAI API. No table data will be sent there.
 
-## Deploy with Docker
+## IP Whitelisting
+
+If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
+to the database whitelist IP. Because sqlchat.ai is hosted on Vercel which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address).
+If this is a concern, please consider the self-host option below.
+
+## Self-host with Docker
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
@@ -66,7 +72,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm i && pnpm dev
    ```
 
-## Common questions
+## Common Questions
 
 <details><summary>How to self host SQL Chat?</summary>
 <p>
