@@ -16,11 +16,11 @@ const ProductHuntBanner = (props: Props) => {
     <div
       className={`${!show && "!hidden"} ${
         className || ""
-      } relative w-full flex bg-[#f26150] text-white flex-row justify-start sm:justify-center items-center px-4 py-1`}
+      } relative w-full flex bg-[#f26150] text-white flex-row justify-start sm:justify-center items-center px-4 py-1 dark:opacity-70`}
     >
       <a
         className="text-sm leading-6 pr-4 cursor-pointer hover:underline"
-        href="https://www.producthunt.com/posts/sql-chat"
+        href="https://www.producthunt.com/posts/sql-chat-2"
         target="_blank"
       >
         {t("banner.product-hunt")}

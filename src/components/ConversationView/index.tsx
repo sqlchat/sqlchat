@@ -32,8 +32,10 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
-  const currentConversation = conversationStore.currentConversation;
-  const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const messageList = currentConversation
+    ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
+    : [];
   const lastMessage = last(messageList);
 
   useEffect(() => {
@@ -99,11 +101,11 @@ const ConversationView = () => {
         conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
         conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
-    conversationStore.setCurrentConversation(head(conversationList));
+    conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {
-    const currentConversation = conversationStore.getState().currentConversation;
+    const currentConversation = conversationStore.getConversationById(conversationStore.getState().currentConversationId)
     if (!currentConversation) {
       return;
     }
@@ -112,7 +114,8 @@ const ConversationView = () => {
     }
 
     const messageList = messageStore.getState().messageList.filter((message) => message.conversationId === currentConversation.id);
-    let prompt = "";
+    const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
+    let prompt = promptGenerator();
     let tokens = 0;
 
     const message: Message = {
@@ -139,7 +142,6 @@ const ConversationView = () => {
       } catch (error: any) {
         toast.error(error.message);
       }
-      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
       prompt = promptGenerator(schema);
     }
     let formatedMessageList = [];
@@ -217,8 +219,7 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        {/* TODO: remove this after releasing */}
-        <ProductHuntBanner className="hidden" />
+        <ProductHuntBanner />
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>

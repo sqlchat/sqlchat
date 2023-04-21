@@ -21,7 +21,7 @@ const EmptyView = (props: Props) => {
   const isDarkMode = useDarkMode();
 
   const handleExampleClick = async (content: string) => {
-    let conversation = conversationStore.currentConversation;
+    let conversation = conversationStore.getConversationById(conversationStore.currentConversationId);
     if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {

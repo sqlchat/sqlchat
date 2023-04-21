@@ -13,8 +13,8 @@ const Header = (props: Props) => {
   const layoutStore = useLayoutStore();
   const conversationStore = useConversationStore();
   const isDarkMode = useDarkMode();
-  const currentConversation = conversationStore.currentConversation;
-  const title = currentConversation?.title || "SQL Chat";
+  const currentConversationId = conversationStore.currentConversationId;
+  const title = conversationStore.getConversationById(currentConversationId)?.title || "SQL Chat";
 
   useEffect(() => {
     document.title = `${title}`;

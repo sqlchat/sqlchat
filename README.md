@@ -35,16 +35,26 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 - Only the database schema will be sent to the OpenAI API. No table data will be sent there.
 
-## Deploy with Docker
+## IP Whitelisting
+
+If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
+to the database whitelist IP. Because sqlchat.ai is hosted on Vercel which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address).
+If this is a concern, please consider the self-host option below.
+
+## Self-host with Docker
 
 ```bash
-docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
 You can set the following environment variables to customize the deployment:
 
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
+
+```bash
+docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+```
 
 ## Local Development
 
@@ -62,7 +72,7 @@ You can set the following environment variables to customize the deployment:
    pnpm i && pnpm dev
    ```
 
-## Common questions
+## Common Questions
 
 <details><summary>How to self host SQL Chat?</summary>
 <p>
@@ -74,7 +84,7 @@ You can set the following environment variables to customize the deployment:
 - You can deploy your SQL Chat with docker in seconds
 
   ```bash
-  docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+  docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
   ```
 
 </p>
