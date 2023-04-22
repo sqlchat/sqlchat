@@ -254,7 +254,7 @@ const ConnectionSidebar = () => {
                       };
                     })}
                     onValueChange={(tableName) => {}}
-                    placeholder={t("connection.select-database") || ""}
+                    placeholder={t("connection.select-table") || ""}
                   />
                 </div>
               )}
