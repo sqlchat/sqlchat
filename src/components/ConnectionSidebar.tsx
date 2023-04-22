@@ -13,7 +13,6 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import UpdateConversationModal from "./UpdateConversationModal";
-import { table } from "console";
 
 interface State {
   showCreateConnectionModal: boolean;
@@ -37,7 +36,8 @@ const ConnectionSidebar = () => {
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
-  const tableList;
+  const tableList = conversationStore.getState().tableList;
+  console.log("tableList", tableList);
   const conversationList = conversationStore.conversationList.filter(
     (conversation) =>
       conversation.connectionId === currentConnectionCtx?.connection.id &&
@@ -123,6 +123,13 @@ const ConnectionSidebar = () => {
       connection: currentConnectionCtx.connection,
       database: database,
     });
+    if(database!=undefined){
+      conversationStore.updateTableList(await connectionStore.getOrFetchDatabaseSchema(database));
+    }
+
+  };
+  const handleTableNameSelect = async (tableName: string) => {
+    conversationStore.updateTable(tableName);
   };
 
   const handleCreateConversation = () => {
@@ -242,18 +249,18 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {tableList.length > 0 && (
+              {tableList && tableList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 my-4">
                   <Select
                     className="w-full px-4 py-3 !text-base"
-                    value={currentConnectionCtx?.database?.name}
+                    value={conversationStore.getState().tableName}
                     itemList={tableList.map((table) => {
                       return {
                         label: table.name,
                         value: table.name,
                       };
                     })}
-                    onValueChange={(tableName) => {}}
+                    onValueChange={(tableName) => handleTableNameSelect(tableName)}
                     placeholder={t("connection.select-table") || ""}
                   />
                 </div>

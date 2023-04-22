@@ -4,6 +4,7 @@ import { persist } from "zustand/middleware";
 import { Conversation, Id } from "@/types";
 import { generateUUID } from "@/utils";
 import { GeneralBotId, SQLChatBotId } from ".";
+import { Table } from "@/types";
 
 const getDefaultConversation = (): Conversation => {
   return {
@@ -11,6 +12,8 @@ const getDefaultConversation = (): Conversation => {
     assistantId: GeneralBotId,
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
+    tableList: [{name:"ALL Table",structure:""} as Table],
+    tableName: "ALL Table"
   };
 };
 
@@ -18,10 +21,14 @@ interface ConversationState {
   getState: () => ConversationState;
   conversationList: Conversation[];
   currentConversationId?: Id;
-  createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
+  tableList?: Table[];
+  tableName?: string;
+  createConversation: (connectionId?: Id, databaseName?: string, tableName?: string) => Conversation;
   setCurrentConversationId: (conversationId: Id | undefined) => void;
   getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
+  updateTable: (tableName: string) => void;
+  updateTableList: (tableList: Table[]) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
 }
 
@@ -30,11 +37,12 @@ export const useConversationStore = create<ConversationState>()(
     (set, get) => ({
       getState: () => get(),
       conversationList: [],
-      createConversation: (connectionId?: Id, databaseName?: string) => {
+      createConversation: (connectionId?: Id, databaseName?: string, tableName?: string) => {
         const conversation: Conversation = {
           ...getDefaultConversation(),
           connectionId,
           databaseName,
+          tableName,
         };
         if (connectionId) {
           conversation.assistantId = SQLChatBotId;
@@ -53,6 +61,18 @@ export const useConversationStore = create<ConversationState>()(
         set((state) => ({
           ...state,
           conversationList: state.conversationList.map((item) => (item.id === conversationId ? { ...item, ...conversation } : item)),
+        }));
+      },
+      updateTable: (tableName: string) => {
+        set((state) => ({
+          ...state,
+          tableName: tableName,
+        }));
+      },
+      updateTableList: (tableList: Table[]) => {
+        set((state) => ({
+          ...state,
+          tableList: [{name:"All Table",structure:""} as Table,...tableList],
         }));
       },
       clearConversation: (filter: (conversation: Conversation) => boolean) => {
