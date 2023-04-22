@@ -115,7 +115,6 @@ const ConnectionSidebar = () => {
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     loadingState.setLoading();
-    console.log(loadingState)
     if (!currentConnectionCtx?.connection) {
       return;
     }
@@ -130,7 +129,6 @@ const ConnectionSidebar = () => {
       const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database,true)
       conversationStore.updateTableList(databaseResult);
       loadingState.setFinish();
-      console.log("loading done",loadingState,databaseResult)
     }
 
   };
@@ -255,7 +253,11 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {loadingState.isLoading ? <>loading</> : tableList && tableList.length > 0 && (
+              {loadingState.isLoading ?
+                <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
+                </div>
+            : tableList && tableList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 my-4">
                   <Select
                     className="w-full px-4 py-3 !text-base"

@@ -1,5 +1,6 @@
 {
     "i18n-ally.localesPaths": [
         "src/locales"
-    ]
+    ],
+    "deepscan.enable": true
 }
