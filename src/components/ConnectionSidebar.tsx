@@ -13,6 +13,7 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import UpdateConversationModal from "./UpdateConversationModal";
+import { table } from "console";
 
 interface State {
   showCreateConnectionModal: boolean;
@@ -36,6 +37,7 @@ const ConnectionSidebar = () => {
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
+  const tableList;
   const conversationList = conversationStore.conversationList.filter(
     (conversation) =>
       conversation.connectionId === currentConnectionCtx?.connection.id &&
@@ -236,6 +238,22 @@ const ConnectionSidebar = () => {
                       };
                     })}
                     onValueChange={(databaseName) => handleDatabaseNameSelect(databaseName)}
+                    placeholder={t("connection.select-database") || ""}
+                  />
+                </div>
+              )}
+              {tableList.length > 0 && (
+                <div className="w-full sticky top-0 z-1 my-4">
+                  <Select
+                    className="w-full px-4 py-3 !text-base"
+                    value={currentConnectionCtx?.database?.name}
+                    itemList={tableList.map((table) => {
+                      return {
+                        label: table.name,
+                        value: table.name,
+                      };
+                    })}
+                    onValueChange={(tableName) => {}}
                     placeholder={t("connection.select-database") || ""}
                   />
                 </div>
