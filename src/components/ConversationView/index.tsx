@@ -133,12 +133,21 @@ const ConversationView = () => {
       let schema = "";
       try {
         const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-        for (const table of tables) {
-          if (tokens < MAX_TOKENS / 2) {
-            tokens += countTextTokens(schema + table.structure);
-            schema += table.structure;
+        if(conversationStore.getState().tableName === "All Table"){
+          for (const table of tables) {
+            if (tokens < MAX_TOKENS / 2) {
+              tokens += countTextTokens(schema + table.structure);
+              schema += table.structure;
+            }
+          }  
+        }else{
+          const table = tables.find((table) => table.name === conversationStore.getState().tableName);
+          if (table) {
+            schema = table.structure;
+            tokens += countTextTokens(schema);
           }
         }
+
       } catch (error: any) {
         toast.error(error.message);
       }
