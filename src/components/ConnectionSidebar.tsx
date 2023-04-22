@@ -13,6 +13,7 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import CreateConnectionModal from "./CreateConnectionModal";
 import SettingModal from "./SettingModal";
 import UpdateConversationModal from "./UpdateConversationModal";
+import useLoading from "@/hooks/useLoading";
 
 interface State {
   showCreateConnectionModal: boolean;
@@ -37,7 +38,7 @@ const ConnectionSidebar = () => {
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const tableList = conversationStore.getState().tableList;
-  console.log("tableList", tableList);
+  const loadingState = useLoading();
   const conversationList = conversationStore.conversationList.filter(
     (conversation) =>
       conversation.connectionId === currentConnectionCtx?.connection.id &&
@@ -113,6 +114,8 @@ const ConnectionSidebar = () => {
   };
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
+    loadingState.setLoading();
+    console.log(loadingState)
     if (!currentConnectionCtx?.connection) {
       return;
     }
@@ -124,7 +127,10 @@ const ConnectionSidebar = () => {
       database: database,
     });
     if(database!=undefined){
-      conversationStore.updateTableList(await connectionStore.getOrFetchDatabaseSchema(database));
+      const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database,true)
+      conversationStore.updateTableList(databaseResult);
+      loadingState.setFinish();
+      console.log("loading done",loadingState,databaseResult)
     }
 
   };
@@ -249,7 +255,7 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {tableList && tableList.length > 0 && (
+              {loadingState.isLoading ? <>loading</> : tableList && tableList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 my-4">
                   <Select
                     className="w-full px-4 py-3 !text-base"
