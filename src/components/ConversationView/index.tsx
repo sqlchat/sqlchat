@@ -141,17 +141,22 @@ const ConversationView = () => {
             }
           }  
         }else{
-          const table = tables.find((table) => table.name === conversationStore.getState().tableName);
+          
+          const table = tables.find((table) => {
+            console.log("table.name", table.name, "conversationStore.getState().tableName", conversationStore.getState().tableName);
+            return table.name === conversationStore.getState().tableName});
           if (table) {
             schema = table.structure;
             tokens += countTextTokens(schema);
           }
+          console.log(schema)
         }
 
       } catch (error: any) {
         toast.error(error.message);
       }
       prompt = promptGenerator(schema);
+      console.log(prompt)
     }
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
