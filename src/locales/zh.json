@@ -73,6 +73,8 @@
   "banner": {
     "data-storage": "连接设置存储在您的本地浏览器中",
     "non-select-sql-warning": "当前语句可能是非 SELECT SQL，这将导致数据库模式或数据变化。",
-    "product-hunt": "🚀🚀🚀 我们刚在 Product Hunt 发布, 来给我们点个赞! 🚀🚀🚀"
+    "product-hunt": "🚀🚀🚀 我们刚在 Product Hunt 发布, 来给我们点个赞! 🚀🚀🚀",
+    "quota-overflow": "我们的 OpenAI 额度已满，正在申请额外的额度。请稍候再来。",
+    "use-my-key": "用我自己的 Key"
   }
 }

@@ -24,7 +24,6 @@ const samplePGConnection: Connection = {
 interface ConnectionState {
   connectionList: Connection[];
   databaseList: Database[];
-  tableList: Table[];
   currentConnectionCtx?: ConnectionContext;
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
@@ -40,7 +39,6 @@ export const useConnectionStore = create<ConnectionState>()(
     (set, get) => ({
       connectionList: [samplePGConnection],
       databaseList: [],
-      tableList: [],
       createConnection: (connection: Connection) => {
         const createdConnection = {
           ...connection,
@@ -74,7 +72,7 @@ export const useConnectionStore = create<ConnectionState>()(
             ({
               connectionId: connection.id,
               name: dbName,
-              tableList: {},
+              tableList: [],
             } as Database)
         );
         const databaseList = uniqBy(
@@ -91,8 +89,9 @@ export const useConnectionStore = create<ConnectionState>()(
         const state = get();
 
         if (!skipCache) {
-          if(state.tableList.length != 0){
-            return state.tableList;
+          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name)
+          if (db !== undefined && db?.tableList?.length != 0){
+            return db.tableList
           }
         }
 
@@ -112,7 +111,7 @@ export const useConnectionStore = create<ConnectionState>()(
         const fetchedTableList = result.data;
         set((state) => ({
           ...state,
-          fetchedTableList,
+          databaseList: state.databaseList.map((item) =>   (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
         }));
 
         return fetchedTableList;
