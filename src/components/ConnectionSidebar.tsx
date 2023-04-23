@@ -128,6 +128,7 @@ const ConnectionSidebar = () => {
     if(database!=undefined){
       const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database,true)
       conversationStore.updateTableList(databaseResult);
+      conversationStore.updateTable("All Table")
       loadingState.setFinish();
     }
 
