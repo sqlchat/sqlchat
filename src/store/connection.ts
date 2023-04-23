@@ -24,7 +24,6 @@ const samplePGConnection: Connection = {
 interface ConnectionState {
   connectionList: Connection[];
   databaseList: Database[];
-  tableList: Table[];
   currentConnectionCtx?: ConnectionContext;
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
@@ -40,7 +39,6 @@ export const useConnectionStore = create<ConnectionState>()(
     (set, get) => ({
       connectionList: [samplePGConnection],
       databaseList: [],
-      tableList: [],
       createConnection: (connection: Connection) => {
         const createdConnection = {
           ...connection,
@@ -52,7 +50,7 @@ export const useConnectionStore = create<ConnectionState>()(
         }));
         return createdConnection;
       },
-      setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => 
+      setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) =>
         set((state) => ({
           ...state,
           currentConnectionCtx: connectionCtx,
@@ -91,9 +89,9 @@ export const useConnectionStore = create<ConnectionState>()(
         const state = get();
 
         if (!skipCache) {
-          //if database is empty array 
-          if (database.tableList.length != 0){
-            return database.tableList
+          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name)
+          if (db?.tableList?.length != 0){
+            return db.tableList;
           }
         }
 
@@ -101,7 +99,6 @@ export const useConnectionStore = create<ConnectionState>()(
         if (!connection) {
           return [];
         }
-        console.log("con",connection)
 
         const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
           connection,
@@ -110,12 +107,11 @@ export const useConnectionStore = create<ConnectionState>()(
         if (result.message) {
           throw result.message;
         }
-        console.log("to fetch schema",result.data)
 
         const fetchedTableList = result.data;
         set((state) => ({
           ...state,
-          fetchedTableList,
+          databaseList: state.databaseList.map((item) =>   (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
         }));
 
         return fetchedTableList;
