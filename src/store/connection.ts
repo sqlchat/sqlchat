@@ -52,7 +52,7 @@ export const useConnectionStore = create<ConnectionState>()(
         }));
         return createdConnection;
       },
-      setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) =>
+      setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => 
         set((state) => ({
           ...state,
           currentConnectionCtx: connectionCtx,
@@ -80,7 +80,7 @@ export const useConnectionStore = create<ConnectionState>()(
         const databaseList = uniqBy(
           [...fetchedDatabaseList, ...state.databaseList],
           (database) => `${database.connectionId}_${database.name}`
-        );
+        ) || [];
         set((state) => ({
           ...state,
           databaseList,
@@ -90,12 +90,9 @@ export const useConnectionStore = create<ConnectionState>()(
       getOrFetchDatabaseSchema: async (database: Database, skipCache = false) => {
         const state = get();
 
-        console.log(database)
-        console.log(state.databaseList)
-        // is the database of currentConnectionCtx sync to database👀
         if (!skipCache) {
+          //if database is empty array 
           if (database.tableList.length != 0){
-            console.log("returning from cache")
             return database.tableList
           }
         }
@@ -121,7 +118,6 @@ export const useConnectionStore = create<ConnectionState>()(
           fetchedTableList,
         }));
 
-        console.log(fetchedTableList)
         return fetchedTableList;
       },
       getConnectionById: (connectionId: string) => {
