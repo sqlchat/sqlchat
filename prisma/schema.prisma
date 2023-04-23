@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("TELEMETRY_DATABASE_URL")
+  url      = env("USAGE_DATABASE_URL")
 }
 
 model Chat {
