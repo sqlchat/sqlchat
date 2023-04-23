@@ -82,19 +82,19 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
   pnpm install prisma --save-dev
   ```
 
-1. Install prisma client
+2. Install prisma client
 
   ```bash
   pnpm install @prisma/client
   ```
 
-1. Generate prisma client from the model
+3. Generate prisma client from the model
 
   ```bash
   pnpm prisma generate
   ```
 
-1. Seed data
+4. Seed data
 
   ```bash
   pnpm install typescript ts-node @types/node --save-dev
