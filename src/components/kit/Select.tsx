@@ -1,4 +1,5 @@
 import * as SelectUI from "@radix-ui/react-select";
+import * as ScrollArea from '@radix-ui/react-scroll-area';
 import React from "react";
 import Icon from "../Icon";
 
@@ -36,23 +37,33 @@ const Select = (props: Props) => {
           }}
           position="popper"
         >
-          <SelectUI.Viewport className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 drop-shadow-lg p-1 rounded-lg">
-            <SelectUI.Group>
-              {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-2 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
-              {itemList.map((item) => (
-                <SelectUI.Item
-                  className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
-                  key={item.label}
-                  value={item.value}
-                >
-                  <SelectUI.ItemText className="truncate">{item.label}</SelectUI.ItemText>
-                  <SelectUI.ItemIndicator className="w-5 h-auto">
-                    <Icon.BiCheck className="w-full h-auto" />
-                  </SelectUI.ItemIndicator>
-                </SelectUI.Item>
-              ))}
-            </SelectUI.Group>
-          </SelectUI.Viewport>
+          <ScrollArea.Root className="h-48 overflow-hidden drop-shadow-lg" type="auto">
+            <SelectUI.Viewport asChild className="bg-white dark:bg-zinc-700 border dark:border-zinc-800 p-1 rounded-lg">
+              <ScrollArea.Viewport className="w-full h-full">
+                <SelectUI.Group>  
+                  {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-2 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
+                  {itemList.map((item) => (
+                    <SelectUI.Item
+                      className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+                      key={item.label}
+                      value={item.value}
+                    >
+                      <SelectUI.ItemText className="truncate">{item.label}</SelectUI.ItemText>
+                      <SelectUI.ItemIndicator className="w-5 h-auto">
+                        <Icon.BiCheck className="w-full h-auto" />
+                      </SelectUI.ItemIndicator>
+                    </SelectUI.Item>
+                  ))}
+                </SelectUI.Group>
+              </ScrollArea.Viewport>
+            </SelectUI.Viewport>
+            <ScrollArea.Scrollbar
+              className="w-2 p-2"
+              orientation="vertical"
+            >
+              <ScrollArea.Thumb className="rounded-lg" />
+            </ScrollArea.Scrollbar>
+          </ScrollArea.Root>
         </SelectUI.Content>
       </SelectUI.Portal>
     </SelectUI.Root>
