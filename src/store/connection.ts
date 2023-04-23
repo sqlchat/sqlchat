@@ -28,7 +28,7 @@ interface ConnectionState {
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
   getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
-  getOrFetchDatabaseSchema: (database: Database) => Promise<Table[]>;
+  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Table[]>;
   getConnectionById: (connectionId: string) => Connection | undefined;
   updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
@@ -85,8 +85,16 @@ export const useConnectionStore = create<ConnectionState>()(
         }));
         return databaseList.filter((database) => database.connectionId === connection.id);
       },
-      getOrFetchDatabaseSchema: async (database: Database) => {
+      getOrFetchDatabaseSchema: async (database: Database, skipCache = false) => {
         const state = get();
+
+        if (!skipCache) {
+          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name)
+          if (db !== undefined && db?.tableList?.length != 0){
+            return db.tableList
+          }
+        }
+
         const connection = state.connectionList.find((connection) => connection.id === database.connectionId);
         if (!connection) {
           return [];
@@ -99,7 +107,14 @@ export const useConnectionStore = create<ConnectionState>()(
         if (result.message) {
           throw result.message;
         }
-        return result.data;
+
+        const fetchedTableList = result.data;
+        set((state) => ({
+          ...state,
+          databaseList: state.databaseList.map((item) => (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
+        }));
+
+        return fetchedTableList;
       },
       getConnectionById: (connectionId: string) => {
         return get().connectionList.find((connection) => connection.id === connectionId);
