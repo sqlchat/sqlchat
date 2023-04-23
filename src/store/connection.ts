@@ -74,7 +74,7 @@ export const useConnectionStore = create<ConnectionState>()(
             ({
               connectionId: connection.id,
               name: dbName,
-              tableList: {},
+              tableList: [],
             } as Database)
         );
         const databaseList = uniqBy(
@@ -90,9 +90,13 @@ export const useConnectionStore = create<ConnectionState>()(
       getOrFetchDatabaseSchema: async (database: Database, skipCache = false) => {
         const state = get();
 
+        console.log(database)
+        console.log(state.databaseList)
+        // is the database of currentConnectionCtx sync to database👀
         if (!skipCache) {
-          if(state.tableList.length != 0){
-            return state.tableList;
+          if (database.tableList.length != 0){
+            console.log("returning from cache")
+            return database.tableList
           }
         }
 
@@ -100,6 +104,7 @@ export const useConnectionStore = create<ConnectionState>()(
         if (!connection) {
           return [];
         }
+        console.log("con",connection)
 
         const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
           connection,
@@ -108,6 +113,7 @@ export const useConnectionStore = create<ConnectionState>()(
         if (result.message) {
           throw result.message;
         }
+        console.log("to fetch schema",result.data)
 
         const fetchedTableList = result.data;
         set((state) => ({
@@ -115,6 +121,7 @@ export const useConnectionStore = create<ConnectionState>()(
           fetchedTableList,
         }));
 
+        console.log(fetchedTableList)
         return fetchedTableList;
       },
       getConnectionById: (connectionId: string) => {

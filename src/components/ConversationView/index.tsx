@@ -144,6 +144,8 @@ const ConversationView = () => {
       }
       prompt = promptGenerator(schema);
     }
+    console.log(prompt)
+
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
