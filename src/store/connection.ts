@@ -72,7 +72,7 @@ export const useConnectionStore = create<ConnectionState>()(
             ({
               connectionId: connection.id,
               name: dbName,
-              tableList: {},
+              tableList: [],
             } as Database)
         );
         const databaseList = uniqBy(
