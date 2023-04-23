@@ -111,7 +111,7 @@ export const useConnectionStore = create<ConnectionState>()(
         const fetchedTableList = result.data;
         set((state) => ({
           ...state,
-          databaseList: state.databaseList.map((item) =>   (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
+          databaseList: state.databaseList.map((item) => (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
         }));
 
         return fetchedTableList;
