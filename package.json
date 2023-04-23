@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.10.6",
     "@mui/material": "^5.11.14",
     "@mui/styled-engine-sc": "^5.11.11",
+    "@prisma/client": "4.13.0",
     "@radix-ui/react-dropdown-menu": "^2.0.4",
     "@radix-ui/react-popover": "^1.0.5",
     "@radix-ui/react-select": "^1.2.1",
@@ -48,7 +49,7 @@
     "@tailwindcss/typography": "^0.5.9",
     "@types/lodash-es": "^4.17.7",
     "@types/mssql": "^8.1.2",
-    "@types/node": "^18.11.18",
+    "@types/node": "^18.15.3",
     "@types/pg": "^8.6.6",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.11",
@@ -61,8 +62,13 @@
     "mysql2": "^3.2.0",
     "pg": "^8.10.0",
     "postcss": "^8.4.20",
+    "prisma": "^4.13.0",
     "react-syntax-highlighter": "^15.5.0",
     "tailwindcss": "^3.2.4",
-    "typescript": "^4.9.4"
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
