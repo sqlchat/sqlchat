@@ -90,8 +90,8 @@ export const useConnectionStore = create<ConnectionState>()(
 
         if (!skipCache) {
           const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name)
-          if (db?.tableList?.length != 0){
-            return db.tableList;
+          if (db !== undefined && db?.tableList?.length != 0){
+            return db.tableList
           }
         }
 
