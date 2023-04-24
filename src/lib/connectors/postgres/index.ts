@@ -83,7 +83,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string,  structureFetched: (tableName: string,structure: string)=> void): Promise<string> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string,  structureFetched: (tableName: string,structure: string)=> void): Promise<void> => {
   connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
@@ -102,9 +102,6 @@ const getTableStructure = async (connection: Connection, databaseName: string, t
   structureFetched(tableName, `CREATE TABLE \`${tableName}\` (
     ${columnList.join(",\n")}
   );`);
-  return `CREATE TABLE \`${tableName}\` (
-    ${columnList.join(",\n")}
-  );`;
 };
 
 const newConnector = (connection: Connection): Connector => {
