@@ -22,15 +22,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         structure,
       });
     }
-    for (const tableName of rawTableNameList) {
-      const structure = await connector.getTableStructure(db, tableName, structureFetched);
-      tableStructures.push({
-        name: tableName,
-        structure,
-      });
-    }
-    res.status(200).json({
-      data: tableStructures,
+    Promise.all(rawTableNameList.map(async (tableName) => 
+      connector.getTableStructure(db,tableName,structureFetched)
+    )).then(() => {
+      console.log( tableStructures)
+      res.status(200).json({
+        data: tableStructures,
+      });  
     });
   } catch (error: any) {
     res.status(400).json({
