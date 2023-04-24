@@ -179,16 +179,6 @@ const ConversationView = () => {
       }),
     });
 
-    // Collect usage.
-    axios
-      .post<string[]>("/api/usage", {
-        conversation: currentConversation,
-        messages: usageMessageList,
-      })
-      .catch(() => {
-        // do nth
-      });
-
     if (!rawRes.ok) {
       console.error(rawRes);
       let errorMessage = "Failed to request message, please check your network.";
@@ -230,6 +220,17 @@ const ConversationView = () => {
     messageStore.updateMessage(message.id, {
       status: "DONE",
     });
+
+    usageMessageList.push(message);
+    // Collect usage.
+    axios
+      .post<string[]>("/api/usage", {
+        conversation: currentConversation,
+        messages: usageMessageList,
+      })
+      .catch(() => {
+        // do nth
+      });
   };
 
   return (
