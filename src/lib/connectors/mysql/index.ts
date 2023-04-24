@@ -80,13 +80,14 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string)=> void): Promise<string> => {
   const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
   conn.destroy();
   if (rows.length !== 1) {
     throw new Error("Unexpected number of rows.");
   }
+  structureFetched(tableName, rows[0]["Create Table"] || "")
   return rows[0]["Create Table"] || "";
 };
 
@@ -96,7 +97,7 @@ const newConnector = (connection: Connection): Connector => {
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string) => getTableStructure(connection, databaseName, tableName),
+    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string)=> void) => getTableStructure(connection, databaseName, tableName, structureFetched),
   };
 };
 

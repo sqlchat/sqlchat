@@ -83,7 +83,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string): Promise<string> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string,  structureFetched: (tableName: string,structure: string)=> void): Promise<string> => {
   connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
@@ -99,6 +99,9 @@ const getTableStructure = async (connection: Connection, databaseName: string, t
       `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
     );
   }
+  structureFetched(tableName, `CREATE TABLE \`${tableName}\` (
+    ${columnList.join(",\n")}
+  );`);
   return `CREATE TABLE \`${tableName}\` (
     ${columnList.join(",\n")}
   );`;
@@ -110,7 +113,7 @@ const newConnector = (connection: Connection): Connector => {
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string) => getTableStructure(connection, databaseName, tableName),
+    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string)=> void) => getTableStructure(connection, databaseName, tableName, structureFetched),
   };
 };
 
