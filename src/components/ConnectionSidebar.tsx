@@ -118,7 +118,7 @@ const ConnectionSidebar = () => {
     if (!currentConnectionCtx?.connection) {
       return;
     }
-
+    
     const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection);
     const database = databaseList.find((database) => database.name === databaseName);
     connectionStore.setCurrentConnectionCtx({
@@ -126,6 +126,7 @@ const ConnectionSidebar = () => {
       database: database,
     });
     if(database!=undefined){
+      // there are bug. change database when loading. the old but latest will replace new schema
       const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database)
       conversationStore.updateTableList(databaseResult);
       conversationStore.updateTable("All Table")
