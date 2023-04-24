@@ -35,6 +35,8 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 - Only the database schema will be sent to the OpenAI API. No table data will be sent there.
 
+- If you use [sqlchat.ai](https://sqlchat.ai), it will record the anonymised conversations.
+
 ## IP Whitelisting
 
 If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
@@ -64,13 +66,43 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    cp .env.example .env
    ```
 
-2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
+1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
 
-3. Install dependencies and start the dev server;
+1. Install dependencies and start the dev server;
 
    ```bash
    pnpm i && pnpm dev
    ```
+
+### Database Setup
+
+1. Install prisma
+
+  ```bash
+  pnpm install prisma --save-dev
+  ```
+
+2. Install prisma client
+
+  ```bash
+  pnpm install @prisma/client
+  ```
+
+3. Generate prisma client from the model
+
+  ```bash
+  pnpm prisma generate
+  ```
+
+4. Seed data
+
+  ```bash
+  pnpm install typescript ts-node @types/node --save-dev
+  ```
+
+  ```bash
+  pnpm prisma db seed
+  ```
 
 ## Common Questions
 

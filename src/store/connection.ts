@@ -89,9 +89,9 @@ export const useConnectionStore = create<ConnectionState>()(
         const state = get();
 
         if (!skipCache) {
-          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name)
-          if (db !== undefined && db?.tableList?.length != 0){
-            return db.tableList
+          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name);
+          if (db !== undefined && Array.isArray(db.tableList) && db.tableList.length !== 0) {
+            return db.tableList;
           }
         }
 
@@ -111,7 +111,9 @@ export const useConnectionStore = create<ConnectionState>()(
         const fetchedTableList = result.data;
         set((state) => ({
           ...state,
-          databaseList: state.databaseList.map((item) =>   (item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item))
+          databaseList: state.databaseList.map((item) =>
+            item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item
+          ),
         }));
 
         return fetchedTableList;

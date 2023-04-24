@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("USAGE_DATABASE_URL")
+}
+
+model Chat {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  ctx       Json
+  prompts   Prompt[]
+
+  @@index([createdAt])
+}
+
+model Prompt {
+  id        String   @id @default(uuid())
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  chatId    String
+  createdAt DateTime @default(now())
+  q         String
+  a         String
+  upvote    Boolean  @default(false)
+  downvote  Boolean  @default(false)
+
+  @@index([chatId])
+  @@index([createdAt])
+}
