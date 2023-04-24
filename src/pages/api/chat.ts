@@ -8,7 +8,7 @@ export const config = {
 
 const getApiEndpoint = (apiEndpoint: string) => {
   const url = new URL(apiEndpoint);
-  url.pathname = '/v1/chat/completions';
+  url.pathname = "/v1/chat/completions";
   return url;
 };
 

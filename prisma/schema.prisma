@@ -14,18 +14,18 @@ model Chat {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   ctx       Json
-  prompts   Prompt[]
+  messages  Message[]
 
   @@index([createdAt])
 }
 
-model Prompt {
+model Message {
   id        String   @id @default(uuid())
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String
   createdAt DateTime @default(now())
-  q         String
-  a         String
+  role      String
+  content   String
   upvote    Boolean  @default(false)
   downvote  Boolean  @default(false)
 
