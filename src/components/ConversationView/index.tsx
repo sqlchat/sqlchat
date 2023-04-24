@@ -1,3 +1,4 @@
+import axios from "axios";
 import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -145,17 +146,26 @@ const ConversationView = () => {
       }
       prompt = promptGenerator(schema);
     }
+
+    let usageMessageList: Message[] = [];
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
       if (tokens < MAX_TOKENS) {
         tokens += countTextTokens(message.content);
+        usageMessageList.unshift(message);
         formatedMessageList.unshift({
           role: message.creatorRole,
           content: message.content,
         });
       }
     }
+    usageMessageList.unshift({
+      id: generateUUID(),
+      createdAt: Date.now(),
+      creatorRole: CreatorRole.System,
+      content: prompt,
+    } as Message);
     formatedMessageList.unshift({
       role: CreatorRole.System,
       content: prompt,
@@ -168,6 +178,16 @@ const ConversationView = () => {
         openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
     });
+
+    // Collect usage.
+    axios
+      .post<string[]>("/api/usage", {
+        conversation: currentConversation,
+        messages: usageMessageList,
+      })
+      .catch(() => {
+        // do nth
+      });
 
     if (!rawRes.ok) {
       console.error(rawRes);
