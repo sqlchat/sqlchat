@@ -8,7 +8,7 @@ export interface Connector {
   execute: (databaseName: string, statement: string) => Promise<ExecutionResult>;
   getDatabases: () => Promise<string[]>;
   getTables: (databaseName: string) => Promise<string[]>;
-  getTableStructure: (databaseName: string, tableName: string) => Promise<string>;
+  getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) => Promise<void>;
 }
 
 export const newConnector = (connection: Connection): Connector => {
