@@ -1,5 +1,5 @@
 import axios from "axios";
-import { head, last } from "lodash-es";
+import { first, head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -162,7 +162,7 @@ const ConversationView = () => {
     }
     usageMessageList.unshift({
       id: generateUUID(),
-      createdAt: Date.now(),
+      createdAt: first(usageMessageList)?.createdAt || Date.now(),
       creatorRole: CreatorRole.System,
       content: prompt,
     } as Message);

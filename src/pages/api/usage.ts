@@ -12,23 +12,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const conversation = req.body.conversation as Conversation;
   const messages = req.body.messages as Message[];
   try {
-    await prisma.chat.create({
-      data: {
+    const chat = await prisma.chat.findUnique({
+      where: {
         id: conversation.id,
-        createdAt: new Date(conversation.createdAt),
-        ctx: {},
-        messages: {
-          create: messages.map((message) => ({
-            id: message.id,
-            createdAt: new Date(message.createdAt),
-            role: message.creatorRole,
-            content: message.content,
-            upvote: true,
-            downvote: false,
-          })),
-        },
       },
     });
+    if (chat) {
+      await prisma.message.createMany({
+        data: messages.map((message) => ({
+          chatId: chat.id,
+          createdAt: new Date(message.createdAt),
+          role: message.creatorRole,
+          content: message.content,
+          upvote: true,
+          downvote: false,
+        })),
+      });
+    } else {
+      await prisma.chat.create({
+        data: {
+          id: conversation.id,
+          createdAt: new Date(conversation.createdAt),
+          ctx: {},
+          messages: {
+            create: messages.map((message) => ({
+              createdAt: new Date(message.createdAt),
+              role: message.creatorRole,
+              content: message.content,
+              upvote: true,
+              downvote: false,
+            })),
+          },
+        },
+      });
+    }
   } catch (err) {
     console.error(err);
   }
