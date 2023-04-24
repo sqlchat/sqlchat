@@ -37,7 +37,7 @@ const Select = (props: Props) => {
           }}
           position="popper"
         >
-          <ScrollArea.Root className="max-h-80 overflow-auto border dark:border-zinc-800 rounded-lg drop-shadow-lg" type="auto">
+          <ScrollArea.Root className={`${itemList.length > 7 ? "h-80 overflow-hidden" : "max-h-80 overflow-auto"} border dark:border-zinc-800 rounded-lg drop-shadow-lg`} type="auto">
             <SelectUI.Viewport asChild className="bg-white dark:bg-zinc-700 p-1 rounded-lg">
               <ScrollArea.Viewport className="w-full h-full">
                 <SelectUI.Group>  
@@ -57,13 +57,6 @@ const Select = (props: Props) => {
                 </SelectUI.Group>
               </ScrollArea.Viewport>
             </SelectUI.Viewport>
-            <ScrollArea.Scrollbar
-              className="flex p-2 bg-white hover:bg-slate-900 rounded-lg ease-out	select-none touch-none"
-              orientation="vertical"
-            >
-              <ScrollArea.Thumb className="flex-1 relative w-1 l bg-slate-500 rounded-lg before:absolute before:w-full before:h-full before:content-none before:min-w-1 before:min-h-1 before:top-1/2	before:left-1/2	" />
-            </ScrollArea.Scrollbar>
-            <ScrollArea.Corner className="bg-black" />
           </ScrollArea.Root>
         </SelectUI.Content>
       </SelectUI.Portal>
