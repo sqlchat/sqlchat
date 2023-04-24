@@ -80,7 +80,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string)=> void): Promise<void> => {
+const getTableStructure = async (connection: Connection, databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
   const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
   conn.destroy();
@@ -96,7 +96,7 @@ const newConnector = (connection: Connection): Connector => {
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string)=> void) => getTableStructure(connection, databaseName, tableName, structureFetched),
+    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) => getTableStructure(connection, databaseName, tableName, structureFetched),
   };
 };
 
