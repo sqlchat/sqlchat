@@ -25,7 +25,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     Promise.all(rawTableNameList.map(async (tableName) => 
       connector.getTableStructure(db,tableName,structureFetched)
     )).then(() => {
-      console.log( tableStructures)
       res.status(200).json({
         data: tableStructures,
       });  
