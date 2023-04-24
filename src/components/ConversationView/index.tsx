@@ -242,7 +242,7 @@ const ConversationView = () => {
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
         <ProductHuntBanner />
-        <QuotaOverflowBanner />
+        {/* <QuotaOverflowBanner /> */}
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>
