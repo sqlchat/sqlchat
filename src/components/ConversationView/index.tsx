@@ -1,4 +1,5 @@
-import { head, last } from "lodash-es";
+import axios from "axios";
+import { first, head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -162,17 +163,26 @@ const ConversationView = () => {
       prompt = promptGenerator(schema);
       console.log(prompt)
     }
+
+    let usageMessageList: Message[] = [];
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
       if (tokens < MAX_TOKENS) {
         tokens += countTextTokens(message.content);
+        usageMessageList.unshift(message);
         formatedMessageList.unshift({
           role: message.creatorRole,
           content: message.content,
         });
       }
     }
+    usageMessageList.unshift({
+      id: generateUUID(),
+      createdAt: first(usageMessageList)?.createdAt || Date.now(),
+      creatorRole: CreatorRole.System,
+      content: prompt,
+    } as Message);
     formatedMessageList.unshift({
       role: CreatorRole.System,
       content: prompt,
@@ -232,6 +242,17 @@ const ConversationView = () => {
     messageStore.updateMessage(message.id, {
       status: "DONE",
     });
+
+    usageMessageList.push(message);
+    // Collect usage.
+    axios
+      .post<string[]>("/api/usage", {
+        conversation: currentConversation,
+        messages: usageMessageList,
+      })
+      .catch(() => {
+        // do nth
+      });
   };
 
   const handleExecuteQuery = (statement:string)=>{
