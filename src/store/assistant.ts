@@ -5,7 +5,6 @@ import exp from "constants";
 
 export const GeneralBotId = "general-bot";
 export const SQLChatBotId = "sql-chat-bot";
-export const SelectBotId = "select-bot";
 
 export const assistantList: Assistant[] = Object.keys(customAssistantList).map((name) => {
   return {
