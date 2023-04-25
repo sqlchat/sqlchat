@@ -2,6 +2,7 @@ import axios from "axios";
 import { first, head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { API_KEY } from "@/env";
 import {
   getAssistantById,
   getPromptGeneratorOfAssistant,
@@ -171,12 +172,17 @@ const ConversationView = () => {
       content: prompt,
     });
 
+    const requestHeaders: any = {};
+    if (API_KEY) {
+      requestHeaders["Authorization"] = `Bearer ${API_KEY}`;
+    }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
         openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
+      headers: requestHeaders,
     });
 
     if (!rawRes.ok) {
