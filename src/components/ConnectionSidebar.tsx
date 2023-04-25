@@ -288,7 +288,15 @@ const ConnectionSidebar = () => {
                 {t("conversation.new-chat")}
               </button>
             </div>
-            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-6 py-2">
+            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
+              <a
+                href="https://discord.gg/z6kakemDjm"
+                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"
+                target="_blank"
+              >
+                <Icon.BsDiscord className="w-4 h-auto mr-1" />
+                {t("social.join-discord-channel")}
+              </a>
               <a
                 className="dark:hidden"
                 href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
@@ -314,14 +322,6 @@ const ConnectionSidebar = () => {
                   width="250"
                   height="54"
                 />
-              </a>
-              <a
-                href="https://discord.gg/z6kakemDjm"
-                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mt-4 hover:underline"
-                target="_blank"
-              >
-                <Icon.BsDiscord className="w-4 h-auto mr-1" />
-                {t("social.join-discord-channel")}
               </a>
             </div>
           </div>
