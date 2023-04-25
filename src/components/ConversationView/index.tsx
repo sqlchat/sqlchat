@@ -17,6 +17,7 @@ import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
+import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import ProductHuntBanner from "../ProductHuntBanner";
@@ -259,7 +260,8 @@ const ConversationView = () => {
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
       </div>
-      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
+      <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
+        <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
     </div>

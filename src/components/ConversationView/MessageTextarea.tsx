@@ -73,7 +73,7 @@ const MessageTextarea = (props: Props) => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg mb-2 px-2 py-1 relative shadow bg-white dark:bg-zinc-800">
+    <div className="w-full h-auto flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg px-2 py-1 relative shadow bg-white dark:bg-zinc-800">
       <TextareaAutosize
         ref={textareaRef}
         className="w-full h-full outline-none border-none bg-transparent leading-6 py-2 px-2 resize-none hide-scrollbar"
