@@ -128,9 +128,14 @@ const ConnectionSidebar = () => {
     if(database!=undefined){
       // there are bug. change database when loading. the old but latest will replace new schema
       const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database)
-      conversationStore.updateTableList(databaseResult);
-      conversationStore.updateTable("All Table")
-      loadingState.setFinish();
+      // prohibit be overwriten
+      if(connectionStore.currentConnectionCtx?.database?.name == databaseName){
+        conversationStore.updateTableList(databaseResult);
+        conversationStore.updateTable("All Table")
+        loadingState.setFinish();
+      }else{
+        console.log("table name is not match")
+      }
     }
 
   };
