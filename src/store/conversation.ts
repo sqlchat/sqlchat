@@ -17,10 +17,10 @@ const getDefaultConversation = (): Conversation => {
 interface ConversationState {
   getState: () => ConversationState;
   conversationList: Conversation[];
-  currentConversation?: Conversation;
+  currentConversationId?: Id;
   createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
-  setCurrentConversation: (Conversation: Conversation | undefined) => void;
-  getConversationById: (conversationId: Id) => Conversation | undefined;
+  setCurrentConversationId: (conversationId: Id | undefined) => void;
+  getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
 }
@@ -41,12 +41,12 @@ export const useConversationStore = create<ConversationState>()(
         }
         set((state) => ({
           conversationList: [...state.conversationList, conversation],
-          currentConversation: conversation,
+          currentConversationId: conversation.id,
         }));
         return conversation;
       },
-      setCurrentConversation: (conversation: Conversation | undefined) => set(() => ({ currentConversation: conversation })),
-      getConversationById: (conversationId: Id) => {
+      setCurrentConversationId: (conversation: Id | undefined) => set(() => ({ currentConversationId: conversation })),
+      getConversationById: (conversationId: Id | undefined) => {
         return get().conversationList.find((item) => item.id === conversationId);
       },
       updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => {
@@ -75,7 +75,7 @@ export const useConversationStore = create<ConversationState>()(
               conversation.assistantId = "sql-chat-bot";
             }
           }
-          state.currentConversation = undefined;
+          state.currentConversationId = undefined;
         }
 
         return state;

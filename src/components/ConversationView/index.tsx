@@ -1,6 +1,8 @@
-import { head, last } from "lodash-es";
+import axios from "axios";
+import { first, head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { API_KEY } from "@/env";
 import {
   getAssistantById,
   getPromptGeneratorOfAssistant,
@@ -15,9 +17,10 @@ import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
+import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-import ProductHuntBanner from "../ProductHuntBanner";
+import QuotaOverflowBanner from "../QuotaOverflowBanner";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
@@ -32,8 +35,10 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
-  const currentConversation = conversationStore.currentConversation;
-  const messageList = messageStore.messageList.filter((message) => message.conversationId === currentConversation?.id);
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const messageList = currentConversation
+    ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
+    : [];
   const lastMessage = last(messageList);
 
   useEffect(() => {
@@ -99,11 +104,11 @@ const ConversationView = () => {
         conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
         conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
-    conversationStore.setCurrentConversation(head(conversationList));
+    conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {
-    const currentConversation = conversationStore.getState().currentConversation;
+    const currentConversation = conversationStore.getConversationById(conversationStore.getState().currentConversationId);
     if (!currentConversation) {
       return;
     }
@@ -112,7 +117,8 @@ const ConversationView = () => {
     }
 
     const messageList = messageStore.getState().messageList.filter((message) => message.conversationId === currentConversation.id);
-    let prompt = "";
+    const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
+    let prompt = promptGenerator();
     let tokens = 0;
 
     const message: Message = {
@@ -139,31 +145,44 @@ const ConversationView = () => {
       } catch (error: any) {
         toast.error(error.message);
       }
-      const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
       prompt = promptGenerator(schema);
     }
+
+    let usageMessageList: Message[] = [];
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
       if (tokens < MAX_TOKENS) {
         tokens += countTextTokens(message.content);
+        usageMessageList.unshift(message);
         formatedMessageList.unshift({
           role: message.creatorRole,
           content: message.content,
         });
       }
     }
+    usageMessageList.unshift({
+      id: generateUUID(),
+      createdAt: first(usageMessageList)?.createdAt || Date.now(),
+      creatorRole: CreatorRole.System,
+      content: prompt,
+    } as Message);
     formatedMessageList.unshift({
       role: CreatorRole.System,
       content: prompt,
     });
 
+    const requestHeaders: any = {};
+    if (API_KEY) {
+      requestHeaders["Authorization"] = `Bearer ${API_KEY}`;
+    }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
         openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
+      headers: requestHeaders,
     });
 
     if (!rawRes.ok) {
@@ -207,6 +226,17 @@ const ConversationView = () => {
     messageStore.updateMessage(message.id, {
       status: "DONE",
     });
+
+    usageMessageList.push(message);
+    // Collect usage.
+    axios
+      .post<string[]>("/api/usage", {
+        conversation: currentConversation,
+        messages: usageMessageList,
+      })
+      .catch(() => {
+        // do nth
+      });
   };
 
   return (
@@ -217,7 +247,7 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        <ProductHuntBanner />
+        <QuotaOverflowBanner />
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>
@@ -228,7 +258,8 @@ const ConversationView = () => {
           messageList.map((message) => <MessageView key={message.id} message={message} />)
         )}
       </div>
-      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
+      <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
+        <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
     </div>

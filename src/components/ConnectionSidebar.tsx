@@ -132,7 +132,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleConversationSelect = (conversation: Conversation) => {
-    conversationStore.setCurrentConversation(conversation);
+    conversationStore.setCurrentConversationId(conversation.id);
     if (layoutStore.isMobileView) {
       layoutStore.toggleSidebar(false);
     }
@@ -148,8 +148,8 @@ const ConnectionSidebar = () => {
 
   const handleDeleteConversation = (conversation: Conversation) => {
     conversationStore.clearConversation((item) => item.id !== conversation.id);
-    if (conversationStore.currentConversation?.id === conversation.id) {
-      conversationStore.setCurrentConversation(undefined);
+    if (conversationStore.currentConversationId === conversation.id) {
+      conversationStore.setCurrentConversationId(undefined);
     }
   };
 
@@ -244,11 +244,11 @@ const ConnectionSidebar = () => {
                 <div
                   key={conversation.id}
                   className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer dark:text-gray-300 border border-transparent group hover:bg-white dark:hover:bg-zinc-800 ${
-                    conversation.id === conversationStore.currentConversation?.id && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
+                    conversation.id === conversationStore.currentConversationId && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
                   }`}
                   onClick={() => handleConversationSelect(conversation)}
                 >
-                  {conversation.id === conversationStore.currentConversation?.id ? (
+                  {conversation.id === conversationStore.currentConversationId ? (
                     <Icon.IoChatbubble className="w-5 h-auto mr-1.5 shrink-0" />
                   ) : (
                     <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
@@ -288,7 +288,15 @@ const ConnectionSidebar = () => {
                 {t("conversation.new-chat")}
               </button>
             </div>
-            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-6 py-2">
+            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
+              <a
+                href="https://discord.gg/z6kakemDjm"
+                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"
+                target="_blank"
+              >
+                <Icon.BsDiscord className="w-4 h-auto mr-1" />
+                {t("social.join-discord-channel")}
+              </a>
               <a
                 className="dark:hidden"
                 href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
@@ -314,14 +322,6 @@ const ConnectionSidebar = () => {
                   width="250"
                   height="54"
                 />
-              </a>
-              <a
-                href="https://discord.gg/z6kakemDjm"
-                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mt-4 hover:underline"
-                target="_blank"
-              >
-                <Icon.BsDiscord className="w-4 h-auto mr-1" />
-                {t("social.join-discord-channel")}
               </a>
             </div>
           </div>

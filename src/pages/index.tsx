@@ -21,7 +21,6 @@ const IndexPage: NextPage = () => {
     <div>
       <Head>
         <title>SQL Chat - Chat-based SQL Client and Editor for the next decade</title>
-        <link rel="icon" href="/chat-logo-bot.webp" />
         <meta name="description" content="Chat-based SQL Client and Editor for the next decade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="og:title" property="og:title" content="SQL Chat" />

@@ -1,5 +1,6 @@
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
+import { API_KEY } from "@/env";
 import { openAIApiEndpoint, openAIApiKey } from "@/utils";
 
 export const config = {
@@ -8,11 +9,20 @@ export const config = {
 
 const getApiEndpoint = (apiEndpoint: string) => {
   const url = new URL(apiEndpoint);
-  url.pathname = '/v1/chat/completions';
+  url.pathname = "/v1/chat/completions";
   return url;
 };
 
 const handler = async (req: NextRequest) => {
+  if (API_KEY) {
+    const auth = req.headers.get("Authorization");
+    if (!auth || auth !== `Bearer ${API_KEY}`) {
+      return new Response("Unauthorized", {
+        status: 401,
+      });
+    }
+  }
+
   const reqBody = await req.json();
   const openAIApiConfig = reqBody.openAIApiConfig;
   const apiKey = openAIApiConfig?.key || openAIApiKey;

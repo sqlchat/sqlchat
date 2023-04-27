@@ -35,16 +35,28 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 - Only the database schema will be sent to the OpenAI API. No table data will be sent there.
 
-## Deploy with Docker
+- If you use [sqlchat.ai](https://sqlchat.ai), it will record the anonymised conversations.
+
+## IP Whitelisting
+
+If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
+to the database whitelist IP. Because sqlchat.ai is hosted on Vercel which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address).
+If this is a concern, please consider the self-host option below.
+
+## Self-host with Docker
 
 ```bash
-docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
+docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
 You can set the following environment variables to customize the deployment:
 
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
+
+```bash
+docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+```
 
 ## Local Development
 
@@ -54,39 +66,33 @@ You can set the following environment variables to customize the deployment:
    cp .env.example .env
    ```
 
-2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
+1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
 
-3. Install dependencies and start the dev server;
+1. Install dependencies and start the dev server;
 
    ```bash
    pnpm i && pnpm dev
    ```
 
-## Common questions
+### Database Setup
 
-<details><summary>How to self host SQL Chat?</summary>
-<p>
+1. Install dependencies
 
-- You can deploy SQL Chat to Vercel with one click
+   ```bash
+   pnpm i
+   ```
 
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
+1. Generate prisma client from the model
 
-- You can deploy your SQL Chat with docker in seconds
+   ```bash
+   pnpm prisma generate
+   ```
 
-  ```bash
-  docker run -d --name sqlchat -p 3000:3000 sqlchat/sqlchat:latest
-  ```
+1. Seed data
 
-</p>
-</details>
-
-<details><summary>It always says that I have a network connection issue?</summary>
-<p>
-
-Please make sure you have a stable network connection which can access the OpenAI API endpoint. If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
-
-</p>
-</details>
+   ```bash
+   pnpm prisma db seed
+   ```
 
 ## Star History
 
@@ -111,3 +117,43 @@ Please make sure you have a stable network connection which can access the OpenA
 ## License
 
 This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
+
+## FAQ
+
+<details><summary>How to self host SQL Chat?</summary>
+<p>
+
+- You can deploy SQL Chat to Vercel with one click
+
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
+
+- You can deploy your SQL Chat with docker in seconds
+
+  ```bash
+  docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+  ```
+
+</p>
+</details>
+
+<details><summary>How to use my OpenAI API key?</summary>
+<p>
+
+- You can set the `OPENAI_API_KEY` in environment variable.
+
+  ```bash
+  docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx -p 3000:3000 sqlchat/sqlchat
+  ```
+
+- You can set the `OPENAI_API_KEY` in setting dialog.
+
+</p>
+</details>
+
+<details><summary>It always says that I have a network connection issue?</summary>
+<p>
+
+Please make sure you have a stable network connection which can access the OpenAI API endpoint. If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
+
+</p>
+</details>
