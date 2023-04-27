@@ -68,7 +68,8 @@ const ConnectionSidebar = () => {
     if (currentConnectionCtx?.connection) {
       setIsRequestingDatabase(true);
       connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
-        setIsRequestingDatabase(false);
+        setIsRequestingDatabase(false); 
+        handleDatabaseNameSelect(currentConnectionCtx.database?.name || "");   
       });
     } else {
       setIsRequestingDatabase(false);
@@ -125,16 +126,15 @@ const ConnectionSidebar = () => {
       connection: currentConnectionCtx.connection,
       database: database,
     });
+    console.log("database", database)
     if(database!=undefined){
       // there are bug. change database when loading. the old but latest will replace new schema
       const databaseResult = await connectionStore.getOrFetchDatabaseSchema(database)
-      // prohibit be overwriten
-      if(connectionStore.currentConnectionCtx?.database?.name == databaseName){
+      // prohibit TableList be overwritten by old request
+      if(useConnectionStore.getState().currentConnectionCtx?.database?.name == databaseName){
         conversationStore.updateTableList(databaseResult);
         conversationStore.updateTable("All Table")
         loadingState.setFinish();
-      }else{
-        console.log("table name is not match")
       }
     }
 
