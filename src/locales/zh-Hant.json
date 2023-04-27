@@ -72,6 +72,8 @@
   "banner": {
     "data-storage": "連線設定儲存在您的本地瀏覽器中",
     "non-select-sql-warning": "當前語句可能是非 SELECT SQL 語句，這將導致資料庫結構或資料的更改。請確保您知道自己在做什麼。",
-    "product-hunt": "🚀🚀🚀 我們剛在 Product Hunt 上推出，請給我們一個投票！🚀🚀🚀"
+    "product-hunt": "🚀🚀🚀 我們剛在 Product Hunt 上推出，請給我們一個投票！🚀🚀🚀",
+    "quota-overflow": "我們的 OpenAI 額度已用完，請提供您自己的 OpenAI API key。",
+    "use-my-key": "提供我自己的 key"
   }
 }

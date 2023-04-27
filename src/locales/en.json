@@ -73,7 +73,7 @@
     "data-storage": "Connection settings are stored in your local browser",
     "non-select-sql-warning": "The current statement may be non-SELECT SQL, which will result in a database schema or data change. Make sure you know what you are doing.",
     "product-hunt": "🚀🚀🚀 We just launched on Product Hunt, please give us a vote! 🚀🚀🚀",
-    "quota-overflow": "Our quota is full and we are applying for additional credits. Please wait a moment.",
-    "use-my-key": "Use my key"
+    "quota-overflow": "Out of quota. Please provide your own OpenAI API key.",
+    "use-my-key": "Use my own key"
   }
 }
