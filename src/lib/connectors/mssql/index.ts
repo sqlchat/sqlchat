@@ -75,6 +75,29 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
+const getTableListStructure = async (connection: Connection, databaseName: string, tableNameList: string[],  structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
+  const pool = await getMSSQLConnection(connection);
+  const request = pool.request();
+
+  await Promise.all(tableNameList.map(async (tableName) => {
+    const { recordset } = await request.query(
+      `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='${tableName}';`
+    );
+  
+    const columnList = [];
+    // Transform to standard schema string.
+    for (const row of recordset) {
+      columnList.push(
+        `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+      );
+    }
+    structureFetched(tableName, `CREATE TABLE [${tableName}] (
+      ${columnList.join(",\n")}
+    );`);  
+  }
+  ))
+};
+
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string,  structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
@@ -100,6 +123,7 @@ const newConnector = (connection: Connection): Connector => {
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
+    getTableListStructure: (databaseName: string, tableNameList: string[],  structureFetched: (tableName: string, structure: string) => void) => getTableListStructure(connection, databaseName, tableNameList, structureFetched),
     getTableStructure: (databaseName: string, tableName: string,  structureFetched: (tableName: string, structure: string) => void) => getTableStructure(connection, databaseName, tableName, structureFetched),
   };
 };
