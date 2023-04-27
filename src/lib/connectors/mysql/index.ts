@@ -5,41 +5,6 @@ import { Connector } from "..";
 
 const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
 
-const singleConnection = async (connection: Connection): Promise<(any[])> => {
-  let conn:mysql.Connection|undefined = undefined;
-  const createConnect = async()=>{
-    if(conn){
-      console.log("reuse connection");
-      return conn;
-    }else{
-      console.log("create new connection");
-      const connectionOptions: ConnectionOptions = {
-        host: connection.host,
-        port: parseInt(connection.port),
-        user: connection.username,
-        password: connection.password,
-        database: connection.database,
-      };
-      if (connection.ssl) {
-        connectionOptions.ssl = {
-          ca: connection.ssl?.ca,
-          cert: connection.ssl?.cert,
-          key: connection.ssl?.key,
-        };
-      }
-      conn = await mysql.createConnection(connectionOptions);
-      return conn;
-    }
-  }
-  const disconnect = async()=>{
-    if(conn){
-      conn.destroy();
-      conn = undefined;
-    }
-  }
-  return [createConnect,disconnect];
-}
-
 const getMySQLConnection = async (connection: Connection): Promise<mysql.Connection> => {
   const connectionOptions: ConnectionOptions = {
     host: connection.host,
@@ -116,8 +81,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
 };
 
 const getTableStructure = async (connection: Connection, databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
-  const [createConnect,_] = await singleConnection(connection);
-  const conn = await createConnect(connection) as mysql.Connection;
+  const conn = await getMySQLConnection(connection) as mysql.Connection;
 
   const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
   if (rows.length !== 1) {
