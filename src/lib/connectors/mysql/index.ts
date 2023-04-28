@@ -80,7 +80,7 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableListStructure = async (connection: Connection, databaseName: string, tableNameList: string[], structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
+const getTableStructureBatch = async (connection: Connection, databaseName: string, tableNameList: string[], structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
   const conn = await getMySQLConnection(connection);
 
   await Promise.all(tableNameList.map(async (tableName) => {
@@ -114,7 +114,7 @@ const newConnector = (connection: Connection): Connector => {
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
     getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) => getTableStructure(connection, databaseName, tableName, structureFetched),
-    getTableListStructure: (databaseName: string, tableNameList: string[], structureFetched: (tableName: string, structure: string) => void) => getTableListStructure(connection, databaseName, tableNameList, structureFetched),
+    getTableStructureBatch: (databaseName: string, tableNameList: string[], structureFetched: (tableName: string, structure: string) => void) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
   };
 };
 

@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         structure,
       });
     }
-    await connector.getTableListStructure(db, rawTableNameList, structureFetched);
+    await connector.getTableStructureBatch(db, rawTableNameList, structureFetched);
 
     res.status(200).json({
       data: tableStructures,
