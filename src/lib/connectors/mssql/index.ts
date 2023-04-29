@@ -4,7 +4,9 @@ import { Connector } from "..";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
 
-const getMSSQLConnection = async (connection: Connection): Promise<ConnectionPool> => {
+const getMSSQLConnection = async (
+  connection: Connection
+): Promise<ConnectionPool> => {
   const connectionOptions: any = {
     server: connection.host,
     port: parseInt(connection.port),
@@ -32,7 +34,11 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   return true;
 };
 
-const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
+const execute = async (
+  connection: Connection,
+  databaseName: string,
+  statement: string
+): Promise<any> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
   const result = await request.query(`USE ${databaseName}; ${statement}`);
@@ -48,7 +54,11 @@ const execute = async (connection: Connection, databaseName: string, statement: 
 const getDatabases = async (connection: Connection): Promise<string[]> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
-  const result = await request.query(`SELECT name FROM sys.databases WHERE name NOT IN ('${systemDatabases.join("','")}');`);
+  const result = await request.query(
+    `SELECT name FROM sys.databases WHERE name NOT IN ('${systemDatabases.join(
+      "','"
+    )}');`
+  );
   await pool.close();
   const databaseList = [];
   for (const row of result.recordset) {
@@ -59,7 +69,10 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+const getTables = async (
+  connection: Connection,
+  databaseName: string
+): Promise<string[]> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
   const result = await request.query(
@@ -75,7 +88,12 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string,  structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
+const getTableStructure = async (
+  connection: Connection,
+  databaseName: string,
+  tableName: string,
+  structureFetched: (tableName: string, structure: string) => void
+): Promise<void> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
   const { recordset } = await request.query(
@@ -86,21 +104,32 @@ const getTableStructure = async (connection: Connection, databaseName: string, t
   // Transform to standard schema string.
   for (const row of recordset) {
     columnList.push(
-      `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+      `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${
+        String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""
+      }`
     );
   }
-  structureFetched(tableName, `CREATE TABLE [${tableName}] (
+  structureFetched(
+    tableName,
+    `CREATE TABLE [${tableName}] (
     ${columnList.join(",\n")}
-  );`);
+  );`
+  );
 };
 
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
-    execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
+    execute: (databaseName: string, statement: string) =>
+      execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string,  structureFetched: (tableName: string, structure: string) => void) => getTableStructure(connection, databaseName, tableName, structureFetched),
+    getTableStructure: (
+      databaseName: string,
+      tableName: string,
+      structureFetched: (tableName: string, structure: string) => void
+    ) =>
+      getTableStructure(connection, databaseName, tableName, structureFetched),
   };
 };
 

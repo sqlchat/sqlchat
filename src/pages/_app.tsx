@@ -52,7 +52,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     const theme = settingStore.setting.theme;
     let currentAppearance = theme;
     if (theme === "system") {
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
         currentAppearance = "dark";
       } else {
         currentAppearance = "light";

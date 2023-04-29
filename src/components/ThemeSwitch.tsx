@@ -14,7 +14,10 @@ const ThemeSwitch = () => {
   };
 
   return (
-    <button className="w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100" onClick={handleThemeChange}>
+    <button
+      className="w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100"
+      onClick={handleThemeChange}
+    >
       <Icon.IoSunny className="text-gray-600 w-6 h-auto" />
     </button>
   );

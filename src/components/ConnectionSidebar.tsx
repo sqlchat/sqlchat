@@ -21,9 +21,12 @@ const ConnectionSidebar = () => {
   const [state, setState] = useState<State>({
     showSettingModal: false,
   });
-  const [isRequestingDatabase, setIsRequestingDatabase] = useState<boolean>(false);
+  const [isRequestingDatabase, setIsRequestingDatabase] =
+    useState<boolean>(false);
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
-  const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
+  const databaseList = connectionStore.databaseList.filter(
+    (database) => database.connectionId === currentConnectionCtx?.connection.id
+  );
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -47,9 +50,11 @@ const ConnectionSidebar = () => {
   useEffect(() => {
     if (currentConnectionCtx?.connection) {
       setIsRequestingDatabase(true);
-      connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
-        setIsRequestingDatabase(false);
-      });
+      connectionStore
+        .getOrFetchDatabaseList(currentConnectionCtx.connection)
+        .finally(() => {
+          setIsRequestingDatabase(false);
+        });
     } else {
       setIsRequestingDatabase(false);
     }
@@ -67,8 +72,12 @@ const ConnectionSidebar = () => {
       return;
     }
 
-    const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection);
-    const database = databaseList.find((database) => database.name === databaseName);
+    const databaseList = await connectionStore.getOrFetchDatabaseList(
+      currentConnectionCtx.connection
+    );
+    const database = databaseList.find(
+      (database) => database.name === databaseName
+    );
     connectionStore.setCurrentConnectionCtx({
       connection: currentConnectionCtx.connection,
       database: database,
@@ -107,7 +116,8 @@ const ConnectionSidebar = () => {
             <div className="w-full grow">
               {isRequestingDatabase && (
                 <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
+                  {t("common.loading")}
                 </div>
               )}
               {databaseList.length > 0 && (
@@ -121,7 +131,9 @@ const ConnectionSidebar = () => {
                         value: database.name,
                       };
                     })}
-                    onValueChange={(databaseName) => handleDatabaseNameSelect(databaseName)}
+                    onValueChange={(databaseName) =>
+                      handleDatabaseNameSelect(databaseName)
+                    }
                     placeholder={t("connection.select-database") || ""}
                   />
                 </div>
@@ -168,7 +180,9 @@ const ConnectionSidebar = () => {
         </div>
       </Drawer>
 
-      {state.showSettingModal && <SettingModal close={() => toggleSettingModal(false)} />}
+      {state.showSettingModal && (
+        <SettingModal close={() => toggleSettingModal(false)} />
+      )}
     </>
   );
 };

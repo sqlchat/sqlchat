@@ -22,7 +22,8 @@ const ConnectionList = () => {
     showSettingModal: false,
     showUpdateConversationModal: false,
   });
-  const [editConnectionModalContext, setEditConnectionModalContext] = useState<Connection>();
+  const [editConnectionModalContext, setEditConnectionModalContext] =
+    useState<Connection>();
   const connectionList = connectionStore.connectionList;
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
 
@@ -35,7 +36,9 @@ const ConnectionList = () => {
   };
 
   const handleConnectionSelect = async (connection: Connection) => {
-    const databaseList = await connectionStore.getOrFetchDatabaseList(connection);
+    const databaseList = await connectionStore.getOrFetchDatabaseList(
+      connection
+    );
     connectionStore.setCurrentConnectionCtx({
       connection,
       database: head(databaseList),
@@ -53,7 +56,10 @@ const ConnectionList = () => {
   return (
     <>
       <button
-        className={`w-full h-14 rounded-l-lg p-2 mt-1 group ${currentConnectionCtx === undefined && "bg-gray-100 dark:bg-zinc-700 shadow"}`}
+        className={`w-full h-14 rounded-l-lg p-2 mt-1 group ${
+          currentConnectionCtx === undefined &&
+          "bg-gray-100 dark:bg-zinc-700 shadow"
+        }`}
         onClick={() => connectionStore.setCurrentConnectionCtx(undefined)}
       >
         <img src="/chat-logo-bot.webp" className="w-7 h-auto mx-auto" alt="" />
@@ -62,7 +68,8 @@ const ConnectionList = () => {
         <Tooltip key={connection.id} title={connection.title} side="right">
           <button
             className={`relative w-full h-14 rounded-l-lg p-2 mt-2 group ${
-              currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 dark:bg-zinc-700 shadow"
+              currentConnectionCtx?.connection.id === connection.id &&
+              "bg-gray-100 dark:bg-zinc-700 shadow"
             }`}
             onClick={() => handleConnectionSelect(connection)}
           >
@@ -75,7 +82,10 @@ const ConnectionList = () => {
             >
               <Icon.FiEdit3 className="w-3.5 h-auto dark:text-gray-300" />
             </span>
-            <EngineIcon engine={connection.engineType} className="w-auto h-full mx-auto dark:text-gray-300" />
+            <EngineIcon
+              engine={connection.engineType}
+              className="w-auto h-full mx-auto dark:text-gray-300"
+            />
           </button>
         </Tooltip>
       ))}
@@ -89,7 +99,10 @@ const ConnectionList = () => {
       </Tooltip>
 
       {state.showCreateConnectionModal && (
-        <CreateConnectionModal connection={editConnectionModalContext} close={() => toggleCreateConnectionModal(false)} />
+        <CreateConnectionModal
+          connection={editConnectionModalContext}
+          close={() => toggleCreateConnectionModal(false)}
+        />
       )}
     </>
   );

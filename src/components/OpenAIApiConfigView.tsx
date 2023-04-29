@@ -8,7 +8,9 @@ import TextField from "./kit/TextField";
 const OpenAIApiConfigView = () => {
   const { t } = useTranslation();
   const settingStore = useSettingStore();
-  const [openAIApiConfig, setOpenAIApiConfig] = useState(settingStore.setting.openAIApiConfig);
+  const [openAIApiConfig, setOpenAIApiConfig] = useState(
+    settingStore.setting.openAIApiConfig
+  );
 
   useDebounce(
     () => {
@@ -27,7 +29,9 @@ const OpenAIApiConfigView = () => {
 
   return (
     <>
-      <h3 className="pl-4 text-sm text-gray-500">{t("setting.openai-api-configuration.self")}</h3>
+      <h3 className="pl-4 text-sm text-gray-500">
+        {t("setting.openai-api-configuration.self")}
+      </h3>
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg">
         <div className="flex flex-col">
           <label className="mb-1">Key</label>

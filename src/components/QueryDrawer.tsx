@@ -16,12 +16,17 @@ import ExecutionWarningBanner from "./ExecutionView/ExecutionWarningBanner";
 const QueryDrawer = () => {
   const { t } = useTranslation();
   const queryStore = useQueryStore();
-  const [executionResult, setExecutionResult] = useState<ExecutionResult | undefined>(undefined);
+  const [executionResult, setExecutionResult] = useState<
+    ExecutionResult | undefined
+  >(undefined);
   const [statement, setStatement] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const context = queryStore.context;
-  const executionMessage = executionResult ? getMessageFromExecutionResult(executionResult) : "";
-  const showExecutionWarningBanner = statement.trim() && !checkStatementIsSelect(statement);
+  const executionMessage = executionResult
+    ? getMessageFromExecutionResult(executionResult)
+    : "";
+  const showExecutionWarningBanner =
+    statement.trim() && !checkStatementIsSelect(statement);
 
   useEffect(() => {
     if (!queryStore.showDrawer) {
@@ -84,25 +89,40 @@ const QueryDrawer = () => {
   const close = () => queryStore.toggleDrawer(false);
 
   return (
-    <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
+    <Drawer
+      open={queryStore.showDrawer}
+      anchor="right"
+      className="w-full"
+      onClose={close}
+    >
       <div className="dark:text-gray-300 w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
-        <button className="w-8 h-8 p-1 bg-zinc-600 text-gray-100 rounded-full hover:opacity-80" onClick={close}>
+        <button
+          className="w-8 h-8 p-1 bg-zinc-600 text-gray-100 rounded-full hover:opacity-80"
+          onClick={close}
+        >
           <Icon.IoMdClose className="w-full h-auto" />
         </button>
         <h3 className="font-bold text-2xl mt-4">{t("execution.title")}</h3>
         {!context ? (
           <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
             <Icon.BiSad className="w-7 h-auto opacity-70" />
-            <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.no-connection")}</span>
+            <span className="text-sm font-mono text-gray-500 mt-2">
+              {t("execution.message.no-connection")}
+            </span>
           </div>
         ) : (
           <>
             <div className="w-full flex flex-row justify-start items-center mt-4">
               <span className="opacity-70">{t("connection.self")}: </span>
-              <EngineIcon className="w-6 h-auto" engine={context.connection.engineType} />
+              <EngineIcon
+                className="w-6 h-auto"
+                engine={context.connection.engineType}
+              />
               <span>{context.database?.name}</span>
             </div>
-            {showExecutionWarningBanner && <ExecutionWarningBanner className="rounded-lg mt-4" />}
+            {showExecutionWarningBanner && (
+              <ExecutionWarningBanner className="rounded-lg mt-4" />
+            )}
             <div className="w-full h-auto mt-4 px-2 flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg overflow-clip">
               <TextareaAutosize
                 className="w-full h-full outline-none border-none bg-transparent leading-6 pl-2 py-2 resize-none hide-scrollbar text-sm font-mono break-all whitespace-pre-wrap"
@@ -126,15 +146,22 @@ const QueryDrawer = () => {
               {isLoading ? (
                 <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
                   <Icon.BiLoaderAlt className="w-7 h-auto opacity-70 animate-spin" />
-                  <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.executing")}</span>
+                  <span className="text-sm font-mono text-gray-500 mt-2">
+                    {t("execution.message.executing")}
+                  </span>
                 </div>
               ) : (
                 <>
                   {executionResult ? (
                     executionMessage ? (
-                      <NotificationView message={executionMessage} style={executionResult?.error ? "error" : "info"} />
+                      <NotificationView
+                        message={executionMessage}
+                        style={executionResult?.error ? "error" : "info"}
+                      />
                     ) : (
-                      <DataTableView rawResults={executionResult?.rawResult || []} />
+                      <DataTableView
+                        rawResults={executionResult?.rawResult || []}
+                      />
                     )
                   ) : (
                     <></>

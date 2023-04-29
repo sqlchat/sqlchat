@@ -4,7 +4,13 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-hot-toast";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { useConversationStore, useConnectionStore, useMessageStore, useUserStore, useSettingStore } from "@/store";
+import {
+  useConversationStore,
+  useConnectionStore,
+  useMessageStore,
+  useUserStore,
+  useSettingStore,
+} from "@/store";
 import { Message } from "@/types";
 import Dropdown, { DropdownItem } from "../kit/Dropdown";
 import Icon from "../Icon";
@@ -25,7 +31,10 @@ const MessageView = (props: Props) => {
   const connectionStore = useConnectionStore();
   const messageStore = useMessageStore();
   const isCurrentUser = message.creatorId === userStore.currentUser.id;
-  const connection = connectionStore.getConnectionById(conversationStore.getConversationById(message.conversationId)?.connectionId || "");
+  const connection = connectionStore.getConnectionById(
+    conversationStore.getConversationById(message.conversationId)
+      ?.connectionId || ""
+  );
 
   const copyMessage = () => {
     navigator.clipboard.writeText(message.content);
@@ -83,9 +92,16 @@ const MessageView = (props: Props) => {
         <>
           <div className="flex justify-center items-center mr-2 shrink-0">
             {connection ? (
-              <EngineIcon className="w-10 h-auto p-1 border dark:border-zinc-700 rounded-full" engine={connection.engineType} />
+              <EngineIcon
+                className="w-10 h-auto p-1 border dark:border-zinc-700 rounded-full"
+                engine={connection.engineType}
+              />
             ) : (
-              <img className="w-10 h-auto p-1" src="/chat-logo-bot.webp" alt="" />
+              <img
+                className="w-10 h-auto p-1"
+                src="/chat-logo-bot.webp"
+                alt=""
+              />
             )}
           </div>
           {message.status === "LOADING" && message.content === "" ? (
@@ -97,20 +113,29 @@ const MessageView = (props: Props) => {
               <div className="w-auto max-w-[calc(100%-2rem)] flex flex-col justify-start items-start">
                 <ReactMarkdown
                   className={`w-auto max-w-full bg-gray-100 dark:bg-zinc-700 px-4 py-2 rounded-lg prose prose-neutral dark:prose-invert ${
-                    message.status === "FAILED" && "border border-red-400 bg-red-100 text-red-500"
+                    message.status === "FAILED" &&
+                    "border border-red-400 bg-red-100 text-red-500"
                   }`}
                   remarkPlugins={[remarkGfm]}
                   components={{
                     pre({ node, className, children, ...props }) {
                       const child = children[0] as ReactElement;
-                      const match = /language-(\w+)/.exec(child.props.className || "");
+                      const match = /language-(\w+)/.exec(
+                        child.props.className || ""
+                      );
                       const language = match ? match[1] : "SQL";
                       return (
-                        <pre className={`${className || ""} w-full p-0 my-1`} {...props}>
+                        <pre
+                          className={`${className || ""} w-full p-0 my-1`}
+                          {...props}
+                        >
                           <CodeBlock
                             key={Math.random()}
                             language={language || "SQL"}
-                            value={String(child.props.children).replace(/\n$/, "")}
+                            value={String(child.props.children).replace(
+                              /\n$/,
+                              ""
+                            )}
                             {...props}
                           />
                         </pre>
@@ -124,7 +149,9 @@ const MessageView = (props: Props) => {
                   {message.content}
                 </ReactMarkdown>
                 <span className="self-end text-sm text-gray-400 pt-1 pr-1">
-                  {dayjs(message.createdAt).locale(settingStore.setting.locale).format("lll")}
+                  {dayjs(message.createdAt)
+                    .locale(settingStore.setting.locale)
+                    .format("lll")}
                 </span>
               </div>
               <div className="invisible group-hover:visible">
