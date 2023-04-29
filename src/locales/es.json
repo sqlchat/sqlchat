@@ -4,16 +4,18 @@
     "close": "Cerrar",
     "confirm": "Confirmar",
     "save": "Guardar",
+    "edit": "Editar",
     "loading": "Cargando",
     "setting": "Configuración",
     "copy": "Copiar",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "execute": "Ejecutar"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
     "conversation-title": "Titulo de conversación",
     "update": "Actualizar conversación",
-    "edit-title": "Editar Titulo de conversación"
+    "title": "Titulo"
   },
   "connection": {
     "self": "Conexión",
@@ -70,6 +72,8 @@
   "banner": {
     "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador.",
     "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
-    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
+    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀",
+    "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
+    "use-my-key": "Usar mi propia clave"
   }
 }
