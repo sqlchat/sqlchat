@@ -39,6 +39,49 @@ const chatData: Prisma.ChatCreateInput[] = [
   },
 ];
 
+const principalData: Prisma.PrincipalCreateInput[] = [
+  {
+    createdAt: new Date(),
+    type: "BOT",
+    status: "ACTIVE",
+    name: "sqlchat",
+    display_name: "SQL Chatbot",
+    email: "sqlchat@example.com",
+    email_verified: true,
+    password_hash: "abcde",
+  },
+  {
+    createdAt: new Date(),
+    type: "END_USER",
+    status: "ACTIVE",
+    name: "alice",
+    display_name: "Alice PG",
+    email: "alice@example.com",
+    email_verified: true,
+    password_hash: "abcde",
+  },
+  {
+    createdAt: new Date(),
+    type: "END_USER",
+    status: "ACTIVE",
+    name: "bob",
+    display_name: "Bob MySQL",
+    email: "bob@example.com",
+    email_verified: true,
+    password_hash: "abcde",
+  },
+  {
+    createdAt: new Date(),
+    type: "END_USER",
+    status: "BLOCKED",
+    name: "mallory",
+    display_name: "Mallory Oracle",
+    email: "mallory@example.com",
+    email_verified: true,
+    password_hash: "abcde",
+  },
+];
+
 async function main() {
   console.log(`Start seeding ...`);
   for (const c of chatData) {
@@ -46,6 +89,13 @@ async function main() {
       data: c,
     });
     console.log(`Created chat with id: ${chat.id}`);
+  }
+
+  for (const p of principalData) {
+    const principal = await prisma.principal.create({
+      data: p,
+    });
+    console.log(`Created principal with id: ${principal.id}`);
   }
   console.log(`Seeding finished.`);
 }

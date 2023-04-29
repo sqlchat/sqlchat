@@ -32,3 +32,29 @@ model Message {
   @@index([chatId])
   @@index([createdAt])
 }
+
+model Principal {
+  id        Int   @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  type      PrincipalType @default(END_USER)
+  status    PrincipalStatus @default(ACTIVE)
+  name      String @unique
+  display_name String 
+  email     String @unique
+  email_verified Boolean @default(false)
+  password_hash  String
+  avatar    Bytes?
+
+  @@index([name])
+}
+
+enum PrincipalType {
+  END_USER
+  BOT
+}
+
+enum PrincipalStatus {
+  ACTIVE
+  BLOCKED
+}
