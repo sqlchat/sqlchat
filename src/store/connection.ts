@@ -26,11 +26,22 @@ interface ConnectionState {
   databaseList: Database[];
   currentConnectionCtx?: ConnectionContext;
   createConnection: (connection: Connection) => Connection;
-  setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
-  getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
-  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Table[]>;
+  setCurrentConnectionCtx: (
+    connectionCtx: ConnectionContext | undefined
+  ) => void;
+  getOrFetchDatabaseList: (
+    connection: Connection,
+    skipCache?: boolean
+  ) => Promise<Database[]>;
+  getOrFetchDatabaseSchema: (
+    database: Database,
+    skipCache?: boolean
+  ) => Promise<Table[]>;
   getConnectionById: (connectionId: string) => Connection | undefined;
-  updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
+  updateConnection: (
+    connectionId: string,
+    connection: Partial<Connection>
+  ) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
 }
 
@@ -55,12 +66,21 @@ export const useConnectionStore = create<ConnectionState>()(
           ...state,
           currentConnectionCtx: connectionCtx,
         })),
-      getOrFetchDatabaseList: async (connection: Connection, skipCache = false) => {
+      getOrFetchDatabaseList: async (
+        connection: Connection,
+        skipCache = false
+      ) => {
         const state = get();
 
         if (!skipCache) {
-          if (state.databaseList.some((database) => database.connectionId === connection.id)) {
-            return state.databaseList.filter((database) => database.connectionId === connection.id);
+          if (
+            state.databaseList.some(
+              (database) => database.connectionId === connection.id
+            )
+          ) {
+            return state.databaseList.filter(
+              (database) => database.connectionId === connection.id
+            );
           }
         }
 
@@ -83,27 +103,45 @@ export const useConnectionStore = create<ConnectionState>()(
           ...state,
           databaseList,
         }));
-        return databaseList.filter((database) => database.connectionId === connection.id);
+        return databaseList.filter(
+          (database) => database.connectionId === connection.id
+        );
       },
-      getOrFetchDatabaseSchema: async (database: Database, skipCache = false) => {
+      getOrFetchDatabaseSchema: async (
+        database: Database,
+        skipCache = false
+      ) => {
         const state = get();
 
         if (!skipCache) {
-          const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name);
-          if (db !== undefined && Array.isArray(db.tableList) && db.tableList.length !== 0) {
+          const db = state.databaseList.find(
+            (db) =>
+              db.connectionId === database.connectionId &&
+              db.name === database.name
+          );
+          if (
+            db !== undefined &&
+            Array.isArray(db.tableList) &&
+            db.tableList.length !== 0
+          ) {
             return db.tableList;
           }
         }
 
-        const connection = state.connectionList.find((connection) => connection.id === database.connectionId);
+        const connection = state.connectionList.find(
+          (connection) => connection.id === database.connectionId
+        );
         if (!connection) {
           return [];
         }
 
-        const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
-          connection,
-          db: database.name,
-        });
+        const { data: result } = await axios.post<ResponseObject<Table[]>>(
+          "/api/connection/db_schema",
+          {
+            connection,
+            db: database.name,
+          }
+        );
         if (result.message) {
           throw result.message;
         }
@@ -112,19 +150,29 @@ export const useConnectionStore = create<ConnectionState>()(
         set((state) => ({
           ...state,
           databaseList: state.databaseList.map((item) =>
-            item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item
+            item.connectionId === database.connectionId &&
+            item.name === database.name
+              ? { ...item, tableList: fetchedTableList }
+              : item
           ),
         }));
 
         return fetchedTableList;
       },
       getConnectionById: (connectionId: string) => {
-        return get().connectionList.find((connection) => connection.id === connectionId);
+        return get().connectionList.find(
+          (connection) => connection.id === connectionId
+        );
       },
-      updateConnection: (connectionId: string, connection: Partial<Connection>) => {
+      updateConnection: (
+        connectionId: string,
+        connection: Partial<Connection>
+      ) => {
         set((state) => ({
           ...state,
-          connectionList: state.connectionList.map((item) => (item.id === connectionId ? { ...item, ...connection } : item)),
+          connectionList: state.connectionList.map((item) =>
+            item.id === connectionId ? { ...item, ...connection } : item
+          ),
         }));
       },
       clearConnection: (filter: (connection: Connection) => boolean) => {

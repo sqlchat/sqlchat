@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import {
+  useConversationStore,
+  useConnectionStore,
+  useMessageStore,
+  useUserStore,
+} from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -34,13 +39,18 @@ const MessageTextarea = (props: Props) => {
   };
 
   const handleSend = async () => {
-    let conversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+    let conversation = conversationStore.getConversationById(
+      conversationStore.currentConversationId
+    );
     if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {
         conversation = conversationStore.createConversation();
       } else {
-        conversation = conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+        conversation = conversationStore.createConversation(
+          currentConnectionCtx.connection.id,
+          currentConnectionCtx.database?.name
+        );
       }
     }
     if (!value) {

@@ -21,7 +21,10 @@ export const CodeBlock = (props: Props) => {
   // Only show execute button in the following situations:
   // * SQL code;
   // * Connection setup;
-  const showExecuteButton = currentConnectionCtx?.connection && currentConnectionCtx?.database && language.toUpperCase() === "SQL";
+  const showExecuteButton =
+    currentConnectionCtx?.connection &&
+    currentConnectionCtx?.database &&
+    language.toUpperCase() === "SQL";
 
   const copyToClipboard = () => {
     copy(value);
@@ -67,7 +70,11 @@ export const CodeBlock = (props: Props) => {
           )}
         </div>
       </div>
-      <SyntaxHighlighter language={language.toLowerCase()} style={oneDark} customStyle={{ margin: 0 }}>
+      <SyntaxHighlighter
+        language={language.toLowerCase()}
+        style={oneDark}
+        customStyle={{ margin: 0 }}
+      >
         {value}
       </SyntaxHighlighter>
     </div>

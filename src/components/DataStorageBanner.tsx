@@ -10,7 +10,10 @@ interface Props {
 const DataStorageBanner = (props: Props) => {
   const { className, alwaysShow } = props;
   const { t } = useTranslation();
-  const [hideBanner, setHideBanner] = useLocalStorage("hide-local-storage-banner", false);
+  const [hideBanner, setHideBanner] = useLocalStorage(
+    "hide-local-storage-banner",
+    false
+  );
   const show = alwaysShow || !hideBanner;
 
   return (
@@ -24,7 +27,10 @@ const DataStorageBanner = (props: Props) => {
         {t("banner.data-storage")}
       </span>
       {!alwaysShow && (
-        <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
+        <button
+          className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100"
+          onClick={() => setHideBanner(true)}
+        >
           <Icon.BiX className="w-6 h-auto" />
         </button>
       )}

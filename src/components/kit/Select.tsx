@@ -1,5 +1,5 @@
 import * as SelectUI from "@radix-ui/react-select";
-import * as ScrollArea from '@radix-ui/react-scroll-area';
+import * as ScrollArea from "@radix-ui/react-scroll-area";
 import React from "react";
 import Icon from "../Icon";
 
@@ -37,18 +37,34 @@ const Select = (props: Props) => {
           }}
           position="popper"
         >
-          <ScrollArea.Root className={`${itemList.length > 7 ? "h-80 overflow-hidden" : "max-h-80 overflow-auto"} border dark:border-zinc-800 rounded-lg drop-shadow-lg`} type="auto">
-            <SelectUI.Viewport asChild className="bg-white dark:bg-zinc-700 p-1 rounded-lg">
+          <ScrollArea.Root
+            className={`${
+              itemList.length > 7
+                ? "h-80 overflow-hidden"
+                : "max-h-80 overflow-auto"
+            } border dark:border-zinc-800 rounded-lg drop-shadow-lg`}
+            type="auto"
+          >
+            <SelectUI.Viewport
+              asChild
+              className="bg-white dark:bg-zinc-700 p-1 rounded-lg"
+            >
               <ScrollArea.Viewport className="w-full h-full">
-                <SelectUI.Group>  
-                  {placeholder && <SelectUI.Label className="w-full px-3 mt-2 mb-2 text-sm text-gray-400">{placeholder}</SelectUI.Label>}
+                <SelectUI.Group>
+                  {placeholder && (
+                    <SelectUI.Label className="w-full px-3 mt-2 mb-2 text-sm text-gray-400">
+                      {placeholder}
+                    </SelectUI.Label>
+                  )}
                   {itemList.map((item) => (
                     <SelectUI.Item
                       className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
                       key={item.label}
                       value={item.value}
                     >
-                      <SelectUI.ItemText className="truncate">{item.label}</SelectUI.ItemText>
+                      <SelectUI.ItemText className="truncate">
+                        {item.label}
+                      </SelectUI.ItemText>
                       <SelectUI.ItemIndicator className="w-5 h-auto">
                         <Icon.BiCheck className="w-full h-auto" />
                       </SelectUI.ItemIndicator>

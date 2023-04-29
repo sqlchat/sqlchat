@@ -13,7 +13,9 @@ const ClearConversationConfirmModal = (props: Props) => {
   const messageStore = useMessageStore();
 
   const handleClearMessages = () => {
-    messageStore.clearMessage((item) => item.conversationId !== conversationStore.currentConversationId);
+    messageStore.clearMessage(
+      (item) => item.conversationId !== conversationStore.currentConversationId
+    );
     close();
   };
 
@@ -21,7 +23,9 @@ const ClearConversationConfirmModal = (props: Props) => {
     <Modal title="Clear messages" className="!w-96" onClose={close}>
       <div>
         <div className="w-full flex flex-col justify-start items-start mt-2">
-          <p className="text-gray-500">Are you sure to clear the messages in current conversation?</p>
+          <p className="text-gray-500">
+            Are you sure to clear the messages in current conversation?
+          </p>
         </div>
         <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
           <button className="btn btn-outline" onClick={close}>

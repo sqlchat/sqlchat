@@ -16,18 +16,20 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const connector = newConnector(connection);
     const tableStructures: Table[] = [];
     const rawTableNameList = await connector.getTables(db);
-    const structureFetched = (tableName:string, structure:string) => {
+    const structureFetched = (tableName: string, structure: string) => {
       tableStructures.push({
         name: tableName,
         structure,
       });
-    }
-    Promise.all(rawTableNameList.map(async (tableName) => 
-      connector.getTableStructure(db, tableName, structureFetched)
-    )).then(() => {
+    };
+    Promise.all(
+      rawTableNameList.map(async (tableName) =>
+        connector.getTableStructure(db, tableName, structureFetched)
+      )
+    ).then(() => {
       res.status(200).json({
         data: tableStructures,
-      });  
+      });
     });
   } catch (error: any) {
     res.status(400).json({

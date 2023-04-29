@@ -32,7 +32,14 @@ const ThemeSelector = () => {
     settingStore.setTheme(theme);
   };
 
-  return <Select className="w-auto min-w-[120px]" value={theme} itemList={themeItemList} onValueChange={handleThemeChange} />;
+  return (
+    <Select
+      className="w-auto min-w-[120px]"
+      value={theme}
+      itemList={themeItemList}
+      onValueChange={handleThemeChange}
+    />
+  );
 };
 
 export default ThemeSelector;

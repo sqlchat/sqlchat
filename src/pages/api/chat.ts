@@ -1,4 +1,8 @@
-import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
+import {
+  createParser,
+  ParsedEvent,
+  ReconnectInterval,
+} from "eventsource-parser";
 import { NextRequest } from "next/server";
 import { API_KEY } from "@/env";
 import { openAIApiEndpoint, openAIApiKey } from "@/utils";
@@ -26,7 +30,9 @@ const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
   const openAIApiConfig = reqBody.openAIApiConfig;
   const apiKey = openAIApiConfig?.key || openAIApiKey;
-  const apiEndpoint = getApiEndpoint(openAIApiConfig?.endpoint || openAIApiEndpoint);
+  const apiEndpoint = getApiEndpoint(
+    openAIApiConfig?.endpoint || openAIApiEndpoint
+  );
   const res = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",

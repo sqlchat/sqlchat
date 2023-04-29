@@ -1,6 +1,8 @@
 import { ExecutionResult } from "@/types";
 
-export const getMessageFromExecutionResult = (result: ExecutionResult): string => {
+export const getMessageFromExecutionResult = (
+  result: ExecutionResult
+): string => {
   if (result.error) {
     return result.error;
   }

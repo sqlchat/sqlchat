@@ -23,7 +23,10 @@ const ClearDataConfirmModal = (props: Props) => {
     <Modal title="Clear all data" className="!w-96" onClose={close}>
       <div>
         <div className="w-full flex flex-col justify-start items-start mt-2">
-          <p className="text-gray-500">SQL Chat saves all your data in your local browser. Are you sure to clear all of them?</p>
+          <p className="text-gray-500">
+            SQL Chat saves all your data in your local browser. Are you sure to
+            clear all of them?
+          </p>
         </div>
         <div className="w-full flex flex-row justify-end items-center mt-4 space-x-2">
           <button className="btn btn-outline" onClick={close}>

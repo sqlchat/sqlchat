@@ -9,7 +9,10 @@ interface Props {
 const ProductHuntBanner = (props: Props) => {
   const { className } = props;
   const { t } = useTranslation();
-  const [hideBanner, setHideBanner] = useLocalStorage("hide-product-hunt-banner", false);
+  const [hideBanner, setHideBanner] = useLocalStorage(
+    "hide-product-hunt-banner",
+    false
+  );
   const show = !hideBanner;
 
   return (
@@ -25,7 +28,10 @@ const ProductHuntBanner = (props: Props) => {
       >
         {t("banner.product-hunt")}
       </a>
-      <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
+      <button
+        className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100"
+        onClick={() => setHideBanner(true)}
+      >
         <Icon.BiX className="w-6 h-auto" />
       </button>
     </div>

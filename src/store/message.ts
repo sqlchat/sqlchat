@@ -15,14 +15,18 @@ export const useMessageStore = create<MessageState>()(
     (set, get) => ({
       messageList: [],
       getState: () => get(),
-      addMessage: (message: Message) => set((state) => ({ messageList: [...state.messageList, message] })),
+      addMessage: (message: Message) =>
+        set((state) => ({ messageList: [...state.messageList, message] })),
       updateMessage: (messageId: Id, message: Partial<Message>) => {
         set((state) => ({
           ...state,
-          messageList: state.messageList.map((item) => (item.id === messageId ? { ...item, ...message } : item)),
+          messageList: state.messageList.map((item) =>
+            item.id === messageId ? { ...item, ...message } : item
+          ),
         }));
       },
-      clearMessage: (filter: (message: Message) => boolean) => set((state) => ({ messageList: state.messageList.filter(filter) })),
+      clearMessage: (filter: (message: Message) => boolean) =>
+        set((state) => ({ messageList: state.messageList.filter(filter) })),
     }),
     {
       name: "message-storage",

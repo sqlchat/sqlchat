@@ -22,7 +22,9 @@ const DataTableView = (props: Props) => {
   return rawResults.length === 0 ? (
     <div className="w-full flex flex-col justify-center items-center py-6 pt-10">
       <Icon.BsBox2 className="w-7 h-auto opacity-70" />
-      <span className="text-sm font-mono text-gray-500 mt-2">{t("execution.message.no-data")}</span>
+      <span className="text-sm font-mono text-gray-500 mt-2">
+        {t("execution.message.no-data")}
+      </span>
     </div>
   ) : (
     <DataTable

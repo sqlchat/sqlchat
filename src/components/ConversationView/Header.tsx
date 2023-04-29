@@ -14,7 +14,9 @@ const Header = (props: Props) => {
   const conversationStore = useConversationStore();
   const isDarkMode = useDarkMode();
   const currentConversationId = conversationStore.currentConversationId;
-  const title = conversationStore.getConversationById(currentConversationId)?.title || "SQL Chat";
+  const title =
+    conversationStore.getConversationById(currentConversationId)?.title ||
+    "SQL Chat";
 
   useEffect(() => {
     document.title = `${title}`;
@@ -36,14 +38,24 @@ const Header = (props: Props) => {
         <span className="w-auto text-left block lg:hidden">{title}</span>
         <GitHubStarBadge className="hidden lg:flex ml-2" />
       </div>
-      <span className="w-auto text-center h-8 p-1 hidden lg:block">{title}</span>
+      <span className="w-auto text-center h-8 p-1 hidden lg:block">
+        {title}
+      </span>
       <div className="mr-2 sm:mr-3 relative flex flex-row justify-end items-center">
         <a
           href="https://www.bytebase.com?source=sqlchat"
           className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
           target="_blank"
         >
-          <img className="h-5 sm:h-6 w-auto" src={isDarkMode ? "/craft-by-bytebase-dark-mode.webp" : "/craft-by-bytebase.webp"} alt="" />
+          <img
+            className="h-5 sm:h-6 w-auto"
+            src={
+              isDarkMode
+                ? "/craft-by-bytebase-dark-mode.webp"
+                : "/craft-by-bytebase.webp"
+            }
+            alt=""
+          />
         </a>
       </div>
     </div>
