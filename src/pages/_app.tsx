@@ -1,4 +1,5 @@
 import { Analytics } from "@vercel/analytics/react";
+import { SessionProvider } from "next-auth/react";
 import dayjs from "dayjs";
 import localizedFormat from "dayjs/plugin/localizedFormat";
 import { AppProps } from "next/app";
@@ -16,7 +17,12 @@ import "@/styles/global.css";
 import "@/styles/data-table.css";
 import "@/styles/mui.css";
 
-function MyApp({ Component, pageProps }: AppProps) {
+import type { Session } from "next-auth";
+
+function MyApp({
+  Component,
+  pageProps: { session, ...pageProps },
+}: AppProps<{ session: Session }>) {
   const { i18n } = useTranslation();
   const settingStore = useSettingStore();
 
@@ -68,11 +74,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, [settingStore.setting.theme]);
 
   return (
-    <>
+    <SessionProvider session={session}>
       <Component {...pageProps} />
       <Toaster />
       <Analytics />
-    </>
+    </SessionProvider>
   );
 }
 
