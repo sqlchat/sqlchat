@@ -9,7 +9,8 @@
     "setting": "Einstellung",
     "copy": "Kopieren",
     "delete": "Löschen",
-    "execute": "Ausführen"
+    "execute": "Ausführen",
+    "sign-in": "Anmelden"
   },
   "conversation": {
     "new-chat": "Neuer Chat",

@@ -7,7 +7,8 @@
     "loading": "Cargando",
     "setting": "Configuración",
     "copy": "Copiar",
-    "delete": "Borrar"
+    "delete": "Borrar",
+    "sign-in": "Iniciar sesión"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",

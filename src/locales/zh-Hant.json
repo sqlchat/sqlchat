@@ -9,7 +9,8 @@
     "setting": "設定",
     "copy": "複製",
     "delete": "刪除",
-    "execute": "執行"
+    "execute": "執行",
+    "sign-in": "登錄"
   },
   "conversation": {
     "new-chat": "新聊天",

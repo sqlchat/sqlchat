@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { useConversationStore, useLayoutStore } from "@/store";
 import useDarkMode from "@/hooks/useDarkmode";
 import Icon from "../Icon";
@@ -10,6 +11,7 @@ interface Props {
 
 const Header = (props: Props) => {
   const { className } = props;
+  const { t } = useTranslation();
   const layoutStore = useLayoutStore();
   const conversationStore = useConversationStore();
   const isDarkMode = useDarkMode();
@@ -21,6 +23,10 @@ const Header = (props: Props) => {
   useEffect(() => {
     document.title = `${title}`;
   }, [title]);
+
+  const trySignin = () => {
+    console.log("fooo");
+  };
 
   return (
     <div
@@ -44,7 +50,7 @@ const Header = (props: Props) => {
       <div className="mr-2 sm:mr-3 relative flex flex-row justify-end items-center">
         <a
           href="https://www.bytebase.com?source=sqlchat"
-          className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
+          className="hidden sm:flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
           target="_blank"
         >
           <img
@@ -57,6 +63,12 @@ const Header = (props: Props) => {
             alt=""
           />
         </a>
+        <button
+          className="whitespace-nowrap rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          onClick={() => trySignin()}
+        >
+          {t("common.sign-in")}
+        </button>
       </div>
     </div>
   );

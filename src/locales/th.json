@@ -9,7 +9,8 @@
     "setting": "ตั้งค่า",
     "copy": "คัดลอก",
     "delete": "ลบ",
-    "execute": "ดำเนินการ"
+    "execute": "ดำเนินการ",
+    "sign-in": "เข้าสู่ระบบ"
   },
   "conversation": {
     "new-chat": "แชทใหม่",

@@ -9,7 +9,8 @@
     "setting": "設定",
     "copy": "コピー",
     "delete": "削除",
-    "execute": "実行"
+    "execute": "実行",
+    "sign-in": "ログイン"
   },
   "conversation": {
     "new-chat": "新しいチャット",
