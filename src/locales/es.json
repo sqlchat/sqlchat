@@ -8,7 +8,8 @@
     "setting": "Configuración",
     "copy": "Copiar",
     "delete": "Borrar",
-    "sign-in": "Iniciar sesión"
+    "sign-in": "Iniciar sesión",
+    "sign-out": "Desconectar"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",

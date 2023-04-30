@@ -10,7 +10,8 @@
     "copy": "Kopieren",
     "delete": "Löschen",
     "execute": "Ausführen",
-    "sign-in": "Anmelden"
+    "sign-in": "Anmelden",
+    "sign-out": "Austragen"
   },
   "conversation": {
     "new-chat": "Neuer Chat",

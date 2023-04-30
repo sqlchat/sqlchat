@@ -10,7 +10,8 @@
     "copy": "คัดลอก",
     "delete": "ลบ",
     "execute": "ดำเนินการ",
-    "sign-in": "เข้าสู่ระบบ"
+    "sign-in": "เข้าสู่ระบบ",
+    "sign-out": "ออกจากระบบ"
   },
   "conversation": {
     "new-chat": "แชทใหม่",

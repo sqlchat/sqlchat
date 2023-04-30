@@ -10,7 +10,8 @@
     "copy": "複製",
     "delete": "刪除",
     "execute": "執行",
-    "sign-in": "登錄"
+    "sign-in": "登錄",
+    "sign-out": "登出"
   },
   "conversation": {
     "new-chat": "新聊天",

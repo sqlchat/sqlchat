@@ -10,7 +10,8 @@
     "copy": "Copy",
     "delete": "Delete",
     "execute": "Execute",
-    "sign-in": "Sign in"
+    "sign-in": "Sign in",
+    "sign-out": "Sign out"
   },
   "conversation": {
     "new-chat": "New Chat",

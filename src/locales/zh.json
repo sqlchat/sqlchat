@@ -10,7 +10,8 @@
     "copy": "复制",
     "delete": "删除",
     "execute": "执行",
-    "sign-in": "登录"
+    "sign-in": "登录",
+    "sign-out": "登出"
   },
   "conversation": {
     "new-chat": "新建会话",
