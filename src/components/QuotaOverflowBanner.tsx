@@ -1,8 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "react-use";
+import Link from "next/link";
 import Icon from "./Icon";
-import SettingModal from "./SettingModal";
-import { useState } from "react";
 
 interface Props {
   className?: string;
@@ -15,7 +14,6 @@ const QuotaOverflowBanner = (props: Props) => {
     "hide-quota-overflow-banner",
     false
   );
-  const [showSettingModal, setShowSettingModal] = useState(false);
   const show = !hideBanner;
 
   return (
@@ -27,12 +25,9 @@ const QuotaOverflowBanner = (props: Props) => {
       >
         <div className="text-sm leading-6 pr-4 cursor-pointer">
           {t("banner.quota-overflow")}{" "}
-          <button
-            className="ml-1 underline hover:opacity-80"
-            onClick={() => setShowSettingModal(true)}
-          >
+          <Link className="ml-1 underline hover:opacity-80" href="/setting">
             {t("banner.use-my-key")}
-          </button>
+          </Link>
         </div>
         <button
           className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100"
@@ -41,10 +36,6 @@ const QuotaOverflowBanner = (props: Props) => {
           <Icon.BiX className="w-6 h-auto" />
         </button>
       </div>
-
-      {showSettingModal && (
-        <SettingModal close={() => setShowSettingModal(false)} />
-      )}
     </>
   );
 };
