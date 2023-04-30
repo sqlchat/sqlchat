@@ -1,9 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { signIn, useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import { useConversationStore, useLayoutStore } from "@/store";
 import useDarkMode from "@/hooks/useDarkmode";
 import Icon from "../Icon";
+import SettingModal from "../SettingModal";
 import GitHubStarBadge from "../GitHubStarBadge";
 
 interface Props {
@@ -21,6 +22,7 @@ const Header = (props: Props) => {
     conversationStore.getConversationById(currentConversationId)?.title ||
     "SQL Chat";
   const { data: session, status } = useSession();
+  const [showSettingModal, setShowSettingModal] = useState(false);
 
   useEffect(() => {
     document.title = `${title}`;
@@ -76,11 +78,15 @@ const Header = (props: Props) => {
                 className="inline-block h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
                 src={session.user.image}
                 alt=""
+                onClick={() => setShowSettingModal(true)}
               />
             )}
           </>
         )}
       </div>
+      {showSettingModal && (
+        <SettingModal close={() => setShowSettingModal(false)} />
+      )}
     </div>
   );
 };
