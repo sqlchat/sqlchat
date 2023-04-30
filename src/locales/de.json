@@ -48,6 +48,9 @@
   },
   "setting": {
     "self": "Einstellung",
+    "account": {
+      "self": "Konto"
+    },
     "basic": {
       "self": "Grundlegend",
       "language": "Sprache"

@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import Modal from "./kit/Modal";
 import Icon from "./Icon";
+import AccountView from "./AccountView";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
@@ -29,6 +30,10 @@ const SettingModal = (props: Props) => {
           </a>
           <WeChatQRCodeView />
         </div>
+
+        <h3 className="pl-4 text-sm text-gray-500">
+          {t("setting.account.self")}
+        </h3>
 
         <h3 className="pl-4 text-sm text-gray-500">
           {t("setting.basic.self")}

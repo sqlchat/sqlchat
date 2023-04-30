@@ -48,6 +48,9 @@
   },
   "setting": {
     "self": "设置",
+    "account": {
+      "self": "账户"
+    },
     "basic": {
       "self": "基础",
       "language": "语言"

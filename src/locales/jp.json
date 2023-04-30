@@ -48,6 +48,9 @@
   },
   "setting": {
     "self": "設定",
+    "account": {
+      "self": "アカウント"
+    },
     "basic": {
       "self": "基本",
       "language": "言語"

@@ -48,6 +48,9 @@
   },
   "setting": {
     "self": "Setting",
+    "account": {
+      "self": "Account"
+    },
     "basic": {
       "self": "Basic",
       "language": "Language"
