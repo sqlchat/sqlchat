@@ -96,10 +96,10 @@ const getTableStructureBatch = async (
     tableNameList: string[],
     structureFetched: (tableName: string,structure: string) => void
   ): Promise<void> => {
-  connection.database = databaseName;
-  const client = newPostgresClient(connection);
-  await client.connect();
-  await Promise.all(tableNameList.map(async (tableName) => {
+    connection.database = databaseName;
+    const client = newPostgresClient(connection);
+    await client.connect();
+    await Promise.all(tableNameList.map(async (tableName) => {
     const { rows } = await client.query(
       `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
       [tableName]
