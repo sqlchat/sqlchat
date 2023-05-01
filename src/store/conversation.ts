@@ -9,6 +9,7 @@ const getDefaultConversation = (): Conversation => {
   return {
     id: generateUUID(),
     assistantId: GeneralBotId,
+    tableName: "All Tables",
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
@@ -20,7 +21,7 @@ interface ConversationState {
   currentConversationId?: Id;
   createConversation: (
     connectionId?: Id,
-    databaseName?: string
+    databaseName?: string,
   ) => Conversation;
   setCurrentConversationId: (conversationId: Id | undefined) => void;
   getConversationById: (
@@ -31,6 +32,7 @@ interface ConversationState {
     conversation: Partial<Conversation>
   ) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
+  updateTableName: (tableName: string) => void;
 }
 
 export const useConversationStore = create<ConversationState>()(
@@ -77,6 +79,17 @@ export const useConversationStore = create<ConversationState>()(
           conversationList: state.conversationList.filter(filter),
         }));
       },
+      updateTableName: (tableName: string) => {
+        // update current conversation's table name
+        const currentConversation = get().getConversationById(
+          get().currentConversationId
+        );
+        if (currentConversation) {
+          get().updateConversation(currentConversation.id, {
+            tableName,
+          });
+        }
+      }
     }),
     {
       name: "conversation-storage",
