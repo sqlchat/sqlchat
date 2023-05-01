@@ -30,6 +30,15 @@ const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
   const openAIApiConfig = reqBody.openAIApiConfig;
   const apiKey = openAIApiConfig?.key || openAIApiKey;
+
+  if (!apiKey) {
+    return new Response("Unauthorized", {
+      status: 401,
+      statusText:
+        "OpenAI API Key is missing. You can supply your own key via Settings.",
+    });
+  }
+
   const apiEndpoint = getApiEndpoint(
     openAIApiConfig?.endpoint || openAIApiEndpoint
   );
