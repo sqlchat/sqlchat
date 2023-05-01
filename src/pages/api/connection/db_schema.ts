@@ -21,7 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         name: tableName,
         structure,
       });
-    }
+    };
     await connector.getTableStructureBatch(db, rawTableNameList, structureFetched);
 
     res.status(200).json({
