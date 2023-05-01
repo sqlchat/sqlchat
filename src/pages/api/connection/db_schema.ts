@@ -16,7 +16,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const connector = newConnector(connection);
     const tableStructures: Table[] = [];
     const rawTableNameList = await connector.getTables(db);
-    const structureFetched = (tableName:string, structure:string) => {
+    const structureFetched = (tableName: string, structure: string) => {
       tableStructures.push({
         name: tableName,
         structure,

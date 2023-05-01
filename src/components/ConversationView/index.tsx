@@ -2,6 +2,7 @@ import axios from "axios";
 import { first, head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
+import { API_KEY } from "@/env";
 import {
   getAssistantById,
   getPromptGeneratorOfAssistant,
@@ -16,9 +17,9 @@ import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
+import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-import ProductHuntBanner from "../ProductHuntBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
@@ -34,9 +35,13 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
-  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const currentConversation = conversationStore.getConversationById(
+    conversationStore.currentConversationId
+  );
   const messageList = currentConversation
-    ? messageStore.messageList.filter((message) => message.conversationId === currentConversation.id)
+    ? messageStore.messageList.filter(
+        (message) => message.conversationId === currentConversation.id
+      )
     : [];
   const lastMessage = last(messageList);
 
@@ -62,13 +67,21 @@ const ConversationView = () => {
       }
       setShowHeaderShadow((conversationViewRef.current?.scrollTop || 0) > 0);
       setIsStickyAtBottom(
-        conversationViewRef.current.scrollTop + conversationViewRef.current.clientHeight >= conversationViewRef.current.scrollHeight
+        conversationViewRef.current.scrollTop +
+          conversationViewRef.current.clientHeight >=
+          conversationViewRef.current.scrollHeight
       );
     };
-    conversationViewRef.current?.addEventListener("scroll", handleConversationViewScroll);
+    conversationViewRef.current?.addEventListener(
+      "scroll",
+      handleConversationViewScroll
+    );
 
     return () => {
-      conversationViewRef.current?.removeEventListener("scroll", handleConversationViewScroll);
+      conversationViewRef.current?.removeEventListener(
+        "scroll",
+        handleConversationViewScroll
+      );
     };
   }, []);
 
@@ -76,7 +89,8 @@ const ConversationView = () => {
     if (!conversationViewRef.current) {
       return;
     }
-    conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
+    conversationViewRef.current.scrollTop =
+      conversationViewRef.current.scrollHeight;
   }, [currentConversation, lastMessage?.id]);
 
   useEffect(() => {
@@ -85,14 +99,17 @@ const ConversationView = () => {
     }
 
     if (lastMessage?.status === "LOADING" && isStickyAtBottom) {
-      conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
+      conversationViewRef.current.scrollTop =
+        conversationViewRef.current.scrollHeight;
     }
   }, [lastMessage?.status, lastMessage?.content, isStickyAtBottom]);
 
   useEffect(() => {
     if (
-      currentConversation?.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
-      currentConversation?.databaseName === connectionStore.currentConnectionCtx?.database?.name
+      currentConversation?.connectionId ===
+        connectionStore.currentConnectionCtx?.connection.id &&
+      currentConversation?.databaseName ===
+        connectionStore.currentConnectionCtx?.database?.name
     ) {
       return;
     }
@@ -100,14 +117,18 @@ const ConversationView = () => {
     // Auto select the first conversation when the current connection changes.
     const conversationList = conversationStore.conversationList.filter(
       (conversation) =>
-        conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
-        conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
+        conversation.connectionId ===
+          connectionStore.currentConnectionCtx?.connection.id &&
+        conversation.databaseName ===
+          connectionStore.currentConnectionCtx?.database?.name
     );
     conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async () => {
-    const currentConversation = conversationStore.getConversationById(conversationStore.getState().currentConversationId);
+    const currentConversation = conversationStore.getConversationById(
+      conversationStore.getState().currentConversationId
+    );
     if (!currentConversation) {
       return;
     }
@@ -115,8 +136,14 @@ const ConversationView = () => {
       return;
     }
 
-    const messageList = messageStore.getState().messageList.filter((message) => message.conversationId === currentConversation.id);
-    const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
+    const messageList = messageStore
+      .getState()
+      .messageList.filter(
+        (message) => message.conversationId === currentConversation.id
+      );
+    const promptGenerator = getPromptGeneratorOfAssistant(
+      getAssistantById(currentConversation.assistantId)!
+    );
     let prompt = promptGenerator();
     let tokens = 0;
 
@@ -134,7 +161,9 @@ const ConversationView = () => {
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
-        const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
+        const tables = await connectionStore.getOrFetchDatabaseSchema(
+          connectionStore.currentConnectionCtx?.database
+        );
         for (const table of tables) {
           if (tokens < MAX_TOKENS / 2) {
             tokens += countTextTokens(schema + table.structure);
@@ -171,17 +200,23 @@ const ConversationView = () => {
       content: prompt,
     });
 
+    const requestHeaders: any = {};
+    if (API_KEY) {
+      requestHeaders["Authorization"] = `Bearer ${API_KEY}`;
+    }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
         openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
+      headers: requestHeaders,
     });
 
     if (!rawRes.ok) {
       console.error(rawRes);
-      let errorMessage = "Failed to request message, please check your network.";
+      let errorMessage =
+        "Failed to request message, please check your network.";
       try {
         const res = await rawRes.json();
         errorMessage = res.error.message;
@@ -241,20 +276,28 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        <ProductHuntBanner />
         <QuotaOverflowBanner />
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>
       <div className="p-2 w-full h-auto grow max-w-4xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
-          <EmptyView className="mt-16" sendMessage={sendMessageToCurrentConversation} />
+          <EmptyView
+            className="mt-16"
+            sendMessage={sendMessageToCurrentConversation}
+          />
         ) : (
-          messageList.map((message) => <MessageView key={message.id} message={message} />)
+          messageList.map((message) => (
+            <MessageView key={message.id} message={message} />
+          ))
         )}
       </div>
-      <div className="sticky bottom-0 w-full max-w-4xl py-2 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
-        <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
+      <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
+        <ClearConversationButton />
+        <MessageTextarea
+          disabled={lastMessage?.status === "LOADING"}
+          sendMessage={sendMessageToCurrentConversation}
+        />
       </div>
     </div>
   );

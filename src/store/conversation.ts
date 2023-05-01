@@ -18,10 +18,18 @@ interface ConversationState {
   getState: () => ConversationState;
   conversationList: Conversation[];
   currentConversationId?: Id;
-  createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
+  createConversation: (
+    connectionId?: Id,
+    databaseName?: string
+  ) => Conversation;
   setCurrentConversationId: (conversationId: Id | undefined) => void;
-  getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
-  updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
+  getConversationById: (
+    conversationId: Id | undefined
+  ) => Conversation | undefined;
+  updateConversation: (
+    conversationId: Id,
+    conversation: Partial<Conversation>
+  ) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
 }
 
@@ -45,14 +53,22 @@ export const useConversationStore = create<ConversationState>()(
         }));
         return conversation;
       },
-      setCurrentConversationId: (conversation: Id | undefined) => set(() => ({ currentConversationId: conversation })),
+      setCurrentConversationId: (conversation: Id | undefined) =>
+        set(() => ({ currentConversationId: conversation })),
       getConversationById: (conversationId: Id | undefined) => {
-        return get().conversationList.find((item) => item.id === conversationId);
+        return get().conversationList.find(
+          (item) => item.id === conversationId
+        );
       },
-      updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => {
+      updateConversation: (
+        conversationId: Id,
+        conversation: Partial<Conversation>
+      ) => {
         set((state) => ({
           ...state,
-          conversationList: state.conversationList.map((item) => (item.id === conversationId ? { ...item, ...conversation } : item)),
+          conversationList: state.conversationList.map((item) =>
+            item.id === conversationId ? { ...item, ...conversation } : item
+          ),
         }));
       },
       clearConversation: (filter: (conversation: Conversation) => boolean) => {

@@ -16,7 +16,9 @@ const Popover = (props: Props) => {
       <PopoverUI.Portal>
         <PopoverUI.Content
           asChild
-          className={`${className || ""} z-[999] p-2 bg-white dark:bg-zinc-700 drop-shadow rounded-lg`}
+          className={`${
+            className || ""
+          } z-[999] p-2 bg-white dark:bg-zinc-700 drop-shadow rounded-lg`}
           sideOffset={5}
         >
           {children}

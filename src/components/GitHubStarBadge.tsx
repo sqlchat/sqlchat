@@ -15,12 +15,15 @@ const GitHubStarBadge = (props: Props) => {
     const getRepoStarCount = async () => {
       let starCount = 0;
       try {
-        const { data } = await axios.get(`https://api.github.com/repos/sqlchat/sqlchat`, {
-          headers: {
-            Accept: "application/vnd.github.v3.star+json",
-            Authorization: "",
-          },
-        });
+        const { data } = await axios.get(
+          `https://api.github.com/repos/sqlchat/sqlchat`,
+          {
+            headers: {
+              Accept: "application/vnd.github.v3.star+json",
+              Authorization: "",
+            },
+          }
+        );
         starCount = data.stargazers_count as number;
       } catch (error) {
         // do nth
@@ -47,7 +50,11 @@ const GitHubStarBadge = (props: Props) => {
         <span className="mt-px">Star</span>
       </span>
       <div className="h-full block px-2 mt-px font-medium">
-        {isRequesting ? <Icon.BiLoaderAlt className="w-3 h-auto animate-spin opacity-70" /> : stars}
+        {isRequesting ? (
+          <Icon.BiLoaderAlt className="w-3 h-auto animate-spin opacity-70" />
+        ) : (
+          stars
+        )}
       </div>
     </a>
   );

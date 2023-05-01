@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useConversationStore, useConnectionStore, useMessageStore, useUserStore } from "@/store";
+import {
+  useConversationStore,
+  useConnectionStore,
+  useMessageStore,
+  useUserStore,
+} from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
 import Icon from "../Icon";
@@ -34,13 +39,18 @@ const MessageTextarea = (props: Props) => {
   };
 
   const handleSend = async () => {
-    let conversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+    let conversation = conversationStore.getConversationById(
+      conversationStore.currentConversationId
+    );
     if (!conversation) {
       const currentConnectionCtx = connectionStore.currentConnectionCtx;
       if (!currentConnectionCtx) {
         conversation = conversationStore.createConversation();
       } else {
-        conversation = conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
+        conversation = conversationStore.createConversation(
+          currentConnectionCtx.connection.id,
+          currentConnectionCtx.database?.name
+        );
       }
     }
     if (!value) {
@@ -73,7 +83,7 @@ const MessageTextarea = (props: Props) => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg mb-2 px-2 py-1 relative shadow bg-white dark:bg-zinc-800">
+    <div className="w-full h-auto flex flex-row justify-between items-end border dark:border-zinc-700 rounded-lg px-2 py-1 relative shadow bg-white dark:bg-zinc-800">
       <TextareaAutosize
         ref={textareaRef}
         className="w-full h-full outline-none border-none bg-transparent leading-6 py-2 px-2 resize-none hide-scrollbar"

@@ -10,7 +10,10 @@ const ThreeDotsLoader = () => {
     const theme = settingStore.setting.theme;
     let appearance = theme;
     if (theme === "system") {
-      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      if (
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches
+      ) {
         appearance = "dark";
       } else {
         appearance = "light";
@@ -24,7 +27,14 @@ const ThreeDotsLoader = () => {
     }
   }, [settingStore.setting.theme]);
 
-  return <ThreeDots wrapperClass="dark:opacity-60" width="24" height="24" color={color} />;
+  return (
+    <ThreeDots
+      wrapperClass="dark:opacity-60"
+      width="24"
+      height="24"
+      color={color}
+    />
+  );
 };
 
 export default ThreeDotsLoader;

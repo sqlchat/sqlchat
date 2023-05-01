@@ -46,7 +46,14 @@ const LocaleSelector = () => {
     settingStore.setLocale(locale);
   };
 
-  return <Select className="w-28" value={locale} itemList={localeItemList} onValueChange={handleLocaleChange} />;
+  return (
+    <Select
+      className="w-28"
+      value={locale}
+      itemList={localeItemList}
+      onValueChange={handleLocaleChange}
+    />
+  );
 };
 
 export default LocaleSelector;

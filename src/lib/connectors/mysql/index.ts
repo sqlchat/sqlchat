@@ -3,9 +3,16 @@ import mysql, { RowDataPacket } from "mysql2/promise";
 import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
-const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
+const systemDatabases = [
+  "information_schema",
+  "mysql",
+  "performance_schema",
+  "sys",
+];
 
-const getMySQLConnection = async (connection: Connection): Promise<mysql.Connection> => {
+const getMySQLConnection = async (
+  connection: Connection
+): Promise<mysql.Connection> => {
   const connectionOptions: ConnectionOptions = {
     host: connection.host,
     port: parseInt(connection.port),
@@ -30,7 +37,11 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   return true;
 };
 
-const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
+const execute = async (
+  connection: Connection,
+  databaseName: string,
+  statement: string
+): Promise<any> => {
   connection.database = databaseName;
   const conn = await getMySQLConnection(connection);
   const [rows] = await conn.execute(statement);
@@ -64,7 +75,10 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+const getTables = async (
+  connection: Connection,
+  databaseName: string
+): Promise<string[]> => {
   const conn = await getMySQLConnection(connection);
   const [rows] = await conn.query<RowDataPacket[]>(
     `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA=? AND TABLE_TYPE='BASE TABLE';`,
@@ -80,12 +94,33 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   return tableList;
 };
 
-const getTableStructureBatch = async (connection: Connection, databaseName: string, tableNameList: string[], structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
+const getTableStructure = async (
+  connection: Connection,
+  databaseName: string,
+  tableName: string,
+  structureFetched: (tableName: string, structure: string) => void
+): Promise<void> => {
+  const conn = await getMySQLConnection(connection);
+  const [rows] = await conn.query<RowDataPacket[]>(
+    `SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`
+  );
+  conn.destroy();
+  if (rows.length !== 1) {
+    throw new Error("Unexpected number of rows.");
+  }
+  structureFetched(tableName, rows[0]["Create Table"] || "");
+};
+
+const getTableStructureBatch = async (
+  connection: Connection,
+  databaseName: string, 
+  tableNameList: string[], 
+  structureFetched: (tableName: string,structure: string) => void
+): Promise<void> => {
   const conn = await getMySQLConnection(connection);
 
   await Promise.all(tableNameList.map(async (tableName) => {
     const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
-    console.log("fetch one",tableName)
     if (rows.length !== 1) {
       throw new Error("Unexpected number of rows.");
     }
@@ -96,25 +131,25 @@ const getTableStructureBatch = async (connection: Connection, databaseName: stri
   })
 };
 
-
-const getTableStructure = async (connection: Connection, databaseName: string, tableName: string, structureFetched: (tableName: string,structure: string) => void): Promise<void> => {
-  const conn = await getMySQLConnection(connection);
-  const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
-  conn.destroy();
-  if (rows.length !== 1) {
-    throw new Error("Unexpected number of rows.");
-  }
-  structureFetched(tableName, rows[0]["Create Table"] || "");
-};
-
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
-    execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
+    execute: (databaseName: string, statement: string) =>
+      execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) => getTableStructure(connection, databaseName, tableName, structureFetched),
-    getTableStructureBatch: (databaseName: string, tableNameList: string[], structureFetched: (tableName: string, structure: string) => void) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    getTableStructure: (
+      databaseName: string,
+      tableName: string,
+      structureFetched: (tableName: string, structure: string) => void
+    ) =>
+      getTableStructure(connection, databaseName, tableName, structureFetched),
+    getTableStructureBatch: (
+      databaseName: string, 
+      tableNameList: string[], 
+      structureFetched: (tableName: string, structure: string) => void
+    ) => 
+      getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
   };
 };
 

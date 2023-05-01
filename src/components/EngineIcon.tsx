@@ -13,7 +13,7 @@ const EngineIcon = (props: Props) => {
     return <Icon.DiMysql className={className} />;
   } else if (engine === Engine.PostgreSQL) {
     return <Icon.DiPostgresql className={className} />;
-  }else if (engine === Engine.MSSQL) {
+  } else if (engine === Engine.MSSQL) {
     return <Icon.DiMsqlServer className={className} />;
   } else {
     return <Icon.DiDatabase className={className} />;
