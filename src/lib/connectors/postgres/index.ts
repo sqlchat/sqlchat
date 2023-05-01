@@ -90,38 +90,6 @@ const getTables = async (
   return tableList;
 };
 
-const getTableStructureBatch = async (
-    connection: Connection,
-    databaseName: string,
-    tableNameList: string[],
-    structureFetched: (tableName: string,structure: string) => void
-  ): Promise<void> => {
-    connection.database = databaseName;
-    const client = newPostgresClient(connection);
-    await client.connect();
-    await Promise.all(tableNameList.map(async (tableName) => {
-    const { rows } = await client.query(
-      `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
-      [tableName]
-    );
-    await client.end();
-    const columnList = [];
-    // TODO(steven): transform it to standard schema string.
-    for (const row of rows) {
-      columnList.push(
-        `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-      );
-    }
-    structureFetched(tableName, `CREATE TABLE \`${tableName}\` (
-      ${columnList.join(",\n")}
-    );`);
-  }
-  )).finally(async () => {
-    await client.end();
-  })
-
-};
-
 const getTableStructure = async (
   connection: Connection,
   databaseName: string,
@@ -151,6 +119,38 @@ const getTableStructure = async (
     ${columnList.join(",\n")}
   );`
   );
+};
+
+const getTableStructureBatch = async (
+  connection: Connection,
+  databaseName: string,
+  tableNameList: string[],
+  structureFetched: (tableName: string,structure: string) => void
+): Promise<void> => {
+  connection.database = databaseName;
+  const client = newPostgresClient(connection);
+  await client.connect();
+  await Promise.all(
+    tableNameList.map(async (tableName) => {
+      const { rows } = await client.query(
+        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+        [tableName]
+      );
+      await client.end();
+      const columnList = [];
+      // TODO(steven): transform it to standard schema string.
+      for (const row of rows) {
+        columnList.push(
+          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+        );
+      }
+      structureFetched(tableName, `CREATE TABLE \`${tableName}\` (
+        ${columnList.join(",\n")}
+      );`);
+    })
+  ).finally(async () => {
+    await client.end();
+  })
 };
 
 const newConnector = (connection: Connection): Connector => {

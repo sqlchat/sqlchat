@@ -119,14 +119,15 @@ const getTableStructureBatch = async (
 ): Promise<void> => {
   const conn = await getMySQLConnection(connection);
 
-  await Promise.all(tableNameList.map(async (tableName) => {
-    const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
-    if (rows.length !== 1) {
-      throw new Error("Unexpected number of rows.");
-    }
-    structureFetched(tableName, rows[0]["Create Table"] || "");
-  }
-  )).finally(() => {
+  await Promise.all(
+    tableNameList.map(async (tableName) => {
+      const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
+      if (rows.length !== 1) {
+        throw new Error("Unexpected number of rows.");
+      }
+      structureFetched(tableName, rows[0]["Create Table"] || "");
+    })
+  ).finally(() => {
     conn.destroy();
   })
 };
