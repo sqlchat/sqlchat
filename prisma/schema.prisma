@@ -1,13 +1,17 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// Ideally, we want to separate usage collection from the metadata, however Prisma does not support
+// multiple databases properly. https://github.com/prisma/prisma/issues/2443 solution does not
+// generate the proper client.
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("USAGE_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Chat {
