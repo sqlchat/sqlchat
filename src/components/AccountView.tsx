@@ -1,4 +1,5 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 
 const AccountView = () => {
@@ -25,12 +26,12 @@ const AccountView = () => {
             />
           )}
           <span>{session.user.email ?? session.user.name}</span>
-          <button
+          <Link
+            href="/api/auth/signout"
             className="whitespace-nowrap rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => signOut()}
           >
             {t("common.sign-out")}
-          </button>
+          </Link>
         </div>
       )}
     </>
