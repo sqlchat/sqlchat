@@ -1,7 +1,14 @@
 import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useConnectionStore, useConversationStore, useLayoutStore, ResponsiveWidth } from "@/store";
+import {
+  useConnectionStore,
+  useConversationStore,
+  useLayoutStore,
+  ResponsiveWidth,
+} from "@/store";
+import { Table } from "@/types";
+import useLoading from "@/hooks/useLoading";
 import Link from "next/link";
 import Select from "./kit/Select";
 import Tooltip from "./kit/Tooltip";
@@ -9,8 +16,6 @@ import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
-import { Table } from "@/types";
-import useLoading from "@/hooks/useLoading";
 
 interface State {}
 
@@ -25,7 +30,7 @@ const ConnectionSidebar = () => {
   const databaseList = connectionStore.databaseList.filter(
     (database) => database.connectionId === currentConnectionCtx?.connection.id
   );
-  const [tableList,updateTableList] = useState<Table[]>([]);
+  const [tableList, updateTableList] = useState<Table[]>([]);
   const tableSchemaLoadingState = useLoading();
 
   useEffect(() => {
@@ -55,33 +60,39 @@ const ConnectionSidebar = () => {
         .finally(() => {
           setIsRequestingDatabase(false);
           const database = databaseList.find(
-            (database) => database.name === useConnectionStore.getState().currentConnectionCtx?.database?.name
-          );      
-          if(database){
+            (database) =>
+              database.name ===
+              useConnectionStore.getState().currentConnectionCtx?.database?.name
+          );
+          if (database) {
             tableSchemaLoadingState.setLoading();
-            connectionStore.getOrFetchDatabaseSchema(database).then(()=>{
+            connectionStore.getOrFetchDatabaseSchema(database).then(() => {
               tableSchemaLoadingState.setFinish();
             });
-          }      
+          }
         });
     } else {
       setIsRequestingDatabase(false);
     }
   }, [currentConnectionCtx?.connection]);
 
-  useEffect(()=>{
-    const newTable = connectionStore.databaseList.find( 
-      database => 
-        database.connectionId === currentConnectionCtx?.connection.id 
-        && database.name === currentConnectionCtx?.database?.name
-    )?.tableList || []
+  useEffect(() => {
+    const newTable =
+      connectionStore.databaseList.find(
+        (database) =>
+          database.connectionId === currentConnectionCtx?.connection.id &&
+          database.name === currentConnectionCtx?.database?.name
+      )?.tableList || [];
 
-    updateTableList([{
-      name: t("connection.all-tables"),
-      structure: "",
-    } as Table, ...newTable]);  
+    updateTableList([
+      {
+        name: t("connection.all-tables"),
+        structure: "",
+      } as Table,
+      ...newTable,
+    ]);
     conversationStore.updateTableName(t("connection.all-tables"));
-  },[connectionStore, currentConnectionCtx])
+  }, [connectionStore, currentConnectionCtx]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
@@ -98,9 +109,9 @@ const ConnectionSidebar = () => {
       connection: currentConnectionCtx.connection,
       database: database,
     });
-    if(database){
+    if (database) {
       tableSchemaLoadingState.setLoading();
-      connectionStore.getOrFetchDatabaseSchema(database).then(()=>{
+      connectionStore.getOrFetchDatabaseSchema(database).then(() => {
         tableSchemaLoadingState.setFinish();
       });
     }
@@ -108,7 +119,7 @@ const ConnectionSidebar = () => {
 
   const handleTableNameSelect = async (tableName: string) => {
     conversationStore.updateTableName(tableName);
-  }
+  };
 
   return (
     <>
@@ -164,11 +175,13 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              { tableSchemaLoadingState.isLoading ?
-                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                    <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
-                  </div>
-                : (tableList.length > 0 && (
+              {tableSchemaLoadingState.isLoading ? (
+                <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
+                  {t("common.loading")}
+                </div>
+              ) : (
+                tableList.length > 0 && (
                   <div className="w-full sticky top-0 z-1 my-4">
                     <Select
                       className="w-full px-4 py-3 !text-base"
