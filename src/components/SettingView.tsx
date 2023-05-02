@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
+import PricingView from "./PricingView";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
@@ -30,6 +31,10 @@ const SettingView = () => {
       </h3>
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
         <AccountView />
+      </div>
+
+      <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
+        <PricingView />
       </div>
 
       <h3 className="pl-4 text-sm text-gray-500">{t("setting.basic.self")}</h3>
