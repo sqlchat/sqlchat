@@ -80,7 +80,6 @@ export const useConversationStore = create<ConversationState>()(
         }));
       },
       updateTableName: (tableName: string) => {
-        // update current conversation's table name
         const currentConversation = get().getConversationById(
           get().currentConversationId
         );
@@ -89,7 +88,7 @@ export const useConversationStore = create<ConversationState>()(
             tableName,
           });
         }
-      }
+      },
     }),
     {
       name: "conversation-storage",
