@@ -17,5 +17,9 @@ declare namespace NodeJS {
     GITHUB_ID: string;
     // Optional. NextAuth.js GitHub OAuth client secret.
     GITHUB_SECRET: string;
+    // Optional. NextAuth.js Google OAuth client ID.
+    GOOGLE_CLIENT_ID: string;
+    // Optional. NextAuth.js Google OAuth client secret.
+    GOOGLE_CLIENT_SECRET: string;
   }
 }
