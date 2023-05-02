@@ -80,6 +80,7 @@ const ConnectionSidebar = () => {
       name: "All Tables",
       structure: "All Tables",
     } as Table, ...newTable]);  
+    conversationStore.updateTableName("All Tables");
   },[connectionStore, currentConnectionCtx])
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -173,9 +174,9 @@ const ConnectionSidebar = () => {
                     <Select
                       className="w-full px-4 py-3 !text-base"
                       value={
-                        conversationStore.getState().getConversationById(
-                          conversationStore.getState().currentConversationId
-                        )?.tableName
+                        useConversationStore.getState().getConversationById(
+                          useConversationStore.getState().currentConversationId
+                        )?.tableName || "All Tables"
                       }
                       itemList={tableList.map((table) => {
                         return {

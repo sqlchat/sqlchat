@@ -173,13 +173,11 @@ const ConversationView = () => {
           }  
         }else{
           const table = tables.find((table) => {
-            console.log("table.name", table.name, "currentConversation.tableName", currentConversation.tableName);
             return table.name === currentConversation.tableName});
           if (table) {
             schema = table.structure;
             tokens += countTextTokens(schema);
           }
-          console.log(schema)
         }
       } catch (error: any) {
         toast.error(error.message);
