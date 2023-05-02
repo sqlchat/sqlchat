@@ -176,17 +176,20 @@ const ConversationView = () => {
       prompt = promptGenerator(schema);
     }
 
+    // Sliding window to add messages with DONE status all the way back up to MAX_TOKENS
     let usageMessageList: Message[] = [];
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
-      if (tokens < MAX_TOKENS) {
-        tokens += countTextTokens(message.content);
-        usageMessageList.unshift(message);
-        formatedMessageList.unshift({
-          role: message.creatorRole,
-          content: message.content,
-        });
+      if (message.status === "DONE") {
+        if (tokens < MAX_TOKENS) {
+          tokens += countTextTokens(message.content);
+          usageMessageList.unshift(message);
+          formatedMessageList.unshift({
+            role: message.creatorRole,
+            content: message.content,
+          });
+        }
       }
     }
     usageMessageList.unshift({
