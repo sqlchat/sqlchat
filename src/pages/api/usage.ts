@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Conversation, Message } from "@/types";
+import { gpt35 } from "@/utils";
 
 const prisma = new PrismaClient();
 
@@ -36,6 +37,7 @@ export default async function handler(
         data: {
           id: conversation.id,
           createdAt: new Date(conversation.createdAt),
+          model: gpt35,
           ctx: {},
           messages: {
             create: messages.map((message) => ({

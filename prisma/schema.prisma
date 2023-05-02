@@ -13,6 +13,7 @@ datasource db {
 model Chat {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
+  model     Json
   ctx       Json
   messages  Message[]
 
