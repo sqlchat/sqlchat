@@ -21,12 +21,14 @@ import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
+import { useTranslation } from "react-i18next";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
 const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
+  const { t } = useTranslation();
   const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
@@ -164,16 +166,17 @@ const ConversationView = () => {
         const tables = await connectionStore.getOrFetchDatabaseSchema(
           connectionStore.currentConnectionCtx?.database
         );
-        if(currentConversation.tableName  === "All Table"){
+        if (currentConversation.tableName === t("connection.all-tables")) {
           for (const table of tables) {
             if (tokens < MAX_TOKENS / 2) {
               tokens += countTextTokens(schema + table.structure);
               schema += table.structure;
             }
-          }  
-        }else{
+          }
+        } else {
           const table = tables.find((table) => {
-            return table.name === currentConversation.tableName});
+            return table.name === currentConversation.tableName;
+          });
           if (table) {
             schema = table.structure;
             tokens += countTextTokens(schema);

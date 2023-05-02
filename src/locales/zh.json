@@ -22,6 +22,8 @@
     "new": "创建连接",
     "edit": "编辑连接",
     "select-database": "选择数据库",
+    "select-table": "选择数据表",
+    "all-tables":"全部表",
     "database-type": "数据库类型",
     "title": "标题",
     "host": "主机",

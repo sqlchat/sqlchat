@@ -21,7 +21,7 @@ interface ConversationState {
   currentConversationId?: Id;
   createConversation: (
     connectionId?: Id,
-    databaseName?: string,
+    databaseName?: string
   ) => Conversation;
   setCurrentConversationId: (conversationId: Id | undefined) => void;
   getConversationById: (
