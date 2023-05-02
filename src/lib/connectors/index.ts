@@ -17,8 +17,8 @@ export interface Connector {
     structureFetched: (tableName: string, structure: string) => void
   ) => Promise<void>;
   getTableStructureBatch: (
-    databaseName: string, 
-    tableNameList: string[], 
+    databaseName: string,
+    tableNameList: string[],
     structureFetched: (tableName: string, structure: string) => void
   ) => Promise<void>;
 }
