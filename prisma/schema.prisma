@@ -45,10 +45,12 @@ model Subscription {
   id        String   @id @default(cuid())
   user      User     @relation(fields: [userId], references: [id])
   userId    String   @map("user_id")
+  createdAt DateTime @default(now()) @map("created_at")
   startAt   DateTime @default(now()) @map("start_at")
   expireAt  DateTime @map("expire_at")
   paymentId String   @default("") @map("payment_id")
   invoiceId String   @default("") @map("invoice_id")
+  customerId String  @default("") @map("customer_id")
 
   @@unique([paymentId])
   @@unique([invoiceId])

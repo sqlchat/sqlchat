@@ -53,17 +53,20 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
       console.log(`💰 PaymentIntent status: ${JSON.stringify(paymentIntent)}`);
 
+      const charge = paymentIntent.latest_charge as Stripe.Charge;
       const user = await prisma.user.findUniqueOrThrow({
-        where: { email: paymentIntent.receipt_email! },
+        where: { email: charge.billing_details.email! },
       });
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,
+        createdAt: new Date(paymentIntent.created * 1000),
         startAt: today,
         expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
         paymentId: paymentIntent.id,
-        invoiceId: paymentIntent.invoice as string,
+        invoiceId: (paymentIntent.invoice as string) || "",
+        customerId: (paymentIntent.customer as string) || "",
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {
