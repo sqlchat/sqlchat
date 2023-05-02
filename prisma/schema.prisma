@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("USAGE_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Chat {
