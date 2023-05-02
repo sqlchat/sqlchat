@@ -2,7 +2,6 @@ import {
   useConversationStore,
   useConnectionStore,
   useMessageStore,
-  useUserStore,
 } from "@/store";
 import { CreatorRole } from "@/types";
 import { generateUUID } from "@/utils";
@@ -17,14 +16,13 @@ const examples = [
 
 interface Props {
   className?: string;
-  sendMessage: () => Promise<void>;
+  sendMessage: (content: string) => Promise<void>;
 }
 
 const EmptyView = (props: Props) => {
   const { className, sendMessage } = props;
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
-  const userStore = useUserStore();
   const messageStore = useMessageStore();
   const isDarkMode = useDarkMode();
 
@@ -43,17 +41,7 @@ const EmptyView = (props: Props) => {
         );
       }
     }
-
-    messageStore.addMessage({
-      id: generateUUID(),
-      conversationId: conversation.id,
-      creatorId: userStore.currentUser.id,
-      creatorRole: CreatorRole.User,
-      createdAt: Date.now(),
-      content: content,
-      status: "DONE",
-    });
-    await sendMessage();
+    await sendMessage(content);
   };
 
   return (

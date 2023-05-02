@@ -11,8 +11,9 @@ import {
   useConnectionStore,
   useSettingStore,
   useLayoutStore,
+  useUserStore,
 } from "@/store";
-import { CreatorRole, Message } from "@/types";
+import { Conversation, CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
@@ -31,6 +32,7 @@ const ConversationView = () => {
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
+  const userStore = useUserStore();
   const messageStore = useMessageStore();
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
@@ -40,13 +42,13 @@ const ConversationView = () => {
   );
   const messageList = currentConversation
     ? messageStore.messageList.filter(
-        (message) => message.conversationId === currentConversation.id
+        (message: Message) => message.conversationId === currentConversation.id
       )
     : [];
   const lastMessage = last(messageList);
 
   useEffect(() => {
-    messageStore.messageList.map((message) => {
+    messageStore.messageList.map((message: Message) => {
       if (message.status === "LOADING") {
         if (message.content === "") {
           messageStore.updateMessage(message.id, {
@@ -116,7 +118,7 @@ const ConversationView = () => {
 
     // Auto select the first conversation when the current connection changes.
     const conversationList = conversationStore.conversationList.filter(
-      (conversation) =>
+      (conversation: Conversation) =>
         conversation.connectionId ===
           connectionStore.currentConnectionCtx?.connection.id &&
         conversation.databaseName ===
@@ -125,7 +127,7 @@ const ConversationView = () => {
     conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
-  const sendMessageToCurrentConversation = async () => {
+  const sendMessageToCurrentConversation = async (userPrompt: string) => {
     const currentConversation = conversationStore.getConversationById(
       conversationStore.getState().currentConversationId
     );
@@ -136,18 +138,20 @@ const ConversationView = () => {
       return;
     }
 
-    const messageList = messageStore
-      .getState()
-      .messageList.filter(
-        (message) => message.conversationId === currentConversation.id
-      );
-    const promptGenerator = getPromptGeneratorOfAssistant(
-      getAssistantById(currentConversation.assistantId)!
-    );
-    let prompt = promptGenerator();
-    let tokens = 0;
+    // Add user message to the store.
+    const userMessage: Message = {
+      id: generateUUID(),
+      conversationId: currentConversation.id,
+      creatorId: userStore.currentUser.id,
+      creatorRole: CreatorRole.User,
+      createdAt: Date.now(),
+      content: userPrompt,
+      status: "DONE",
+    };
+    messageStore.addMessage(userMessage);
 
-    const message: Message = {
+    // Add PENDING assistant message to the store.
+    const assistantMessage: Message = {
       id: generateUUID(),
       conversationId: currentConversation.id,
       creatorId: currentConversation.assistantId,
@@ -156,8 +160,30 @@ const ConversationView = () => {
       content: "",
       status: "LOADING",
     };
-    messageStore.addMessage(message);
+    messageStore.addMessage(assistantMessage);
 
+    // Construct the system prompt
+    const messageList = messageStore
+      .getState()
+      .messageList.filter(
+        (message: Message) => message.conversationId === currentConversation.id
+      );
+    const promptGenerator = getPromptGeneratorOfAssistant(
+      getAssistantById(currentConversation.assistantId)!
+    );
+    let dbPrompt = promptGenerator();
+    // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
+    // 1. Assistant specific prompt with database schema if applicable.
+    // 2. A list of previous exchanges.
+    // 3. The current user prompt.
+    //
+    // The priority to fill in the prompt is in the order of:
+    // 1. The current user prompt.
+    // 2. Assistant specific prompt with database schema if applicable.
+    // 3. A list of previous exchanges
+    let tokens = countTextTokens(userPrompt);
+
+    // Augument with database schema if available
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
@@ -173,10 +199,11 @@ const ConversationView = () => {
       } catch (error: any) {
         toast.error(error.message);
       }
-      prompt = promptGenerator(schema);
+      dbPrompt = promptGenerator(schema);
     }
 
-    // Sliding window to add messages with DONE status all the way back up to MAX_TOKENS
+    // Sliding window to add messages with DONE status all the way back up until we reach the token
+    // limit.
     let usageMessageList: Message[] = [];
     let formatedMessageList = [];
     for (let i = messageList.length - 1; i >= 0; i--) {
@@ -184,7 +211,6 @@ const ConversationView = () => {
       if (message.status === "DONE") {
         if (tokens < MAX_TOKENS) {
           tokens += countTextTokens(message.content);
-          usageMessageList.unshift(message);
           formatedMessageList.unshift({
             role: message.creatorRole,
             content: message.content,
@@ -192,15 +218,17 @@ const ConversationView = () => {
         }
       }
     }
-    usageMessageList.unshift({
-      id: generateUUID(),
-      createdAt: first(usageMessageList)?.createdAt || Date.now(),
-      creatorRole: CreatorRole.System,
-      content: prompt,
-    } as Message);
+
+    // Add the db prompt as the first context.
     formatedMessageList.unshift({
       role: CreatorRole.System,
-      content: prompt,
+      content: dbPrompt,
+    });
+
+    // Add the user prompt as the last context.
+    formatedMessageList.push({
+      role: CreatorRole.User,
+      content: userPrompt,
     });
 
     const requestHeaders: any = {};
@@ -225,7 +253,7 @@ const ConversationView = () => {
       } catch (error) {
         // do nth
       }
-      messageStore.updateMessage(message.id, {
+      messageStore.updateMessage(assistantMessage.id, {
         content: errorMessage,
         status: "FAILED",
       });
@@ -246,20 +274,34 @@ const ConversationView = () => {
       if (value) {
         const char = decoder.decode(value);
         if (char) {
-          message.content = message.content + char;
-          messageStore.updateMessage(message.id, {
-            content: message.content,
+          assistantMessage.content = assistantMessage.content + char;
+          messageStore.updateMessage(assistantMessage.id, {
+            content: assistantMessage.content,
           });
         }
       }
       done = readerDone;
     }
-    messageStore.updateMessage(message.id, {
+    messageStore.updateMessage(assistantMessage.id, {
       status: "DONE",
     });
 
-    usageMessageList.push(message);
-    // Collect usage.
+    // Collect system prompt
+    // We only collect the db prompt for the system prompt. We do not collect the intermediate
+    // exchange to save space since those can be derived from the previous record.
+    usageMessageList.push({
+      id: generateUUID(),
+      createdAt: Date.now(),
+      creatorRole: CreatorRole.System,
+      content: dbPrompt,
+    } as Message);
+
+    // Collect user message
+    usageMessageList.push(userMessage);
+
+    // Collect assistant response
+    usageMessageList.push(assistantMessage);
+
     axios
       .post<string[]>("/api/usage", {
         conversation: currentConversation,
@@ -289,7 +331,7 @@ const ConversationView = () => {
             sendMessage={sendMessageToCurrentConversation}
           />
         ) : (
-          messageList.map((message) => (
+          messageList.map((message: Message) => (
             <MessageView key={message.id} message={message} />
           ))
         )}
