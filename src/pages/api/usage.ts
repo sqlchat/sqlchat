@@ -27,7 +27,7 @@ export default async function handler(
           createdAt: new Date(message.createdAt),
           role: message.creatorRole,
           content: message.content,
-          upvote: true,
+          upvote: false,
           downvote: false,
         })),
       });
@@ -42,7 +42,7 @@ export default async function handler(
               createdAt: new Date(message.createdAt),
               role: message.creatorRole,
               content: message.content,
-              upvote: true,
+              upvote: false,
               downvote: false,
             })),
           },
