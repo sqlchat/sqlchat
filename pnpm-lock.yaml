@@ -19,6 +19,9 @@ dependencies:
   '@mui/styled-engine-sc':
     specifier: ^5.11.11
     version: 5.11.11(styled-components@5.3.9)
+  '@next-auth/prisma-adapter':
+    specifier: ^1.0.6
+    version: 1.0.6(@prisma/client@4.13.0)(next-auth@4.22.1)
   '@prisma/client':
     specifier: 4.13.0
     version: 4.13.0(prisma@4.13.0)
@@ -69,7 +72,10 @@ dependencies:
     version: 13.2.4(react-dom@18.2.0)(react@18.2.0)
   next-auth:
     specifier: ^4.22.1
-    version: 4.22.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0)
+    version: 4.22.1(next@13.2.4)(nodemailer@6.9.1)(react-dom@18.2.0)(react@18.2.0)
+  nodemailer:
+    specifier: ^6.9.1
+    version: 6.9.1
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -907,6 +913,16 @@ packages:
   /@nem035/gpt-3-encoder@1.1.7:
     resolution: {integrity: sha512-dtOenP4ZAmsKXkobTDUCcbkQvPJbuJ6Kp/LHqWDYLK//XNgGs3Re8ymcQzyVhtph8JckdI3K8FR5Q+6mX7HnpQ==}
     dev: true
+
+  /@next-auth/prisma-adapter@1.0.6(@prisma/client@4.13.0)(next-auth@4.22.1):
+    resolution: {integrity: sha512-Z7agwfSZEeEcqKqrnisBun7VndRPshd6vyDsoRU68MXbkui8storkHgvN2hnNDrqr/hSCF9aRn56a1qpihaB4A==}
+    peerDependencies:
+      '@prisma/client': '>=2.26.0 || >=3'
+      next-auth: ^4
+    dependencies:
+      '@prisma/client': 4.13.0(prisma@4.13.0)
+      next-auth: 4.22.1(next@13.2.4)(nodemailer@6.9.1)(react-dom@18.2.0)(react@18.2.0)
+    dev: false
 
   /@next/env@13.2.4:
     resolution: {integrity: sha512-+Mq3TtpkeeKFZanPturjcXt+KHfKYnLlX6jMLyCrmpq6OOs4i1GqBOAauSkii9QeKCMTYzGppar21JU57b/GEA==}
@@ -4159,7 +4175,7 @@ packages:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
     dev: true
 
-  /next-auth@4.22.1(next@13.2.4)(react-dom@18.2.0)(react@18.2.0):
+  /next-auth@4.22.1(next@13.2.4)(nodemailer@6.9.1)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-NTR3f6W7/AWXKw8GSsgSyQcDW6jkslZLH8AiZa5PQ09w1kR8uHtR9rez/E9gAq/o17+p0JYHE8QjF3RoniiObA==}
     peerDependencies:
       next: ^12.2.5 || ^13
@@ -4175,6 +4191,7 @@ packages:
       cookie: 0.5.0
       jose: 4.14.4
       next: 13.2.4(react-dom@18.2.0)(react@18.2.0)
+      nodemailer: 6.9.1
       oauth: 0.9.15
       openid-client: 5.4.2
       preact: 10.13.2
@@ -4238,6 +4255,11 @@ packages:
   /node-releases@2.0.10:
     resolution: {integrity: sha512-5GFldHPXVG/YZmFzJvKK2zDSzPKhEp0+ZR5SVaoSag9fsL5YgHbUHDfnG5494ISANDcK4KwPXAx2xqVEydmd7w==}
     dev: true
+
+  /nodemailer@6.9.1:
+    resolution: {integrity: sha512-qHw7dOiU5UKNnQpXktdgQ1d3OFgRAekuvbJLcdG5dnEo/GtcTHRYM7+UfJARdOFU9WUQO8OiIamgWPmiSFHYAA==}
+    engines: {node: '>=6.0.0'}
+    dev: false
 
   /normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}

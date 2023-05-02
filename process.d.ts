@@ -21,5 +21,7 @@ declare namespace NodeJS {
     GOOGLE_CLIENT_ID: string;
     // Optional. NextAuth.js Google OAuth client secret.
     GOOGLE_CLIENT_SECRET: string;
+    // Optional. NextAuth.js email server.
+    EMAIL_SERVER: string;
   }
 }
