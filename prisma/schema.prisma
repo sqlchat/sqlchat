@@ -52,7 +52,6 @@ model Principal {
   email         String          @unique @default("")
   emailVerified Boolean         @default(false) @map("email_verified")
   passwordHash  String          @default("") @map("password_hash")
-  avatar        Bytes?
 
   @@index([name], map: "principal_name_idx")
   @@map("principal")
