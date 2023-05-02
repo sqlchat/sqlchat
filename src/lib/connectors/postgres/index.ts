@@ -136,7 +136,6 @@ const getTableStructureBatch = async (
         `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
         [tableName]
       );
-      await client.end();
       const columnList = [];
       // TODO(steven): transform it to standard schema string.
       for (const row of rows) {
