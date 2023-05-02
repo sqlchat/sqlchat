@@ -1,6 +1,7 @@
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import { CheckIcon } from "@heroicons/react/20/solid";
+import Script from "next/script";
 
 const includedFeatures = [
   "Private forum access",
@@ -59,7 +60,7 @@ const PricingView = () => {
         </div>
       </div>
 
-      <script async src="https://js.stripe.com/v3/buy-button.js"></script>
+      <Script async src="https://js.stripe.com/v3/buy-button.js" />
     </div>
   );
 };
