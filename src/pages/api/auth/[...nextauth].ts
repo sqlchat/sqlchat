@@ -13,6 +13,11 @@ export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
+    EmailProvider({
+      server: process.env.EMAIL_SERVER,
+      from: "noreply@sqlchat.ai",
+      // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+    }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -20,11 +25,6 @@ export const authOptions: NextAuthOptions = {
     GithubProvider({
       clientId: process.env.GITHUB_ID,
       clientSecret: process.env.GITHUB_SECRET,
-    }),
-    EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: "noreply@sqlchat.ai",
-      // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
   ],
   theme: {
