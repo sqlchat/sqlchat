@@ -26,7 +26,7 @@ const ConnectionSidebar = () => {
     (database) => database.connectionId === currentConnectionCtx?.connection.id
   );
   const [tableList,updateTableList] = useState<Table[]>([]);
-  const loadingState = useLoading();
+  const tableSchemaLoadingState = useLoading();
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -58,9 +58,9 @@ const ConnectionSidebar = () => {
             (database) => database.name === useConnectionStore.getState().currentConnectionCtx?.database?.name
           );      
           if(database){
-            loadingState.setLoading();
+            tableSchemaLoadingState.setLoading();
             connectionStore.getOrFetchDatabaseSchema(database).then(()=>{
-              loadingState.setFinish();
+              tableSchemaLoadingState.setFinish();
             });
           }      
         });
@@ -99,10 +99,9 @@ const ConnectionSidebar = () => {
       database: database,
     });
     if(database){
-      loadingState.setLoading();
-
+      tableSchemaLoadingState.setLoading();
       connectionStore.getOrFetchDatabaseSchema(database).then(()=>{
-        loadingState.setFinish();
+        tableSchemaLoadingState.setFinish();
       });
     }
   };
@@ -165,7 +164,7 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              { loadingState.isLoading ?
+              { tableSchemaLoadingState.isLoading ?
                   <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
                     <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                   </div>
@@ -174,8 +173,8 @@ const ConnectionSidebar = () => {
                     <Select
                       className="w-full px-4 py-3 !text-base"
                       value={
-                        useConversationStore.getState().getConversationById(
-                          useConversationStore.getState().currentConversationId
+                        conversationStore.getConversationById(
+                          conversationStore.currentConversationId
                         )?.tableName || "All Tables"
                       }
                       itemList={tableList.map((table) => {
