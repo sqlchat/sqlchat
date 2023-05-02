@@ -35,7 +35,7 @@ interface ConversationState {
 
 export const useConversationStore = create<ConversationState>()(
   persist(
-    (set, get) => ({
+    (set: any, get: any) => ({
       getState: () => get(),
       conversationList: [],
       createConversation: (connectionId?: Id, databaseName?: string) => {
@@ -47,7 +47,7 @@ export const useConversationStore = create<ConversationState>()(
         if (connectionId) {
           conversation.assistantId = SQLChatBotId;
         }
-        set((state) => ({
+        set((state: ConversationState) => ({
           conversationList: [...state.conversationList, conversation],
           currentConversationId: conversation.id,
         }));
@@ -57,22 +57,22 @@ export const useConversationStore = create<ConversationState>()(
         set(() => ({ currentConversationId: conversation })),
       getConversationById: (conversationId: Id | undefined) => {
         return get().conversationList.find(
-          (item) => item.id === conversationId
+          (item: Conversation) => item.id === conversationId
         );
       },
       updateConversation: (
         conversationId: Id,
         conversation: Partial<Conversation>
       ) => {
-        set((state) => ({
+        set((state: ConversationState) => ({
           ...state,
-          conversationList: state.conversationList.map((item) =>
+          conversationList: state.conversationList.map((item: Conversation) =>
             item.id === conversationId ? { ...item, ...conversation } : item
           ),
         }));
       },
       clearConversation: (filter: (conversation: Conversation) => boolean) => {
-        set((state) => ({
+        set((state: ConversationState) => ({
           ...state,
           conversationList: state.conversationList.filter(filter),
         }));

@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Conversation, Message } from "@/types";
+import { gpt35 } from "@/utils";
+import requestIp from "request-ip";
 
 const prisma = new PrismaClient();
 
@@ -20,14 +22,16 @@ export default async function handler(
         id: conversation.id,
       },
     });
+    const endUser = requestIp.getClientIp(req);
     if (chat) {
       await prisma.message.createMany({
         data: messages.map((message) => ({
           chatId: chat.id,
           createdAt: new Date(message.createdAt),
+          endUser: endUser,
           role: message.creatorRole,
           content: message.content,
-          upvote: true,
+          upvote: false,
           downvote: false,
         })),
       });
@@ -36,13 +40,15 @@ export default async function handler(
         data: {
           id: conversation.id,
           createdAt: new Date(conversation.createdAt),
+          model: gpt35,
           ctx: {},
           messages: {
             create: messages.map((message) => ({
               createdAt: new Date(message.createdAt),
+              endUser: endUser,
               role: message.creatorRole,
               content: message.content,
-              upvote: true,
+              upvote: false,
               downvote: false,
             })),
           },
