@@ -113,15 +113,17 @@ const getTableStructure = async (
 
 const getTableStructureBatch = async (
   connection: Connection,
-  databaseName: string, 
-  tableNameList: string[], 
-  structureFetched: (tableName: string,structure: string) => void
+  databaseName: string,
+  tableNameList: string[],
+  structureFetched: (tableName: string, structure: string) => void
 ): Promise<void> => {
   const conn = await getMySQLConnection(connection);
 
   await Promise.all(
     tableNameList.map(async (tableName) => {
-      const [rows] = await conn.query<RowDataPacket[]>(`SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`);
+      const [rows] = await conn.query<RowDataPacket[]>(
+        `SHOW CREATE TABLE \`${databaseName}\`.\`${tableName}\`;`
+      );
       if (rows.length !== 1) {
         throw new Error("Unexpected number of rows.");
       }
@@ -129,7 +131,7 @@ const getTableStructureBatch = async (
     })
   ).finally(() => {
     conn.destroy();
-  })
+  });
 };
 
 const newConnector = (connection: Connection): Connector => {
@@ -146,11 +148,16 @@ const newConnector = (connection: Connection): Connector => {
     ) =>
       getTableStructure(connection, databaseName, tableName, structureFetched),
     getTableStructureBatch: (
-      databaseName: string, 
-      tableNameList: string[], 
+      databaseName: string,
+      tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
-    ) => 
-      getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    ) =>
+      getTableStructureBatch(
+        connection,
+        databaseName,
+        tableNameList,
+        structureFetched
+      ),
   };
 };
 

@@ -121,7 +121,7 @@ const getTableStructureBatch = async (
   connection: Connection,
   databaseName: string,
   tableNameList: string[],
-  structureFetched: (tableName: string,structure: string) => void
+  structureFetched: (tableName: string, structure: string) => void
 ): Promise<void> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
@@ -135,14 +135,19 @@ const getTableStructureBatch = async (
       // Transform to standard schema string.
       for (const row of recordset) {
         columnList.push(
-          `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+          `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${
+            String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""
+          }`
         );
       }
-      structureFetched(tableName, `CREATE TABLE [${tableName}] (
+      structureFetched(
+        tableName,
+        `CREATE TABLE [${tableName}] (
         ${columnList.join(",\n")}
-      );`);  
+      );`
+      );
     })
-  )
+  );
 };
 
 const newConnector = (connection: Connection): Connector => {
@@ -159,11 +164,16 @@ const newConnector = (connection: Connection): Connector => {
     ) =>
       getTableStructure(connection, databaseName, tableName, structureFetched),
     getTableStructureBatch: (
-      databaseName: string, 
-      tableNameList: string[],  
+      databaseName: string,
+      tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
-    ) => 
-      getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    ) =>
+      getTableStructureBatch(
+        connection,
+        databaseName,
+        tableNameList,
+        structureFetched
+      ),
   };
 };
 

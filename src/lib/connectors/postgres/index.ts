@@ -125,7 +125,7 @@ const getTableStructureBatch = async (
   connection: Connection,
   databaseName: string,
   tableNameList: string[],
-  structureFetched: (tableName: string,structure: string) => void
+  structureFetched: (tableName: string, structure: string) => void
 ): Promise<void> => {
   connection.database = databaseName;
   const client = newPostgresClient(connection);
@@ -141,16 +141,21 @@ const getTableStructureBatch = async (
       // TODO(steven): transform it to standard schema string.
       for (const row of rows) {
         columnList.push(
-          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${
+            String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""
+          }`
         );
       }
-      structureFetched(tableName, `CREATE TABLE \`${tableName}\` (
+      structureFetched(
+        tableName,
+        `CREATE TABLE \`${tableName}\` (
         ${columnList.join(",\n")}
-      );`);
+      );`
+      );
     })
   ).finally(async () => {
     await client.end();
-  })
+  });
 };
 
 const newConnector = (connection: Connection): Connector => {
@@ -170,8 +175,13 @@ const newConnector = (connection: Connection): Connector => {
       databaseName: string,
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
-    ) => 
-      getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    ) =>
+      getTableStructureBatch(
+        connection,
+        databaseName,
+        tableNameList,
+        structureFetched
+      ),
   };
 };
 
