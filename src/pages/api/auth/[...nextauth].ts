@@ -23,7 +23,7 @@ export const authOptions: NextAuthOptions = {
     }),
     EmailProvider({
       server: process.env.EMAIL_SERVER,
-      from: "support@bytebase.com",
+      from: "noreply@sqlchat.ai",
       // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
   ],
