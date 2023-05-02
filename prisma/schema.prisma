@@ -25,6 +25,7 @@ model Message {
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String
   createdAt DateTime @default(now())
+  endUser   String   @default("")
   role      String
   content   String
   upvote    Boolean  @default(false)

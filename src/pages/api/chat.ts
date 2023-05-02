@@ -55,6 +55,8 @@ const handler = async (req: NextRequest) => {
       frequency_penalty: gpt35.frequency_penalty,
       presence_penalty: gpt35.presence_penalty,
       stream: true,
+      // Send end-user ID to help OpenAI monitor and detect abuse.
+      user: req.ip,
     }),
   });
   if (!res.ok) {
