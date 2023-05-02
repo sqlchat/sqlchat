@@ -13,8 +13,6 @@ const PricingView = () => {
   const { t } = useTranslation();
   const { data: session, status } = useSession();
 
-  console.log("session", session);
-
   return (
     <div className="mx-auto max-w-2xl lg:mx-0 lg:flex lg:max-w-none">
       <div className="p-8 sm:p-10 lg:flex-auto">
@@ -50,11 +48,13 @@ const PricingView = () => {
       <div className="-mt-2 p-2 lg:mt-0 lg:w-full lg:max-w-md lg:flex-shrink-0">
         <div className="rounded-2xl bg-gray-50 py-4 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center">
           <div className="mx-auto max-w-xs">
-            <stripe-buy-button
-              buy-button-id="buy_btn_1N3LTfAeLQYhEB73lUC8TvpW"
-              publishable-key="pk_test_C0a1xkSV2IqrxxIIMIH3ZXAp00YKL3okom"
-              customer-email={session.user.email}
-            ></stripe-buy-button>
+            {session?.user && (
+              <stripe-buy-button
+                buy-button-id="buy_btn_1N3LTfAeLQYhEB73lUC8TvpW"
+                publishable-key="pk_test_C0a1xkSV2IqrxxIIMIH3ZXAp00YKL3okom"
+                customer-email={session.user.email}
+              ></stripe-buy-button>
+            )}
           </div>
         </div>
       </div>

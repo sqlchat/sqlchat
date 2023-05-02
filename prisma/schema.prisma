@@ -15,7 +15,7 @@ datasource db {
 }
 
 model Chat {
-  id        String    @id @default(uuid())
+  id        String    @id @default(cuid())
   createdAt DateTime  @default(now()) @map("created_at")
   model     Json      @default("{}")
   ctx       Json      @default("{}")
@@ -26,7 +26,7 @@ model Chat {
 }
 
 model Message {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   chat      Chat     @relation(fields: [chatId], references: [id])
   chatId    String   @map("chat_id")
   createdAt DateTime @default(now()) @map("created_at")
@@ -41,22 +41,36 @@ model Message {
   @@map("message")
 }
 
+model Subscription {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @map("user_id")
+  startAt   DateTime @default(now()) @map("start_at")
+  expireAt  DateTime @map("expire_at")
+  paymentId String   @default("") @map("payment_id")
+  invoiceId String   @default("") @map("invoice_id")
+
+  @@unique([paymentId])
+  @@unique([invoiceId])
+  @@map("subscription")
+}
+
 // NextAuth Prisma Schema Begin
 // Below are the auth related prisma schema to support NextAuth.js. In partiular, the email flow
 // requires this. https://authjs.dev/reference/adapter/prisma
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String  @map("user_id")
-  type               String
-  provider           String
-  providerAccountId  String  @map("provider_account_id")
-  refresh_token      String? @db.Text
-  access_token       String? @db.Text
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String? @db.Text
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -83,6 +97,8 @@ model User {
   accounts      Account[]
   sessions      Session[]
 
+  subscriptions Subscription[]
+
   @@map("users")
 }
 
@@ -94,4 +110,5 @@ model VerificationToken {
   @@unique([identifier, token])
   @@map("verificationtokens")
 }
+
 // NextAuth Prisma Schema End
