@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
@@ -27,57 +27,6 @@ export const authOptions: NextAuthOptions = {
       // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
   ],
-  callbacks: {
-    async signIn({ account, profile }) {
-      if (account?.provider === "google") {
-        return profile.email_verified;
-      }
-      return true;
-    },
-    // async jwt({ account, token, profile }) {
-    //   // Persist the OAuth access_token and or the user id to the token right after signin.
-    //   // Only the signin passes the account object.
-    //   // https://next-auth.js.org/configuration/callbacks#jwt-callback
-    //   if (account) {
-    //     console.log("account", account);
-    //     console.log("token", token);
-    //     console.log("profile", profile);
-
-    //     let email = token.email;
-    //     let resourceId = "";
-
-    //     if (account.provider == "github") {
-    //       // For GitHub, email address is not returned if privacy settings are enabled.
-    //       if (!email) {
-    //         email = `${profile?.id}+${profile?.login}@github.sqlchat.ai`;
-    //       }
-    //       resourceId = `${profile?.login}-github`;
-    //     } else if (account.provider == "google") {
-    //       resourceId = `${email?.split("@")[0]}-google`;
-    //     }
-
-    //     const newPrincipal: Prisma.PrincipalCreateInput = {
-    //       type: "END_USER",
-    //       status: "ACTIVE",
-    //       resourceId: resourceId,
-    //       name: token.name as string,
-    //       email: email,
-    //       emailVerified: true,
-    //     };
-    //     const updatePrincipal: Prisma.PrincipalUpdateInput = {
-    //       resourceId: resourceId,
-    //       name: token.name as string,
-    //     };
-
-    //     await prisma.principal.upsert({
-    //       where: { email: email },
-    //       create: newPrincipal,
-    //       update: updatePrincipal,
-    //     });
-    //   }
-    //   return token;
-    // },
-  },
   theme: {
     brandColor: "#4F46E5",
     logo: "/chat-logo.webp",
