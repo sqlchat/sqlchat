@@ -10,7 +10,6 @@ import CreateConnectionModal from "../CreateConnectionModal";
 
 interface State {
   showCreateConnectionModal: boolean;
-  showSettingModal: boolean;
   showUpdateConversationModal: boolean;
 }
 
@@ -19,7 +18,6 @@ const ConnectionList = () => {
   const connectionStore = useConnectionStore();
   const [state, setState] = useState<State>({
     showCreateConnectionModal: false,
-    showSettingModal: false,
     showUpdateConversationModal: false,
   });
   const [editConnectionModalContext, setEditConnectionModalContext] =

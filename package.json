@@ -12,6 +12,8 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
+    "@headlessui/react": "^1.7.14",
+    "@heroicons/react": "^2.0.17",
     "@mui/material": "^5.11.14",
     "@mui/styled-engine-sc": "^5.11.11",
     "@prisma/client": "4.13.0",

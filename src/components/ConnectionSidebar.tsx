@@ -2,25 +2,20 @@ import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useConnectionStore, useLayoutStore, ResponsiveWidth } from "@/store";
+import Link from "next/link";
 import Select from "./kit/Select";
 import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
-import SettingModal from "./SettingModal";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 
-interface State {
-  showSettingModal: boolean;
-}
+interface State {}
 
 const ConnectionSidebar = () => {
   const { t } = useTranslation();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
-  const [state, setState] = useState<State>({
-    showSettingModal: false,
-  });
   const [isRequestingDatabase, setIsRequestingDatabase] =
     useState<boolean>(false);
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
@@ -60,13 +55,6 @@ const ConnectionSidebar = () => {
     }
   }, [currentConnectionCtx?.connection]);
 
-  const toggleSettingModal = (show = true) => {
-    setState({
-      ...state,
-      showSettingModal: show,
-    });
-  };
-
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
       return;
@@ -101,13 +89,13 @@ const ConnectionSidebar = () => {
             <div className="w-full flex flex-col justify-end items-center">
               <DarkModeSwitch />
               <Tooltip title={t("common.setting")} side="right">
-                <button
+                <Link
                   className=" w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100 dark:hover:bg-zinc-700"
                   data-tip={t("common.setting")}
-                  onClick={() => toggleSettingModal(true)}
+                  href="/setting"
                 >
                   <Icon.IoMdSettings className="text-gray-600 dark:text-gray-300 w-6 h-auto" />
-                </button>
+                </Link>
               </Tooltip>
             </div>
           </div>
@@ -179,10 +167,6 @@ const ConnectionSidebar = () => {
           </div>
         </div>
       </Drawer>
-
-      {state.showSettingModal && (
-        <SettingModal close={() => toggleSettingModal(false)} />
-      )}
     </>
   );
 };
