@@ -7,6 +7,7 @@ const chatData: Prisma.ChatCreateInput[] = [
   {
     id: uuidv4(),
     createdAt: new Date(),
+    model: {},
     ctx: {},
     messages: {
       create: [
