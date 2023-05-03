@@ -7,30 +7,32 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("USAGE_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Chat {
-  id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  model     Json
-  ctx       Json
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  model     Json      @default("{}")
+  ctx       Json      @default("{}")
   messages  Message[]
 
-  @@index([createdAt])
+  @@index([createdAt], map: "chat_created_at_idx")
+  @@map("chat")
 }
 
 model Message {
   id        String   @id @default(uuid())
   chat      Chat     @relation(fields: [chatId], references: [id])
-  chatId    String
-  createdAt DateTime @default(now())
-  endUser   String   @default("")
-  role      String
-  content   String
+  chatId    String   @map("chat_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  endUser   String   @default("") @map("end_user")
+  role      String   @default("")
+  content   String   @default("")
   upvote    Boolean  @default(false)
   downvote  Boolean  @default(false)
 
-  @@index([chatId])
-  @@index([createdAt])
+  @@index([chatId], map: "message_chat_id_idx")
+  @@index([createdAt], map: "message_created_at_idx")
+  @@map("message")
 }
