@@ -49,11 +49,9 @@ model Subscription {
   startAt   DateTime @default(now()) @map("start_at")
   expireAt  DateTime @map("expire_at")
   paymentId String   @default("") @map("payment_id")
-  invoiceId String   @default("") @map("invoice_id")
   customerId String  @default("") @map("customer_id")
 
   @@unique([paymentId])
-  @@unique([invoiceId])
   @@map("subscription")
 }
 
@@ -100,6 +98,8 @@ model User {
   sessions      Session[]
 
   subscriptions Subscription[]
+  // The stripe customer id corresponds to this user
+  stripeId      String?   @unique @map("stripe_id")
 
   @@map("users")
 }

@@ -58,16 +58,22 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Cast event data to Stripe object.
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      const customerId = paymentIntent.customer as string;
+      if (customerId) {
+        // Save the stripe customer id so that we can relate this customer to future payments.
+        await prisma.user.update({
+          where: {
+            email: paymentIntent.metadata.email,
+          },
+          data: {
+            stripeId: customerId,
+          },
+        });
+      }
+
       const user = await prisma.user.findUniqueOrThrow({
         where: { email: paymentIntent.metadata.email },
       });
-
-      let invoiceId = paymentIntent.invoice as string;
-      if (!invoiceId) {
-        const payment = await stripe.paymentIntents.retrieve(paymentIntent.id);
-        console.log(`payment`, payment);
-        invoiceId = payment.invoice as string;
-      }
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
@@ -76,8 +82,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         startAt: today,
         expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
         paymentId: paymentIntent.id,
-        invoiceId: invoiceId,
-        customerId: (paymentIntent.customer as string) || "",
+        customerId: customerId || "",
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {

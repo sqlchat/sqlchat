@@ -1,14 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
-
-import { formatAmountForStripe } from "../../../utils/stripe-helpers";
-
+import { PrismaClient, Prisma } from "@prisma/client";
 import Stripe from "stripe";
+
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
 });
+
+const prisma = new PrismaClient();
 
 export default async function handler(
   req: NextApiRequest,
@@ -22,10 +23,11 @@ export default async function handler(
   }
 
   if (req.method === "POST") {
-    const amount = 50;
-    const currency = "USD";
-
     const session = await getServerSession(req, res, authOptions);
+    const email = session?.user?.email!;
+    const user = await prisma.user.findUniqueOrThrow({
+      where: { email: email },
+    });
     try {
       // Create Checkout Sessions from body params.
       const params: Stripe.Checkout.SessionCreateParams = {
@@ -42,11 +44,7 @@ export default async function handler(
         ],
         line_items: [
           {
-            price_data: {
-              currency: currency,
-              product: "prod_IkuBPDaXFUMk9p",
-              unit_amount: formatAmountForStripe(amount, currency),
-            },
+            price: "price_1N2xC5AeLQYhEB73g05ZqTkb",
             quantity: 1,
           },
         ],
@@ -56,11 +54,17 @@ export default async function handler(
           },
         },
         payment_intent_data: {
+          // not compatiable with affirm, alipay, klarna, wechat_pay
+          // setup_future_usage: "off_session",
           metadata: {
             email: session?.user?.email!,
           },
         },
-        customer_email: session?.user?.email!,
+        // Link customer if present otherwise pass email and let Stripe create a new customer.
+        // customer and customer_email can't be set at the same time.
+        customer: user.stripeId || undefined,
+        customer_email: user.stripeId ? undefined : email,
+        customer_creation: user.stripeId ? undefined : "always",
         success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/setting`,
       };
