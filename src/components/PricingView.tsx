@@ -1,7 +1,9 @@
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import Script from "next/script";
+
+import getStripe from "../utils/get-stripejs";
+import { fetchPostJSON } from "../utils/api-helpers";
 
 const includedFeatures = [
   "Private forum access",
@@ -9,6 +11,29 @@ const includedFeatures = [
   "Entry to annual conference",
   "Official member t-shirt",
 ];
+
+const checkout = async () => {
+  // Create a Checkout Session.
+  const response = await fetchPostJSON("/api/checkout_sessions", {});
+
+  if (response.statusCode === 500) {
+    console.error(response.message);
+    return;
+  }
+
+  // Redirect to Checkout.
+  const stripe = await getStripe();
+  const { error } = await stripe!.redirectToCheckout({
+    // Make the id field from the Checkout Session creation API response
+    // available to this file, so you can provide it as parameter here
+    // instead of the {{CHECKOUT_SESSION_ID}} placeholder.
+    sessionId: response.id,
+  });
+  // If `redirectToCheckout` fails due to a browser or network
+  // error, display the localized error message to your customer
+  // using `error.message`.
+  console.warn(error.message);
+};
 
 const PricingView = () => {
   const { t } = useTranslation();
@@ -50,17 +75,32 @@ const PricingView = () => {
         <div className="rounded-2xl bg-gray-50 py-4 text-center ring-1 ring-inset ring-gray-900/5 lg:flex lg:flex-col lg:justify-center">
           <div className="mx-auto max-w-xs">
             {session?.user && (
-              <stripe-buy-button
-                buy-button-id="buy_btn_1N3LTfAeLQYhEB73lUC8TvpW"
-                publishable-key="pk_test_C0a1xkSV2IqrxxIIMIH3ZXAp00YKL3okom"
-                customer-email={session.user.email}
-              ></stripe-buy-button>
+              <div className="mx-auto max-w-xs px-8">
+                <p className="text-base font-semibold text-gray-600">
+                  Pay once, own it forever
+                </p>
+                <p className="mt-6 flex items-baseline justify-center gap-x-2">
+                  <span className="text-5xl font-bold tracking-tight text-gray-900">
+                    $349
+                  </span>
+                  <span className="text-sm font-semibold leading-6 tracking-wide text-gray-600">
+                    USD
+                  </span>
+                </p>
+                <button
+                  className="mt-10 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  onClick={() => checkout()}
+                >
+                  Get access
+                </button>
+                <p className="mt-6 text-xs leading-5 text-gray-600">
+                  Invoices and receipts available for easy company reimbursement
+                </p>
+              </div>
             )}
           </div>
         </div>
       </div>
-
-      <Script async src="https://js.stripe.com/v3/buy-button.js" />
     </div>
   );
 };
