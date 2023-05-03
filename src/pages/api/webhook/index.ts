@@ -4,9 +4,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { PrismaClient, Prisma } from "@prisma/client";
 
 import Stripe from "stripe";
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
-  apiVersion: "2020-08-27",
+  apiVersion: "2022-11-15",
 });
 
 const webhookSecret: string = process.env.STRIPE_WEBHOOK_SECRET!;
@@ -53,9 +53,12 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
       console.log(`💰 PaymentIntent status: ${JSON.stringify(paymentIntent)}`);
 
-      const charge = paymentIntent.latest_charge as Stripe.Charge;
+      const customer = (await stripe.customers.retrieve(
+        paymentIntent.customer as string
+      )) as Stripe.Customer;
+
       const user = await prisma.user.findUniqueOrThrow({
-        where: { email: charge.billing_details.email! },
+        where: { email: customer.email! },
       });
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));

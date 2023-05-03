@@ -24,6 +24,8 @@ declare namespace NodeJS {
     // Optional. NextAuth.js email server.
     // This can't be tested locally. Must be deployed to the web to send mail.
     EMAIL_SERVER: string;
+    // Optional. Stripe API key.
+    STRIPE_API_KEY: string;
     // Optional. Stripe webhook secret.
     STRIPE_WEBHOOK_SECRET: string;
   }
