@@ -10,7 +10,8 @@
     "delete": "Borrar",
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
-    "back": "Devolver"
+    "back": "Devolver",
+    "upgrade": "Mejora"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",

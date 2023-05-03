@@ -12,7 +12,8 @@
     "execute": "执行",
     "sign-in": "登录",
     "sign-out": "登出",
-    "back": "返回"
+    "back": "返回",
+    "upgrade": "升级"
   },
   "conversation": {
     "new-chat": "新建会话",

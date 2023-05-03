@@ -12,7 +12,8 @@
     "execute": "ดำเนินการ",
     "sign-in": "เข้าสู่ระบบ",
     "sign-out": "ออกจากระบบ",
-    "back": "กลับ"
+    "back": "กลับ",
+    "upgrade": "อัปเกรด"
   },
   "conversation": {
     "new-chat": "แชทใหม่",

@@ -12,7 +12,8 @@
     "execute": "Execute",
     "sign-in": "Sign in",
     "sign-out": "Sign out",
-    "back": "Back"
+    "back": "Back",
+    "upgrade": "Upgrade"
   },
   "conversation": {
     "new-chat": "New Chat",

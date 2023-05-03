@@ -12,7 +12,8 @@
     "execute": "執行",
     "sign-in": "登錄",
     "sign-out": "登出",
-    "back": "返回"
+    "back": "返回",
+    "upgrade": "升級"
   },
   "conversation": {
     "new-chat": "新聊天",

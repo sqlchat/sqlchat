@@ -12,7 +12,8 @@
     "execute": "実行",
     "sign-in": "ログイン",
     "sign-out": "サインアウト",
-    "back": "戻る"
+    "back": "戻る",
+    "upgrade": "アップグレード"
   },
   "conversation": {
     "new-chat": "新しいチャット",

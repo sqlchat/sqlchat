@@ -12,7 +12,8 @@
     "execute": "Ausführen",
     "sign-in": "Anmelden",
     "sign-out": "Austragen",
-    "back": "Zurückkehren"
+    "back": "Zurückkehren",
+    "upgrade": "Aktualisierung"
   },
   "conversation": {
     "new-chat": "Neuer Chat",

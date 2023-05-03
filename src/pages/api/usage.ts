@@ -3,7 +3,6 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Conversation, Message } from "@/types";
 import { gpt35 } from "@/utils";
 import { getEndUser } from "./auth/end-user";
-import { checkQuota } from "./auth/quota";
 
 const prisma = new PrismaClient();
 
