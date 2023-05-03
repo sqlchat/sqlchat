@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
+import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
 import {
@@ -8,6 +9,7 @@ import {
   Bars3Icon,
   Cog6ToothIcon,
   XMarkIcon,
+  CreditCardIcon,
 } from "@heroicons/react/24/outline";
 import SettingView from "../../components/SettingView";
 import StripeCheckPaymentBanner from "../../components/StripeCheckPaymentBanner";
@@ -19,10 +21,21 @@ function classNames(...classes: string[]) {
 const SettingPage: NextPage = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
+  const { t } = useTranslation();
 
   const navigation = [
-    { name: "Back", href: "/", icon: ArrowUturnLeftIcon, current: false },
-    { name: "General", href: "/setting", icon: Cog6ToothIcon, current: true },
+    {
+      name: t("common.back"),
+      href: "/",
+      icon: ArrowUturnLeftIcon,
+      current: false,
+    },
+    {
+      name: t("setting.general"),
+      href: "/setting",
+      icon: Cog6ToothIcon,
+      current: true,
+    },
   ];
 
   return (
@@ -92,7 +105,11 @@ const SettingPage: NextPage = () => {
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-2">
                     <Link className="flex pt-4 shrink-0 items-center" href="/">
-                      <img className="w-auto" src="/chat-logo.webp" />
+                      <img
+                        className="w-auto"
+                        src="/chat-logo.webp"
+                        alt="SQL Chat Logo"
+                      />
                     </Link>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">

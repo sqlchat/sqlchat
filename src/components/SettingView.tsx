@@ -26,9 +26,6 @@ const SettingView = () => {
         <WeChatQRCodeView />
       </div>
 
-      <h3 className="pl-4 text-sm text-gray-500">
-        {t("setting.account.self")}
-      </h3>
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
         <AccountView />
       </div>

@@ -11,7 +11,8 @@
     "delete": "Delete",
     "execute": "Execute",
     "sign-in": "Sign in",
-    "sign-out": "Sign out"
+    "sign-out": "Sign out",
+    "back": "Back"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -49,6 +50,10 @@
   },
   "setting": {
     "self": "Setting",
+    "general": "General",
+    "billing": {
+      "self": "Billing"
+    },
     "account": {
       "self": "Account"
     },

@@ -11,7 +11,8 @@
     "delete": "削除",
     "execute": "実行",
     "sign-in": "ログイン",
-    "sign-out": "サインアウト"
+    "sign-out": "サインアウト",
+    "back": "戻る"
   },
   "conversation": {
     "new-chat": "新しいチャット",
@@ -49,6 +50,10 @@
   },
   "setting": {
     "self": "設定",
+    "general": "全般的",
+    "billing": {
+      "self": "請求する"
+    },
     "account": {
       "self": "アカウント"
     },

@@ -9,7 +9,8 @@
     "copy": "Copiar",
     "delete": "Borrar",
     "sign-in": "Iniciar sesión",
-    "sign-out": "Desconectar"
+    "sign-out": "Desconectar",
+    "back": "Devolver"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
@@ -47,6 +48,10 @@
   },
   "setting": {
     "self": "Configuración",
+    "general": "General",
+    "billing": {
+      "self": "Facturación"
+    },
     "account": {
       "self": "Cuenta"
     },

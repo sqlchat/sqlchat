@@ -11,7 +11,8 @@
     "delete": "删除",
     "execute": "执行",
     "sign-in": "登录",
-    "sign-out": "登出"
+    "sign-out": "登出",
+    "back": "返回"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -49,6 +50,10 @@
   },
   "setting": {
     "self": "设置",
+    "general": "通用",
+    "billing": {
+      "self": "计费"
+    },
     "account": {
       "self": "账户"
     },

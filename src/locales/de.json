@@ -11,7 +11,8 @@
     "delete": "Löschen",
     "execute": "Ausführen",
     "sign-in": "Anmelden",
-    "sign-out": "Austragen"
+    "sign-out": "Austragen",
+    "back": "Zurückkehren"
   },
   "conversation": {
     "new-chat": "Neuer Chat",
@@ -49,6 +50,10 @@
   },
   "setting": {
     "self": "Einstellung",
+    "general": "Allgemein",
+    "billing": {
+      "self": "Abrechnung"
+    },
     "account": {
       "self": "Konto"
     },

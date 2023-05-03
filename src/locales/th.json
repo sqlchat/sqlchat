@@ -11,7 +11,8 @@
     "delete": "ลบ",
     "execute": "ดำเนินการ",
     "sign-in": "เข้าสู่ระบบ",
-    "sign-out": "ออกจากระบบ"
+    "sign-out": "ออกจากระบบ",
+    "back": "กลับ"
   },
   "conversation": {
     "new-chat": "แชทใหม่",
@@ -49,6 +50,10 @@
   },
   "setting": {
     "self": "ตั้งค่า",
+    "general": "ทั่วไป",
+    "billing": {
+      "self": "การเรียกเก็บเงิน"
+    },
     "account": {
       "self": "บัญชี"
     },
