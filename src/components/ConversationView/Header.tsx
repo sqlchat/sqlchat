@@ -72,15 +72,19 @@ const Header = (props: Props) => {
         )}
         {session?.user && (
           <>
-            {session.user.image && (
-              <Link href="/setting">
+            <Link href="/setting">
+              {session.user.image ? (
                 <img
                   className="inline-block h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
                   src={session.user.image}
                   alt=""
                 />
-              </Link>
-            )}
+              ) : (
+                <div className="bg-indigo-100 px-3 py-1 rounded-full text-indigo-600 hover:bg-indigo-200 uppercase cursor-pointer">
+                  {session.user.name?.charAt(0)}
+                </div>
+              )}
+            </Link>
           </>
         )}
       </div>
