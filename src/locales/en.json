@@ -51,6 +51,10 @@
   "setting": {
     "self": "Setting",
     "general": "General",
+    "pricing": {
+      "early-bird-plan": "1000 questions / month",
+      "early-bird-checkout": "Early bird discount, 50% off for 1 year"
+    },
     "billing": {
       "self": "Billing"
     },
@@ -87,6 +91,7 @@
     "use-my-key": "Use my own key"
   },
   "payment": {
-    "self": "Payment"
+    "self": "Payment",
+    "login-to-buy": "Login to buy"
   }
 }

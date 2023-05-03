@@ -51,6 +51,10 @@
   "setting": {
     "self": "設定",
     "general": "通用",
+    "pricing": {
+      "early-bird-plan": "1000 次提問 / 月",
+      "early-bird-checkout": "早鳥優惠，5 折購買 1 年"
+    },
     "billing": {
       "self": "计费"
     },
@@ -87,6 +91,7 @@
     "use-my-key": "提供我自己的 key"
   },
   "payment": {
-    "self": "支付"
+    "self": "支付",
+    "login-to-buy": "登陸後購買"
   }
 }
