@@ -44,7 +44,7 @@ export default async function handler(
         ],
         line_items: [
           {
-            price: "price_1N2xC5AeLQYhEB73g05ZqTkb",
+            price: process.env.STRIPE_ANNUAL_LICENSE_PRICE_ID,
             quantity: 1,
           },
         ],
