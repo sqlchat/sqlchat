@@ -65,7 +65,7 @@ export default async function handler(
         customer: user.stripeId || undefined,
         customer_email: user.stripeId ? undefined : email,
         customer_creation: user.stripeId ? undefined : "always",
-        success_url: `${req.headers.origin}/result?session_id={CHECKOUT_SESSION_ID}`,
+        success_url: `${req.headers.origin}/setting?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/setting`,
       };
       const checkoutSession: Stripe.Checkout.Session =

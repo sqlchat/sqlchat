@@ -78,5 +78,8 @@
     "data-storage": "Verbindungseinstellungen werden in Ihrem lokalen Browser gespeichert",
     "non-select-sql-warning": "Die aktuelle Anweisung kann eine nicht-SELECT SQL-Anweisung sein, die zu einer Änderung des Datenbankschemas oder der Daten führen wird. Stellen Sie sicher, dass Sie wissen, was Sie tun.",
     "product-hunt": "🚀🚀🚀 Wir haben gerade auf Product Hunt gestartet, bitte geben Sie uns eine Stimme! 🚀🚀🚀"
+  },
+  "payment": {
+    "self": "Zahlung"
   }
 }
