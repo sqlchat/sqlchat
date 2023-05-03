@@ -38,6 +38,8 @@ model Message {
 
   @@index([chatId], map: "message_chat_id_idx")
   @@index([createdAt], map: "message_created_at_idx")
+  @@index([endUser], map: "message_end_user_idx")
+  @@index([role], map: "message_role_idx")
   @@map("message")
 }
 
