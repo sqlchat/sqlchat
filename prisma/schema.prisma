@@ -42,17 +42,23 @@ model Message {
 }
 
 model Subscription {
-  id        String   @id @default(cuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String   @map("user_id")
-  createdAt DateTime @default(now()) @map("created_at")
-  startAt   DateTime @default(now()) @map("start_at")
-  expireAt  DateTime @map("expire_at")
-  paymentId String   @default("") @map("payment_id")
-  customerId String  @default("") @map("customer_id")
+  id         String             @id @default(cuid())
+  user       User               @relation(fields: [userId], references: [id])
+  userId     String             @default("") @map("user_id")
+  createdAt  DateTime           @default(now()) @map("created_at")
+  status     SubscriptionStatus @default(ACTIVE)
+  startAt    DateTime           @default(now()) @map("start_at")
+  expireAt   DateTime           @default(now()) @map("expire_at")
+  paymentId  String             @default("") @map("payment_id")
+  customerId String             @default("") @map("customer_id")
 
   @@unique([paymentId])
   @@map("subscription")
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELED
 }
 
 // NextAuth Prisma Schema Begin
@@ -99,7 +105,7 @@ model User {
 
   subscriptions Subscription[]
   // The stripe customer id corresponds to this user
-  stripeId      String?   @unique @map("stripe_id")
+  stripeId      String?        @unique @map("stripe_id")
 
   @@map("users")
 }

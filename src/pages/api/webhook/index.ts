@@ -79,6 +79,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,
         createdAt: new Date(paymentIntent.created * 1000),
+        status: "ACTIVE",
         startAt: today,
         expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
         paymentId: paymentIntent.id,
