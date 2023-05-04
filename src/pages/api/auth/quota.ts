@@ -1,7 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./[...nextauth]";
 import { getEndUser } from "./end-user";
-import { Quota, DEFAULT_QUOTA_LIMIT } from "@/types";
+import { Quota, GUEST_QUOTA, FREE_QUOTA } from "@/types";
 
 const prisma = new PrismaClient();
 
@@ -18,6 +20,7 @@ export const getQuota = async (
   res: NextApiResponse
 ): Promise<Quota> => {
   const endUser = await getEndUser(req, res);
+  const session = await getServerSession(req, res, authOptions);
   return {
     current: await prisma.message.count({
       where: {
@@ -25,6 +28,6 @@ export const getQuota = async (
         role: "user",
       },
     }),
-    limit: DEFAULT_QUOTA_LIMIT,
+    limit: session ? FREE_QUOTA : GUEST_QUOTA,
   };
 };

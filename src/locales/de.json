@@ -13,7 +13,7 @@
     "sign-in": "Anmelden",
     "sign-out": "Austragen",
     "back": "Zurückkehren",
-    "upgrade": "Aktualisierung"
+    "quota": "Quote"
   },
   "conversation": {
     "new-chat": "Neuer Chat",
@@ -52,6 +52,12 @@
   "setting": {
     "self": "Einstellung",
     "general": "Allgemein",
+    "plan": {
+      "free": "Frei",
+      "pro": "Profi",
+      "signup-for-more": "Melden Sie sich für mehr an",
+      "upgrade": "Aktualisierung"
+    },
     "billing": {
       "self": "Abrechnung"
     },

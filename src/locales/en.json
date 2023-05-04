@@ -13,7 +13,7 @@
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "back": "Back",
-    "upgrade": "Upgrade"
+    "quota": "Quota"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -52,8 +52,12 @@
   "setting": {
     "self": "Setting",
     "general": "General",
-    "pricing": {
-      "early-bird-plan": "1000 questions / month",
+    "plan": {
+      "free": "Free",
+      "pro": "Pro",
+      "signup-for-more": "Sign up for more",
+      "upgrade": "Upgrade",
+      "early-bird": "1000 questions / month",
       "early-bird-checkout": "Early bird discount, 50% off for 1 year"
     },
     "billing": {

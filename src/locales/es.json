@@ -11,7 +11,7 @@
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
     "back": "Devolver",
-    "upgrade": "Mejora"
+    "quota": "Cuota"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
@@ -50,6 +50,12 @@
   "setting": {
     "self": "Configuración",
     "general": "General",
+    "plan": {
+      "free": "Gratis",
+      "pro": "Pro",
+      "signup-for-more": "Regístrese para obtener más",
+      "upgrade": "Mejora"
+    },
     "billing": {
       "self": "Facturación"
     },

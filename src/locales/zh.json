@@ -13,7 +13,7 @@
     "sign-in": "登录",
     "sign-out": "登出",
     "back": "返回",
-    "upgrade": "升级"
+    "quota": "额度"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -52,8 +52,12 @@
   "setting": {
     "self": "设置",
     "general": "通用",
-    "pricing": {
-      "early-bird-plan": "1000 次提问 / 月",
+    "plan": {
+      "free": "免费版",
+      "pro": "专业版",
+      "signup-for-more": "注册提升额度",
+      "upgrade": "升级",
+      "early-bird": "1000 次提问 / 月",
       "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
     },
     "billing": {

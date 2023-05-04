@@ -34,7 +34,8 @@ const SettingView = () => {
         <PricingView />
       </div>
 
-      <h3 className="pl-4 text-sm text-gray-500">{t("setting.basic.self")}</h3>
+      <OpenAIApiConfigView />
+
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
         <div className="w-full flex flex-row justify-between items-center gap-2">
           <span>{t("setting.basic.language")}</span>
@@ -46,9 +47,6 @@ const SettingView = () => {
         </div>
       </div>
 
-      <OpenAIApiConfigView />
-
-      <h3 className="pl-4 text-sm text-gray-500">{t("setting.data.self")}</h3>
       <div className="w-full border border-red-200 dark:border-zinc-700 p-4 rounded-lg">
         <div className="w-full flex flex-row justify-between items-center gap-2">
           <span>{t("setting.data.clear-all-data")}</span>

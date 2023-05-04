@@ -3,4 +3,7 @@ export interface Quota {
   limit: number;
 }
 
-export const DEFAULT_QUOTA_LIMIT = 10;
+// By month
+export const GUEST_QUOTA = 10;
+export const FREE_QUOTA = 25;
+export const PRO_QUOTA = 1000;

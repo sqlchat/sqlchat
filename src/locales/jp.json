@@ -13,7 +13,7 @@
     "sign-in": "ログイン",
     "sign-out": "サインアウト",
     "back": "戻る",
-    "upgrade": "アップグレード"
+    "quota": "クォータ"
   },
   "conversation": {
     "new-chat": "新しいチャット",
@@ -52,6 +52,12 @@
   "setting": {
     "self": "設定",
     "general": "全般的",
+    "plan": {
+      "free": "無料版",
+      "pro": "プロ",
+      "signup-for-more": "サインアップしてもっと",
+      "upgrade": "アップグレード"
+    },
     "billing": {
       "self": "請求する"
     },

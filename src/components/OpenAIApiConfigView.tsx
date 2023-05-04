@@ -29,20 +29,17 @@ const OpenAIApiConfigView = () => {
 
   return (
     <>
-      <h3 className="pl-4 text-sm text-gray-500">
-        {t("setting.openai-api-configuration.self")}
-      </h3>
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg">
         <div className="flex flex-col">
-          <label className="mb-1">Key</label>
+          <label className="mb-1">OpenAI API Key</label>
           <TextField
             placeholder="OpenAI API Key"
             value={openAIApiConfig.key}
             onChange={(value) => handleSetOpenAIApiConfig({ key: value })}
           />
         </div>
-        <div className="flex flex-col mt-2">
-          <label className="mb-1">Endpoint</label>
+        <div className="flex flex-col mt-3">
+          <label className="mb-1">API Endpoint</label>
           <TextField
             placeholder="OpenAI API Endpoint"
             value={openAIApiConfig.endpoint}

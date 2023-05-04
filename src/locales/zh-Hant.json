@@ -13,7 +13,7 @@
     "sign-in": "登錄",
     "sign-out": "登出",
     "back": "返回",
-    "upgrade": "升級"
+    "quota": "額度"
   },
   "conversation": {
     "new-chat": "新聊天",
@@ -52,8 +52,12 @@
   "setting": {
     "self": "設定",
     "general": "通用",
-    "pricing": {
-      "early-bird-plan": "1000 次提問 / 月",
+    "plan": {
+      "free": "免費版",
+      "pro": "專業版",
+      "signup-for-more": "注册提升额度",
+      "upgrade": "升級",
+      "early-bird": "1000 次提問 / 月",
       "early-bird-checkout": "早鳥優惠，5 折購買 1 年"
     },
     "billing": {

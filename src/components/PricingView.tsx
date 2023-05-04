@@ -42,7 +42,7 @@ const PricingView = () => {
     <div className="bg-white">
       <div className="mx-auto max-w-7xl p-6 lg:flex lg:items-center lg:justify-between lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-          {t("setting.pricing.early-bird-plan")}
+          {t("setting.plan.early-bird")}
         </h2>
         <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
           <button
@@ -50,7 +50,7 @@ const PricingView = () => {
             onClick={() => (session?.user?.email ? checkout() : signIn())}
           >
             {session?.user?.email
-              ? t("setting.pricing.early-bird-checkout")
+              ? t("setting.plan.early-bird-checkout")
               : t("payment.login-to-buy")}
           </button>
         </div>
