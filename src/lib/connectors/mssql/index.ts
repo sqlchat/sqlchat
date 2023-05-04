@@ -117,6 +117,39 @@ const getTableStructure = async (
   );
 };
 
+const getTableStructureBatch = async (
+  connection: Connection,
+  databaseName: string,
+  tableNameList: string[],
+  structureFetched: (tableName: string, structure: string) => void
+): Promise<void> => {
+  const pool = await getMSSQLConnection(connection);
+  const request = pool.request();
+
+  await Promise.all(
+    tableNameList.map(async (tableName) => {
+      const { recordset } = await request.query(
+        `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='${tableName}';`
+      );
+      const columnList = [];
+      // Transform to standard schema string.
+      for (const row of recordset) {
+        columnList.push(
+          `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${
+            String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""
+          }`
+        );
+      }
+      structureFetched(
+        tableName,
+        `CREATE TABLE [${tableName}] (
+        ${columnList.join(",\n")}
+      );`
+      );
+    })
+  );
+};
+
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
@@ -130,6 +163,17 @@ const newConnector = (connection: Connection): Connector => {
       structureFetched: (tableName: string, structure: string) => void
     ) =>
       getTableStructure(connection, databaseName, tableName, structureFetched),
+    getTableStructureBatch: (
+      databaseName: string,
+      tableNameList: string[],
+      structureFetched: (tableName: string, structure: string) => void
+    ) =>
+      getTableStructureBatch(
+        connection,
+        databaseName,
+        tableNameList,
+        structureFetched
+      ),
   };
 };
 

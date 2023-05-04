@@ -16,6 +16,11 @@ export interface Connector {
     tableName: string,
     structureFetched: (tableName: string, structure: string) => void
   ) => Promise<void>;
+  getTableStructureBatch: (
+    databaseName: string,
+    tableNameList: string[],
+    structureFetched: (tableName: string, structure: string) => void
+  ) => Promise<void>;
 }
 
 export const newConnector = (connection: Connection): Connector => {
