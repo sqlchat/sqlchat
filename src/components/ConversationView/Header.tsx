@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { signIn, useSession } from "next-auth/react";
-import { useTranslation } from "react-i18next";
+
 import { useConversationStore, useLayoutStore } from "@/store";
 import useDarkMode from "@/hooks/useDarkmode";
-import Link from "next/link";
+
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
+import SettingAvatarIcon from "../SettingAvatarIcon";
 
 interface Props {
   className?: string;
@@ -13,7 +13,6 @@ interface Props {
 
 const Header = (props: Props) => {
   const { className } = props;
-  const { t } = useTranslation();
   const layoutStore = useLayoutStore();
   const conversationStore = useConversationStore();
   const isDarkMode = useDarkMode();
@@ -21,7 +20,6 @@ const Header = (props: Props) => {
   const title =
     conversationStore.getConversationById(currentConversationId)?.title ||
     "SQL Chat";
-  const { data: session, status } = useSession();
 
   useEffect(() => {
     document.title = `${title}`;
@@ -62,31 +60,7 @@ const Header = (props: Props) => {
             alt=""
           />
         </a>
-        {!session && (
-          <button
-            className="whitespace-nowrap rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => signIn()}
-          >
-            {t("common.sign-in")}
-          </button>
-        )}
-        {session?.user && (
-          <>
-            <Link href="/setting">
-              {session.user.image ? (
-                <img
-                  className="inline-block h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700 cursor-pointer"
-                  src={session.user.image}
-                  alt=""
-                />
-              ) : (
-                <div className="bg-indigo-100 px-3 py-1 rounded-full text-indigo-600 hover:bg-indigo-200 uppercase cursor-pointer">
-                  {session.user.name?.charAt(0)}
-                </div>
-              )}
-            </Link>
-          </>
-        )}
+        <SettingAvatarIcon />
       </div>
     </div>
   );
