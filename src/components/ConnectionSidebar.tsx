@@ -91,7 +91,6 @@ const ConnectionSidebar = () => {
       } as Table,
       ...tableList,
     ]);
-    conversationStore.updateTableName(t("connection.all-tables"));
   }, [connectionStore, currentConnectionCtx]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -120,7 +119,6 @@ const ConnectionSidebar = () => {
   const handleTableNameSelect = async (tableName: string) => {
     conversationStore.updateTableName(tableName);
   };
-
   return (
     <>
       <Drawer
@@ -188,12 +186,12 @@ const ConnectionSidebar = () => {
                       value={
                         conversationStore.getConversationById(
                           conversationStore.currentConversationId
-                        )?.tableName || t("connection.all-tables")
+                        )?.tableName || ""
                       }
                       itemList={tableList.map((table) => {
                         return {
                           label: table.name,
-                          value: table.name,
+                          value: table.name === t("connection.all-tables") ? "" : table.name
                         };
                       })}
                       onValueChange={(databaseName) =>

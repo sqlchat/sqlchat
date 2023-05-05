@@ -9,7 +9,6 @@ const getDefaultConversation = (): Conversation => {
   return {
     id: generateUUID(),
     assistantId: GeneralBotId,
-    tableName: "All Tables",
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
