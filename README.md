@@ -61,45 +61,46 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 ## Local Development
 
-1. Make a copy of the example environment variables file;
+1. Make a copy of the example environment variables file:
 
-   ```bash
-   cp .env.example .env
-   ```
+    ```bash
+    cp .env.example .env
+    ```
 
-2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
+1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
 
-3. Install dependencies and start the dev server;
+1. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/). Create a database:
 
-   ```bash
-   pnpm i && pnpm dev
-   ```
-
-### Database Setup
+    ```sql
+    CREATE DATABASE sqlchat;
+    ```
+    In `.env` file, assign the connection string to `DATABASE_URL`.
 
 1. Install dependencies
 
-   ```bash
-   pnpm i
-   ```
+    ```bash
+    pnpm i
+    ```
 
-1. Generate prisma client from the model
+1. Generate schema
 
-   ```bash
-   pnpm prisma generate
-   ```
+    1. Generate prisma client from the model
 
-1. Migrate schema
+        ```bash
+        pnpm prisma generate
+        ```
 
-   ```bash
-   pnpm prisma migrate dev
-   ```
+    1. Migrate schema
 
-1. Seed data
+        ```bash
+        pnpm prisma migrate dev
+        ```
 
-   ```bash
-   pnpm prisma db seed
-   ```
+    1. (Optional) Seed data
+
+        ```bash
+        pnpm prisma db seed
+        ```
 
 ## Star History
 
