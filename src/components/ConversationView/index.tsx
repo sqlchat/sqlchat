@@ -1,5 +1,5 @@
 import axios from "axios";
-import { first, head, last } from "lodash-es";
+import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { API_KEY } from "@/env";
