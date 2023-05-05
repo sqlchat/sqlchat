@@ -150,18 +150,6 @@ const ConversationView = () => {
     };
     messageStore.addMessage(userMessage);
 
-    // Add PENDING assistant message to the store.
-    const assistantMessage: Message = {
-      id: generateUUID(),
-      conversationId: currentConversation.id,
-      creatorId: currentConversation.assistantId,
-      creatorRole: CreatorRole.Assistant,
-      createdAt: Date.now(),
-      content: "",
-      status: "LOADING",
-    };
-    messageStore.addMessage(assistantMessage);
-
     // Construct the system prompt
     const messageList = messageStore
       .getState()
@@ -264,12 +252,29 @@ const ConversationView = () => {
       } catch (error) {
         // do nth
       }
-      messageStore.updateMessage(assistantMessage.id, {
+      messageStore.addMessage({
+        id: generateUUID(),
+        conversationId: currentConversation.id,
+        creatorId: currentConversation.assistantId,
+        creatorRole: CreatorRole.Assistant,
+        createdAt: Date.now(),
         content: errorMessage,
         status: "FAILED",
       });
       return;
     }
+
+    // Add PENDING assistant message to the store.
+    const assistantMessage: Message = {
+      id: generateUUID(),
+      conversationId: currentConversation.id,
+      creatorId: currentConversation.assistantId,
+      creatorRole: CreatorRole.Assistant,
+      createdAt: Date.now(),
+      content: "",
+      status: "LOADING",
+    };
+    messageStore.addMessage(assistantMessage);
 
     const data = rawRes.body;
     if (!data) {
