@@ -77,7 +77,7 @@ const ConnectionSidebar = () => {
   }, [currentConnectionCtx?.connection]);
 
   useEffect(() => {
-    const newTable =
+    const tableList =
       connectionStore.databaseList.find(
         (database) =>
           database.connectionId === currentConnectionCtx?.connection.id &&
@@ -89,7 +89,7 @@ const ConnectionSidebar = () => {
         name: t("connection.all-tables"),
         structure: "",
       } as Table,
-      ...newTable,
+      ...tableList,
     ]);
     conversationStore.updateTableName(t("connection.all-tables"));
   }, [connectionStore, currentConnectionCtx]);

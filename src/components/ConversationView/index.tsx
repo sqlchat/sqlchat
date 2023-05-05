@@ -29,7 +29,6 @@ import { useTranslation } from "react-i18next";
 const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
-  const { t } = useTranslation();
   const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
@@ -204,8 +203,8 @@ const ConversationView = () => {
             return table.name === currentConversation.tableName;
           });
           if (table) {
-            schema = table.structure;
-            tokens += countTextTokens(schema);
+            tokens += countTextTokens(schema + table.structure);
+            schema += table.structure;
           }
         }
       } catch (error: any) {
