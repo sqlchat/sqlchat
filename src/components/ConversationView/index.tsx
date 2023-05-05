@@ -191,7 +191,7 @@ const ConversationView = () => {
         const tables = await connectionStore.getOrFetchDatabaseSchema(
           connectionStore.currentConnectionCtx?.database
         );
-        // Empty table name(such as "") denote all table. "" and `undefined` is false in `if`
+        // Empty table name(such as "") denote all table. "" and `undefined` both are false in `if`
         if (currentConversation.tableName) {
           const table = tables.find((table) => {
             return table.name === currentConversation.tableName;
