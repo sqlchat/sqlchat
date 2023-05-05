@@ -18,7 +18,7 @@ SQL Chat 是一个基于聊天的 SQL 客户端，使用自然语言向数据库
 
 ## Why
 
-随着我们进入 [开发者工具2.0时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多UI控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
+随着我们进入 [开发者工具2.0时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多 UI 控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
 
 ## How
 
