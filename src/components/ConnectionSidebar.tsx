@@ -8,6 +8,7 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaWidget from "./QuotaWidget";
+import { HasFeature } from "../utils";
 
 interface State {}
 
@@ -119,9 +120,11 @@ const ConnectionSidebar = () => {
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-              <div className="mb-4">
-                <QuotaWidget />
-              </div>
+              {HasFeature("quota") && (
+                <div className="mb-4">
+                  <QuotaWidget />
+                </div>
+              )}
               <a
                 href="https://discord.gg/z6kakemDjm"
                 className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"

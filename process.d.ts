@@ -1,5 +1,7 @@
 declare namespace NodeJS {
   export interface ProcessEnv {
+    // Required. Node environment.
+    NODE_ENV: string;
     // Required. Do not share your OpenAI API key with anyone! It should remain a secret.
     OPENAI_API_KEY: string;
     // Optional. OpenAI API endpoint. Defaults to https://api.openai.com.

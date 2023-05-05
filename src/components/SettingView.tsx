@@ -8,6 +8,7 @@ import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
 import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
+import { HasFeature } from "../utils";
 
 const SettingView = () => {
   const { t } = useTranslation();
@@ -26,13 +27,17 @@ const SettingView = () => {
         <WeChatQRCodeView />
       </div>
 
-      <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
-        <AccountView />
-      </div>
+      {HasFeature("account") && (
+        <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
+          <AccountView />
+        </div>
+      )}
 
-      <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
-        <PricingView />
-      </div>
+      {HasFeature("payment") && (
+        <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
+          <PricingView />
+        </div>
+      )}
 
       <OpenAIApiConfigView />
 
