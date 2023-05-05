@@ -9,7 +9,11 @@
     "setting": "设置",
     "copy": "复制",
     "delete": "删除",
-    "execute": "执行"
+    "execute": "执行",
+    "sign-in": "登录",
+    "sign-out": "登出",
+    "back": "返回",
+    "quota": "额度"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -49,6 +53,21 @@
   },
   "setting": {
     "self": "设置",
+    "general": "通用",
+    "plan": {
+      "free": "免费版",
+      "pro": "专业版",
+      "signup-for-more": "注册提升额度",
+      "upgrade": "升级",
+      "pro-question-per-month": "1000 次提问 / 月",
+      "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
+    },
+    "billing": {
+      "self": "计费"
+    },
+    "account": {
+      "self": "账户"
+    },
     "basic": {
       "self": "基础",
       "language": "语言"
@@ -77,5 +96,9 @@
     "product-hunt": "🚀🚀🚀 我们刚在 Product Hunt 发布, 来给我们点个赞! 🚀🚀🚀",
     "quota-overflow": "我们的 OpenAI 额度已用完，请提供您自己的 OpenAI API key。",
     "use-my-key": "提供我自己的 key"
+  },
+  "payment": {
+    "self": "支付",
+    "login-to-buy": "登陆后购买"
   }
 }

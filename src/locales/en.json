@@ -9,7 +9,11 @@
     "setting": "Setting",
     "copy": "Copy",
     "delete": "Delete",
-    "execute": "Execute"
+    "execute": "Execute",
+    "sign-in": "Sign in",
+    "sign-out": "Sign out",
+    "back": "Back",
+    "quota": "Quota"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -49,6 +53,21 @@
   },
   "setting": {
     "self": "Setting",
+    "general": "General",
+    "plan": {
+      "free": "Free",
+      "pro": "Pro",
+      "signup-for-more": "Sign up for more",
+      "upgrade": "Upgrade",
+      "pro-question-per-month": "1000 questions / month",
+      "early-bird-checkout": "Early bird discount, 50% off for 1 year"
+    },
+    "billing": {
+      "self": "Billing"
+    },
+    "account": {
+      "self": "Account"
+    },
     "basic": {
       "self": "Basic",
       "language": "Language"
@@ -77,5 +96,9 @@
     "product-hunt": "🚀🚀🚀 We just launched on Product Hunt, please give us a vote! 🚀🚀🚀",
     "quota-overflow": "We are running out of quota. You can still supply your own OpenAI API key to continue using.",
     "use-my-key": "Use my own key"
+  },
+  "payment": {
+    "self": "Payment",
+    "login-to-buy": "Login to buy"
   }
 }

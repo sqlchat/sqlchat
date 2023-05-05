@@ -8,3 +8,4 @@ export * from "./setting";
 export * from "./api";
 export * from "./connector";
 export * from "./assistant";
+export * from "./quota";

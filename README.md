@@ -83,13 +83,19 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm i
    ```
 
-2. Generate prisma client from the model
+1. Generate prisma client from the model
 
    ```bash
    pnpm prisma generate
    ```
 
-3. Seed data
+1. Migrate schema
+
+   ```bash
+   pnpm prisma migrate dev
+   ```
+
+1. Seed data
 
    ```bash
    pnpm prisma db seed

@@ -1,8 +1,11 @@
 import { useEffect } from "react";
+
 import { useConversationStore, useLayoutStore } from "@/store";
 import useDarkMode from "@/hooks/useDarkmode";
+
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
+import SettingAvatarIcon from "../SettingAvatarIcon";
 
 interface Props {
   className?: string;
@@ -44,7 +47,7 @@ const Header = (props: Props) => {
       <div className="mr-2 sm:mr-3 relative flex flex-row justify-end items-center">
         <a
           href="https://www.bytebase.com?source=sqlchat"
-          className="flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
+          className="hidden sm:flex flex-row justify-center items-center h-10 px-3 py-1 rounded-md whitespace-nowrap hover:bg-gray-100 dark:hover:bg-zinc-700"
           target="_blank"
         >
           <img
@@ -57,6 +60,7 @@ const Header = (props: Props) => {
             alt=""
           />
         </a>
+        <SettingAvatarIcon />
       </div>
     </div>
   );

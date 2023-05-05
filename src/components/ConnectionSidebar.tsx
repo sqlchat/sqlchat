@@ -9,13 +9,13 @@ import {
 } from "@/store";
 import { Table } from "@/types";
 import useLoading from "@/hooks/useLoading";
-import Link from "next/link";
 import Select from "./kit/Select";
-import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
+import QuotaWidget from "./QuotaWidget";
+import { HasFeature } from "../utils";
 
 interface State {}
 
@@ -135,15 +135,6 @@ const ConnectionSidebar = () => {
             </div>
             <div className="w-full flex flex-col justify-end items-center">
               <DarkModeSwitch />
-              <Tooltip title={t("common.setting")} side="right">
-                <Link
-                  className=" w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100 dark:hover:bg-zinc-700"
-                  data-tip={t("common.setting")}
-                  href="/setting"
-                >
-                  <Icon.IoMdSettings className="text-gray-600 dark:text-gray-300 w-6 h-auto" />
-                </Link>
-              </Tooltip>
             </div>
           </div>
           <div className="relative p-4 pb-0 w-64 h-full overflow-y-auto flex flex-col justify-start items-start bg-gray-100 dark:bg-zinc-700">
@@ -208,6 +199,11 @@ const ConnectionSidebar = () => {
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
+              {HasFeature("quota") && (
+                <div className="mb-4">
+                  <QuotaWidget />
+                </div>
+              )}
               <a
                 href="https://discord.gg/z6kakemDjm"
                 className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"
