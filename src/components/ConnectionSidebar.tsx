@@ -164,38 +164,39 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {tableSchemaLoadingState.isLoading ? (
-                <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
-                  {t("common.loading")}
-                </div>
-              ) : (
-                tableList.length > 0 && (
-                  <div className="w-full sticky top-0 z-1 my-4">
-                    <Select
-                      className="w-full px-4 py-3 !text-base"
-                      value={
-                        conversationStore.getConversationById(
-                          conversationStore.currentConversationId
-                        )?.tableName || ""
-                      }
-                      itemList={tableList.map((table) => {
-                        return {
-                          label:
-                            table.name === ""
-                              ? t("connection.all-tables")
-                              : table.name,
-                          value: table.name,
-                        };
-                      })}
-                      onValueChange={(tableName) =>
-                        handleTableNameSelect(tableName)
-                      }
-                      placeholder={t("connection.select-table") || ""}
-                    />
+              {currentConnectionCtx &&
+                (tableSchemaLoadingState.isLoading ? (
+                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                    <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
+                    {t("common.loading")}
                   </div>
-                )
-              )}
+                ) : (
+                  tableList.length > 0 && (
+                    <div className="w-full sticky top-0 z-1 my-4">
+                      <Select
+                        className="w-full px-4 py-3 !text-base"
+                        value={
+                          conversationStore.getConversationById(
+                            conversationStore.currentConversationId
+                          )?.tableName || ""
+                        }
+                        itemList={tableList.map((table) => {
+                          return {
+                            label:
+                              table.name === ""
+                                ? t("connection.all-tables")
+                                : table.name,
+                            value: table.name,
+                          };
+                        })}
+                        onValueChange={(tableName) =>
+                          handleTableNameSelect(tableName)
+                        }
+                        placeholder={t("connection.select-table") || ""}
+                      />
+                    </div>
+                  )
+                ))}
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
