@@ -50,9 +50,13 @@ to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://v
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
-You can set the following environment variables to customize the deployment:
+Required environment variables:
 
+- `DATABASE_URL`: Postgres connection string to store data. e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat.
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
+
+Optional environment variables:
+
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
 
 ```bash
