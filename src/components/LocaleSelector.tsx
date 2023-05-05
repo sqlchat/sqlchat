@@ -17,24 +17,8 @@ const localeItemList: LocaleItem[] = [
     label: "简体中文",
   },
   {
-    value: "zhHant",
-    label: "繁體中文",
-  },
-  {
     value: "es",
     label: "Español",
-  },
-  {
-    value: "jp",
-    label: "日本語",
-  },
-  {
-    value: "de",
-    label: "Deutsch",
-  },
-  {
-    value: "th",
-    label: "ยาสุฟุมิ",
   },
 ];
 
