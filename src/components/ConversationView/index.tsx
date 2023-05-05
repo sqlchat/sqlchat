@@ -190,10 +190,21 @@ const ConversationView = () => {
         const tables = await connectionStore.getOrFetchDatabaseSchema(
           connectionStore.currentConnectionCtx?.database
         );
-        for (const table of tables) {
-          if (tokens < MAX_TOKENS / 2) {
+        // Empty table name(such as "") denote all table. "" and `undefined` both are false in `if`
+        if (currentConversation.tableName) {
+          const table = tables.find((table) => {
+            return table.name === currentConversation.tableName;
+          });
+          if (table) {
             tokens += countTextTokens(schema + table.structure);
             schema += table.structure;
+          }
+        } else {
+          for (const table of tables) {
+            if (tokens < MAX_TOKENS / 2) {
+              tokens += countTextTokens(schema + table.structure);
+              schema += table.structure;
+            }
           }
         }
       } catch (error: any) {
