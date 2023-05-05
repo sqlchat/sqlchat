@@ -45,16 +45,6 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       return;
     }
 
-    // // Successfully constructed event.
-    // console.log("✅ Success:", event.id);
-    // switch (event.type) {
-    //   case "checkout.session.completed": {
-    //     const session = event.data.object;
-    //     console.log("payment success", session);
-    //     break;
-    //   }
-    // }
-
     // Cast event data to Stripe object.
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
