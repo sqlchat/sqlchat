@@ -1,17 +1,19 @@
-/*
-  Warnings:
+-- CreateEnum
+CREATE TYPE "SubscriptionStatus" AS ENUM ('ACTIVE', 'CANCELED');
 
-  - You are about to drop the `principal` table. If the table is not empty, all the data it contains will be lost.
+-- CreateTable
+CREATE TABLE "subscription" (
+    "id" TEXT NOT NULL,
+    "user_id" TEXT NOT NULL DEFAULT '',
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "status" "SubscriptionStatus" NOT NULL DEFAULT 'ACTIVE',
+    "start_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "expire_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "payment_id" TEXT NOT NULL DEFAULT '',
+    "customer_id" TEXT NOT NULL DEFAULT '',
 
-*/
--- DropTable
-DROP TABLE "principal";
-
--- DropEnum
-DROP TYPE "PrincipalStatus";
-
--- DropEnum
-DROP TYPE "PrincipalType";
+    CONSTRAINT "subscription_pkey" PRIMARY KEY ("id")
+);
 
 -- CreateTable
 CREATE TABLE "accounts" (
@@ -48,6 +50,7 @@ CREATE TABLE "users" (
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
     "image" TEXT,
+    "stripe_id" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
 );
@@ -60,6 +63,9 @@ CREATE TABLE "verificationtokens" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "subscription_payment_id_key" ON "subscription"("payment_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "accounts_provider_provider_account_id_key" ON "accounts"("provider", "provider_account_id");
 
 -- CreateIndex
@@ -69,10 +75,22 @@ CREATE UNIQUE INDEX "sessions_session_token_key" ON "sessions"("session_token");
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "users_stripe_id_key" ON "users"("stripe_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "verificationtokens_token_key" ON "verificationtokens"("token");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "verificationtokens_identifier_token_key" ON "verificationtokens"("identifier", "token");
+
+-- CreateIndex
+CREATE INDEX "message_end_user_idx" ON "message"("end_user");
+
+-- CreateIndex
+CREATE INDEX "message_role_idx" ON "message"("role");
+
+-- AddForeignKey
+ALTER TABLE "subscription" ADD CONSTRAINT "subscription_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
