@@ -2,7 +2,10 @@
 
 <div align="center">
   <h3>SQL Chat</h3>
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
+  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY">
+    <img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel">
+  </a>
+  <p>English | <a href="README.zh-CN.md">中文</a></p>
 </div>
 
 ## What
@@ -22,7 +25,7 @@ more intuitive. Of course, only if that works, and our goal is to deliver that e
 
 ## How
 
-SQL Chat is built by Next.js, it supports the following databases and will add more over time:
+SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following databases and will add more over time:
 
 - MySQL
 - PostgreSQL
@@ -30,8 +33,7 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 
 ## Data Privacy
 
-- All database connection configs are stored locally in your browser. You can also visit settings to
-  clear the data.
+- All database connection configs are stored locally in your browser. You can also visit settings to clear the data.
 
 - Only the database schema will be sent to the OpenAI API. No table data will be sent there.
 
@@ -40,8 +42,7 @@ SQL Chat is built by Next.js, it supports the following databases and will add m
 ## IP Whitelisting
 
 If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
-to the database whitelist IP. Because sqlchat.ai is hosted on Vercel which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address).
-If this is a concern, please consider the self-host option below.
+to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://vercel.com/) which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address). If this is a concern, please consider the self-host option below.
 
 ## Self-host with Docker
 
@@ -66,9 +67,9 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    cp .env.example .env
    ```
 
-1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
+2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file;
 
-1. Install dependencies and start the dev server;
+3. Install dependencies and start the dev server;
 
    ```bash
    pnpm i && pnpm dev

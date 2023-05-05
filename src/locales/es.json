@@ -4,6 +4,7 @@
     "close": "Cerrar",
     "confirm": "Confirmar",
     "save": "Guardar",
+    "edit": "Editar",
     "loading": "Cargando",
     "setting": "Configuración",
     "copy": "Copiar",
@@ -11,13 +12,14 @@
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
     "back": "Devolver",
-    "quota": "Cuota"
+    "quota": "Cuota",
+    "execute": "Ejecutar"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
     "conversation-title": "Titulo de conversación",
     "update": "Actualizar conversación",
-    "edit-title": "Editar Titulo de conversación"
+    "title": "Titulo"
   },
   "connection": {
     "self": "Conexión",
@@ -90,6 +92,8 @@
     "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
   },
   "payment": {
-    "self": "Pago"
+    "self": "Pago",
+    "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
+    "use-my-key": "Usar mi propia clave"
   }
 }

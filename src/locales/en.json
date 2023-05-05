@@ -26,6 +26,8 @@
     "new": "Create Connection",
     "edit": "Edit Connection",
     "select-database": "Select your database",
+    "select-table": "Select your table",
+    "all-tables":"All Tables",
     "database-type": "Database type",
     "title": "Title",
     "host": "Host",

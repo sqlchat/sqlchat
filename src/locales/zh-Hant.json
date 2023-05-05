@@ -26,6 +26,8 @@
     "new": "建立連線",
     "edit": "編輯連線",
     "select-database": "選擇您的資料庫",
+    "select-table": "選擇您的資料",
+    "all-tables":"全部表",
     "database-type": "資料庫類型",
     "title": "標題",
     "host": "主機",
