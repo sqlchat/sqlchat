@@ -10,7 +10,7 @@
 
 ## 介绍
 
-SQLChat是一个基于聊天的SQL客户端，使用自然语言向数据库提问和查询数据库。
+SQL Chat 是一个基于聊天的 SQL 客户端，使用自然语言向数据库提问和查询数据库。
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot1.webp)
 
@@ -18,11 +18,11 @@ SQLChat是一个基于聊天的SQL客户端，使用自然语言向数据库提�
 
 ## Why
 
-随着我们进入 [开发者工具2.0时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client也不例外。与在许多UI控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
+随着我们进入 [开发者工具2.0时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多 UI 控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
 
 ## How
 
-SQLChat是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据库，并将随着时间的推移支持更多:
+SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据库，并将随着时间的推移支持更多:
 
 - MySQL
 - PostgreSQL
@@ -32,15 +32,15 @@ SQLChat是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据�
 
 - 所有数据库连接配置都本地存储在浏览器中，您也可以访问设置到清除数据。
 
-- 只有数据库模式提供给OpenAI API，表数据不会提供给OpenAI API。
+- 只有数据库模式提供给 OpenAI API，表数据不会提供给 OpenAI API。
 
 - 如果使用 [sqlchat.ai](https://sqlchat.ai), 它会记录下这些匿名对话。
 
-## IP白名单
+## IP 白名单
 
-如果使用 [sqlchat.ai](https://sqlchat.ai) 连接数据库，则需要在数据库白名单IP中添加0.0.0.0(允许所有连接)。因为sqlchat。AI托管在 [Vercel](https://vercel.com/) 上 [使用动态IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address)。如果这是一个问题，请考虑下面的自主机选项。
+如果使用 [sqlchat.ai](https://sqlchat.ai) 连接数据库，则需要在数据库白名单 I P 中添加0.0.0.0(允许所有连接)。因为 sqlchat.ai 托管在 [Vercel](https://vercel.com/) 上 [使用动态 IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address)。如果这是一个问题，请考虑下面的自主机选项。
 
-## 使用Docker自托管
+## 使用 Docker 自托管
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
@@ -48,8 +48,8 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 
 您可以设置以下环境变量来定制部署:
 
-- `OPENAI_API_KEY`: OpenAI API密钥，从 [here](https://beta.openai.com/docs/developer-quickstart/api-keys) 获取。
-- `OPENAI_API_ENDPOINT`: OpenAI API端点，默认为 `https://api.openai.com`。
+- `OPENAI_API_KEY`: OpenAI API 密钥，从 [here](https://beta.openai.com/docs/developer-quickstart/api-keys) 获取。
+- `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
@@ -85,13 +85,19 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm prisma generate
    ```
 
-3. 添加初始的数据
+3. 迁移 schema
+
+   ```bash
+   pnpm prisma migrate dev
+   ```
+
+4. 添加初始的数据
 
    ```bash
    pnpm prisma db seed
    ```
 
-## Star历史
+## Star 历史
 
 [![Star History Chart](https://api.star-history.com/svg?repos=sqlchat/sqlchat&type=Date)](https://star-history.com/#sqlchat/sqlchat&Date)
 
@@ -113,11 +119,11 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 ## 许可
 
-本项目使用BSL许可证。请参阅 [LICENSE](LICENSE) 文件以获取完整的许可文本。
+本项目使用 BSL 许可证。请参阅 [LICENSE](LICENSE) 文件以获取完整的许可文本。
 
 ## 常见问题
 
-<details><summary>如何自托管SQL聊天?</summary>
+<details><summary>如何自托管 SQL Chat?</summary>
 <p>
 
 - 您可以一键将 `SQLChat` 部署到 `Vercel`
@@ -133,7 +139,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 </p>
 </details>
 
-<details><summary>如何使用我的OpenAI API密钥？</summary>
+<details><summary>如何使用我的 OpenAI API 密钥？</summary>
 <p>
 
 - 您可以在环境变量中设置 `OPENAI_API_KEY`。
@@ -150,7 +156,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 <details><summary>它总是说我有网络连接问题？</summary>
 <p>
 
-请确保您有一个稳定的网络连接，可以访问OpenAI API端点。如果您无法访问OpenAI API端点，您可以尝试在UI或环境变量中设置 `OPENAI_API_ENDPOINT`。
+请确保您有一个稳定的网络连接，可以访问 OpenAI API 端点。如果您无法访问 OpenAI API 端点，您可以尝试在 UI 或环境变量中设置 `OPENAI_API_ENDPOINT`。
 
 </p>
 </details>
