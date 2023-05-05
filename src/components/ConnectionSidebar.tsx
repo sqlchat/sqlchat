@@ -191,11 +191,14 @@ const ConnectionSidebar = () => {
                       itemList={tableList.map((table) => {
                         return {
                           label: table.name,
-                          value: table.name === t("connection.all-tables") ? "" : table.name
+                          value:
+                            table.name === t("connection.all-tables")
+                              ? ""
+                              : table.name,
                         };
                       })}
-                      onValueChange={(databaseName) =>
-                        handleTableNameSelect(databaseName)
+                      onValueChange={(tableName) =>
+                        handleTableNameSelect(tableName)
                       }
                       placeholder={t("connection.select-table") || ""}
                     />
