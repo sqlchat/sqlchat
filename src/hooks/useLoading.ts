@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-// The custom hooks manage the status of loading.
+// React state hook that manage a state of loading
 const useLoading = (initialState = true) => {
   const [state, setState] = useState({ isLoading: initialState, isFailed: false, isSucceed: false });
 
