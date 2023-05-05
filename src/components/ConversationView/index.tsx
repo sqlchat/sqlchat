@@ -207,7 +207,6 @@ const ConversationView = () => {
             }
           }
         }
-        console.log(schema);
       } catch (error: any) {
         toast.error(error.message);
       }
