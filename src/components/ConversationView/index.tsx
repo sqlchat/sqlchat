@@ -22,7 +22,6 @@ import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
-import { useTranslation } from "react-i18next";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens

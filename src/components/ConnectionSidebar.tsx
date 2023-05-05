@@ -194,10 +194,7 @@ const ConnectionSidebar = () => {
                             table.name === ""
                               ? t("connection.all-tables")
                               : table.name,
-                          value:
-                            table.name === t("connection.all-tables")
-                              ? ""
-                              : table.name,
+                          value: table.name,
                         };
                       })}
                       onValueChange={(tableName) =>
