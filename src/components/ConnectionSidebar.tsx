@@ -86,7 +86,7 @@ const ConnectionSidebar = () => {
 
     updateTableList([
       {
-        name: t("connection.all-tables"),
+        name: "",
         structure: "",
       } as Table,
       ...tableList,
@@ -190,7 +190,10 @@ const ConnectionSidebar = () => {
                       }
                       itemList={tableList.map((table) => {
                         return {
-                          label: table.name,
+                          label:
+                            table.name === ""
+                              ? t("connection.all-tables")
+                              : table.name,
                           value:
                             table.name === t("connection.all-tables")
                               ? ""
