@@ -28,14 +28,19 @@ const handler = async (req: NextRequest) => {
   const apiKey = openAIApiConfig?.key || openAIApiKey;
 
   if (!apiKey) {
-    const stream = new ReadableStream({
-      async start(controller) {
-        controller.error(new Error("OpenAI API Key is missing. You can supply your own key via Settings."));
-      },
-    });
-    return new Response(stream, {
-      status: 401,
-    });
+    return new Response(
+      JSON.stringify({
+        error: {
+          message: "OpenAI API Key is missing. You can supply your own key via Settings.",
+        },
+      }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        status: 401,
+      }
+    );
   }
 
   const apiEndpoint = getApiEndpoint(openAIApiConfig?.endpoint || openAIApiEndpoint);
