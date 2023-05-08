@@ -248,7 +248,8 @@ const ConversationView = () => {
       let errorMessage =
         "Failed to request message, please check your network.";
       try {
-        errorMessage = await rawRes.statusText;
+        const res = await rawRes.json();
+        errorMessage = res.error.message;
       } catch (error) {
         // do nth
       }
