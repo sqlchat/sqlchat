@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { HasFeature } from "../utils";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
 import PricingView from "./PricingView";
@@ -8,13 +9,12 @@ import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
 import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
-import { HasFeature } from "../utils";
 
 const SettingView = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4">
+    <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4 dark:bg-zinc-800">
       <div className="w-full flex flex-row justify-start items-start flex-wrap gap-2">
         <a
           href="https://discord.gg/z6kakemDjm"
