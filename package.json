@@ -56,6 +56,7 @@
     "stripe": "^12.3.0",
     "styled-components": "^5.3.9",
     "swr": "^2.1.5",
+    "tailwind-scrollbar-hide": "^1.1.7",
     "uuid": "^9.0.0",
     "zustand": "^4.3.6"
   },
