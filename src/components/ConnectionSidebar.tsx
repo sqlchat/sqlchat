@@ -16,6 +16,7 @@ import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaWidget from "./QuotaWidget";
 import { HasFeature } from "../utils";
+import MultipleSelect from "./kit/MultipleSelect";
 
 interface State {}
 
@@ -84,13 +85,7 @@ const ConnectionSidebar = () => {
           database.name === currentConnectionCtx?.database?.name
       )?.tableList || [];
 
-    updateTableList([
-      {
-        name: "",
-        structure: "",
-      } as Table,
-      ...tableList,
-    ]);
+    updateTableList(tableList);
   }, [connectionStore, currentConnectionCtx]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -116,7 +111,7 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleTableNameSelect = async (tableName: string) => {
+  const handleTableNameSelect = async (tableName: any) => {
     conversationStore.updateTableName(tableName);
   };
   return (
@@ -173,12 +168,12 @@ const ConnectionSidebar = () => {
                 ) : (
                   tableList.length > 0 && (
                     <div className="w-full sticky top-0 z-1 my-4">
-                      <Select
+                      <MultipleSelect
                         className="w-full px-4 py-3 !text-base"
                         value={
                           conversationStore.getConversationById(
                             conversationStore.currentConversationId
-                          )?.tableName || ""
+                          )?.tableName || []
                         }
                         itemList={tableList.map((table) => {
                           return {
