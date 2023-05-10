@@ -31,7 +31,7 @@ interface ConversationState {
     conversation: Partial<Conversation>
   ) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
-  updateTableName: (tableName: string) => void;
+  updateTableName: (tableName: string[]) => void;
 }
 
 export const useConversationStore = create<ConversationState>()(
@@ -78,7 +78,7 @@ export const useConversationStore = create<ConversationState>()(
           conversationList: state.conversationList.filter(filter),
         }));
       },
-      updateTableName: (tableName: string) => {
+      updateTableName: (tableName: string[]) => {
         const currentConversation = get().getConversationById(
           get().currentConversationId
         );

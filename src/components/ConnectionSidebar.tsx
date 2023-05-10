@@ -111,8 +111,16 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleTableNameSelect = async (tableName: any) => {
+  const handleTableNameSelect = async (tableName: string[]) => {
     conversationStore.updateTableName(tableName);
+  };
+
+  const handleAllSelect = async () => {
+    conversationStore.updateTableName(tableList.map((table) => table.name));
+  };
+
+  const handleEmptySelect = async () => {
+    conversationStore.updateTableName([]);
   };
   return (
     <>
