@@ -197,6 +197,20 @@ const ConnectionSidebar = () => {
                         }
                         placeholder={t("connection.select-table") || ""}
                       />
+                      <div>
+                        <button
+                          className="whitespace-nowrap rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={() => handleAllSelect()}
+                        >
+                          全选
+                        </button>
+                        <button
+                          className="whitespace-nowrap rounded bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={() => handleEmptySelect()}
+                        >
+                          全不选
+                        </button>
+                      </div>
                     </div>
                   )
                 ))}
