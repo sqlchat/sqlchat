@@ -13,14 +13,12 @@ interface Props<T = any> {
   }[];
   className?: string;
   placeholder?: string;
+  selectedPlaceholder?: string;
   onValueChange: (value: T) => void;
 }
 
 const MultipleSelect = (props: Props) => {
   const { itemList, value, placeholder, className, onValueChange } = props;
-  itemList.map((item) => {
-    console.log(value.find((v: string) => v == item.value));
-  });
   return (
     <Listbox value={value} onChange={onValueChange} multiple>
       <Listbox.Button
@@ -28,7 +26,7 @@ const MultipleSelect = (props: Props) => {
           className || ""
         } flex flex-row justify-between items-center text-sm whitespace-nowrap dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
       >
-        {value.length === 0 ? placeholder : value.join(",")}
+        {value.length === 0 ? placeholder : selectedPlaceholder}
         <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
           <Icon.BiChevronDown className="w-full h-auto opacity-60" />
         </SelectUI.Icon>
@@ -40,6 +38,19 @@ const MultipleSelect = (props: Props) => {
         leaveTo="opacity-0"
       >
         <Listbox.Options className="absolute p-1 mt-1 max-h-60 overflow-y-auto scrollbar-hide w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+          <Listbox.Option key="all" value="button">
+            <div className="flex">
+              <button
+                className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                onClick={() =>
+                  onValueChange(itemList.map((item) => item.value))
+                }
+              >
+                {t("connection.select-all-or-empty")}
+              </button>
+            </div>
+          </Listbox.Option>
+
           {itemList.map((item) => (
             <Listbox.Option
               className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
