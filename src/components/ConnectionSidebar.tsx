@@ -201,26 +201,18 @@ const ConnectionSidebar = () => {
                             : t("connection.all-tables")) || ""
                         }
                       >
-                        <div className="flex">
-                          <button
-                            className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                            onClick={(e) => {
-                              if (
-                                conversationStore.getConversationById(
-                                  conversationStore.currentConversationId
-                                )?.tableName?.length == 0
-                              ) {
-                                handleAllSelect();
-                              } else {
-                                handleEmptySelect();
-                              }
-                              // The Button area is a option that have select event. So must to stop Propagation
-                              e.stopPropagation();
-                            }}
-                          >
-                            {t("connection.select-all-or-empty")}
-                          </button>
-                        </div>
+                        <button
+                          className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={(e) => {
+                            selectedTablesName.length
+                              ? handleEmptySelect()
+                              : handleAllSelect();
+                            // The Button area is a option that have select event. So must to stop Propagation
+                            e.stopPropagation();
+                          }}
+                        >
+                          {t("connection.select-all-or-empty")}
+                        </button>
                       </MultipleSelect>
                     </div>
                   )
