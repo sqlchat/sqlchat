@@ -1,7 +1,6 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, useState } from "react";
 import { CheckIcon } from "@heroicons/react/20/solid";
-import { t } from "i18next";
 import * as SelectUI from "@radix-ui/react-select";
 import Icon from "../Icon";
 
@@ -18,16 +17,8 @@ interface Props<T = any> {
 }
 
 const MultipleSelect = (props: Props & { children?: ReactNode }) => {
-  console.log("rerender");
-  const {
-    itemList,
-    value,
-    placeholder,
-    selectedPlaceholder,
-    className,
-    onValueChange,
-    children,
-  } = props;
+  const { itemList, value, placeholder, className, onValueChange, children } =
+    props;
   console.log(value);
   return (
     <Listbox value={value} onChange={onValueChange} multiple>
@@ -36,7 +27,7 @@ const MultipleSelect = (props: Props & { children?: ReactNode }) => {
           className || ""
         } flex flex-row justify-between items-center text-sm whitespace-nowrap dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
       >
-        {value.length === 0 ? placeholder : selectedPlaceholder}
+        {placeholder}
         <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
           <Icon.BiChevronDown className="w-full h-auto opacity-60" />
         </SelectUI.Icon>

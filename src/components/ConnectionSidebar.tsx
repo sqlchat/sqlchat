@@ -32,6 +32,10 @@ const ConnectionSidebar = () => {
     (database) => database.connectionId === currentConnectionCtx?.connection.id
   );
   const [tableList, updateTableList] = useState<Table[]>([]);
+  const selectedTablesName: string[] =
+    conversationStore.getConversationById(
+      conversationStore.currentConversationId
+    )?.tableName || [];
   const tableSchemaLoadingState = useLoading();
 
   useEffect(() => {
@@ -178,11 +182,7 @@ const ConnectionSidebar = () => {
                     <div className="w-full sticky top-0 z-1 my-4">
                       <MultipleSelect
                         className="w-full px-4 py-3 !text-base"
-                        value={
-                          conversationStore.getConversationById(
-                            conversationStore.currentConversationId
-                          )?.tableName || []
-                        }
+                        value={selectedTablesName}
                         itemList={tableList.map((table) => {
                           return {
                             label:
@@ -195,9 +195,10 @@ const ConnectionSidebar = () => {
                         onValueChange={(tableName) =>
                           handleTableNameSelect(tableName)
                         }
-                        placeholder={t("connection.select-table") || ""}
-                        selectedPlaceholder={
-                          t("connection.multiple-tables") || ""
+                        placeholder={
+                          (selectedTablesName.length
+                            ? t("connection.multiple-tables")
+                            : t("connection.all-tables")) || ""
                         }
                       >
                         <div className="flex">
@@ -213,6 +214,7 @@ const ConnectionSidebar = () => {
                               } else {
                                 handleEmptySelect();
                               }
+                              // The Button area is a option that have select event. So must to stop Propagation
                               e.stopPropagation();
                             }}
                           >
