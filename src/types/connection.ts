@@ -4,12 +4,15 @@ export enum Engine {
   MySQL = "MYSQL",
   PostgreSQL = "POSTGRESQL",
   MSSQL = "MSSQL",
+  TiDBServerless = "TiDBServerless",
 }
 
 export interface SSLOptions {
   ca?: string;
   cert?: string;
   key?: string;
+  minVersion?: string;
+  rejectUnauthorized?: boolean;
 }
 
 export interface Connection {

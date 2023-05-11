@@ -1,6 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { newConnector } from "@/lib/connectors";
 import { Connection } from "@/types";
+import { changeTiDBConnectionToMySQL } from "@/utils";
 
 // POST /api/connection/db
 // req body: { connection: Connection }
@@ -10,7 +11,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json([]);
   }
 
-  const connection = req.body.connection as Connection;
+  const connection = changeTiDBConnectionToMySQL(req.body.connection as Connection);
   try {
     const connector = newConnector(connection);
     const databaseNameList = await connector.getDatabases();
