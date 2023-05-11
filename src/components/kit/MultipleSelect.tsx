@@ -1,5 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
-import { Fragment, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { t } from "i18next";
 import * as SelectUI from "@radix-ui/react-select";
@@ -17,8 +17,16 @@ interface Props<T = any> {
   onValueChange: (value: T) => void;
 }
 
-const MultipleSelect = (props: Props) => {
-  const { itemList, value, placeholder, className, onValueChange } = props;
+const MultipleSelect = (props: Props & { children?: ReactNode }) => {
+  const {
+    itemList,
+    value,
+    placeholder,
+    selectedPlaceholder,
+    className,
+    onValueChange,
+    children,
+  } = props;
   return (
     <Listbox value={value} onChange={onValueChange} multiple>
       <Listbox.Button
@@ -38,18 +46,11 @@ const MultipleSelect = (props: Props) => {
         leaveTo="opacity-0"
       >
         <Listbox.Options className="absolute p-1 mt-1 max-h-60 overflow-y-auto scrollbar-hide w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-          <Listbox.Option key="all" value="button">
-            <div className="flex">
-              <button
-                className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                onClick={() =>
-                  onValueChange(itemList.map((item) => item.value))
-                }
-              >
-                {t("connection.select-all-or-empty")}
-              </button>
-            </div>
-          </Listbox.Option>
+          {children && (
+            <Listbox.Option key="button" value="button">
+              {children}
+            </Listbox.Option>
+          )}
 
           {itemList.map((item) => (
             <Listbox.Option
