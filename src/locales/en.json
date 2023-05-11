@@ -35,8 +35,9 @@
     "database-name": "Database name",
     "username": "Username",
     "password": "Password",
-    "select-all-or-empty": "select all/clear",
-    "multiple-tables": "Multiple tables are selected"
+    "multiple-tables": "Multiple tables are selected",
+    "empty-select": "clear selection",
+    "select-all": "select all"
   },
   "assistant": {
     "self": "Bot",

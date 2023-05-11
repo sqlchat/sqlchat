@@ -32,7 +32,10 @@
     "port": "Puerto",
     "database-name": "Nombre de Base de Datos",
     "username": "Usuario",
-    "password": "Contraseña"
+    "password": "Contraseña",
+    "multiple-tables": "Multiple tables are selected",
+    "empty-select": "clear selection",
+    "select-all": "select all"
   },
   "assistant": {
     "self": "Bot",

@@ -211,7 +211,9 @@ const ConnectionSidebar = () => {
                             e.stopPropagation();
                           }}
                         >
-                          {t("connection.select-all-or-empty")}
+                          {selectedTablesName.length
+                            ? t("connection.empty-select")
+                            : t("connection.select-all")}
                         </button>
                       </MultipleSelect>
                     </div>
