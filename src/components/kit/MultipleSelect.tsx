@@ -19,7 +19,6 @@ interface Props<T = any> {
 const MultipleSelect = (props: Props & { children?: ReactNode }) => {
   const { itemList, value, placeholder, className, onValueChange, children } =
     props;
-  console.log(value);
   return (
     <Listbox value={value} onChange={onValueChange} multiple>
       <Listbox.Button
