@@ -197,7 +197,7 @@ const ConnectionSidebar = () => {
                         }
                         placeholder={
                           (selectedTablesName.length
-                            ? t("connection.multiple-tables")
+                            ? selectedTablesName.join(",")
                             : t("connection.all-tables")) || ""
                         }
                       >

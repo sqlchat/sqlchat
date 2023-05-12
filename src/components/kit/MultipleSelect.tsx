@@ -27,7 +27,7 @@ const MultipleSelect = (props: Props & { children?: ReactNode }) => {
           className || ""
         } flex flex-row justify-between items-center text-sm whitespace-nowrap dark:text-gray-300 bg-white dark:bg-zinc-700 border dark:border-zinc-800 px-3 py-2 rounded-lg`}
       >
-        {placeholder}
+        <div className="truncate">{placeholder}</div>
         <SelectUI.Icon className="ml-1 w-5 h-auto shrink-0">
           <Icon.BiChevronDown className="w-full h-auto opacity-60" />
         </SelectUI.Icon>
