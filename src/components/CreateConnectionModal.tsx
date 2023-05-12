@@ -231,6 +231,7 @@ const CreateConnectionModal = (props: Props) => {
                 { value: Engine.MySQL, label: "MySQL" },
                 { value: Engine.PostgreSQL, label: "PostgreSQL" },
                 { value: Engine.MSSQL, label: "MSSQL" },
+                { value: Engine.TiDBServerless, label: "TiDB Serverless Tier" },
               ]}
               onValueChange={(value) =>
                 setPartialConnection({ engineType: value as Engine })
@@ -300,114 +301,123 @@ const CreateConnectionModal = (props: Props) => {
               onChange={(value) => setPartialConnection({ password: value })}
             />
           </div>
-          <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              SSL
-            </label>
-            <div className="w-full flex flex-row justify-start items-start flex-wrap">
-              {SSLTypeOptions.map((option) => (
-                <label
-                  key={option.value}
-                  className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3"
-                >
-                  <input
-                    type="radio"
-                    className="radio w-4 h-4 mr-1"
-                    value={option.value}
-                    checked={sslType === option.value}
-                    onChange={(e) => setSSLType(e.target.value as SSLType)}
-                  />
-                  <span className="text-sm">{option.label}</span>
-                </label>
-              ))}
+          {connection.engineType === Engine.TiDBServerless ? (
+            <div className="w-full flex flex-col">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t("connection.tidb-serverless-ssl-hint")}
+              </label>
             </div>
-            {sslType !== "none" && (
-              <>
-                <div className="text-sm space-x-3 mb-2">
-                  <span
-                    className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                      selectedSSLField === "ca" &&
-                      "!border-indigo-600 !opacity-100"
-                    } `}
-                    onClick={() => setSelectedSSLField("ca")}
+          ) : (
+            <div className="w-full flex flex-col">
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                SSL
+              </label>
+              <div className="w-full flex flex-row justify-start items-start flex-wrap">
+                {SSLTypeOptions.map((option) => (
+                  <label
+                    key={option.value}
+                    className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3"
                   >
-                    CA Certificate
-                  </span>
-                  {sslType === "full" && (
-                    <>
-                      <span
-                        className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                          selectedSSLField === "key" &&
-                          "!border-indigo-600 !opacity-100"
-                        }`}
-                        onClick={() => setSelectedSSLField("key")}
-                      >
-                        Client Key
-                      </span>
-                      <span
-                        className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                          selectedSSLField === "cert" &&
-                          "!border-indigo-600 !opacity-100"
-                        }`}
-                        onClick={() => setSelectedSSLField("cert")}
-                      >
-                        Client Certificate
-                      </span>
-                    </>
-                  )}
-                </div>
-                <div className="w-full h-auto relative">
-                  <TextareaAutosize
-                    className="w-full border resize-none rounded-lg text-sm p-3"
-                    minRows={3}
-                    maxRows={3}
-                    value={
-                      (connection.ssl && connection.ssl[selectedSSLField]) ?? ""
-                    }
-                    onChange={handleSSLValueChange}
-                  />
-                  <div
-                    className={`${
-                      connection.ssl &&
-                      connection.ssl[selectedSSLField] &&
-                      "hidden"
-                    } absolute top-3 left-4 text-gray-400 text-sm leading-6 pointer-events-none`}
-                  >
-                    <span className="">Input or </span>
-                    <label className="pointer-events-auto border border-dashed px-2 py-1 rounded-lg cursor-pointer hover:border-gray-600 hover:text-gray-600">
-                      upload file
+                    <input
+                      type="radio"
+                      className="radio w-4 h-4 mr-1"
+                      value={option.value}
+                      checked={sslType === option.value}
+                      onChange={(e) => setSSLType(e.target.value as SSLType)}
+                    />
+                    <span className="text-sm">{option.label}</span>
+                  </label>
+                ))}
+              </div>
+              {sslType !== "none" && (
+                <>
+                  <div className="text-sm space-x-3 mb-2">
+                    <span
+                      className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                        selectedSSLField === "ca" &&
+                        "!border-indigo-600 !opacity-100"
+                      } `}
+                      onClick={() => setSelectedSSLField("ca")}
+                    >
+                      CA Certificate
+                    </span>
+                    {sslType === "full" && (
+                      <>
+                        <span
+                          className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                            selectedSSLField === "key" &&
+                            "!border-indigo-600 !opacity-100"
+                          }`}
+                          onClick={() => setSelectedSSLField("key")}
+                        >
+                          Client Key
+                        </span>
+                        <span
+                          className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
+                            selectedSSLField === "cert" &&
+                            "!border-indigo-600 !opacity-100"
+                          }`}
+                          onClick={() => setSelectedSSLField("cert")}
+                        >
+                          Client Certificate
+                        </span>
+                      </>
+                    )}
+                  </div>
+                  <div className="w-full h-auto relative">
+                    <TextareaAutosize
+                      className="w-full border resize-none rounded-lg text-sm p-3"
+                      minRows={3}
+                      maxRows={3}
+                      value={
+                        (connection.ssl && connection.ssl[selectedSSLField]) ?? ""
+                      }
+                      onChange={handleSSLValueChange}
+                    />
+                    <div
+                      className={`${
+                        connection.ssl &&
+                        connection.ssl[selectedSSLField] &&
+                        "hidden"
+                      } absolute top-3 left-4 text-gray-400 text-sm leading-6 pointer-events-none`}
+                    >
+                      <span className="">Input or </span>
+                      <label className="pointer-events-auto border border-dashed px-2 py-1 rounded-lg cursor-pointer hover:border-gray-600 hover:text-gray-600">
+                        upload file
+                        <input
+                          className="hidden"
+                          type="file"
+                          onChange={handleSSLFileInputChange}
+                        />
+                      </label>
+                    </div>
+                  </div>
+                </>
+              )}
+              {connection.engineType === Engine.MSSQL && (
+                <div className="w-full flex flex-col">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                    Encrypt
+                  </label>
+                  <div className="w-full flex flex-row justify-start items-start flex-wrap">
+                    <label className="flex items-center">
                       <input
-                        className="hidden"
-                        type="file"
-                        onChange={handleSSLFileInputChange}
+                        type="checkbox"
+                        className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                        checked={connection.encrypt}
+                        onChange={(e) =>
+                          setPartialConnection({ encrypt: e.target.checked })
+                        }
                       />
+                      <span className="ml-2 text-sm">Encrypt connection</span>
                     </label>
                   </div>
                 </div>
-              </>
-            )}
-            {connection.engineType === Engine.MSSQL && (
-              <div className="w-full flex flex-col">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Encrypt
-                </label>
-                <div className="w-full flex flex-row justify-start items-start flex-wrap">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
-                      checked={connection.encrypt}
-                      onChange={(e) =>
-                        setPartialConnection({ encrypt: e.target.checked })
-                      }
-                    />
-                    <span className="ml-2 text-sm">Encrypt connection</span>
-                  </label>
-                </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
+
         <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">
           <div>
             {isEditing && (

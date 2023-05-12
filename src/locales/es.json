@@ -34,7 +34,8 @@
     "username": "Usuario",
     "password": "Contraseña",
     "empty-select": "clear selection",
-    "select-all": "select all"
+    "select-all": "select all",
+    "tidb-serverless-ssl-hint": "Se requiere SSL y ya está configurado"
   },
   "assistant": {
     "self": "Bot",

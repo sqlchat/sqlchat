@@ -36,7 +36,8 @@
     "port": "端口",
     "database-name": "数据库",
     "username": "用户名",
-    "password": "密码"
+    "password": "密码",
+    "tidb-serverless-ssl-hint": "必需SSL且已配置"
   },
   "assistant": {
     "self": "机器人",

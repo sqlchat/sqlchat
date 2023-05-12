@@ -49,6 +49,7 @@
     "react-is": "^18.2.0",
     "react-loader-spinner": "^5.3.4",
     "react-markdown": "^8.0.6",
+    "react-svg": "^16.1.11",
     "react-textarea-autosize": "^8.4.0",
     "react-use": "^17.4.0",
     "remark-gfm": "^3.0.1",

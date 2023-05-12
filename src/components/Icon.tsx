@@ -6,6 +6,12 @@ import * as Fi from "react-icons/fi";
 import * as Gi from "react-icons/gi";
 import * as Io from "react-icons/io";
 import * as Io5 from "react-icons/io5";
+import {IconType, IconBaseProps} from "react-icons/lib";
+import {ReactSVG} from "react-svg";
+
+const TiDBCloudIcon: IconType = (props: IconBaseProps) => (
+  <ReactSVG src="tidb-cloud.svg" className={props.className} />
+);
 
 const Icon = {
   ...Ai,
@@ -16,6 +22,7 @@ const Icon = {
   ...Gi,
   ...Io,
   ...Io5,
+  TiDBCloudIcon
 };
 
 // Icon is a collection of all icons from react-icons.

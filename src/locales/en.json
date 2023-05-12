@@ -36,7 +36,8 @@
     "username": "Username",
     "password": "Password",
     "empty-select": "clear selection",
-    "select-all": "select all"
+    "select-all": "select all",
+    "tidb-serverless-ssl-hint": "SSL is required and configured"
   },
   "assistant": {
     "self": "Bot",

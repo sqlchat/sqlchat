@@ -1,4 +1,8 @@
-import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
+import {
+  createParser,
+  ParsedEvent,
+  ReconnectInterval,
+} from "eventsource-parser";
 import { NextRequest } from "next/server";
 import { API_KEY } from "@/env";
 import { openAIApiEndpoint, openAIApiKey, gpt35 } from "@/utils";
@@ -17,9 +21,19 @@ const handler = async (req: NextRequest) => {
   if (API_KEY) {
     const auth = req.headers.get("Authorization");
     if (!auth || auth !== `Bearer ${API_KEY}`) {
-      return new Response("Unauthorized", {
-        status: 401,
-      });
+      return new Response(
+        JSON.stringify({
+          error: {
+            message: "Unauthorized.",
+          },
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          status: 401,
+        }
+      );
     }
   }
 
@@ -31,7 +45,8 @@ const handler = async (req: NextRequest) => {
     return new Response(
       JSON.stringify({
         error: {
-          message: "OpenAI API Key is missing. You can supply your own key via Settings.",
+          message:
+            "OpenAI API Key is missing. You can supply your own key via Settings.",
         },
       }),
       {
@@ -43,7 +58,9 @@ const handler = async (req: NextRequest) => {
     );
   }
 
-  const apiEndpoint = getApiEndpoint(openAIApiConfig?.endpoint || openAIApiEndpoint);
+  const apiEndpoint = getApiEndpoint(
+    openAIApiConfig?.endpoint || openAIApiEndpoint
+  );
   const res = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
