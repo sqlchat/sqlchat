@@ -34,7 +34,8 @@
     "port": "Port",
     "database-name": "Database name",
     "username": "Username",
-    "password": "Password"
+    "password": "Password",
+    "tidb-serverless-ssl-hint": "SSL is required and configured"
   },
   "assistant": {
     "self": "Bot",

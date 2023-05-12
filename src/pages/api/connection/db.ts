@@ -1,6 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { newConnector } from "@/lib/connectors";
 import { Connection } from "@/types";
+import { changeTiDBConnectionToMySQL } from "@/utils";
+import { Engine } from "@/types/connection";
 
 // POST /api/connection/db
 // req body: { connection: Connection }
@@ -10,7 +12,11 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json([]);
   }
 
-  const connection = req.body.connection as Connection;
+  let connection = req.body.connection as Connection;
+  if (connection.engineType === Engine.TiDBServerless) {
+    connection = changeTiDBConnectionToMySQL(connection);
+  }
+
   try {
     const connector = newConnector(connection);
     const databaseNameList = await connector.getDatabases();
