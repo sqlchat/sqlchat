@@ -33,8 +33,8 @@
     "database-name": "Nombre de Base de Datos",
     "username": "Usuario",
     "password": "Contraseña",
-    "empty-select": "clear selection",
-    "select-all": "select all",
+    "empty-select": "selección clara",
+    "select-all": "seleccionar todo",
     "tidb-serverless-ssl-hint": "Se requiere SSL y ya está configurado"
   },
   "assistant": {
