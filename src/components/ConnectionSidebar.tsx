@@ -35,7 +35,7 @@ const ConnectionSidebar = () => {
   const selectedTablesName: string[] =
     conversationStore.getConversationById(
       conversationStore.currentConversationId
-    )?.tableName || [];
+    )?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
 
   useEffect(() => {
@@ -115,16 +115,18 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleTableNameSelect = async (tableName: string[]) => {
-    conversationStore.updateTableName(tableName);
+  const handleTableNameSelect = async (selectedTablesName: string[]) => {
+    conversationStore.updateSelectedTablesName(selectedTablesName);
   };
 
   const handleAllSelect = async () => {
-    conversationStore.updateTableName(tableList.map((table) => table.name));
+    conversationStore.updateSelectedTablesName(
+      tableList.map((table) => table.name)
+    );
   };
 
   const handleEmptySelect = async () => {
-    conversationStore.updateTableName([]);
+    conversationStore.updateSelectedTablesName([]);
   };
   return (
     <>

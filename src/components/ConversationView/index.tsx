@@ -179,8 +179,8 @@ const ConversationView = () => {
           connectionStore.currentConnectionCtx?.database
         );
         // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
-        if (currentConversation.tableName) {
-          currentConversation.tableName.forEach((tableName) => {
+        if (currentConversation.selectedTablesName) {
+          currentConversation.selectedTablesName.forEach((tableName) => {
             const table = tables.find((table) => table.name === tableName);
             if (table) {
               if (tokens < MAX_TOKENS / 2) {
