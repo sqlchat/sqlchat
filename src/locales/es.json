@@ -33,7 +33,6 @@
     "database-name": "Nombre de Base de Datos",
     "username": "Usuario",
     "password": "Contraseña",
-    "multiple-tables": "Multiple tables are selected",
     "empty-select": "clear selection",
     "select-all": "select all"
   },

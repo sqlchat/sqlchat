@@ -35,7 +35,6 @@
     "database-name": "Database name",
     "username": "Username",
     "password": "Password",
-    "multiple-tables": "Multiple tables are selected",
     "empty-select": "clear selection",
     "select-all": "select all"
   },
