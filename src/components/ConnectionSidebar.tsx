@@ -16,6 +16,7 @@ import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaWidget from "./QuotaWidget";
 import { HasFeature } from "../utils";
+import MultipleSelect from "./kit/MultipleSelect";
 
 interface State {}
 
@@ -31,6 +32,10 @@ const ConnectionSidebar = () => {
     (database) => database.connectionId === currentConnectionCtx?.connection.id
   );
   const [tableList, updateTableList] = useState<Table[]>([]);
+  const selectedTablesName: string[] =
+    conversationStore.getConversationById(
+      conversationStore.currentConversationId
+    )?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
 
   useEffect(() => {
@@ -84,13 +89,7 @@ const ConnectionSidebar = () => {
           database.name === currentConnectionCtx?.database?.name
       )?.tableList || [];
 
-    updateTableList([
-      {
-        name: "",
-        structure: "",
-      } as Table,
-      ...tableList,
-    ]);
+    updateTableList(tableList);
   }, [connectionStore, currentConnectionCtx]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
@@ -116,8 +115,18 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleTableNameSelect = async (tableName: string) => {
-    conversationStore.updateTableName(tableName);
+  const handleTableNameSelect = async (selectedTablesName: string[]) => {
+    conversationStore.updateSelectedTablesName(selectedTablesName);
+  };
+
+  const handleAllSelect = async () => {
+    conversationStore.updateSelectedTablesName(
+      tableList.map((table) => table.name)
+    );
+  };
+
+  const handleEmptySelect = async () => {
+    conversationStore.updateSelectedTablesName([]);
   };
   return (
     <>
@@ -173,13 +182,9 @@ const ConnectionSidebar = () => {
                 ) : (
                   tableList.length > 0 && (
                     <div className="w-full sticky top-0 z-1 my-4">
-                      <Select
+                      <MultipleSelect
                         className="w-full px-4 py-3 !text-base"
-                        value={
-                          conversationStore.getConversationById(
-                            conversationStore.currentConversationId
-                          )?.tableName || ""
-                        }
+                        value={selectedTablesName}
                         itemList={tableList.map((table) => {
                           return {
                             label:
@@ -192,8 +197,27 @@ const ConnectionSidebar = () => {
                         onValueChange={(tableName) =>
                           handleTableNameSelect(tableName)
                         }
-                        placeholder={t("connection.select-table") || ""}
-                      />
+                        placeholder={
+                          (selectedTablesName.length
+                            ? selectedTablesName.join(",")
+                            : t("connection.all-tables")) || ""
+                        }
+                      >
+                        <button
+                          className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                          onClick={(e) => {
+                            selectedTablesName.length
+                              ? handleEmptySelect()
+                              : handleAllSelect();
+                            // The Button area is a option that have select event. So must to stop Propagation
+                            e.stopPropagation();
+                          }}
+                        >
+                          {selectedTablesName.length
+                            ? t("connection.empty-select")
+                            : t("connection.select-all")}
+                        </button>
+                      </MultipleSelect>
                     </div>
                   )
                 ))}

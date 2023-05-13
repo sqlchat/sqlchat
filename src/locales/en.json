@@ -27,7 +27,7 @@
     "edit": "Edit Connection",
     "select-database": "Select your database",
     "select-table": "Select your table",
-    "all-tables":"All Tables",
+    "all-tables": "All Tables",
     "database-type": "Database type",
     "title": "Title",
     "host": "Host",
@@ -35,6 +35,8 @@
     "database-name": "Database name",
     "username": "Username",
     "password": "Password",
+    "empty-select": "clear selection",
+    "select-all": "select all",
     "tidb-serverless-ssl-hint": "SSL is required and configured"
   },
   "assistant": {
