@@ -58,7 +58,10 @@ const CreateConnectionModal = (props: Props) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
-  const allowSave = connection.host !== "" && connection.username !== "";
+  const allowSave =
+    connection.host !== "" &&
+    connection.username !== "" &&
+    connection.title !== "";
 
   useEffect(() => {
     const connection = isEditing ? editConnection : defaultConnection;
@@ -370,7 +373,8 @@ const CreateConnectionModal = (props: Props) => {
                       minRows={3}
                       maxRows={3}
                       value={
-                        (connection.ssl && connection.ssl[selectedSSLField]) ?? ""
+                        (connection.ssl && connection.ssl[selectedSSLField]) ??
+                        ""
                       }
                       onChange={handleSSLValueChange}
                     />
