@@ -59,7 +59,7 @@ export default async function handler(
           // setup_future_usage: "off_session",
           metadata: {
             email: session?.user?.email!,
-            plan: PlanType.PRO,
+            plan: "PRO",
           },
         },
         // Link customer if present otherwise pass email and let Stripe create a new customer.

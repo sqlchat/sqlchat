@@ -3,8 +3,8 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
-import { PrismaClient, SubscriptionStatus } from "@prisma/client";
-import { PlanType, Subscription } from "@/types";
+import { PrismaClient } from "@prisma/client";
+import { getSubscription } from "../utils/subscription";
 
 const prisma = new PrismaClient();
 
@@ -30,32 +30,10 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
-      // console.log("session session", session);
+      console.log("session session", session);
       // console.log("session user", user);
-      // Find the most relavent subscription:
-      // Return the latest ACTIVE subscription if exists.
-      // Otherwise, return the latest non-ACTIVE subscripion.
-      const subscriptions = await prisma.subscription.findMany({
-        where: { userId: user.id },
-        orderBy: { expireAt: "desc" },
-      });
-
-      let relevantSubscription: Subscription | undefined;
-      for (const subscription of subscriptions) {
-        relevantSubscription = {
-          plan: subscription.plan as PlanType,
-          status: subscription.status,
-          startAt: subscription.startAt,
-          expireAt: subscription.expireAt,
-        };
-        if (relevantSubscription.status === SubscriptionStatus.ACTIVE) {
-          break;
-        }
-      }
-
-      if (relevantSubscription) {
-        session.user.subscription = relevantSubscription;
-      }
+      session.user.id = user.id;
+      session.user.subscription = await getSubscription(user.id);
       session.user.stripeId = user.stripeId;
       return session;
     },

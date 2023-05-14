@@ -1,62 +1,46 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Conversation, Message } from "@/types";
-import { gpt35 } from "@/utils";
+import { getSubscription } from "./utils/subscription";
+import { addUsage, getCurrentMonthUsage } from "./utils/usage";
 import { getEndUser } from "./auth/end-user";
+import { add } from "lodash-es";
 
-const prisma = new PrismaClient();
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json([]);
   }
-  const conversation = req.body.conversation as Conversation;
-  const messages = req.body.messages as Message[];
-  try {
-    const chat = await prisma.chat.findUnique({
-      where: {
-        id: conversation.id,
-      },
-    });
-    const endUser = await getEndUser(req, res);
-    if (chat) {
-      await prisma.message.createMany({
-        data: messages.map((message) => ({
-          chatId: chat.id,
-          createdAt: new Date(message.createdAt),
-          endUser: endUser,
-          role: message.creatorRole,
-          content: message.content,
-          upvote: false,
-          downvote: false,
-        })),
-      });
-    } else {
-      await prisma.chat.create({
-        data: {
-          id: conversation.id,
-          createdAt: new Date(conversation.createdAt),
-          model: gpt35,
-          ctx: {},
-          messages: {
-            create: messages.map((message) => ({
-              createdAt: new Date(message.createdAt),
-              endUser: endUser,
-              role: message.creatorRole,
-              content: message.content,
-              upvote: false,
-              downvote: false,
-            })),
+
+  const endUser = req.body.user || (await getEndUser(req, res));
+  console.log("user", endUser);
+  const subscripion = await getSubscription(endUser);
+  console.log("quota", subscripion.quota);
+
+  let usage = 0;
+  if (req.method === "GET") {
+    usage = await getCurrentMonthUsage(endUser);
+    console.log("usage", usage);
+    if (usage >= subscripion.quota) {
+      return new Response(
+        JSON.stringify({
+          error: {
+            message: `You have reached your monthly quota: ${subscripion.quota}`,
           },
-        },
-      });
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          status: 402,
+        }
+      );
     }
-  } catch (err) {
-    console.error(err);
+  } else if (req.method === "POST") {
+    usage = await addUsage(endUser);
   }
 
-  res.status(200).json(true);
-}
+  res.status(200).json({
+    current: usage,
+    limit: subscripion.quota,
+  });
+};
+
+export default handler;

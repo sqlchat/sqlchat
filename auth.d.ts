@@ -3,6 +3,8 @@ import "next-auth";
 
 declare module "next-auth" {
   interface User {
+    id: string;
+    usage: number;
     stripeId: number;
     subscription: Subscription;
   }

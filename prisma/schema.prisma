@@ -43,6 +43,17 @@ model Message {
   @@map("message")
 }
 
+model Usage {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  endUser   String   @default("") @map("end_user")
+  count     Int @default(0)
+
+  @@index([createdAt], map: "usage_created_at_idx")
+  @@index([endUser], map: "usage_end_user_idx")
+  @@map("usage")
+}
+
 model Subscription {
   id         String             @id @default(cuid())
   user       User               @relation(fields: [userId], references: [id])

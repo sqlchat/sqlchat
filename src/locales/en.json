@@ -13,7 +13,7 @@
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "back": "Back",
-    "quota": "Quota"
+    "quota": "Monthly Quota"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -58,6 +58,7 @@
     "self": "Setting",
     "general": "General",
     "plan": {
+      "guest": "Guest",
       "free": "Free",
       "pro": "Pro",
       "signup-for-more": "Sign up for more",

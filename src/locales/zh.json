@@ -13,7 +13,7 @@
     "sign-in": "登录",
     "sign-out": "登出",
     "back": "返回",
-    "quota": "额度"
+    "quota": "每月额度"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -58,6 +58,7 @@
     "self": "设置",
     "general": "通用",
     "plan": {
+      "guest": "访客",
       "free": "免费版",
       "pro": "专业版",
       "signup-for-more": "注册提升额度",

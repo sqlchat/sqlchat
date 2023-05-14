@@ -22,12 +22,14 @@ import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
+import { useSession } from "next-auth/react";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
 const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
+  const { data: session } = useSession();
   const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
@@ -243,6 +245,7 @@ const ConversationView = () => {
       body: JSON.stringify({
         messages: formatedMessageList,
         openAIApiConfig: settingStore.setting.openAIApiConfig,
+        clientId: session?.user.id,
       }),
       headers: requestHeaders,
     });
@@ -324,7 +327,7 @@ const ConversationView = () => {
     usageMessageList.push(assistantMessage);
 
     axios
-      .post<string[]>("/api/usage", {
+      .post<string[]>("/api/collect", {
         conversation: currentConversation,
         messages: usageMessageList,
       })
