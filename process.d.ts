@@ -33,7 +33,7 @@ declare namespace NodeJS {
     STRIPE_API_KEY: string;
     // Optional. Stripe webhook secret.
     STRIPE_WEBHOOK_SECRET: string;
-    // Optional. Stripe annual license price id.
-    STRIPE_ANNUAL_LICENSE_PRICE_ID: string;
+    // Optional. Stripe price id for Pro plan 1 year subscription.
+    STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION: string;
   }
 }

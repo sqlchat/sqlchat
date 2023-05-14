@@ -1,4 +1,4 @@
-type FeatureType = "account" | "payment" | "quota";
+type FeatureType = "debug" | "account" | "payment" | "quota";
 
 export const HasFeature = (feature: FeatureType) => {
   if (process.env.NODE_ENV === "development") {

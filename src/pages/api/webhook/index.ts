@@ -1,9 +1,10 @@
 import { buffer } from "micro";
 import Cors from "micro-cors";
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma, SubscriptionPlan } from "@prisma/client";
 
 import Stripe from "stripe";
+import { PlanType } from "@/types";
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
@@ -74,6 +75,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
         paymentId: paymentIntent.id,
         customerId: customerId || "",
+        plan: paymentIntent.metadata.plan as SubscriptionPlan,
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {

@@ -53,7 +53,9 @@ model Subscription {
   expireAt   DateTime           @default(now()) @map("expire_at")
   paymentId  String             @default("") @map("payment_id")
   customerId String             @default("") @map("customer_id")
+  plan       SubscriptionPlan   
 
+  @@index([userId], map: "subscription_user_id_idx")
   @@unique([paymentId])
   @@map("subscription")
 }
@@ -61,6 +63,10 @@ model Subscription {
 enum SubscriptionStatus {
   ACTIVE
   CANCELED
+}
+
+enum SubscriptionPlan {
+  PRO
 }
 
 // NextAuth Prisma Schema Begin
