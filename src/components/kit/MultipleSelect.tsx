@@ -1,6 +1,5 @@
 import { Listbox, Transition } from "@headlessui/react";
 import { Fragment, ReactNode, useState } from "react";
-import { CheckIcon } from "@heroicons/react/20/solid";
 import * as SelectUI from "@radix-ui/react-select";
 import Icon from "../Icon";
 
@@ -37,23 +36,23 @@ const MultipleSelect = (props: Props & { children?: ReactNode }) => {
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <Listbox.Options className="absolute p-1 mt-1 max-h-60 overflow-y-auto scrollbar-hide w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+        <Listbox.Options className="absolute border rounded-lg drop-shadow-lg dark:border-zinc-800 p-1 mt-1 max-h-80 overflow-y-auto scrollbar-hide w-full overflow-auto bg-white dark:bg-zinc-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {children && (
-            <Listbox.Option key="button" value="button">
+            <Listbox.Option className="px-2 py-2" key="button" value="button">
               {children}
             </Listbox.Option>
           )}
 
           {itemList.map((item) => (
             <Listbox.Option
-              className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+              className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
               key={item.value}
               value={item.value}
             >
-              {item.label}
+              <div className="truncate">{item.label}</div>
               {(value.find((v: string) => v === item.value) ? true : false) ? (
-                <span className=" inset-y-0 left-0 flex items-center pl-3 text-black">
-                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                <span className="w-5 h-auto">
+                  <Icon.BiCheck className="w-full h-auto" aria-hidden="true" />
                 </span>
               ) : null}
             </Listbox.Option>
