@@ -15,10 +15,12 @@ const QuotaView = (props: Props) => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    const refreshQuota = async () => {
+    const refreshQuota = async (userId: string) => {
       let quota: Quota = { current: 0, limit: 0 };
       try {
-        const { data } = await axios.get("/api/quota", {});
+        const { data } = await axios.get("/api/usage", {
+          headers: { Authorization: `Bearer ${userId}` },
+        });
         quota = data;
       } catch (error) {
         // do nth
@@ -26,8 +28,10 @@ const QuotaView = (props: Props) => {
       setQuota(quota);
     };
 
-    refreshQuota();
-  }, []);
+    if (session?.user.id) {
+      refreshQuota(session.user.id);
+    }
+  }, [session]);
 
   return (
     <div className="p-4 space-y-2 rounded-lg border border-indigo-400 flex flex-col dark:text-gray-300 hover:bg-white dark:hover:bg-zinc-800 bg-white dark:bg-zinc-800">

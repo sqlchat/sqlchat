@@ -27,7 +27,9 @@ export const getCurrentMonthUsage = async (
 // We group usage by day for each user
 export const addUsage = async (endUser: string): Promise<number> => {
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDay());
+  const today = new Date(
+    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  );
   const usage = await prisma.usage.findFirst({
     where: {
       endUser: endUser,
@@ -40,8 +42,7 @@ export const addUsage = async (endUser: string): Promise<number> => {
     newUsage = usage.count + 1;
     await prisma.usage.update({
       where: {
-        endUser: endUser,
-        createdAt: today,
+        id: usage.id,
       },
       data: {
         count: newUsage,

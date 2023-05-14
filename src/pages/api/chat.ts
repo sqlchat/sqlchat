@@ -4,7 +4,6 @@ import {
   ReconnectInterval,
 } from "eventsource-parser";
 import { NextRequest } from "next/server";
-import { API_KEY } from "@/env";
 import { openAIApiEndpoint, openAIApiKey, gpt35 } from "@/utils";
 
 // Needs Edge for streaming response.
@@ -19,28 +18,8 @@ const getApiEndpoint = (apiEndpoint: string) => {
 };
 
 const handler = async (req: NextRequest) => {
-  if (API_KEY) {
-    const auth = req.headers.get("Authorization");
-    if (!auth || auth !== `Bearer ${API_KEY}`) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: "Unauthorized.",
-          },
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          status: 401,
-        }
-      );
-    }
-  }
-
   const reqBody = await req.json();
-  const openAIApiConfig = reqBody.openAIApiConfig;
-  const apiKey = openAIApiConfig?.key || openAIApiKey;
+  const apiKey = req.headers.get("x-openai-key") || openAIApiKey;
 
   if (!apiKey) {
     return new Response(
@@ -61,39 +40,19 @@ const handler = async (req: NextRequest) => {
 
   // If client doesn't supply the OpenAI API key and our server supplies the key,
   // then we need to check the client quota.
-  if (!openAIApiConfig?.key && openAIApiKey) {
-    let user = reqBody.clientId;
-    if (!user) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message:
-              "Please sign up account to get free quota or provide your own OpenAI key.",
-          },
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          status: 401,
-        }
-      );
-    }
-  }
+  const sessionToken = req.cookies.get("next-auth.session-token")?.value;
 
   const currentUrl = new URL(req.url);
   const usageUrl = new URL(
     currentUrl.protocol + "//" + currentUrl.host + "/api/usage"
   );
+  const requestHeaders: any = {};
+  if (sessionToken) {
+    requestHeaders["Authorization"] = `Bearer ${sessionToken}`;
+  }
   const usageRes = await fetch(usageUrl, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
     method: "GET",
-    // body: JSON.stringify({
-    //   user: "foobar",
-    // }),
+    headers: requestHeaders,
   });
   if (!usageRes.ok) {
     return new Response(usageRes.body, {
@@ -120,7 +79,7 @@ const handler = async (req: NextRequest) => {
   }
 
   const apiEndpoint = getApiEndpoint(
-    openAIApiConfig?.endpoint || openAIApiEndpoint
+    req.headers.get("x-openai-endpoint") || openAIApiEndpoint
   );
   const remoteRes = await fetch(apiEndpoint, {
     headers: {
@@ -176,14 +135,8 @@ const handler = async (req: NextRequest) => {
 
   // Increment usage count
   await fetch(usageUrl, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
     method: "POST",
-    body: JSON.stringify({
-      user: "foobar",
-    }),
+    headers: requestHeaders,
   });
 
   return new Response(stream);

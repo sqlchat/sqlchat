@@ -2,22 +2,19 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getSubscription } from "./utils/subscription";
 import { addUsage, getCurrentMonthUsage } from "./utils/usage";
 import { getEndUser } from "./auth/end-user";
-import { add } from "lodash-es";
+import { Quota } from "@/types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json([]);
   }
 
-  const endUser = req.body.user || (await getEndUser(req, res));
-  console.log("user", endUser);
+  const endUser = await getEndUser(req, res);
   const subscripion = await getSubscription(endUser);
-  console.log("quota", subscripion.quota);
 
   let usage = 0;
   if (req.method === "GET") {
     usage = await getCurrentMonthUsage(endUser);
-    console.log("usage", usage);
     if (usage >= subscripion.quota) {
       return new Response(
         JSON.stringify({
@@ -37,10 +34,12 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     usage = await addUsage(endUser);
   }
 
-  res.status(200).json({
+  const quota: Quota = {
     current: usage,
     limit: subscripion.quota,
-  });
+  };
+
+  res.status(200).json(quota);
 };
 
 export default handler;

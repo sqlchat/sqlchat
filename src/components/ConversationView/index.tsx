@@ -2,7 +2,6 @@ import axios from "axios";
 import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { API_KEY } from "@/env";
 import {
   getAssistantById,
   getPromptGeneratorOfAssistant,
@@ -184,10 +183,12 @@ const ConversationView = () => {
 
         const tableList: string[] = [];
         if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach((tableName) => {
-            const table = tables.find((table) => table.name === tableName);
-            tableList.push(table!.structure);
-          });
+          currentConversation.selectedTablesName.forEach(
+            (tableName: string) => {
+              const table = tables.find((table) => table.name === tableName);
+              tableList.push(table!.structure);
+            }
+          );
         } else {
           for (const table of tables) {
             tableList.push(table!.structure);
@@ -237,15 +238,22 @@ const ConversationView = () => {
     });
 
     const requestHeaders: any = {};
-    if (API_KEY) {
-      requestHeaders["Authorization"] = `Bearer ${API_KEY}`;
+    if (session?.user.id) {
+      requestHeaders["Authorization"] = `Bearer ${session?.user.id}`;
+    }
+    if (settingStore.setting.openAIApiConfig?.key) {
+      requestHeaders["x-openai-key"] =
+        settingStore.setting.openAIApiConfig?.key;
+    }
+    if (settingStore.setting.openAIApiConfig?.endpoint) {
+      requestHeaders["x-openai-endpoint"] =
+        settingStore.setting.openAIApiConfig?.endpoint;
     }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
         openAIApiConfig: settingStore.setting.openAIApiConfig,
-        clientId: session?.user.id,
       }),
       headers: requestHeaders,
     });
@@ -327,10 +335,18 @@ const ConversationView = () => {
     usageMessageList.push(assistantMessage);
 
     axios
-      .post<string[]>("/api/collect", {
-        conversation: currentConversation,
-        messages: usageMessageList,
-      })
+      .post<string[]>(
+        "/api/collect",
+        {
+          conversation: currentConversation,
+          messages: usageMessageList,
+        },
+        {
+          headers: session?.user.id
+            ? { Authorization: `Bearer ${session?.user.id}` }
+            : undefined,
+        }
+      )
       .catch(() => {
         // do nth
       });
