@@ -36,12 +36,19 @@ const SSLTypeOptions = [
   },
 ];
 
+const defaultPort = {
+  [Engine.MySQL]: "3306",
+  [Engine.PostgreSQL]: "5432",
+  [Engine.MSSQL]: "1433",
+  [Engine.TiDBServerless]: "4000",
+};
+
 const defaultConnection: Connection = {
   id: "",
   title: "",
   engineType: Engine.MySQL,
   host: "",
-  port: "",
+  port: defaultPort[Engine.MySQL],
   username: "",
   password: "",
 };
@@ -96,6 +103,7 @@ const CreateConnectionModal = (props: Props) => {
     setConnection({
       ...connection,
       ...state,
+      port: defaultPort[state.engineType || Engine.MySQL],
     });
   };
 
@@ -370,7 +378,8 @@ const CreateConnectionModal = (props: Props) => {
                       minRows={3}
                       maxRows={3}
                       value={
-                        (connection.ssl && connection.ssl[selectedSSLField]) ?? ""
+                        (connection.ssl && connection.ssl[selectedSSLField]) ??
+                        ""
                       }
                       onChange={handleSSLValueChange}
                     />
