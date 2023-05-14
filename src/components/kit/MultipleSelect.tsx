@@ -45,13 +45,13 @@ const MultipleSelect = (props: Props & { children?: ReactNode }) => {
 
           {itemList.map((item) => (
             <Listbox.Option
-              className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-800"
+              className="w-full px-3 py-2 whitespace-nowrap truncate text-ellipsis overflow-x-hidden text-sm rounded-lg flex flex-row justify-between items-center cursor-pointer dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-800"
               key={item.value}
               value={item.value}
             >
-              <div className="dark:text-gray-300 truncate">{item.label}</div>
+              <div className="truncate">{item.label}</div>
               {(value.find((v: string) => v === item.value) ? true : false) ? (
-                <span className="w-5 h-auto dark:text-gray-300">
+                <span className="w-5 h-auto">
                   <Icon.BiCheck className="w-full h-auto" aria-hidden="true" />
                 </span>
               ) : null}
