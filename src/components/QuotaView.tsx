@@ -9,7 +9,7 @@ interface Props {
   className?: string;
 }
 
-const QuotaWidget = (props: Props) => {
+const QuotaView = (props: Props) => {
   const [quota, setQuota] = useState<Quota>({ current: 0, limit: 0 });
   const { t } = useTranslation();
   const { data: session } = useSession();
@@ -61,4 +61,4 @@ const QuotaWidget = (props: Props) => {
   );
 };
 
-export default QuotaWidget;
+export default QuotaView;

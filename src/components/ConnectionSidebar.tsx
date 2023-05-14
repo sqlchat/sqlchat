@@ -14,7 +14,7 @@ import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
-import QuotaWidget from "./QuotaWidget";
+import QuotaView from "./QuotaView";
 import { HasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 
@@ -226,7 +226,7 @@ const ConnectionSidebar = () => {
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
               {HasFeature("quota") && (
                 <div className="mb-4">
-                  <QuotaWidget />
+                  <QuotaView />
                 </div>
               )}
               <a

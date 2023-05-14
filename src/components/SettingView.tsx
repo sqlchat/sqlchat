@@ -10,6 +10,7 @@ import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
 import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
+import QuotaView from "./QuotaView";
 
 const SettingView = () => {
   const { t } = useTranslation();
