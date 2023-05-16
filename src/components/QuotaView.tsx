@@ -34,15 +34,15 @@ const QuotaView = (props: Props) => {
   }, [session]);
 
   return (
-    <div className="p-4 space-y-2 rounded-lg border border-indigo-400 flex flex-col dark:text-gray-300 hover:bg-white dark:hover:bg-zinc-800 bg-white dark:bg-zinc-800">
-      <div className="flex justify-start">
+    <div className="px-4 py-3 space-y-2 rounded-lg border border-indigo-400 flex flex-col dark:text-gray-300 hover:bg-white dark:hover:bg-zinc-800 bg-white dark:bg-zinc-800">
+      <div className="flex justify-between">
         <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
           {session
             ? t(`setting.plan.${session.user.subscription.plan.toLowerCase()}`)
             : t("setting.plan.guest")}
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between pt-1">
         <div>{t("common.quota")}</div>
         <div>
           {quota.current}/{quota.limit}
@@ -62,6 +62,14 @@ const QuotaView = (props: Props) => {
         >
           {t("setting.plan.signup-for-more")}
         </button>
+      )}
+      {!session && (
+        <Link
+          className="text-center rounded-full underline hover:opacity-80 px-2 py-0.5 text-xs font-medium text-gray-700"
+          href="/setting"
+        >
+          {t("banner.use-my-key")}
+        </Link>
       )}
     </div>
   );

@@ -6,6 +6,7 @@ import {
   useConversationStore,
   useLayoutStore,
   ResponsiveWidth,
+  useSettingStore,
 } from "@/store";
 import { Table } from "@/types";
 import useLoading from "@/hooks/useLoading";
@@ -22,6 +23,7 @@ interface State {}
 
 const ConnectionSidebar = () => {
   const { t } = useTranslation();
+  const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
@@ -224,11 +226,12 @@ const ConnectionSidebar = () => {
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-              {HasFeature("quota") && (
-                <div className="mb-4">
-                  <QuotaView />
-                </div>
-              )}
+              {!settingStore.setting.openAIApiConfig?.key &&
+                HasFeature("quota") && (
+                  <div className="mb-4">
+                    <QuotaView />
+                  </div>
+                )}
               <a
                 href="https://discord.gg/z6kakemDjm"
                 className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"
