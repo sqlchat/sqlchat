@@ -33,7 +33,9 @@ const SettingAvatarIcon = (props: Props) => {
               />
             ) : (
               <div className="bg-indigo-100 px-3 py-1 rounded-full text-indigo-600 hover:bg-indigo-200 uppercase cursor-pointer">
-                {session.user.name?.charAt(0)}
+                {session.user.name
+                  ? session.user.name.charAt(0)
+                  : session.user.email?.charAt(0)}
               </div>
             )}
           </Link>
