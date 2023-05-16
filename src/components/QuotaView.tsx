@@ -15,6 +15,11 @@ const QuotaView = (props: Props) => {
   const { data: session } = useSession();
 
   const showSupplyOwnKey = !session || quota.current >= quota.limit;
+  const expired =
+    session?.user?.subscription?.expireAt &&
+    session?.user?.subscription?.expireAt < Date.now();
+  const showActionButton =
+    !session || session.user.subscription.plan === "FREE" || expired;
 
   useEffect(() => {
     const refreshQuota = async (userId: string) => {
@@ -43,6 +48,11 @@ const QuotaView = (props: Props) => {
             ? t(`setting.plan.${session.user.subscription.plan.toLowerCase()}`)
             : t("setting.plan.guest")}
         </span>
+        {expired && (
+          <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20">
+            {t("setting.plan.expired")}
+          </span>
+        )}
       </div>
       <div className="flex justify-between pt-1">
         <div>{t("common.quota")}</div>
@@ -54,21 +64,22 @@ const QuotaView = (props: Props) => {
           {quota.current}/{quota.limit}
         </div>
       </div>
-      {session ? (
-        <Link
-          href="/setting"
-          className="rounded bg-indigo-600 px-2 py-1 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        >
-          {t("setting.plan.upgrade")}
-        </Link>
-      ) : (
-        <button
-          className="rounded bg-indigo-600 px-2 py-1 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={() => signIn()}
-        >
-          {t("setting.plan.signup-for-more")}
-        </button>
-      )}
+      {showActionButton &&
+        (session ? (
+          <Link
+            href="/setting"
+            className="rounded bg-indigo-600 px-2 py-1 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          >
+            {expired ? t("setting.plan.renew") : t("setting.plan.upgrade")}
+          </Link>
+        ) : (
+          <button
+            className="rounded bg-indigo-600 px-2 py-1 text-center text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            onClick={() => signIn()}
+          >
+            {t("setting.plan.signup-for-more")}
+          </button>
+        ))}
       {showSupplyOwnKey && (
         <Link
           className="text-center rounded-full underline hover:opacity-80 px-2 py-0.5 text-xs font-medium text-gray-700"

@@ -33,6 +33,9 @@ const PricingView = () => {
 
   return (
     <div className="bg-white dark:bg-zinc-800">
+      <span className="rounded-full bg-green-50 px-2 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+        {t(`setting.plan.pro`)}
+      </span>
       <div className="mx-auto max-w-7xl p-6 lg:flex lg:items-center lg:justify-between lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
           {t("setting.plan.pro-question-per-month")}

@@ -23,6 +23,6 @@ export interface Subscription {
   plan: PlanType;
   quota: number;
   status: SubscriptionStatus;
-  startAt: Date;
-  expireAt: Date;
+  startAt: number;
+  expireAt: number;
 }

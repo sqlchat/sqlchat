@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useSession } from "next-auth/react";
 import { HasFeature } from "../utils";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
@@ -10,10 +11,10 @@ import ClearDataButton from "./ClearDataButton";
 import LocaleSelector from "./LocaleSelector";
 import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
-import QuotaView from "./QuotaView";
 
 const SettingView = () => {
   const { t } = useTranslation();
+  const { data: session } = useSession();
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4 dark:bg-zinc-800">
@@ -41,7 +42,7 @@ const SettingView = () => {
         </div>
       )}
 
-      {HasFeature("payment") && (
+      {HasFeature("payment") && session?.user?.subscription.plan != "PRO" && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <PricingView />
         </div>

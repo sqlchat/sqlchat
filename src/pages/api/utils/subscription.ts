@@ -3,8 +3,6 @@ import { PrismaClient, SubscriptionStatus } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Return the latest ACTIVE subscription if exists.
-// Otherwise, return the latest non-ACTIVE subscripion.
 export const getSubscriptionByEmail = async (
   email: string
 ): Promise<Subscription> => {
@@ -13,25 +11,43 @@ export const getSubscriptionByEmail = async (
     orderBy: { expireAt: "desc" },
   });
 
-  let relevantSubscription: Subscription = {
-    plan: "FREE",
-    quota: PlanConfig["FREE"].quota,
-    status: SubscriptionStatus.ACTIVE,
-    startAt: new Date(0),
-    expireAt: new Date(0),
-  };
+  // Return the latest ACTIVE, not-expired subscription if exists.
   for (const subscription of subscriptions) {
-    relevantSubscription = {
+    const result = {
       plan: subscription.plan as PlanType,
       quota: PlanConfig[subscription.plan].quota,
       status: subscription.status,
-      startAt: subscription.startAt,
-      expireAt: subscription.expireAt,
+      startAt: subscription.startAt.getTime(),
+      expireAt: subscription.expireAt.getTime(),
     };
-    if (relevantSubscription.status === SubscriptionStatus.ACTIVE) {
-      break;
+    if (
+      subscription.status === SubscriptionStatus.ACTIVE &&
+      subscription.expireAt.getTime() > Date.now()
+    ) {
+      return result;
     }
   }
 
-  return relevantSubscription;
+  // Return the latest ACTIVE, expired subscripion if exists.
+  for (const subscription of subscriptions) {
+    const result = {
+      plan: subscription.plan as PlanType,
+      quota: PlanConfig["FREE"].quota,
+      status: subscription.status,
+      startAt: subscription.startAt.getTime(),
+      expireAt: subscription.expireAt.getTime(),
+    };
+    if (subscription.status === SubscriptionStatus.ACTIVE) {
+      return result;
+    }
+  }
+
+  // Return a FREE subscription.
+  return {
+    plan: "FREE",
+    quota: PlanConfig["FREE"].quota,
+    status: SubscriptionStatus.ACTIVE,
+    startAt: 0,
+    expireAt: 0,
+  };
 };

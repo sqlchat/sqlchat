@@ -60,7 +60,9 @@
       "free": "Gratis",
       "pro": "Pro",
       "signup-for-more": "Regístrese para obtener más",
-      "upgrade": "Mejora"
+      "upgrade": "Mejora",
+      "renew": "Renovar",
+      "expired": "Expirado"
     },
     "billing": {
       "self": "Facturación"
