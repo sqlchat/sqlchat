@@ -67,12 +67,18 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
+      const yearFromNow = new Date(
+        new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(
+          today.getFullYear() + 1
+        )
+      );
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,
+        email: paymentIntent.metadata.email,
         createdAt: new Date(paymentIntent.created * 1000),
         status: "ACTIVE",
         startAt: today,
-        expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
+        expireAt: yearFromNow,
         paymentId: paymentIntent.id,
         customerId: customerId || "",
         plan: paymentIntent.metadata.plan as SubscriptionPlan,

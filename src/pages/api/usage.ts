@@ -1,5 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { getSubscription } from "./utils/subscription";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
+import { getSubscriptionByEmail } from "./utils/subscription";
 import { addUsage, getCurrentMonthUsage } from "./utils/usage";
 import { getEndUser } from "./auth/end-user";
 import { Quota } from "@/types";
@@ -10,7 +12,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const endUser = await getEndUser(req, res);
-  const subscripion = await getSubscription(endUser);
+
+  // Get from server session if available
+  const serverSession = await getServerSession(req, res, authOptions);
+  let subscripion = serverSession?.user?.subscription;
+  if (!subscripion) {
+    subscripion = await getSubscriptionByEmail(endUser);
+  }
 
   let usage = 0;
   if (req.method === "GET") {

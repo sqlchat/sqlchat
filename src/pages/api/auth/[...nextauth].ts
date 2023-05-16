@@ -4,7 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaClient } from "@prisma/client";
-import { getSubscription } from "../utils/subscription";
+import { getSubscriptionByEmail } from "../utils/subscription";
 
 const prisma = new PrismaClient();
 
@@ -33,7 +33,7 @@ export const authOptions: NextAuthOptions = {
       console.log("session session", session);
       // console.log("session user", user);
       session.user.id = user.id;
-      session.user.subscription = await getSubscription(user.id);
+      session.user.subscription = await getSubscriptionByEmail(user.email);
       session.user.stripeId = user.stripeId;
       return session;
     },

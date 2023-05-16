@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 // Return the latest ACTIVE subscription if exists.
 // Otherwise, return the latest non-ACTIVE subscripion.
-export const getSubscription = async (
-  userId: string
+export const getSubscriptionByEmail = async (
+  email: string
 ): Promise<Subscription> => {
   const subscriptions = await prisma.subscription.findMany({
-    where: { userId: userId },
+    where: { email: email },
     orderBy: { expireAt: "desc" },
   });
 
