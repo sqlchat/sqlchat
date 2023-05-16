@@ -14,6 +14,8 @@ const QuotaView = (props: Props) => {
   const { t } = useTranslation();
   const { data: session } = useSession();
 
+  const showSupplyOwnKey = !session || quota.current >= quota.limit;
+
   useEffect(() => {
     const refreshQuota = async (userId: string) => {
       let quota: Quota = { current: 0, limit: 0 };
@@ -44,7 +46,11 @@ const QuotaView = (props: Props) => {
       </div>
       <div className="flex justify-between pt-1">
         <div>{t("common.quota")}</div>
-        <div>
+        <div
+          className={
+            quota.current >= quota.limit ? "text-red-600" : "text-black"
+          }
+        >
           {quota.current}/{quota.limit}
         </div>
       </div>
@@ -63,7 +69,7 @@ const QuotaView = (props: Props) => {
           {t("setting.plan.signup-for-more")}
         </button>
       )}
-      {!session && (
+      {showSupplyOwnKey && (
         <Link
           className="text-center rounded-full underline hover:opacity-80 px-2 py-0.5 text-xs font-medium text-gray-700"
           href="/setting"

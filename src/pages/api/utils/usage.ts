@@ -24,7 +24,7 @@ export const getCurrentMonthUsage = async (
   return aggregations._sum.count || 0;
 };
 
-// We group usage by day for each user
+// We coerce individual usage to the begining of the day to reduce the usage records.
 export const addUsage = async (endUser: string): Promise<number> => {
   const now = new Date();
   const today = new Date(
