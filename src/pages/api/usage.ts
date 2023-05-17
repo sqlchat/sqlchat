@@ -23,21 +23,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   let usage = 0;
   if (req.method === "GET") {
     usage = await getCurrentMonthUsage(endUser);
-    if (usage >= subscripion.quota) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: `You have reached your monthly quota: ${subscripion.quota}`,
-          },
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          status: 402,
-        }
-      );
-    }
   } else if (req.method === "POST") {
     usage = await addUsage(endUser);
   }
