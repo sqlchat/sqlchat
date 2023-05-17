@@ -17,6 +17,7 @@ import Icon from "../Icon";
 import { CodeBlock } from "../CodeBlock";
 import EngineIcon from "../EngineIcon";
 import ThreeDotsLoader from "./ThreeDotsLoader";
+import { useSession } from "next-auth/react";
 
 interface Props {
   message: Message;
@@ -24,6 +25,7 @@ interface Props {
 
 const MessageView = (props: Props) => {
   const message = props.message;
+  const { data: session } = useSession();
   const { t } = useTranslation();
   const settingStore = useSettingStore();
   const userStore = useUserStore();
@@ -84,8 +86,24 @@ const MessageView = (props: Props) => {
               {message.content}
             </div>
           </div>
-          <div className="w-10 h-10 p-1 border dark:border-zinc-700 rounded-full flex justify-center items-center ml-2 shrink-0">
-            <Icon.AiOutlineUser className="w-6 h-6" />
+          <div className="w-10 h-10 border dark:border-zinc-700 rounded-full flex justify-center items-center ml-2 shrink-0">
+            {session?.user ? (
+              session.user.image ? (
+                <img
+                  className="inline-block h-8 w-8 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-700"
+                  src={session.user.image}
+                  alt=""
+                />
+              ) : (
+                <div className="bg-indigo-100 px-3 py-1 rounded-full text-indigo-600 hover:bg-indigo-200 uppercase">
+                  {session.user.name
+                    ? session.user.name.charAt(0)
+                    : session.user.email?.charAt(0)}
+                </div>
+              )
+            ) : (
+              <Icon.AiOutlineUser className="w-6 h-6" />
+            )}
           </div>
         </>
       ) : (
