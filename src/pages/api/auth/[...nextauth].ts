@@ -30,8 +30,6 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, user }) {
-      console.log("session session", session);
-      // console.log("session user", user);
       session.user.id = user.id;
       session.user.subscription = await getSubscriptionByEmail(user.email);
       session.user.stripeId = user.stripeId;

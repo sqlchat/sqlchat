@@ -6,3 +6,4 @@ export * from "./message";
 export * from "./layout";
 export * from "./query";
 export * from "./setting";
+export * from "../utils/event-emitter";

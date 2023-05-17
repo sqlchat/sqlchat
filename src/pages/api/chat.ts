@@ -38,11 +38,18 @@ const handler = async (req: NextRequest) => {
     );
   }
 
+  const useServerKey = !req.headers.get("x-openai-key");
+  const sessionToken = req.cookies.get("next-auth.session-token")?.value;
+  const currentUrl = new URL(req.url);
+  const usageUrl = new URL(
+    currentUrl.protocol + "//" + currentUrl.host + "/api/usage"
+  );
+  const requestHeaders: any = {
+    Authorization: `Bearer ${sessionToken}`,
+  };
   if (hasFeature("quota")) {
     // If client doesn't supply the OpenAI API key and our server supplies the key,
     // then we need to check the client quota.
-    const useServerKey = !req.headers.get("x-openai-key");
-    const sessionToken = req.cookies.get("next-auth.session-token")?.value;
     if (useServerKey && !sessionToken) {
       return new Response(
         JSON.stringify({
@@ -60,13 +67,6 @@ const handler = async (req: NextRequest) => {
       );
     }
 
-    const currentUrl = new URL(req.url);
-    const usageUrl = new URL(
-      currentUrl.protocol + "//" + currentUrl.host + "/api/usage"
-    );
-    const requestHeaders: any = {
-      Authorization: `Bearer ${sessionToken}`,
-    };
     const usageRes = await fetch(usageUrl, {
       method: "GET",
       headers: requestHeaders,

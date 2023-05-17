@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Quota } from "@/types";
+import getEventEmitter from "@/utils/event-emitter";
 
 interface Props {
   className?: string;
@@ -21,20 +22,26 @@ const QuotaView = (props: Props) => {
   const showActionButton =
     !session || session.user.subscription.plan === "FREE" || expired;
 
-  useEffect(() => {
-    const refreshQuota = async (userId: string) => {
-      let quota: Quota = { current: 0, limit: 0 };
-      try {
-        const { data } = await axios.get("/api/usage", {
-          headers: { Authorization: `Bearer ${userId}` },
-        });
-        quota = data;
-      } catch (error) {
-        // do nth
-      }
-      setQuota(quota);
-    };
+  const refreshQuota = async (userId: string) => {
+    let quota: Quota = { current: 0, limit: 0 };
+    try {
+      const { data } = await axios.get("/api/usage", {
+        headers: { Authorization: `Bearer ${userId}` },
+      });
+      quota = data;
+    } catch (error) {
+      // do nth
+    }
+    setQuota(quota);
+  };
 
+  getEventEmitter().on("usage.update", () => {
+    if (session?.user.id) {
+      refreshQuota(session.user.id);
+    }
+  });
+
+  useEffect(() => {
     if (session?.user.id) {
       refreshQuota(session.user.id);
     }

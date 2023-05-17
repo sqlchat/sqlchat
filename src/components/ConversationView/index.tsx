@@ -22,6 +22,7 @@ import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
 import { useSession } from "next-auth/react";
+import getEventEmitter from "@/utils/event-emitter";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
@@ -316,6 +317,9 @@ const ConversationView = () => {
     messageStore.updateMessage(assistantMessage.id, {
       status: "DONE",
     });
+
+    // Emit usage update event so quota widget can update.
+    getEventEmitter().emit("usage.update");
 
     // Collect system prompt
     // We only collect the db prompt for the system prompt. We do not collect the intermediate
