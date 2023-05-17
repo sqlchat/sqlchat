@@ -10,17 +10,17 @@
 
 ## 介绍
 
-SQL Chat 是一个基于聊天的 SQL 客户端，使用自然语言向数据库提问和查询数据库。
+SQL Chat 是一个基于聊天的 SQL 客户端，使用自然语言与数据库以沟通的方式，实现对数据库的查询、修改、新增、删除等操作。
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot1.webp)
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot2.webp)
 
-## Why
+## 为什么会出现 SQL Chat
 
-随着我们进入 [开发者工具2.0时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多 UI 控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
+随着我们进入 [开发者工具 2.0 时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多 UI 控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
 
-## How
+## SQL Chat 是怎样的
 
 SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据库，并将随着时间的推移支持更多:
 
@@ -39,7 +39,7 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 
 ## IP 白名单
 
-如果使用 [sqlchat.ai](https://sqlchat.ai) 连接数据库，则需要在数据库白名单 I P 中添加0.0.0.0(允许所有连接)。因为 sqlchat.ai 托管在 [Vercel](https://vercel.com/) 上 [使用动态 IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address)。如果这是一个问题，请考虑下面的自主机选项。
+如果使用 [sqlchat.ai](https://sqlchat.ai) 连接数据库，则需要在数据库白名单 I P 中添加 0.0.0.0(允许所有连接)。因为 sqlchat.ai 托管在 [Vercel](https://vercel.com/) 上 [使用动态 IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address)。如果这是一个问题，请考虑下面的自主机选项。
 
 ## 使用 Docker 自托管
 
@@ -49,7 +49,11 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 
 您可以设置以下环境变量来定制部署:
 
-- `OPENAI_API_KEY`: OpenAI API 密钥，从 [here](https://beta.openai.com/docs/developer-quickstart/api-keys) 获取。
+- `DATABASE_URL`: Postgres 连接字符串以存储数据。例如：`postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`，[说明](https://www.prisma.io/docs/concepts/database-connectors/postgresql)。
+- `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
+
+环境变量（可选）:
+
 - `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
 
 ```bash
@@ -64,39 +68,43 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    cp .env.example .env
    ```
 
-2. 将您的 [API密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点(可选)添加到新创建的 `.env` 文件;
+2. 将您的 [API 密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点（可选）添加到新创建的 `.env` 文件;
 
-3. 安装依赖项并启动开发服务器;
+3. 启动 Postgres 实例。对于 mac，您可以使用 [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) 或者 [Postgres.app](https://postgresapp.com/)。
 
-   ```bash
-   pnpm i && pnpm dev
+4. 创建一个数据库:
+
+   ```sql
+   CREATE DATABASE sqlchat;
    ```
 
-### 数据库安装
+   在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL`。
 
-1. 安装依赖
+5. 安装依赖项
 
    ```bash
    pnpm i
    ```
 
-2. 从模型生成 `prisma` 客户端
+6. 生成 schema
 
-   ```bash
-   pnpm prisma generate
-   ```
+   1. 从模型生成 `prisma` 客户端
 
-3. 迁移 schema
+      ```bash
+      pnpm prisma generate
+      ```
 
-   ```bash
-   pnpm prisma migrate dev
-   ```
+   2. 迁移 schema
 
-4. 添加初始的数据
+      ```bash
+      pnpm prisma migrate dev
+      ```
 
-   ```bash
-   pnpm prisma db seed
-   ```
+   3. 初始化数据（可选）
+
+      ```bash
+      pnpm prisma db seed
+      ```
 
 ## Star 历史
 
@@ -127,11 +135,11 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 <details><summary>如何自托管 SQL Chat?</summary>
 <p>
 
-- 您可以一键将 `SQLChat` 部署到 `Vercel`
+- 您可以一键将 `SQL Chat` 部署到 `Vercel`
 
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
 
-- 您可以在几秒钟内使用 `Docker` 部署 `SQLChat`
+- 您可以在几秒钟内使用 `Docker` 部署 `SQL Chat`
 
   ```bash
   docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
