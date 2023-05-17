@@ -9,9 +9,6 @@ declare namespace NodeJS {
     OPENAI_API_KEY: string;
     // Optional. OpenAI API endpoint. Defaults to https://api.openai.com.
     OPENAI_API_ENDPOINT: string;
-    // Optional. API key to protect the backend API endpoint.
-    // This needs to be exposed to the frontend and must be prefixed with NEXT_PUBLIC_.
-    NEXT_PUBLIC_API_KEY: string;
     // Optional. NextAuth.js URL. Defaults to the current domain.
     NEXTAUTH_URL: string;
     // Optional. NextAuth.js secret. Defaults to a randomly generated string.
