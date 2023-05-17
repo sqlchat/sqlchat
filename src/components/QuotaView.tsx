@@ -48,7 +48,7 @@ const QuotaView = (props: Props) => {
             ? t(`setting.plan.${session.user.subscription.plan.toLowerCase()}`)
             : t("setting.plan.guest")}
         </span>
-        {expired && (
+        {!!expired && (
           <span className="rounded-full bg-yellow-50 px-2 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20">
             {t("setting.plan.expired")}
           </span>
@@ -64,7 +64,7 @@ const QuotaView = (props: Props) => {
           {quota.current}/{quota.limit}
         </div>
       </div>
-      {showActionButton &&
+      {!!showActionButton &&
         (session ? (
           <Link
             href="/setting"
@@ -80,7 +80,7 @@ const QuotaView = (props: Props) => {
             {t("setting.plan.signup-for-more")}
           </button>
         ))}
-      {showSupplyOwnKey && (
+      {!!showSupplyOwnKey && (
         <Link
           className="text-center rounded-full underline hover:opacity-80 px-2 py-0.5 text-xs font-medium text-gray-700"
           href="/setting"
