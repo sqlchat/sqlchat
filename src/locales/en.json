@@ -109,6 +109,6 @@
   },
   "payment": {
     "self": "Payment",
-    "login-to-buy": "Login to buy"
+    "sign-in-to-buy": "Sign in to buy"
   }
 }

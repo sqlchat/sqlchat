@@ -49,7 +49,7 @@ const PricingView = () => {
           >
             {session?.user?.email
               ? t("setting.plan.early-bird-checkout")
-              : t("payment.login-to-buy")}
+              : t("payment.sign-in-to-buy")}
           </button>
         </div>
       </div>
