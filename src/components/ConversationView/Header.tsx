@@ -5,7 +5,6 @@ import useDarkMode from "@/hooks/useDarkmode";
 
 import Icon from "../Icon";
 import GitHubStarBadge from "../GitHubStarBadge";
-import SettingAvatarIcon from "../SettingAvatarIcon";
 
 interface Props {
   className?: string;
@@ -60,7 +59,6 @@ const Header = (props: Props) => {
             alt=""
           />
         </a>
-        <SettingAvatarIcon />
       </div>
     </div>
   );

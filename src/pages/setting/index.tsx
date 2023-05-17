@@ -4,7 +4,13 @@ import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
-import { ArrowUturnLeftIcon, Bars3Icon, Cog6ToothIcon, XMarkIcon, CreditCardIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowUturnLeftIcon,
+  Bars3Icon,
+  Cog6ToothIcon,
+  XMarkIcon,
+  CreditCardIcon,
+} from "@heroicons/react/24/outline";
 import SettingView from "../../components/SettingView";
 import StripeCheckPaymentBanner from "../../components/StripeCheckPaymentBanner";
 
@@ -45,7 +51,11 @@ const SettingPage: NextPage = () => {
 
       <div className="dark:bg-zinc-800">
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+          <Dialog
+            as="div"
+            className="relative z-50 lg:hidden"
+            onClose={setSidebarOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -79,9 +89,16 @@ const SettingPage: NextPage = () => {
                     leaveTo="opacity-0"
                   >
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                      <button
+                        type="button"
+                        className="-m-2.5 p-2.5"
+                        onClick={() => setSidebarOpen(false)}
+                      >
                         <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <XMarkIcon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
                   </Transition.Child>
@@ -99,13 +116,17 @@ const SettingPage: NextPage = () => {
                                 <Link
                                   href={item.href}
                                   className={classNames(
-                                    item.current ? "bg-gray-50 text-indigo-600" : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+                                    item.current
+                                      ? "bg-gray-50 text-indigo-600"
+                                      : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
                                     "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                   )}
                                 >
                                   <item.icon
                                     className={classNames(
-                                      item.current ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
+                                      item.current
+                                        ? "text-indigo-600"
+                                        : "text-gray-400 group-hover:text-indigo-600",
                                       "h-6 w-6 shrink-0"
                                     )}
                                     aria-hidden="true"
@@ -149,7 +170,9 @@ const SettingPage: NextPage = () => {
                         >
                           <item.icon
                             className={classNames(
-                              item.current ? "!text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
+                              item.current
+                                ? "!text-indigo-600"
+                                : "text-gray-400 group-hover:text-indigo-600",
                               "h-6 w-6 shrink-0 dark:text-gray-400"
                             )}
                             aria-hidden="true"
@@ -166,14 +189,22 @@ const SettingPage: NextPage = () => {
         </div>
 
         <div className="sticky top-0 z-40 flex items-center gap-x-6 bg-white dark:bg-zinc-700 px-4 py-4 shadow-sm sm:px-6 lg:hidden">
-          <button type="button" className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-400 lg:hidden" onClick={() => setSidebarOpen(true)}>
+          <button
+            type="button"
+            className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-400 lg:hidden"
+            onClick={() => setSidebarOpen(true)}
+          >
             <span className="sr-only">Open sidebar</span>
             <Bars3Icon className="h-6 w-6" aria-hidden="true" />
           </button>
         </div>
 
         <main className="lg:pl-72">
-          {router.query.session_id && <StripeCheckPaymentBanner sessionId={router.query.session_id as string} />}
+          {router.query.session_id && (
+            <StripeCheckPaymentBanner
+              sessionId={router.query.session_id as string}
+            />
+          )}
           <div className="px-4 sm:px-6 lg:px-8">
             <SettingView />
           </div>

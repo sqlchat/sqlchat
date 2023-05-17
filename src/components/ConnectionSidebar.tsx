@@ -18,6 +18,7 @@ import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaView from "./QuotaView";
 import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
+import SettingAvatarIcon from "./SettingAvatarIcon";
 
 interface State {}
 
@@ -144,8 +145,9 @@ const ConnectionSidebar = () => {
             <div className="w-full flex flex-col justify-start items-start">
               <ConnectionList />
             </div>
-            <div className="w-full flex flex-col justify-end items-center">
+            <div className="w-full flex flex-col space-y-2 justify-end items-center">
               <DarkModeSwitch />
+              <SettingAvatarIcon />
             </div>
           </div>
           <div className="relative p-4 pb-0 w-64 h-full overflow-y-auto flex flex-col justify-start items-start bg-gray-100 dark:bg-zinc-700">
@@ -232,14 +234,6 @@ const ConnectionSidebar = () => {
                     <QuotaView />
                   </div>
                 )}
-              <a
-                href="https://discord.gg/z6kakemDjm"
-                className="text-indigo-600 dark:text-indigo-400 text-sm font-medium flex flex-row justify-center items-center mb-2 hover:underline"
-                target="_blank"
-              >
-                <Icon.BsDiscord className="w-4 h-auto mr-1" />
-                {t("social.join-discord-channel")}
-              </a>
               <a
                 className="dark:hidden"
                 href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
