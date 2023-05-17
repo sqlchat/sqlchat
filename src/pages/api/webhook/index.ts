@@ -67,10 +67,11 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
+      // Subtract 1 second from the year from now to make it 23:59:59
       const yearFromNow = new Date(
         new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(
           today.getFullYear() + 1
-        )
+        ) - 1000
       );
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,

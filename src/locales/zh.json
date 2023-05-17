@@ -65,7 +65,7 @@
       "upgrade": "升级",
       "renew": "续费",
       "expired": "已过期",
-      "pro-question-per-month": "1000 次提问 / 月",
+      "n-question-per-month": "{{count}} 次提问 / 月",
       "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
     },
     "billing": {

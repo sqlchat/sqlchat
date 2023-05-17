@@ -38,7 +38,9 @@ const PricingView = () => {
       </span>
       <div className="mx-auto max-w-7xl p-6 lg:flex lg:items-center lg:justify-between lg:px-8">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {t("setting.plan.pro-question-per-month")}
+          {t("setting.plan.n-question-per-month", {
+            count: 1000,
+          })}
         </h2>
         <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
           <button

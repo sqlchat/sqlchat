@@ -62,7 +62,9 @@
       "signup-for-more": "Regístrese para obtener más",
       "upgrade": "Mejora",
       "renew": "Renovar",
-      "expired": "Expirado"
+      "expired": "Expirado",
+      "n-question-per-month": "{{count}} preguntas / mes",
+      "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
     },
     "billing": {
       "self": "Facturación"
