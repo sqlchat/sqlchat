@@ -16,7 +16,7 @@ import DarkModeSwitch from "./DarkModeSwitch";
 import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaView from "./QuotaView";
-import { HasFeature } from "../utils";
+import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 
 interface State {}
@@ -227,7 +227,7 @@ const ConnectionSidebar = () => {
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
               {!settingStore.setting.openAIApiConfig?.key &&
-                HasFeature("quota") && (
+                hasFeature("quota") && (
                   <div className="mb-4">
                     <QuotaView />
                   </div>

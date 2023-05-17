@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
-import { HasFeature } from "../utils";
+import { hasFeature } from "../utils";
 
 interface Props {}
 
@@ -14,7 +14,7 @@ const SettingAvatarIcon = (props: Props) => {
   return (
     <Tooltip title={t("common.setting")} side="right">
       <div>
-        {(!HasFeature("account") || !session) && (
+        {(!hasFeature("account") || !session) && (
           <Link
             className=" w-10 h-10 p-1 rounded-full flex flex-row justify-center items-center hover:bg-gray-100 dark:hover:bg-zinc-700"
             data-tip={t("common.setting")}
@@ -23,7 +23,7 @@ const SettingAvatarIcon = (props: Props) => {
             <Icon.IoMdSettings className="text-gray-600 dark:text-gray-300 w-6 h-auto" />
           </Link>
         )}
-        {HasFeature("account") && session?.user && (
+        {hasFeature("account") && session?.user && (
           <Link href="/setting">
             {session.user.image ? (
               <img

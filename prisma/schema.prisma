@@ -47,7 +47,7 @@ model Usage {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now()) @map("created_at")
   endUser   String   @default("") @map("end_user")
-  count     Int @default(0)
+  count     Int      @default(0)
 
   @@index([createdAt], map: "usage_created_at_idx")
   @@index([endUser], map: "usage_end_user_idx")
@@ -55,22 +55,26 @@ model Usage {
 }
 
 model Subscription {
-  id         String             @id @default(cuid())
-  user       User               @relation(fields: [userId], references: [id])
-  userId     String             @default("") @map("user_id")
+  id          String             @id @default(cuid())
+  user        User               @relation(fields: [userId], references: [id])
+  userId      String             @default("") @map("user_id")
   // Denormalize to avoid join with the user table
-  email      String             @default("") @map("email")
-  createdAt  DateTime           @default(now()) @map("created_at")
-  status     SubscriptionStatus @default(ACTIVE)
-  startAt    DateTime           @default(now()) @map("start_at")
-  expireAt   DateTime           @default(now()) @map("expire_at")
-  paymentId  String             @default("") @map("payment_id")
-  customerId String             @default("") @map("customer_id")
-  plan       SubscriptionPlan   
+  email       String             @default("") @map("email")
+  createdAt   DateTime           @default(now()) @map("created_at")
+  status      SubscriptionStatus @default(ACTIVE)
+  startAt     DateTime           @default(now()) @map("start_at")
+  expireAt    DateTime           @default(now()) @map("expire_at")
+  paymentId   String             @default("") @map("payment_id")
+  customerId  String             @default("") @map("customer_id")
+  plan        SubscriptionPlan
+  description String             @default("")
+  amount      Int                @default(0)
+  currency    String             @default("")
+  receipt     String             @default("")
 
+  @@unique([paymentId])
   @@index([userId], map: "subscription_user_id_idx")
   @@index([email], map: "subscription_email_idx")
-  @@unique([paymentId])
   @@map("subscription")
 }
 

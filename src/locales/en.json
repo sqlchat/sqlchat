@@ -13,7 +13,10 @@
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "back": "Back",
-    "quota": "Monthly Quota"
+    "quota": "Monthly Quota",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -69,7 +72,8 @@
       "early-bird-checkout": "Early bird discount, 50% off for 1 year"
     },
     "billing": {
-      "self": "Billing"
+      "self": "Billing",
+      "view-receipt": "View receipt"
     },
     "account": {
       "self": "Account"

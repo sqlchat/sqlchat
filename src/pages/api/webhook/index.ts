@@ -83,6 +83,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         paymentId: paymentIntent.id,
         customerId: customerId || "",
         plan: paymentIntent.metadata.plan as SubscriptionPlan,
+        description: paymentIntent.metadata.description,
+        amount: paymentIntent.amount,
+        currency: paymentIntent.currency,
+        receipt: paymentIntent.charges.data[0].receipt_url,
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {

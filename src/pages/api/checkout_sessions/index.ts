@@ -60,6 +60,7 @@ export default async function handler(
           metadata: {
             email: session?.user?.email!,
             plan: "PRO",
+            description: "Pro 1 Year License (Early Bird)",
           },
         },
         // Link customer if present otherwise pass email and let Stripe create a new customer.

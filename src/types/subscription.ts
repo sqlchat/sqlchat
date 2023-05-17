@@ -26,3 +26,16 @@ export interface Subscription {
   startAt: number;
   expireAt: number;
 }
+
+export interface SubscriptionPurchase {
+  id: string;
+  email: string;
+  amount: number;
+  currency: string;
+  receipt: string;
+  plan: PlanType;
+  description: string;
+  createdAt: number;
+  startAt: number;
+  expireAt: number;
+}

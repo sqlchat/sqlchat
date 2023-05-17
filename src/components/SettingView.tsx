@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useSession } from "next-auth/react";
-import { HasFeature } from "../utils";
+import { hasFeature } from "../utils";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
 import DebugView from "./DebugView";
@@ -30,19 +30,19 @@ const SettingView = () => {
         <WeChatQRCodeView />
       </div>
 
-      {HasFeature("debug") && (
+      {hasFeature("debug") && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <DebugView />
         </div>
       )}
 
-      {HasFeature("account") && (
+      {hasFeature("account") && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <AccountView />
         </div>
       )}
 
-      {HasFeature("payment") && session?.user?.subscription.plan != "PRO" && (
+      {hasFeature("payment") && session?.user?.subscription.plan != "PRO" && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <PricingView />
         </div>

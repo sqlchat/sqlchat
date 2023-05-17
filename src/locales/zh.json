@@ -13,7 +13,10 @@
     "sign-in": "登录",
     "sign-out": "登出",
     "back": "返回",
-    "quota": "每月额度"
+    "quota": "每月额度",
+    "date": "日期",
+    "description": "描述",
+    "amount": "金额"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -69,7 +72,8 @@
       "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
     },
     "billing": {
-      "self": "计费"
+      "self": "计费",
+      "view-receipt": "查看收据"
     },
     "account": {
       "self": "账户"

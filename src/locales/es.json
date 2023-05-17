@@ -9,11 +9,14 @@
     "setting": "Configuración",
     "copy": "Copiar",
     "delete": "Borrar",
+    "execute": "Ejecutar",
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
     "back": "Devolver",
     "quota": "Cuota Mensual",
-    "execute": "Ejecutar"
+    "date": "Fecha",
+    "description": "Descripción",
+    "amount": "Cantidad"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
@@ -67,7 +70,8 @@
       "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
     },
     "billing": {
-      "self": "Facturación"
+      "self": "Facturación",
+      "view-receipt": "Ver recibo"
     },
     "account": {
       "self": "Cuenta"
