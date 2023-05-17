@@ -10,7 +10,7 @@
 
 ## What
 
-SQL Chat is a chat-based SQL client to ask database questions and query databases using natural language.
+SQL Chat is a chat-based SQL client, which uses natural language to communicate with the database to implement operations such as query, modification, addition, and deletion of the database.
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot1.webp)
 
@@ -53,7 +53,7 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 
 Required environment variables:
 
-- `DATABASE_URL`: Postgres connection string to store data. e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat.
+- `DATABASE_URL`: Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`,[explicate](https://www.prisma.io/docs/concepts/database-connectors/postgresql).
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 
 Optional environment variables:
@@ -68,44 +68,47 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 1. Make a copy of the example environment variables file:
 
-    ```bash
-    cp .env.example .env
-    ```
+   ```bash
+   cp .env.example .env
+   ```
 
-1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
+2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
 
-1. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/). Create a database:
+3. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/).
 
-    ```sql
-    CREATE DATABASE sqlchat;
-    ```
-    In `.env` file, assign the connection string to `DATABASE_URL`.
+4. Create a database:
 
-1. Install dependencies
+   ```sql
+   CREATE DATABASE sqlchat;
+   ```
 
-    ```bash
-    pnpm i
-    ```
+   In `.env` file, assign the connection string to environment variable `DATABASE_URL`.
 
-1. Generate schema
+5. Install dependencies
 
-    1. Generate prisma client from the model
+   ```bash
+   pnpm i
+   ```
 
-        ```bash
-        pnpm prisma generate
-        ```
+6. Generate schema
 
-    1. Migrate schema
+   1. Generate prisma client from the model
 
-        ```bash
-        pnpm prisma migrate dev
-        ```
+      ```bash
+      pnpm prisma generate
+      ```
 
-    1. (Optional) Seed data
+   2. Migrate schema
 
-        ```bash
-        pnpm prisma db seed
-        ```
+      ```bash
+      pnpm prisma migrate dev
+      ```
+
+   3. (Optional) Seed data
+
+      ```bash
+      pnpm prisma db seed
+      ```
 
 ## Star History
 
