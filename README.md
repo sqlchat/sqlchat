@@ -30,6 +30,7 @@ SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following d
 - MySQL
 - PostgreSQL
 - MSSQL
+- TiDB Cloud
 
 ## Data Privacy
 

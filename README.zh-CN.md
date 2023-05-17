@@ -27,6 +27,7 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 - MySQL
 - PostgreSQL
 - MSSQL
+- TiDB Cloud
 
 ## 数据保密
 
