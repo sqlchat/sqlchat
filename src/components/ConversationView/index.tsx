@@ -20,7 +20,6 @@ import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-import QuotaOverflowBanner from "../QuotaOverflowBanner";
 import { useSession } from "next-auth/react";
 import getEventEmitter from "@/utils/event-emitter";
 
@@ -363,7 +362,6 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        {!settingStore.setting.openAIApiConfig?.key && <QuotaOverflowBanner />}
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>
