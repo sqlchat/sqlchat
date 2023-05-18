@@ -4,9 +4,9 @@ import {
   ReconnectInterval,
 } from "eventsource-parser";
 import { NextRequest } from "next/server";
-import { API_KEY } from "@/env";
-import { openAIApiEndpoint, openAIApiKey, gpt35 } from "@/utils";
+import { openAIApiEndpoint, openAIApiKey, gpt35, hasFeature } from "@/utils";
 
+// Needs Edge for streaming response.
 export const config = {
   runtime: "edge",
 };
@@ -18,28 +18,8 @@ const getApiEndpoint = (apiEndpoint: string) => {
 };
 
 const handler = async (req: NextRequest) => {
-  if (API_KEY) {
-    const auth = req.headers.get("Authorization");
-    if (!auth || auth !== `Bearer ${API_KEY}`) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: "Unauthorized.",
-          },
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          status: 401,
-        }
-      );
-    }
-  }
-
   const reqBody = await req.json();
-  const openAIApiConfig = reqBody.openAIApiConfig;
-  const apiKey = openAIApiConfig?.key || openAIApiKey;
+  const apiKey = req.headers.get("x-openai-key") || openAIApiKey;
 
   if (!apiKey) {
     return new Response(
@@ -58,10 +38,69 @@ const handler = async (req: NextRequest) => {
     );
   }
 
-  const apiEndpoint = getApiEndpoint(
-    openAIApiConfig?.endpoint || openAIApiEndpoint
+  const useServerKey = !req.headers.get("x-openai-key");
+  const sessionToken = req.cookies.get("next-auth.session-token")?.value;
+  const currentUrl = new URL(req.url);
+  const usageUrl = new URL(
+    currentUrl.protocol + "//" + currentUrl.host + "/api/usage"
   );
-  const res = await fetch(apiEndpoint, {
+  const requestHeaders: any = {
+    Authorization: `Bearer ${sessionToken}`,
+  };
+
+  if (useServerKey) {
+    if (hasFeature("account") && !sessionToken) {
+      return new Response(
+        JSON.stringify({
+          error: {
+            message:
+              "Please sign up to get free quota or supply your own OpenAI key.",
+          },
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          status: 401,
+        }
+      );
+    }
+
+    if (hasFeature("quota")) {
+      const usageRes = await fetch(usageUrl, {
+        method: "GET",
+        headers: requestHeaders,
+      });
+      if (!usageRes.ok) {
+        return new Response(usageRes.body, {
+          status: 500,
+          statusText: usageRes.statusText,
+        });
+      }
+
+      const usage = await usageRes.json();
+      if (usage.current >= usage.limit) {
+        return new Response(
+          JSON.stringify({
+            error: {
+              message: `You have reached your monthly quota: ${usage.current}/${usage.limit}.`,
+            },
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            status: 401,
+          }
+        );
+      }
+    }
+  }
+
+  const apiEndpoint = getApiEndpoint(
+    req.headers.get("x-openai-endpoint") || openAIApiEndpoint
+  );
+  const remoteRes = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
@@ -78,10 +117,10 @@ const handler = async (req: NextRequest) => {
       user: req.ip,
     }),
   });
-  if (!res.ok) {
-    return new Response(res.body, {
-      status: res.status,
-      statusText: res.statusText,
+  if (!remoteRes.ok) {
+    return new Response(remoteRes.body, {
+      status: remoteRes.status,
+      statusText: remoteRes.statusText,
     });
   }
 
@@ -107,11 +146,20 @@ const handler = async (req: NextRequest) => {
         }
       };
       const parser = createParser(streamParser);
-      for await (const chunk of res.body as any) {
+      for await (const chunk of remoteRes.body as any) {
         parser.feed(decoder.decode(chunk));
       }
     },
   });
+
+  if (useServerKey) {
+    // Increment usage count
+    await fetch(usageUrl, {
+      method: "POST",
+      headers: requestHeaders,
+    });
+  }
+
   return new Response(stream);
 };
 

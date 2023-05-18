@@ -9,11 +9,14 @@
     "setting": "Configuración",
     "copy": "Copiar",
     "delete": "Borrar",
+    "execute": "Ejecutar",
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
     "back": "Devolver",
-    "quota": "Cuota",
-    "execute": "Ejecutar"
+    "quota": "Cuota Mensual",
+    "date": "Fecha",
+    "description": "Descripción",
+    "amount": "Cantidad"
   },
   "conversation": {
     "new-chat": "Nuevo Chat",
@@ -56,13 +59,19 @@
     "self": "Configuración",
     "general": "General",
     "plan": {
+      "guest": "Invitada",
       "free": "Gratis",
       "pro": "Pro",
       "signup-for-more": "Regístrese para obtener más",
-      "upgrade": "Mejora"
+      "upgrade": "Mejora",
+      "renew": "Renovar",
+      "expired": "Expirado",
+      "n-question-per-month": "{{count}} preguntas / mes",
+      "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
     },
     "billing": {
-      "self": "Facturación"
+      "self": "Facturación",
+      "view-receipt": "Ver recibo"
     },
     "account": {
       "self": "Cuenta"
@@ -92,11 +101,12 @@
   "banner": {
     "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador.",
     "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
-    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀"
+    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀",
+    "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
+    "use-my-key": "Usar mi propia clave"
   },
   "payment": {
     "self": "Pago",
-    "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
-    "use-my-key": "Usar mi propia clave"
+    "sign-in-to-buy": "Inicia sesión para comprar"
   }
 }

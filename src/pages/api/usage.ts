@@ -1,62 +1,38 @@
-import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { Conversation, Message } from "@/types";
-import { gpt35 } from "@/utils";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
+import { getSubscriptionByEmail } from "./utils/subscription";
+import { addUsage, getCurrentMonthUsage } from "./utils/usage";
 import { getEndUser } from "./auth/end-user";
+import { Quota } from "@/types";
 
-const prisma = new PrismaClient();
-
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  if (req.method !== "POST") {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json([]);
   }
-  const conversation = req.body.conversation as Conversation;
-  const messages = req.body.messages as Message[];
-  try {
-    const chat = await prisma.chat.findUnique({
-      where: {
-        id: conversation.id,
-      },
-    });
-    const endUser = await getEndUser(req, res);
-    if (chat) {
-      await prisma.message.createMany({
-        data: messages.map((message) => ({
-          chatId: chat.id,
-          createdAt: new Date(message.createdAt),
-          endUser: endUser,
-          role: message.creatorRole,
-          content: message.content,
-          upvote: false,
-          downvote: false,
-        })),
-      });
-    } else {
-      await prisma.chat.create({
-        data: {
-          id: conversation.id,
-          createdAt: new Date(conversation.createdAt),
-          model: gpt35,
-          ctx: {},
-          messages: {
-            create: messages.map((message) => ({
-              createdAt: new Date(message.createdAt),
-              endUser: endUser,
-              role: message.creatorRole,
-              content: message.content,
-              upvote: false,
-              downvote: false,
-            })),
-          },
-        },
-      });
-    }
-  } catch (err) {
-    console.error(err);
+
+  const endUser = await getEndUser(req, res);
+
+  // Get from server session if available
+  const serverSession = await getServerSession(req, res, authOptions);
+  let subscripion = serverSession?.user?.subscription;
+  if (!subscripion) {
+    subscripion = await getSubscriptionByEmail(endUser);
   }
 
-  res.status(200).json(true);
-}
+  let usage = 0;
+  if (req.method === "GET") {
+    usage = await getCurrentMonthUsage(endUser);
+  } else if (req.method === "POST") {
+    usage = await addUsage(endUser);
+  }
+
+  const quota: Quota = {
+    current: usage,
+    limit: subscripion.quota,
+  };
+
+  res.status(200).json(quota);
+};
+
+export default handler;

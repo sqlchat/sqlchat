@@ -2,7 +2,6 @@ import axios from "axios";
 import { head, last } from "lodash-es";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { API_KEY } from "@/env";
 import {
   getAssistantById,
   getPromptGeneratorOfAssistant,
@@ -22,12 +21,15 @@ import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import QuotaOverflowBanner from "../QuotaOverflowBanner";
+import { useSession } from "next-auth/react";
+import getEventEmitter from "@/utils/event-emitter";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
 const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
+  const { data: session } = useSession();
   const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
@@ -182,10 +184,12 @@ const ConversationView = () => {
 
         const tableList: string[] = [];
         if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach((tableName) => {
-            const table = tables.find((table) => table.name === tableName);
-            tableList.push(table!.structure);
-          });
+          currentConversation.selectedTablesName.forEach(
+            (tableName: string) => {
+              const table = tables.find((table) => table.name === tableName);
+              tableList.push(table!.structure);
+            }
+          );
         } else {
           for (const table of tables) {
             tableList.push(table!.structure);
@@ -235,14 +239,21 @@ const ConversationView = () => {
     });
 
     const requestHeaders: any = {};
-    if (API_KEY) {
-      requestHeaders["Authorization"] = `Bearer ${API_KEY}`;
+    if (session?.user.id) {
+      requestHeaders["Authorization"] = `Bearer ${session?.user.id}`;
+    }
+    if (settingStore.setting.openAIApiConfig?.key) {
+      requestHeaders["x-openai-key"] =
+        settingStore.setting.openAIApiConfig?.key;
+    }
+    if (settingStore.setting.openAIApiConfig?.endpoint) {
+      requestHeaders["x-openai-endpoint"] =
+        settingStore.setting.openAIApiConfig?.endpoint;
     }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
         messages: formatedMessageList,
-        openAIApiConfig: settingStore.setting.openAIApiConfig,
       }),
       headers: requestHeaders,
     });
@@ -307,6 +318,9 @@ const ConversationView = () => {
       status: "DONE",
     });
 
+    // Emit usage update event so quota widget can update.
+    getEventEmitter().emit("usage.update");
+
     // Collect system prompt
     // We only collect the db prompt for the system prompt. We do not collect the intermediate
     // exchange to save space since those can be derived from the previous record.
@@ -324,10 +338,18 @@ const ConversationView = () => {
     usageMessageList.push(assistantMessage);
 
     axios
-      .post<string[]>("/api/usage", {
-        conversation: currentConversation,
-        messages: usageMessageList,
-      })
+      .post<string[]>(
+        "/api/collect",
+        {
+          conversation: currentConversation,
+          messages: usageMessageList,
+        },
+        {
+          headers: session?.user.id
+            ? { Authorization: `Bearer ${session?.user.id}` }
+            : undefined,
+        }
+      )
       .catch(() => {
         // do nth
       });
@@ -341,7 +363,7 @@ const ConversationView = () => {
       } relative w-full h-full max-h-full flex flex-col justify-start items-start overflow-y-auto bg-white dark:bg-zinc-800`}
     >
       <div className="sticky top-0 z-1 bg-white dark:bg-zinc-800 w-full flex flex-col justify-start items-start">
-        <QuotaOverflowBanner />
+        {!settingStore.setting.openAIApiConfig?.key && <QuotaOverflowBanner />}
         <DataStorageBanner />
         <Header className={showHeaderShadow ? "shadow" : ""} />
       </div>

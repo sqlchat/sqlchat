@@ -4,6 +4,7 @@ import { useDebounce } from "react-use";
 import { useSettingStore } from "@/store";
 import { OpenAIApiConfig } from "@/types";
 import TextField from "./kit/TextField";
+import { set } from "lodash-es";
 
 const OpenAIApiConfigView = () => {
   const { t } = useTranslation();
@@ -11,6 +12,17 @@ const OpenAIApiConfigView = () => {
   const [openAIApiConfig, setOpenAIApiConfig] = useState(
     settingStore.setting.openAIApiConfig
   );
+  const [maskKey, setMaskKey] = useState(true);
+
+  const maskedKey = (str: string) => {
+    if (str.length < 7) {
+      return str;
+    }
+    const firstThree = str.slice(0, 3);
+    const lastFour = str.slice(-4);
+    const middle = ".".repeat(str.length - 7);
+    return `${firstThree}${middle}${lastFour}`;
+  };
 
   useDebounce(
     () => {
@@ -25,6 +37,7 @@ const OpenAIApiConfigView = () => {
       ...openAIApiConfig,
       ...config,
     });
+    setMaskKey(false);
   };
 
   return (
@@ -34,7 +47,9 @@ const OpenAIApiConfigView = () => {
           <label className="mb-1">OpenAI API Key</label>
           <TextField
             placeholder="OpenAI API Key"
-            value={openAIApiConfig.key}
+            value={
+              maskKey ? maskedKey(openAIApiConfig.key) : openAIApiConfig.key
+            }
             onChange={(value) => handleSetOpenAIApiConfig({ key: value })}
           />
         </div>

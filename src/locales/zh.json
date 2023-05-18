@@ -13,7 +13,10 @@
     "sign-in": "登录",
     "sign-out": "登出",
     "back": "返回",
-    "quota": "额度"
+    "quota": "每月额度",
+    "date": "日期",
+    "description": "描述",
+    "amount": "金额"
   },
   "conversation": {
     "new-chat": "新建会话",
@@ -58,15 +61,19 @@
     "self": "设置",
     "general": "通用",
     "plan": {
+      "guest": "访客",
       "free": "免费版",
       "pro": "专业版",
-      "signup-for-more": "注册提升额度",
+      "signup-for-more": "注册获得额度",
       "upgrade": "升级",
-      "pro-question-per-month": "1000 次提问 / 月",
+      "renew": "续费",
+      "expired": "已过期",
+      "n-question-per-month": "{{count}} 次提问 / 月",
       "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
     },
     "billing": {
-      "self": "计费"
+      "self": "计费",
+      "view-receipt": "查看收据"
     },
     "account": {
       "self": "账户"
@@ -102,6 +109,6 @@
   },
   "payment": {
     "self": "支付",
-    "login-to-buy": "登陆后购买"
+    "sign-in-to-buy": "登陆后购买"
   }
 }

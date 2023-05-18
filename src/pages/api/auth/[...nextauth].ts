@@ -4,6 +4,7 @@ import GoogleProvider from "next-auth/providers/google";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaClient } from "@prisma/client";
+import { getSubscriptionByEmail } from "../utils/subscription";
 
 const prisma = new PrismaClient();
 
@@ -27,6 +28,25 @@ export const authOptions: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRET,
     }),
   ],
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
+        secure: true,
+      },
+    },
+  },
+  callbacks: {
+    async session({ session, user }) {
+      session.user.id = user.id;
+      session.user.subscription = await getSubscriptionByEmail(user.email);
+      session.user.stripeId = user.stripeId;
+      return session;
+    },
+  },
   theme: {
     brandColor: "#4F46E5",
     logo: "/chat-logo.webp",

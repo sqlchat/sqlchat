@@ -1,8 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { HasFeature } from "../utils";
+import { useSession } from "next-auth/react";
+import { hasFeature } from "../utils";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
+import DebugView from "./DebugView";
 import PricingView from "./PricingView";
 import WeChatQRCodeView from "./WeChatQRCodeView";
 import ClearDataButton from "./ClearDataButton";
@@ -12,6 +14,7 @@ import OpenAIApiConfigView from "./OpenAIApiConfigView";
 
 const SettingView = () => {
   const { t } = useTranslation();
+  const { data: session } = useSession();
 
   return (
     <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4 dark:bg-zinc-800">
@@ -27,13 +30,19 @@ const SettingView = () => {
         <WeChatQRCodeView />
       </div>
 
-      {HasFeature("account") && (
+      {hasFeature("debug") && (
+        <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
+          <DebugView />
+        </div>
+      )}
+
+      {hasFeature("account") && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <AccountView />
         </div>
       )}
 
-      {HasFeature("payment") && (
+      {hasFeature("payment") && session?.user?.subscription.plan != "PRO" && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
           <PricingView />
         </div>

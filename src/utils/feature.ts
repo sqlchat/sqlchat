@@ -1,8 +1,20 @@
-type FeatureType = "account" | "payment" | "quota";
+type FeatureType = "debug" | "account" | "payment" | "quota";
 
-export const HasFeature = (feature: FeatureType) => {
-  if (process.env.NODE_ENV === "development") {
-    return true;
-  }
-  return false;
+const matrix: { [key: string]: { [feature: string]: boolean } } = {
+  development: {
+    debug: true,
+    account: true,
+    payment: true,
+    quota: true,
+  },
+  production: {
+    debug: true,
+    account: true,
+    payment: true,
+    quota: true,
+  },
+};
+
+export const hasFeature = (feature: FeatureType) => {
+  return matrix[process.env.NODE_ENV][feature];
 };

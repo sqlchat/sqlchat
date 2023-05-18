@@ -5,3 +5,4 @@ export * from "./execution";
 export * from "./model";
 export * from "./feature";
 export * from "./tidb";
+export * from "./misc";

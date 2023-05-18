@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
+import { PlanType } from "@/types";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
@@ -44,7 +45,7 @@ export default async function handler(
         ],
         line_items: [
           {
-            price: process.env.STRIPE_ANNUAL_LICENSE_PRICE_ID,
+            price: process.env.STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION,
             quantity: 1,
           },
         ],
@@ -58,6 +59,8 @@ export default async function handler(
           // setup_future_usage: "off_session",
           metadata: {
             email: session?.user?.email!,
+            plan: "PRO",
+            description: "Pro 1 Year License (Early Bird)",
           },
         },
         // Link customer if present otherwise pass email and let Stripe create a new customer.

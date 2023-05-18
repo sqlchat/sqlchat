@@ -13,7 +13,10 @@
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "back": "Back",
-    "quota": "Quota"
+    "quota": "Monthly Quota",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount"
   },
   "conversation": {
     "new-chat": "New Chat",
@@ -58,15 +61,19 @@
     "self": "Setting",
     "general": "General",
     "plan": {
+      "guest": "Guest",
       "free": "Free",
       "pro": "Pro",
       "signup-for-more": "Sign up for more",
       "upgrade": "Upgrade",
-      "pro-question-per-month": "1000 questions / month",
+      "renew": "Renew",
+      "expired": "Expired",
+      "n-question-per-month": "{{count}} questions / month",
       "early-bird-checkout": "Early bird discount, 50% off for 1 year"
     },
     "billing": {
-      "self": "Billing"
+      "self": "Billing",
+      "view-receipt": "View receipt"
     },
     "account": {
       "self": "Account"
@@ -102,6 +109,6 @@
   },
   "payment": {
     "self": "Payment",
-    "login-to-buy": "Login to buy"
+    "sign-in-to-buy": "Sign in to buy"
   }
 }

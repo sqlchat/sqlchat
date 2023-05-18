@@ -1,9 +1,10 @@
 import { buffer } from "micro";
 import Cors from "micro-cors";
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaClient, Prisma, SubscriptionPlan } from "@prisma/client";
 
 import Stripe from "stripe";
+import { PlanType } from "@/types";
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
@@ -66,14 +67,26 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
+      // Subtract 1 second from the year from now to make it 23:59:59
+      const yearFromNow = new Date(
+        new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(
+          today.getFullYear() + 1
+        ) - 1000
+      );
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,
+        email: paymentIntent.metadata.email,
         createdAt: new Date(paymentIntent.created * 1000),
         status: "ACTIVE",
         startAt: today,
-        expireAt: new Date(today.setFullYear(today.getFullYear() + 1)),
+        expireAt: yearFromNow,
         paymentId: paymentIntent.id,
         customerId: customerId || "",
+        plan: paymentIntent.metadata.plan as SubscriptionPlan,
+        description: paymentIntent.metadata.description,
+        amount: paymentIntent.amount,
+        currency: paymentIntent.currency,
+        receipt: paymentIntent.charges.data[0].receipt_url,
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {
