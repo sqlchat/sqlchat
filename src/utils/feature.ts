@@ -9,9 +9,9 @@ const matrix: { [key: string]: { [feature: string]: boolean } } = {
   },
   production: {
     debug: false,
-    account: true,
-    payment: true,
-    quota: true,
+    account: false,
+    payment: false,
+    quota: false,
   },
 };
 
