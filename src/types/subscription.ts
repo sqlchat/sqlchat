@@ -12,10 +12,10 @@ export const PlanConfig: {
     quota: 0,
   },
   FREE: {
-    quota: 5,
+    quota: 20,
   },
   PRO: {
-    quota: 10,
+    quota: 1000,
   },
 };
 
