@@ -49,6 +49,10 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Cast event data to Stripe object.
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      const charge = await stripe.charges.retrieve(
+        paymentIntent.latest_charge as string
+      );
+
       const customerId = paymentIntent.customer as string;
       if (customerId) {
         // Save the stripe customer id so that we can relate this customer to future payments.
@@ -86,7 +90,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         description: paymentIntent.metadata.description,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
-        receipt: paymentIntent.charges.data[0].receipt_url,
+        receipt: charge.receipt_url as string,
       };
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {
