@@ -8,7 +8,7 @@ const matrix: { [key: string]: { [feature: string]: boolean } } = {
     quota: true,
   },
   production: {
-    debug: true,
+    debug: false,
     account: true,
     payment: true,
     quota: true,
