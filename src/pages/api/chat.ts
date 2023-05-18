@@ -47,10 +47,9 @@ const handler = async (req: NextRequest) => {
   const requestHeaders: any = {
     Authorization: `Bearer ${sessionToken}`,
   };
-  if (hasFeature("quota")) {
-    // If client doesn't supply the OpenAI API key and our server supplies the key,
-    // then we need to check the client quota.
-    if (useServerKey && !sessionToken) {
+
+  if (useServerKey) {
+    if (hasFeature("account") && !sessionToken) {
       return new Response(
         JSON.stringify({
           error: {
@@ -67,32 +66,34 @@ const handler = async (req: NextRequest) => {
       );
     }
 
-    const usageRes = await fetch(usageUrl, {
-      method: "GET",
-      headers: requestHeaders,
-    });
-    if (!usageRes.ok) {
-      return new Response(usageRes.body, {
-        status: 500,
-        statusText: usageRes.statusText,
+    if (hasFeature("quota")) {
+      const usageRes = await fetch(usageUrl, {
+        method: "GET",
+        headers: requestHeaders,
       });
-    }
+      if (!usageRes.ok) {
+        return new Response(usageRes.body, {
+          status: 500,
+          statusText: usageRes.statusText,
+        });
+      }
 
-    const usage = await usageRes.json();
-    if (usage.current >= usage.limit) {
-      return new Response(
-        JSON.stringify({
-          error: {
-            message: `You have reached your monthly quota: ${usage.current}/${usage.limit}.`,
-          },
-        }),
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          status: 401,
-        }
-      );
+      const usage = await usageRes.json();
+      if (usage.current >= usage.limit) {
+        return new Response(
+          JSON.stringify({
+            error: {
+              message: `You have reached your monthly quota: ${usage.current}/${usage.limit}.`,
+            },
+          }),
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+            status: 401,
+          }
+        );
+      }
     }
   }
 
