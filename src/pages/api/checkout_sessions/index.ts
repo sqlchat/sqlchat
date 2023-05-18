@@ -39,7 +39,7 @@ export default async function handler(
           // "alipay",
           "card",
           "cashapp",
-          // "klarna",
+          "klarna",
           "link",
           // "wechat_pay",
         ],
