@@ -132,7 +132,9 @@ model User {
   subscriptions Subscription[]
   // The stripe customer id corresponds to this user
   stripeId      String?        @unique @map("stripe_id")
+  createdAt     DateTime       @default(now()) @map("created_at")
 
+  @@index([createdAt], map: "users_created_at_idx")
   @@map("users")
 }
 
