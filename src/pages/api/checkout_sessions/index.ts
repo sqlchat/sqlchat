@@ -36,12 +36,12 @@ export default async function handler(
         mode: "payment",
         payment_method_types: [
           "affirm",
-          "alipay",
+          // "alipay",
           "card",
           "cashapp",
           "klarna",
           "link",
-          "wechat_pay",
+          // "wechat_pay",
         ],
         line_items: [
           {
