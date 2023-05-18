@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { t } from "i18next";
 import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 import { SubscriptionPurchase } from "@/types";
 import { getCurrencySymbol, getDateString } from "@/utils";
-import { t } from "i18next";
 
 const SubscriptionHistoryTable = () => {
   const [list, setList] = useState<SubscriptionPurchase[]>([]);
@@ -28,6 +28,10 @@ const SubscriptionHistoryTable = () => {
     }
   }, [session]);
 
+  if (list.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="mt-8 flow-root">
@@ -36,28 +40,16 @@ const SubscriptionHistoryTable = () => {
             <table className="min-w-full divide-y divide-gray-300">
               <thead>
                 <tr>
-                  <th
-                    scope="col"
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0"
-                  >
+                  <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">
                     {t("common.date")}
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
+                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     {t("common.description")}
                   </th>
-                  <th
-                    scope="col"
-                    className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                  >
+                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                     {t("common.amount")}
                   </th>
-                  <th
-                    scope="col"
-                    className="relative py-3.5 pl-3 pr-4 sm:pr-0"
-                  ></th>
+                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-0"></th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
@@ -66,21 +58,13 @@ const SubscriptionHistoryTable = () => {
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                       {getDateString(subscription.createdAt)}
                     </td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{subscription.description}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {subscription.description}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {getCurrencySymbol(
-                        subscription.currency.toLocaleUpperCase()
-                      )}
+                      {getCurrencySymbol(subscription.currency.toLocaleUpperCase())}
                       {subscription.amount / 100}
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a
-                        href={subscription.receipt}
-                        target="_blank"
-                        className="text-indigo-600 hover:text-indigo-900"
-                      >
+                      <a href={subscription.receipt} target="_blank" className="text-indigo-600 hover:text-indigo-900">
                         {t("setting.billing.view-receipt")}
                       </a>
                     </td>

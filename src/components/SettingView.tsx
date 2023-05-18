@@ -17,7 +17,7 @@ const SettingView = () => {
   const { data: session } = useSession();
 
   return (
-    <div className="w-full flex flex-col justify-start items-start space-y-3 pt-4 dark:bg-zinc-800">
+    <div className="w-full flex flex-col justify-start items-start space-y-3 py-4 sm:py-8 dark:bg-zinc-800">
       <div className="w-full flex flex-row justify-start items-start flex-wrap gap-2">
         <a
           href="https://discord.gg/z6kakemDjm"
