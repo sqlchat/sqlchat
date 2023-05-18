@@ -56,7 +56,7 @@ const AccountView = () => {
               </div>
               {session.user.subscription.plan === "PRO" && (
                 <div className="ml-8">
-                  {getDateString(session.user.subscription.expireAt)}
+                  {getDateString(session.user.subscription.startAt)}
                   {` - `}
                   {getDateString(session.user.subscription.expireAt)}
                 </div>
