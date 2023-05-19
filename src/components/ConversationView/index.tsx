@@ -15,13 +15,13 @@ import {
 } from "@/store";
 import { Conversation, CreatorRole, Message } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
+import getEventEmitter from "@/utils/event-emitter";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
 import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-import getEventEmitter from "@/utils/event-emitter";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
 // reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
