@@ -1,10 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  useConversationStore,
-  useConnectionStore,
-  useLayoutStore,
-} from "@/store";
+import { useConversationStore, useConnectionStore, useLayoutStore } from "@/store";
 import { Conversation } from "@/types";
 import Dropdown, { DropdownItem } from "../kit/Dropdown";
 import Icon from "../Icon";
@@ -22,8 +18,7 @@ const ConversationList = () => {
   const [state, setState] = useState<State>({
     showUpdateConversationModal: false,
   });
-  const [updateConversationModalContext, setUpdateConversationModalContext] =
-    useState<Conversation>();
+  const [updateConversationModalContext, setUpdateConversationModalContext] = useState<Conversation>();
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const conversationList = conversationStore.conversationList.filter(
     (conversation) =>
@@ -42,10 +37,7 @@ const ConversationList = () => {
     if (!currentConnectionCtx) {
       conversationStore.createConversation();
     } else {
-      conversationStore.createConversation(
-        currentConnectionCtx.connection.id,
-        currentConnectionCtx.database?.name
-      );
+      conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
     }
   };
 
@@ -77,8 +69,7 @@ const ConversationList = () => {
         <div
           key={conversation.id}
           className={`w-full mt-2 first:mt-4 py-3 pl-4 pr-2 rounded-lg flex flex-row justify-start items-center cursor-pointer dark:text-gray-300 border border-transparent group hover:bg-white dark:hover:bg-zinc-800 ${
-            conversation.id === conversationStore.currentConversationId &&
-            "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
+            conversation.id === conversationStore.currentConversationId && "bg-white dark:bg-zinc-800 border-gray-200 font-medium"
           }`}
           onClick={() => handleConversationSelect(conversation)}
         >
@@ -87,9 +78,7 @@ const ConversationList = () => {
           ) : (
             <Icon.IoChatbubbleOutline className="w-5 h-auto mr-1.5 opacity-80 shrink-0" />
           )}
-          <span className="truncate grow">
-            {conversation.title || "SQL Chat"}
-          </span>
+          <span className="truncate grow">{conversation.title || "SQL Chat"}</span>
           <Dropdown
             tigger={
               <button className="w-4 h-4 shrink-0 group-hover:visible invisible flex justify-center items-center text-gray-400 hover:text-gray-500">
@@ -125,10 +114,7 @@ const ConversationList = () => {
       </button>
 
       {updateConversationModalContext && state.showUpdateConversationModal && (
-        <UpdateConversationModal
-          close={() => toggleUpdateConversationModal(false)}
-          conversation={updateConversationModalContext}
-        />
+        <UpdateConversationModal close={() => toggleUpdateConversationModal(false)} conversation={updateConversationModalContext} />
       )}
     </>
   );

@@ -7,10 +7,10 @@ export const changeTiDBConnectionToMySQL = (connection: Connection) => {
       ...connection,
       engineType: Engine.MySQL,
       ssl: {
-        minVersion: 'TLSv1.2',
-        rejectUnauthorized: true
-      }
+        minVersion: "TLSv1.2",
+        rejectUnauthorized: true,
+      },
     };
   }
   return connection;
-}
+};

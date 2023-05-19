@@ -1,10 +1,9 @@
+import { PrismaClient, Prisma, SubscriptionPlan } from "@prisma/client";
 import { buffer } from "micro";
 import Cors from "micro-cors";
 import { NextApiRequest, NextApiResponse } from "next";
-import { PrismaClient, Prisma, SubscriptionPlan } from "@prisma/client";
-
 import Stripe from "stripe";
-import { PlanType } from "@/types";
+
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
   apiVersion: "2022-11-15",
@@ -32,11 +31,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     let event: Stripe.Event;
 
     try {
-      event = stripe.webhooks.constructEvent(
-        buf.toString(),
-        sig,
-        webhookSecret
-      );
+      event = stripe.webhooks.constructEvent(buf.toString(), sig, webhookSecret);
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : "Unknown error";
       // On error, log and return the error message.
@@ -49,9 +44,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
     // Cast event data to Stripe object.
     if (event.type === "payment_intent.succeeded") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      const charge = await stripe.charges.retrieve(
-        paymentIntent.latest_charge as string
-      );
+      const charge = await stripe.charges.retrieve(paymentIntent.latest_charge as string);
 
       const customerId = paymentIntent.customer as string;
       if (customerId) {
@@ -72,11 +65,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
 
       const today = new Date(new Date().setHours(0, 0, 0, 0));
       // Subtract 1 second from the year from now to make it 23:59:59
-      const yearFromNow = new Date(
-        new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(
-          today.getFullYear() + 1
-        ) - 1000
-      );
+      const yearFromNow = new Date(new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(today.getFullYear() + 1) - 1000);
       const subscription: Prisma.SubscriptionUncheckedCreateInput = {
         userId: user.id,
         email: paymentIntent.metadata.email,
@@ -95,9 +84,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       await prisma.subscription.create({ data: subscription });
     } else if (event.type === "payment_intent.payment_failed") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      console.log(
-        `❌ Payment failed: ${paymentIntent.last_payment_error?.message}`
-      );
+      console.log(`❌ Payment failed: ${paymentIntent.last_payment_error?.message}`);
     }
 
     // Return a response to acknowledge receipt of the event.

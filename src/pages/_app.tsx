@@ -19,10 +19,7 @@ import "@/styles/mui.css";
 
 import type { Session } from "next-auth";
 
-function MyApp({
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps<{ session: Session }>) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ session: Session }>) {
   const { i18n } = useTranslation();
   const settingStore = useSettingStore();
 
@@ -58,10 +55,7 @@ function MyApp({
     const theme = settingStore.setting.theme;
     let currentAppearance = theme;
     if (theme === "system") {
-      if (
-        window.matchMedia &&
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-      ) {
+      if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
         currentAppearance = "dark";
       } else {
         currentAppearance = "light";

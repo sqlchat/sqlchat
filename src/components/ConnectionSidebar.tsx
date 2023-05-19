@@ -1,13 +1,7 @@
 import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  useConnectionStore,
-  useConversationStore,
-  useLayoutStore,
-  ResponsiveWidth,
-  useSettingStore,
-} from "@/store";
+import { useConnectionStore, useConversationStore, useLayoutStore, ResponsiveWidth, useSettingStore } from "@/store";
 import { Table } from "@/types";
 import useLoading from "@/hooks/useLoading";
 import Select from "./kit/Select";
@@ -28,21 +22,14 @@ const ConnectionSidebar = () => {
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
   const conversationStore = useConversationStore();
-  const [isRequestingDatabase, setIsRequestingDatabase] =
-    useState<boolean>(false);
+  const [isRequestingDatabase, setIsRequestingDatabase] = useState<boolean>(false);
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
-  const databaseList = connectionStore.databaseList.filter(
-    (database) => database.connectionId === currentConnectionCtx?.connection.id
-  );
+  const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const [tableList, updateTableList] = useState<Table[]>([]);
   const selectedTablesName: string[] =
-    conversationStore.getConversationById(
-      conversationStore.currentConversationId
-    )?.selectedTablesName || [];
+    conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
-  const currentConversation = conversationStore.getConversationById(
-    conversationStore.currentConversationId
-  );
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -66,22 +53,18 @@ const ConnectionSidebar = () => {
   useEffect(() => {
     if (currentConnectionCtx?.connection) {
       setIsRequestingDatabase(true);
-      connectionStore
-        .getOrFetchDatabaseList(currentConnectionCtx.connection)
-        .finally(() => {
-          setIsRequestingDatabase(false);
-          const database = databaseList.find(
-            (database) =>
-              database.name ===
-              useConnectionStore.getState().currentConnectionCtx?.database?.name
-          );
-          if (database) {
-            tableSchemaLoadingState.setLoading();
-            connectionStore.getOrFetchDatabaseSchema(database).then(() => {
-              tableSchemaLoadingState.setFinish();
-            });
-          }
-        });
+      connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
+        setIsRequestingDatabase(false);
+        const database = databaseList.find(
+          (database) => database.name === useConnectionStore.getState().currentConnectionCtx?.database?.name
+        );
+        if (database) {
+          tableSchemaLoadingState.setLoading();
+          connectionStore.getOrFetchDatabaseSchema(database).then(() => {
+            tableSchemaLoadingState.setFinish();
+          });
+        }
+      });
     } else {
       setIsRequestingDatabase(false);
     }
@@ -91,8 +74,7 @@ const ConnectionSidebar = () => {
     const tableList =
       connectionStore.databaseList.find(
         (database) =>
-          database.connectionId === currentConnectionCtx?.connection.id &&
-          database.name === currentConnectionCtx?.database?.name
+          database.connectionId === currentConnectionCtx?.connection.id && database.name === currentConnectionCtx?.database?.name
       )?.tableList || [];
 
     updateTableList(tableList);
@@ -103,12 +85,8 @@ const ConnectionSidebar = () => {
       return;
     }
 
-    const databaseList = await connectionStore.getOrFetchDatabaseList(
-      currentConnectionCtx.connection
-    );
-    const database = databaseList.find(
-      (database) => database.name === databaseName
-    );
+    const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection);
+    const database = databaseList.find((database) => database.name === databaseName);
     connectionStore.setCurrentConnectionCtx({
       connection: currentConnectionCtx.connection,
       database: database,
@@ -129,10 +107,7 @@ const ConnectionSidebar = () => {
       if (!currentConnectionCtx) {
         conversationStore.createConversation();
       } else {
-        conversationStore.createConversation(
-          currentConnectionCtx.connection.id,
-          currentConnectionCtx.database?.name
-        );
+        conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
       }
     }
   };
@@ -144,9 +119,7 @@ const ConnectionSidebar = () => {
 
   const handleAllSelect = async () => {
     createConversation();
-    conversationStore.updateSelectedTablesName(
-      tableList.map((table) => table.name)
-    );
+    conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
   };
 
   const handleEmptySelect = async () => {
@@ -177,8 +150,7 @@ const ConnectionSidebar = () => {
             <div className="w-full grow">
               {isRequestingDatabase && (
                 <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
-                  {t("common.loading")}
+                  <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                 </div>
               )}
               {databaseList.length > 0 && (
@@ -192,9 +164,7 @@ const ConnectionSidebar = () => {
                         value: database.name,
                       };
                     })}
-                    onValueChange={(databaseName) =>
-                      handleDatabaseNameSelect(databaseName)
-                    }
+                    onValueChange={(databaseName) => handleDatabaseNameSelect(databaseName)}
                     placeholder={t("connection.select-database") || ""}
                   />
                 </div>
@@ -202,8 +172,7 @@ const ConnectionSidebar = () => {
               {currentConnectionCtx &&
                 (tableSchemaLoadingState.isLoading ? (
                   <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                    <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />{" "}
-                    {t("common.loading")}
+                    <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                   </div>
                 ) : (
                   tableList.length > 0 && (
@@ -213,35 +182,22 @@ const ConnectionSidebar = () => {
                         value={selectedTablesName}
                         itemList={tableList.map((table) => {
                           return {
-                            label:
-                              table.name === ""
-                                ? t("connection.all-tables")
-                                : table.name,
+                            label: table.name === "" ? t("connection.all-tables") : table.name,
                             value: table.name,
                           };
                         })}
-                        onValueChange={(tableName) =>
-                          handleTableNameSelect(tableName)
-                        }
-                        placeholder={
-                          (selectedTablesName.length
-                            ? selectedTablesName.join(",")
-                            : t("connection.all-tables")) || ""
-                        }
+                        onValueChange={(tableName) => handleTableNameSelect(tableName)}
+                        placeholder={(selectedTablesName.length ? selectedTablesName.join(",") : t("connection.all-tables")) || ""}
                       >
                         <button
                           className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                           onClick={(e) => {
-                            selectedTablesName.length
-                              ? handleEmptySelect()
-                              : handleAllSelect();
+                            selectedTablesName.length ? handleEmptySelect() : handleAllSelect();
                             // The Button area is a option that have select event. So must to stop Propagation
                             e.stopPropagation();
                           }}
                         >
-                          {selectedTablesName.length
-                            ? t("connection.empty-select")
-                            : t("connection.select-all")}
+                          {selectedTablesName.length ? t("connection.empty-select") : t("connection.select-all")}
                         </button>
                       </MultipleSelect>
                     </div>
@@ -250,12 +206,11 @@ const ConnectionSidebar = () => {
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-              {!settingStore.setting.openAIApiConfig?.key &&
-                hasFeature("quota") && (
-                  <div className="mb-4">
-                    <QuotaView />
-                  </div>
-                )}
+              {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
+                <div className="mb-4">
+                  <QuotaView />
+                </div>
+              )}
               <a
                 className="dark:hidden"
                 href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"

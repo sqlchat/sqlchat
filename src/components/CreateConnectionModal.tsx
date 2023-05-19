@@ -58,17 +58,13 @@ const CreateConnectionModal = (props: Props) => {
   const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
-  const [showDeleteConnectionModal, setShowDeleteConnectionModal] =
-    useState(false);
+  const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
   const [sslType, setSSLType] = useState<SSLType>("none");
   const [selectedSSLField, setSelectedSSLField] = useState<SSLFieldType>("ca");
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
-  const allowSave =
-    connection.host !== "" &&
-    connection.username !== "" &&
-    connection.title !== "";
+  const allowSave = connection.host !== "" && connection.username !== "" && connection.title !== "";
 
   useEffect(() => {
     const connection = isEditing ? editConnection : defaultConnection;
@@ -117,11 +113,7 @@ const CreateConnectionModal = (props: Props) => {
     }
 
     const file = files[0];
-    if (
-      file.type.startsWith("audio/") ||
-      file.type.startsWith("video/") ||
-      file.type.startsWith("image/")
-    ) {
+    if (file.type.startsWith("audio/") || file.type.startsWith("video/") || file.type.startsWith("image/")) {
       toast.error(`Invalid file type:${file.type}`);
       return;
     }
@@ -193,10 +185,7 @@ const CreateConnectionModal = (props: Props) => {
       }
 
       // Set the created connection as the current connection.
-      const databaseList = await connectionStore.getOrFetchDatabaseList(
-        connection,
-        true
-      );
+      const databaseList = await connectionStore.getOrFetchDatabaseList(connection, true);
       connectionStore.setCurrentConnectionCtx({
         connection: connection,
         database: head(databaseList),
@@ -222,19 +211,11 @@ const CreateConnectionModal = (props: Props) => {
 
   return (
     <>
-      <Modal
-        title={isEditing ? t("connection.edit") : t("connection.new")}
-        onClose={close}
-      >
+      <Modal title={isEditing ? t("connection.edit") : t("connection.new")} onClose={close}>
         <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
-          <DataStorageBanner
-            className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start"
-            alwaysShow={true}
-          />
+          <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.database-type")}
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-type")}</label>
             <Select
               className="w-full"
               value={connection.engineType}
@@ -244,46 +225,24 @@ const CreateConnectionModal = (props: Props) => {
                 { value: Engine.MSSQL, label: "MSSQL" },
                 { value: Engine.TiDBServerless, label: "TiDB Serverless Tier" },
               ]}
-              onValueChange={(value) =>
-                setPartialConnection({ engineType: value as Engine })
-              }
+              onValueChange={(value) => setPartialConnection({ engineType: value as Engine })}
             />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.title")}
-            </label>
-            <TextField
-              placeholder="Title"
-              value={connection.title}
-              onChange={(value) => setPartialConnection({ title: value })}
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.title")}</label>
+            <TextField placeholder="Title" value={connection.title} onChange={(value) => setPartialConnection({ title: value })} />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.host")}
-            </label>
-            <TextField
-              placeholder="Connection host"
-              value={connection.host}
-              onChange={(value) => setPartialConnection({ host: value })}
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.host")}</label>
+            <TextField placeholder="Connection host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.port")}
-            </label>
-            <TextField
-              placeholder="Connection port"
-              value={connection.port}
-              onChange={(value) => setPartialConnection({ port: value })}
-            />
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.port")}</label>
+            <TextField placeholder="Connection port" value={connection.port} onChange={(value) => setPartialConnection({ port: value })} />
           </div>
           {showDatabaseField && (
             <div className="w-full flex flex-col">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("connection.database-name")}
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-name")}</label>
               <TextField
                 placeholder="Connection database"
                 value={connection.database || ""}
@@ -292,9 +251,7 @@ const CreateConnectionModal = (props: Props) => {
             </div>
           )}
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.username")}
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.username")}</label>
             <TextField
               placeholder="Connection username"
               value={connection.username || ""}
@@ -302,9 +259,7 @@ const CreateConnectionModal = (props: Props) => {
             />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t("connection.password")}
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.password")}</label>
             <TextField
               placeholder="Connection password"
               type="password"
@@ -314,21 +269,14 @@ const CreateConnectionModal = (props: Props) => {
           </div>
           {connection.engineType === Engine.TiDBServerless ? (
             <div className="w-full flex flex-col">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t("connection.tidb-serverless-ssl-hint")}
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.tidb-serverless-ssl-hint")}</label>
             </div>
           ) : (
             <div className="w-full flex flex-col">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                SSL
-              </label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">SSL</label>
               <div className="w-full flex flex-row justify-start items-start flex-wrap">
                 {SSLTypeOptions.map((option) => (
-                  <label
-                    key={option.value}
-                    className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3"
-                  >
+                  <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3">
                     <input
                       type="radio"
                       className="radio w-4 h-4 mr-1"
@@ -345,8 +293,7 @@ const CreateConnectionModal = (props: Props) => {
                   <div className="text-sm space-x-3 mb-2">
                     <span
                       className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                        selectedSSLField === "ca" &&
-                        "!border-indigo-600 !opacity-100"
+                        selectedSSLField === "ca" && "!border-indigo-600 !opacity-100"
                       } `}
                       onClick={() => setSelectedSSLField("ca")}
                     >
@@ -356,8 +303,7 @@ const CreateConnectionModal = (props: Props) => {
                       <>
                         <span
                           className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                            selectedSSLField === "key" &&
-                            "!border-indigo-600 !opacity-100"
+                            selectedSSLField === "key" && "!border-indigo-600 !opacity-100"
                           }`}
                           onClick={() => setSelectedSSLField("key")}
                         >
@@ -365,8 +311,7 @@ const CreateConnectionModal = (props: Props) => {
                         </span>
                         <span
                           className={`leading-6 pb-1 border-b-2 border-transparent cursor-pointer opacity-60 hover:opacity-80 ${
-                            selectedSSLField === "cert" &&
-                            "!border-indigo-600 !opacity-100"
+                            selectedSSLField === "cert" && "!border-indigo-600 !opacity-100"
                           }`}
                           onClick={() => setSelectedSSLField("cert")}
                         >
@@ -380,27 +325,18 @@ const CreateConnectionModal = (props: Props) => {
                       className="w-full border resize-none rounded-lg text-sm p-3"
                       minRows={3}
                       maxRows={3}
-                      value={
-                        (connection.ssl && connection.ssl[selectedSSLField]) ??
-                        ""
-                      }
+                      value={(connection.ssl && connection.ssl[selectedSSLField]) ?? ""}
                       onChange={handleSSLValueChange}
                     />
                     <div
                       className={`${
-                        connection.ssl &&
-                        connection.ssl[selectedSSLField] &&
-                        "hidden"
+                        connection.ssl && connection.ssl[selectedSSLField] && "hidden"
                       } absolute top-3 left-4 text-gray-400 text-sm leading-6 pointer-events-none`}
                     >
                       <span className="">Input or </span>
                       <label className="pointer-events-auto border border-dashed px-2 py-1 rounded-lg cursor-pointer hover:border-gray-600 hover:text-gray-600">
                         upload file
-                        <input
-                          className="hidden"
-                          type="file"
-                          onChange={handleSSLFileInputChange}
-                        />
+                        <input className="hidden" type="file" onChange={handleSSLFileInputChange} />
                       </label>
                     </div>
                   </div>
@@ -408,18 +344,14 @@ const CreateConnectionModal = (props: Props) => {
               )}
               {connection.engineType === Engine.MSSQL && (
                 <div className="w-full flex flex-col">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Encrypt
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Encrypt</label>
                   <div className="w-full flex flex-row justify-start items-start flex-wrap">
                     <label className="flex items-center">
                       <input
                         type="checkbox"
                         className="form-checkbox h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
                         checked={connection.encrypt}
-                        onChange={(e) =>
-                          setPartialConnection({ encrypt: e.target.checked })
-                        }
+                        onChange={(e) => setPartialConnection({ encrypt: e.target.checked })}
                       />
                       <span className="ml-2 text-sm">Encrypt connection</span>
                     </label>
@@ -433,10 +365,7 @@ const CreateConnectionModal = (props: Props) => {
         <div className="modal-action w-full flex flex-row justify-between items-center space-x-2">
           <div>
             {isEditing && (
-              <button
-                className="btn btn-outline"
-                onClick={() => setShowDeleteConnectionModal(true)}
-              >
+              <button className="btn btn-outline" onClick={() => setShowDeleteConnectionModal(true)}>
                 Delete
               </button>
             )}
@@ -445,14 +374,8 @@ const CreateConnectionModal = (props: Props) => {
             <button className="btn btn-outline" onClick={close}>
               {t("common.close")}
             </button>
-            <button
-              className="btn"
-              disabled={isRequesting || !allowSave}
-              onClick={handleCreateConnection}
-            >
-              {isRequesting && (
-                <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />
-              )}
+            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
+              {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
               {t("common.save")}
             </button>
           </div>

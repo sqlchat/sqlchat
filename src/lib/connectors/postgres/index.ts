@@ -27,11 +27,7 @@ const testConnection = async (connection: Connection): Promise<boolean> => {
   return true;
 };
 
-const execute = async (
-  connection: Connection,
-  databaseName: string,
-  statement: string
-): Promise<any> => {
+const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
   connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
@@ -69,10 +65,7 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (
-  connection: Connection,
-  databaseName: string
-): Promise<string[]> => {
+const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
   connection.database = databaseName;
   const client = newPostgresClient(connection);
   await client.connect();
@@ -108,9 +101,7 @@ const getTableStructure = async (
   // TODO(steven): transform it to standard schema string.
   for (const row of rows) {
     columnList.push(
-      `${row["column_name"]} ${row["data_type"].toUpperCase()} ${
-        String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""
-      }`
+      `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
     );
   }
   structureFetched(
@@ -140,9 +131,7 @@ const getTableStructureBatch = async (
       // TODO(steven): transform it to standard schema string.
       for (const row of rows) {
         columnList.push(
-          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${
-            String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""
-          }`
+          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
         );
       }
       structureFetched(
@@ -160,27 +149,16 @@ const getTableStructureBatch = async (
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
-    execute: (databaseName: string, statement: string) =>
-      execute(connection, databaseName, statement),
+    execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
     getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (
-      databaseName: string,
-      tableName: string,
-      structureFetched: (tableName: string, structure: string) => void
-    ) =>
+    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) =>
       getTableStructure(connection, databaseName, tableName, structureFetched),
     getTableStructureBatch: (
       databaseName: string,
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
-    ) =>
-      getTableStructureBatch(
-        connection,
-        databaseName,
-        tableNameList,
-        structureFetched
-      ),
+    ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
   };
 };
 

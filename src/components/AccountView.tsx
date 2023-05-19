@@ -45,9 +45,7 @@ const AccountView = () => {
                     : "ring-gray-600/2 bg-gray-50 text-gray-700"
                 } rounded-full px-3 py-1 ring-1 ring-inset`}
               >
-                {t(
-                  `setting.plan.${session.user.subscription.plan.toLowerCase()}`
-                )}
+                {t(`setting.plan.${session.user.subscription.plan.toLowerCase()}`)}
               </span>
               <div className="ml-4">
                 {t("setting.plan.n-question-per-month", {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import { head, last } from "lodash-es";
+import { useSession } from "next-auth/react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import {
@@ -20,7 +21,6 @@ import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-import { useSession } from "next-auth/react";
 import getEventEmitter from "@/utils/event-emitter";
 
 // The maximum number of tokens that can be sent to the OpenAI API.
@@ -38,13 +38,9 @@ const ConversationView = () => {
   const [isStickyAtBottom, setIsStickyAtBottom] = useState<boolean>(true);
   const [showHeaderShadow, setShowHeaderShadow] = useState<boolean>(false);
   const conversationViewRef = useRef<HTMLDivElement>(null);
-  const currentConversation = conversationStore.getConversationById(
-    conversationStore.currentConversationId
-  );
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
   const messageList = currentConversation
-    ? messageStore.messageList.filter(
-        (message: Message) => message.conversationId === currentConversation.id
-      )
+    ? messageStore.messageList.filter((message: Message) => message.conversationId === currentConversation.id)
     : [];
   const lastMessage = last(messageList);
 
@@ -70,21 +66,13 @@ const ConversationView = () => {
       }
       setShowHeaderShadow((conversationViewRef.current?.scrollTop || 0) > 0);
       setIsStickyAtBottom(
-        conversationViewRef.current.scrollTop +
-          conversationViewRef.current.clientHeight >=
-          conversationViewRef.current.scrollHeight
+        conversationViewRef.current.scrollTop + conversationViewRef.current.clientHeight >= conversationViewRef.current.scrollHeight
       );
     };
-    conversationViewRef.current?.addEventListener(
-      "scroll",
-      handleConversationViewScroll
-    );
+    conversationViewRef.current?.addEventListener("scroll", handleConversationViewScroll);
 
     return () => {
-      conversationViewRef.current?.removeEventListener(
-        "scroll",
-        handleConversationViewScroll
-      );
+      conversationViewRef.current?.removeEventListener("scroll", handleConversationViewScroll);
     };
   }, []);
 
@@ -92,8 +80,7 @@ const ConversationView = () => {
     if (!conversationViewRef.current) {
       return;
     }
-    conversationViewRef.current.scrollTop =
-      conversationViewRef.current.scrollHeight;
+    conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
   }, [currentConversation, lastMessage?.id]);
 
   useEffect(() => {
@@ -102,17 +89,14 @@ const ConversationView = () => {
     }
 
     if (lastMessage?.status === "LOADING" && isStickyAtBottom) {
-      conversationViewRef.current.scrollTop =
-        conversationViewRef.current.scrollHeight;
+      conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
     }
   }, [lastMessage?.status, lastMessage?.content, isStickyAtBottom]);
 
   useEffect(() => {
     if (
-      currentConversation?.connectionId ===
-        connectionStore.currentConnectionCtx?.connection.id &&
-      currentConversation?.databaseName ===
-        connectionStore.currentConnectionCtx?.database?.name
+      currentConversation?.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+      currentConversation?.databaseName === connectionStore.currentConnectionCtx?.database?.name
     ) {
       return;
     }
@@ -120,18 +104,14 @@ const ConversationView = () => {
     // Auto select the first conversation when the current connection changes.
     const conversationList = conversationStore.conversationList.filter(
       (conversation: Conversation) =>
-        conversation.connectionId ===
-          connectionStore.currentConnectionCtx?.connection.id &&
-        conversation.databaseName ===
-          connectionStore.currentConnectionCtx?.database?.name
+        conversation.connectionId === connectionStore.currentConnectionCtx?.connection.id &&
+        conversation.databaseName === connectionStore.currentConnectionCtx?.database?.name
     );
     conversationStore.setCurrentConversationId(head(conversationList)?.id);
   }, [currentConversation, connectionStore.currentConnectionCtx]);
 
   const sendMessageToCurrentConversation = async (userPrompt: string) => {
-    const currentConversation = conversationStore.getConversationById(
-      conversationStore.getState().currentConversationId
-    );
+    const currentConversation = conversationStore.getConversationById(conversationStore.getState().currentConversationId);
     if (!currentConversation) {
       return;
     }
@@ -152,14 +132,8 @@ const ConversationView = () => {
     messageStore.addMessage(userMessage);
 
     // Construct the system prompt
-    const messageList = messageStore
-      .getState()
-      .messageList.filter(
-        (message: Message) => message.conversationId === currentConversation.id
-      );
-    const promptGenerator = getPromptGeneratorOfAssistant(
-      getAssistantById(currentConversation.assistantId)!
-    );
+    const messageList = messageStore.getState().messageList.filter((message: Message) => message.conversationId === currentConversation.id);
+    const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
     let dbPrompt = promptGenerator();
     // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
     // 1. Assistant specific prompt with database schema if applicable.
@@ -176,19 +150,15 @@ const ConversationView = () => {
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
-        const tables = await connectionStore.getOrFetchDatabaseSchema(
-          connectionStore.currentConnectionCtx?.database
-        );
+        const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
         // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
 
         const tableList: string[] = [];
         if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach(
-            (tableName: string) => {
-              const table = tables.find((table) => table.name === tableName);
-              tableList.push(table!.structure);
-            }
-          );
+          currentConversation.selectedTablesName.forEach((tableName: string) => {
+            const table = tables.find((table) => table.name === tableName);
+            tableList.push(table!.structure);
+          });
         } else {
           for (const table of tables) {
             tableList.push(table!.structure);
@@ -242,12 +212,10 @@ const ConversationView = () => {
       requestHeaders["Authorization"] = `Bearer ${session?.user.id}`;
     }
     if (settingStore.setting.openAIApiConfig?.key) {
-      requestHeaders["x-openai-key"] =
-        settingStore.setting.openAIApiConfig?.key;
+      requestHeaders["x-openai-key"] = settingStore.setting.openAIApiConfig?.key;
     }
     if (settingStore.setting.openAIApiConfig?.endpoint) {
-      requestHeaders["x-openai-endpoint"] =
-        settingStore.setting.openAIApiConfig?.endpoint;
+      requestHeaders["x-openai-endpoint"] = settingStore.setting.openAIApiConfig?.endpoint;
     }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
@@ -259,8 +227,7 @@ const ConversationView = () => {
 
     if (!rawRes.ok) {
       console.error(rawRes);
-      let errorMessage =
-        "Failed to request message, please check your network.";
+      let errorMessage = "Failed to request message, please check your network.";
       try {
         const res = await rawRes.json();
         errorMessage = res.error.message;
@@ -344,9 +311,7 @@ const ConversationView = () => {
           messages: usageMessageList,
         },
         {
-          headers: session?.user.id
-            ? { Authorization: `Bearer ${session?.user.id}` }
-            : undefined,
+          headers: session?.user.id ? { Authorization: `Bearer ${session?.user.id}` } : undefined,
         }
       )
       .catch(() => {
@@ -367,22 +332,14 @@ const ConversationView = () => {
       </div>
       <div className="p-2 w-full h-auto grow max-w-4xl py-1 px-4 sm:px-8 mx-auto">
         {messageList.length === 0 ? (
-          <EmptyView
-            className="mt-16"
-            sendMessage={sendMessageToCurrentConversation}
-          />
+          <EmptyView className="mt-16" sendMessage={sendMessageToCurrentConversation} />
         ) : (
-          messageList.map((message: Message) => (
-            <MessageView key={message.id} message={message} />
-          ))
+          messageList.map((message: Message) => <MessageView key={message.id} message={message} />)
         )}
       </div>
       <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
         <ClearConversationButton />
-        <MessageTextarea
-          disabled={lastMessage?.status === "LOADING"}
-          sendMessage={sendMessageToCurrentConversation}
-        />
+        <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
       </div>
     </div>
   );

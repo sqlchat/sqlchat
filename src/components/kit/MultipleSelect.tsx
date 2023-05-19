@@ -16,8 +16,7 @@ interface Props<T = any> {
 }
 
 const MultipleSelect = (props: Props & { children?: ReactNode }) => {
-  const { itemList, value, placeholder, className, onValueChange, children } =
-    props;
+  const { itemList, value, placeholder, className, onValueChange, children } = props;
   return (
     <Listbox value={value} onChange={onValueChange} multiple>
       <Listbox.Button
@@ -30,12 +29,7 @@ const MultipleSelect = (props: Props & { children?: ReactNode }) => {
           <Icon.BiChevronDown className="w-full h-auto opacity-60" />
         </SelectUI.Icon>
       </Listbox.Button>
-      <Transition
-        as={Fragment}
-        leave="transition ease-in duration-100"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
+      <Transition as={Fragment} leave="transition ease-in duration-100" leaveFrom="opacity-100" leaveTo="opacity-0">
         <Listbox.Options className="absolute border rounded-lg drop-shadow-lg dark:border-zinc-800 p-1 mt-1 max-h-80 overflow-y-auto scrollbar-hide w-full overflow-auto bg-white dark:bg-zinc-700 py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
           {children && (
             <Listbox.Option className="px-2 py-2" key="button" value="button">

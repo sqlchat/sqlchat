@@ -16,7 +16,7 @@ const EngineIcon = (props: Props) => {
   } else if (engine === Engine.MSSQL) {
     return <Icon.DiMsqlServer className={className} />;
   } else if (engine === Engine.TiDBServerless) {
-    return <Icon.TiDBCloudIcon className={className}/>;
+    return <Icon.TiDBCloudIcon className={className} />;
   } else {
     return <Icon.DiDatabase className={className} />;
   }

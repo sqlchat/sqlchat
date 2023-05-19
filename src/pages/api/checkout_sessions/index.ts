@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]";
 import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
-import { PlanType } from "@/types";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
@@ -12,10 +11,7 @@ const stripe = new Stripe(process.env.STRIPE_API_KEY, {
 
 const prisma = new PrismaClient();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const session = await getServerSession(req, res, authOptions);
 
   if (!session?.user?.email) {
@@ -71,13 +67,11 @@ export default async function handler(
         success_url: `${req.headers.origin}/setting?session_id={CHECKOUT_SESSION_ID}`,
         cancel_url: `${req.headers.origin}/setting`,
       };
-      const checkoutSession: Stripe.Checkout.Session =
-        await stripe.checkout.sessions.create(params);
+      const checkoutSession: Stripe.Checkout.Session = await stripe.checkout.sessions.create(params);
 
       res.status(200).json(checkoutSession);
     } catch (err) {
-      const errorMessage =
-        err instanceof Error ? err.message : "Internal server error";
+      const errorMessage = err instanceof Error ? err.message : "Internal server error";
       res.status(500).json({ statusCode: 500, message: errorMessage });
     }
   } else {

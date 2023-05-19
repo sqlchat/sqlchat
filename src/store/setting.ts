@@ -54,8 +54,7 @@ export const useSettingStore = create<SettingState>()(
     }),
     {
       name: "setting-storage",
-      merge: (persistedState, currentState) =>
-        merge(currentState, persistedState),
+      merge: (persistedState, currentState) => merge(currentState, persistedState),
     }
   )
 );

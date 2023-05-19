@@ -1,5 +1,3 @@
-import { timeStamp } from "console";
-
 export const getCurrencySymbol = (currencyCode: string): string => {
   try {
     return new Intl.NumberFormat("en-US", {
@@ -7,7 +5,7 @@ export const getCurrencySymbol = (currencyCode: string): string => {
       currency: currencyCode,
     })
       .formatToParts(1)
-      .find((part) => part.type === "currency").value;
+      .find((part) => part.type === "currency")!.value;
   } catch (error) {
     console.error(`Invalid currency code: ${currencyCode}`);
     return "";

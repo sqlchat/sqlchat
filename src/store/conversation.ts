@@ -18,25 +18,17 @@ interface ConversationState {
   getState: () => ConversationState;
   conversationList: Conversation[];
   currentConversationId?: Id;
-  createConversation: (
-    connectionId?: Id,
-    databaseName?: string
-  ) => Conversation;
+  createConversation: (connectionId?: Id, databaseName?: string) => Conversation;
   setCurrentConversationId: (conversationId: Id | undefined) => void;
-  getConversationById: (
-    conversationId: Id | undefined
-  ) => Conversation | undefined;
-  updateConversation: (
-    conversationId: Id,
-    conversation: Partial<Conversation>
-  ) => void;
+  getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
+  updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
   updateSelectedTablesName: (selectedTablesName: string[]) => void;
 }
 
 export const useConversationStore = create<ConversationState>()(
   persist(
-    (set: any, get: any) => ({
+    (set, get) => ({
       getState: () => get(),
       conversationList: [],
       createConversation: (connectionId?: Id, databaseName?: string) => {
@@ -54,17 +46,11 @@ export const useConversationStore = create<ConversationState>()(
         }));
         return conversation;
       },
-      setCurrentConversationId: (conversation: Id | undefined) =>
-        set(() => ({ currentConversationId: conversation })),
+      setCurrentConversationId: (conversation: Id | undefined) => set(() => ({ currentConversationId: conversation })),
       getConversationById: (conversationId: Id | undefined) => {
-        return get().conversationList.find(
-          (item: Conversation) => item.id === conversationId
-        );
+        return get().conversationList.find((item: Conversation) => item.id === conversationId);
       },
-      updateConversation: (
-        conversationId: Id,
-        conversation: Partial<Conversation>
-      ) => {
+      updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => {
         set((state: ConversationState) => ({
           ...state,
           conversationList: state.conversationList.map((item: Conversation) =>
@@ -79,9 +65,7 @@ export const useConversationStore = create<ConversationState>()(
         }));
       },
       updateSelectedTablesName: (selectedTablesName: string[]) => {
-        const currentConversation = get().getConversationById(
-          get().currentConversationId
-        );
+        const currentConversation = get().getConversationById(get().currentConversationId);
         if (currentConversation) {
           get().updateConversation(currentConversation.id, {
             selectedTablesName,

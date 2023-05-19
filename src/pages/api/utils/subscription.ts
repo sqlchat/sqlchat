@@ -1,16 +1,9 @@
-import {
-  PlanConfig,
-  PlanType,
-  Subscription,
-  SubscriptionPurchase,
-} from "@/types";
+import { PlanConfig, PlanType, Subscription, SubscriptionPurchase } from "@/types";
 import { PrismaClient, SubscriptionStatus } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getSubscriptionByEmail = async (
-  email: string
-): Promise<Subscription> => {
+export const getSubscriptionByEmail = async (email: string): Promise<Subscription> => {
   const subscriptions = await prisma.subscription.findMany({
     where: { email: email },
     orderBy: { expireAt: "desc" },
@@ -25,10 +18,7 @@ export const getSubscriptionByEmail = async (
       startAt: subscription.startAt.getTime(),
       expireAt: subscription.expireAt.getTime(),
     };
-    if (
-      subscription.status === SubscriptionStatus.ACTIVE &&
-      subscription.expireAt.getTime() > Date.now()
-    ) {
+    if (subscription.status === SubscriptionStatus.ACTIVE && subscription.expireAt.getTime() > Date.now()) {
       return result;
     }
   }
@@ -57,9 +47,7 @@ export const getSubscriptionByEmail = async (
   };
 };
 
-export const getSubscriptionListByEmail = async (
-  email: string
-): Promise<SubscriptionPurchase[]> => {
+export const getSubscriptionListByEmail = async (email: string): Promise<SubscriptionPurchase[]> => {
   const subscriptions = await prisma.subscription.findMany({
     where: { email: email },
     orderBy: { expireAt: "desc" },

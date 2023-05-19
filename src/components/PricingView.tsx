@@ -47,9 +47,7 @@ const PricingView = () => {
             className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
             onClick={() => (session?.user?.email ? checkout() : signIn())}
           >
-            {session?.user?.email
-              ? t("setting.plan.early-bird-checkout")
-              : t("payment.sign-in-to-buy")}
+            {session?.user?.email ? t("setting.plan.early-bird-checkout") : t("payment.sign-in-to-buy")}
           </button>
         </div>
       </div>

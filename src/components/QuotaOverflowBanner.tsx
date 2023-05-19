@@ -10,10 +10,7 @@ interface Props {
 const QuotaOverflowBanner = (props: Props) => {
   const { className } = props;
   const { t } = useTranslation();
-  const [hideBanner, setHideBanner] = useLocalStorage(
-    "hide-quota-overflow-banner",
-    false
-  );
+  const [hideBanner, setHideBanner] = useLocalStorage("hide-quota-overflow-banner", false);
   const show = !hideBanner;
 
   return (
@@ -29,10 +26,7 @@ const QuotaOverflowBanner = (props: Props) => {
             {t("banner.use-my-key")}
           </Link>
         </div>
-        <button
-          className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100"
-          onClick={() => setHideBanner(true)}
-        >
+        <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
           <Icon.BiX className="w-6 h-auto" />
         </button>
       </div>

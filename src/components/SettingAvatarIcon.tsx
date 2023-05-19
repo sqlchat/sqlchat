@@ -1,9 +1,9 @@
 import { useSession } from "next-auth/react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { hasFeature } from "../utils";
 import Tooltip from "./kit/Tooltip";
 import Icon from "./Icon";
-import { hasFeature } from "../utils";
 
 interface Props {}
 
@@ -33,9 +33,7 @@ const SettingAvatarIcon = (props: Props) => {
               />
             ) : (
               <div className="bg-indigo-100 px-3 py-1 rounded-full text-indigo-600 hover:bg-indigo-200 uppercase cursor-pointer">
-                {session.user.name
-                  ? session.user.name.charAt(0)
-                  : session.user.email?.charAt(0)}
+                {session.user.name ? session.user.name.charAt(0) : session.user.email?.charAt(0)}
               </div>
             )}
           </Link>

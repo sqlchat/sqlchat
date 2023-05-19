@@ -7,10 +7,7 @@ const ClearConversationButton = () => {
   const conversationStore = useConversationStore();
   const messageStore = useMessageStore();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const messageList = messageStore.messageList.filter(
-    (message) =>
-      message.conversationId === conversationStore.currentConversationId
-  );
+  const messageList = messageStore.messageList.filter((message) => message.conversationId === conversationStore.currentConversationId);
 
   return (
     <>
@@ -22,11 +19,7 @@ const ClearConversationButton = () => {
         <Icon.GiBroom className="w-6 h-auto" />
       </button>
 
-      {showConfirmModal && (
-        <ClearConversationConfirmModal
-          close={() => setShowConfirmModal(false)}
-        />
-      )}
+      {showConfirmModal && <ClearConversationConfirmModal close={() => setShowConfirmModal(false)} />}
     </>
   );
 };

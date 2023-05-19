@@ -2,9 +2,7 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export const getCurrentMonthUsage = async (
-  endUser: string
-): Promise<number> => {
+export const getCurrentMonthUsage = async (endUser: string): Promise<number> => {
   const now = new Date();
   const start = new Date(now.getFullYear(), now.getMonth(), 1);
   const end = new Date(now.getFullYear(), now.getMonth() + 1, 1);
@@ -27,9 +25,7 @@ export const getCurrentMonthUsage = async (
 // We coerce individual usage to the begining of the day to reduce the usage records.
 export const addUsage = async (endUser: string): Promise<number> => {
   const now = new Date();
-  const today = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
-  );
+  const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const usage = await prisma.usage.findFirst({
     where: {
       endUser: endUser,

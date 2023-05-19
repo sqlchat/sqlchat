@@ -1,16 +1,13 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "./[...nextauth]";
 import requestIp from "request-ip";
+import { authOptions } from "./[...nextauth]";
 
 const prisma = new PrismaClient();
 
 // Returns the login user email or the client IP address
-export const getEndUser = async (
-  req: NextApiRequest,
-  res: NextApiResponse
-): Promise<string> => {
+export const getEndUser = async (req: NextApiRequest, res: NextApiResponse): Promise<string> => {
   // Get from server session if available
   const serverSession = await getServerSession(req, res, authOptions);
   if (serverSession?.user?.email) {

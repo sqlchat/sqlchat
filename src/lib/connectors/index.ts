@@ -5,10 +5,7 @@ import mssql from "./mssql";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
-  execute: (
-    databaseName: string,
-    statement: string
-  ) => Promise<ExecutionResult>;
+  execute: (databaseName: string, statement: string) => Promise<ExecutionResult>;
   getDatabases: () => Promise<string[]>;
   getTables: (databaseName: string) => Promise<string[]>;
   getTableStructure: (

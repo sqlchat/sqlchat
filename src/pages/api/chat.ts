@@ -1,8 +1,4 @@
-import {
-  createParser,
-  ParsedEvent,
-  ReconnectInterval,
-} from "eventsource-parser";
+import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
 import { openAIApiEndpoint, openAIApiKey, gpt35, hasFeature } from "@/utils";
 
@@ -25,8 +21,7 @@ const handler = async (req: NextRequest) => {
     return new Response(
       JSON.stringify({
         error: {
-          message:
-            "OpenAI API Key is missing. You can supply your own key via Settings.",
+          message: "OpenAI API Key is missing. You can supply your own key via Settings.",
         },
       }),
       {
@@ -41,9 +36,7 @@ const handler = async (req: NextRequest) => {
   const useServerKey = !req.headers.get("x-openai-key");
   const sessionToken = req.cookies.get("next-auth.session-token")?.value;
   const currentUrl = new URL(req.url);
-  const usageUrl = new URL(
-    currentUrl.protocol + "//" + currentUrl.host + "/api/usage"
-  );
+  const usageUrl = new URL(currentUrl.protocol + "//" + currentUrl.host + "/api/usage");
   const requestHeaders: any = {
     Authorization: `Bearer ${sessionToken}`,
   };
@@ -53,8 +46,7 @@ const handler = async (req: NextRequest) => {
       return new Response(
         JSON.stringify({
           error: {
-            message:
-              "Please sign up to get free quota or supply your own OpenAI key.",
+            message: "Please sign up to get free quota or supply your own OpenAI key.",
           },
         }),
         {
@@ -97,9 +89,7 @@ const handler = async (req: NextRequest) => {
     }
   }
 
-  const apiEndpoint = getApiEndpoint(
-    req.headers.get("x-openai-endpoint") || openAIApiEndpoint
-  );
+  const apiEndpoint = getApiEndpoint(req.headers.get("x-openai-endpoint") || openAIApiEndpoint);
   const remoteRes = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
