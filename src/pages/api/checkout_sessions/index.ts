@@ -30,15 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const params: Stripe.Checkout.SessionCreateParams = {
         submit_type: "pay",
         mode: "payment",
-        payment_method_types: [
-          "affirm",
-          // "alipay",
-          "card",
-          "cashapp",
-          "klarna",
-          "link",
-          // "wechat_pay",
-        ],
+        payment_method_types: ["affirm", "alipay", "card", "cashapp", "klarna", "link", "wechat_pay"],
         line_items: [
           {
             price: process.env.STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION,
