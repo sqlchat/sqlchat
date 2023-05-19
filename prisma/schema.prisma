@@ -10,8 +10,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // Connection pooling URL
+  url       = env("DATABASE_URL")
+  // Connection pooling is not supported by Prisma migrate yet. So need to use directUrl
+  directUrl = env("DATABASE_DIRECT_URL")
 }
 
 model Chat {
