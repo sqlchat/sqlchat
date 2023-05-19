@@ -37,6 +37,9 @@ const ConnectionSidebar = () => {
       conversationStore.currentConversationId
     )?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
+  const currentConversation = conversationStore.getConversationById(
+    conversationStore.currentConversationId
+  );
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -115,17 +118,36 @@ const ConnectionSidebar = () => {
     }
   };
 
+  // only create conversation when currentConversation is null.
+  // Note: This function is used to solve issue #95
+  //       https://github.com/sqlchat/sqlchat/issues/95
+  const createConversation = () => {
+    if (!currentConversation) {
+      if (!currentConnectionCtx) {
+        conversationStore.createConversation();
+      } else {
+        conversationStore.createConversation(
+          currentConnectionCtx.connection.id,
+          currentConnectionCtx.database?.name
+        );
+      }
+    }
+  };
+
   const handleTableNameSelect = async (selectedTablesName: string[]) => {
+    createConversation();
     conversationStore.updateSelectedTablesName(selectedTablesName);
   };
 
   const handleAllSelect = async () => {
+    createConversation();
     conversationStore.updateSelectedTablesName(
       tableList.map((table) => table.name)
     );
   };
 
   const handleEmptySelect = async () => {
+    createConversation();
     conversationStore.updateSelectedTablesName([]);
   };
   return (
