@@ -174,7 +174,7 @@ const SettingPage: NextPage = () => {
 
         <main className="lg:pl-72">
           {router.query.session_id && <StripeCheckPaymentBanner sessionId={router.query.session_id as string} />}
-          <div className="px-4 sm:px-6 lg:px-8">
+          <div className="px-4 sm:px-6 lg:px-8 dark:bg-zinc-800">
             <SettingView />
           </div>
         </main>

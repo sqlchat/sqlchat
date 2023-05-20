@@ -74,7 +74,7 @@ const OpenAIApiConfigView = () => {
     <>
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg">
         <div>
-          <label className="text-base font-semibold text-gray-900">{t("setting.openai-api-configuration.model")}</label>
+          <label className="text-base font-semibold ">{t("setting.openai-api-configuration.model")}</label>
           <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.model-description")}</p>
           <fieldset className="mt-4">
             <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
@@ -91,7 +91,7 @@ const OpenAIApiConfigView = () => {
           </fieldset>
         </div>
         <div className="flex flex-col mt-4">
-          <label className="text-base font-semibold text-gray-900">OpenAI API Key</label>
+          <label className="text-base font-semibold">OpenAI API Key</label>
           <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.key-description")}</p>
           <TextField
             className="mt-4"
@@ -101,7 +101,7 @@ const OpenAIApiConfigView = () => {
           />
         </div>
         <div className="flex flex-col mt-4">
-          <label className="text-base font-semibold text-gray-900">OpenAI API Endpoint</label>
+          <label className="text-base font-semibold">OpenAI API Endpoint</label>
           <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.endpoint-description")}</p>
           <TextField
             className="mt-4"
