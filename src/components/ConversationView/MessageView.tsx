@@ -131,6 +131,7 @@ const MessageView = (props: Props) => {
                         >
                           <CodeBlock
                             key={Math.random()}
+                            messageId={message.id}
                             language={language || "SQL"}
                             value={String(child.props.children).replace(
                               /\n$/,

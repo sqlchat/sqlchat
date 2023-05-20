@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useQueryStore } from "@/store";
+import { useConversationStore, useQueryStore, useMessageStore } from "@/store";
 import { ExecutionResult, ResponseObject } from "@/types";
 import { checkStatementIsSelect, getMessageFromExecutionResult } from "@/utils";
 import Tooltip from "./kit/Tooltip";
@@ -16,6 +16,8 @@ import ExecutionWarningBanner from "./ExecutionView/ExecutionWarningBanner";
 const QueryDrawer = () => {
   const { t } = useTranslation();
   const queryStore = useQueryStore();
+  const messageStore = useMessageStore();
+
   const [executionResult, setExecutionResult] = useState<
     ExecutionResult | undefined
   >(undefined);
@@ -86,7 +88,19 @@ const QueryDrawer = () => {
     }
   };
 
-  const close = () => queryStore.toggleDrawer(false);
+  const close = () => {
+    // update sql statement
+    queryStore.toggleDrawer(false);
+  };
+  const handleSQLChange = (newStatement: string) => {
+    messageStore.updateStatement(
+      context?.messageId || "",
+      statement,
+      newStatement
+    );
+
+    setStatement(newStatement);
+  };
 
   return (
     <Drawer
@@ -131,7 +145,7 @@ const QueryDrawer = () => {
                 minRows={1}
                 maxRows={5}
                 placeholder="Enter your SQL statement here..."
-                onChange={(e) => setStatement(e.target.value)}
+                onChange={(e) => handleSQLChange(e.target.value)}
               />
               <Tooltip title={t("common.execute")} side="top">
                 <button

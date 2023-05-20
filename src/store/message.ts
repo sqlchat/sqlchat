@@ -7,6 +7,11 @@ interface MessageState {
   getState: () => MessageState;
   addMessage: (message: Message) => void;
   updateMessage: (messageId: Id, message: Partial<Message>) => void;
+  updateStatement: (
+    messageId: Id,
+    oldStatement: string,
+    newStatement: string
+  ) => void;
   clearMessage: (filter: (message: Message) => boolean) => void;
 }
 
@@ -22,6 +27,26 @@ export const useMessageStore = create<MessageState>()(
           ...state,
           messageList: state.messageList.map((item) =>
             item.id === messageId ? { ...item, ...message } : item
+          ),
+        }));
+      },
+      updateStatement: (
+        messageId: Id,
+        oldStatement: string,
+        newStatement: string
+      ) => {
+        const newMessage = get().messageList.find(
+          (message) => message.id == messageId
+        );
+        if (!newMessage) return;
+        newMessage.content = newMessage.content.replace(
+          oldStatement,
+          newStatement
+        );
+        set((state) => ({
+          ...state,
+          messageList: state.messageList.map((item) =>
+            item.id === messageId ? newMessage : item
           ),
         }));
       },
