@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useConversationStore, useQueryStore, useMessageStore } from "@/store";
+import { useQueryStore, useMessageStore } from "@/store";
 import { ExecutionResult, ResponseObject } from "@/types";
 import { checkStatementIsSelect, getMessageFromExecutionResult } from "@/utils";
 import Tooltip from "./kit/Tooltip";
@@ -82,10 +82,8 @@ const QueryDrawer = () => {
     }
   };
 
-  const close = () => {
-    // update sql statement
-    queryStore.toggleDrawer(false);
-  };
+  const close = () => queryStore.toggleDrawer(false);
+
   const handleSQLChange = (newStatement: string) => {
     messageStore.updateStatement(context?.messageId || "", statement, newStatement);
 
