@@ -104,7 +104,8 @@ const handler = async (req: NextRequest) => {
       frequency_penalty: model.frequency_penalty,
       presence_penalty: model.presence_penalty,
       stream: true,
-      // Send end-user ID to help OpenAI monitor and detect abuse.
+      // Send end-user IP to help OpenAI monitor and detect abuse.
+      // It's intentionally not using email to avoid leaking user's email to OpenAI.
       user: req.ip,
     }),
   });

@@ -34,11 +34,7 @@ SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following d
 
 ## Data Privacy
 
-- All database connection configs are stored locally in your browser. You can also visit settings to clear the data.
-
-- Only the database schema will be sent to the OpenAI API. No table data will be sent there.
-
-- If you use [sqlchat.ai](https://sqlchat.ai), it will record the anonymised conversations.
+See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
 
 ## IP Whitelisting
 

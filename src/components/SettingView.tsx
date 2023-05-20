@@ -61,6 +61,14 @@ const SettingView = () => {
         </div>
       </div>
 
+      <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
+        <div className="w-full flex flex-row justify-between items-center gap-2">
+          <a href={"privacy"} target="_blank">
+            Privacy
+          </a>
+        </div>
+      </div>
+
       <div className="w-full border border-red-200 dark:border-zinc-700 p-4 rounded-lg">
         <div className="w-full flex flex-row justify-between items-center gap-2">
           <span>{t("setting.data.clear-all-data")}</span>
