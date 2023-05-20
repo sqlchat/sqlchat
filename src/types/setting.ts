@@ -5,6 +5,7 @@ export type Theme = "light" | "dark" | "system";
 export interface OpenAIApiConfig {
   key: string;
   endpoint: string;
+  model: string;
 }
 
 export interface Setting {
