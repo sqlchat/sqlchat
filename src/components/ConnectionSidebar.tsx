@@ -29,13 +29,7 @@ const ConnectionSidebar = () => {
   const selectedTablesName: string[] =
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
-<<<<<<< HEAD
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
-=======
-  const currentConversation = conversationStore.getConversationById(
-    conversationStore.currentConversationId
-  );
->>>>>>> origin/fix/cannot_select_table
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -125,13 +119,7 @@ const ConnectionSidebar = () => {
 
   const handleAllSelect = async () => {
     createConversation();
-<<<<<<< HEAD
     conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
-=======
-    conversationStore.updateSelectedTablesName(
-      tableList.map((table) => table.name)
-    );
->>>>>>> origin/fix/cannot_select_table
   };
 
   const handleEmptySelect = async () => {
