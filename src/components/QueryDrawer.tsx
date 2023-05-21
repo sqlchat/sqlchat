@@ -96,8 +96,8 @@ const QueryDrawer = () => {
   };
 
   const close = () => {
-    if (originalStatement !== statement) {
-      messageStore.updateStatement(context?.messageId || "", originalStatement, statement);
+    if (originalStatement !== statement && context?.messageId) {
+      messageStore.updateStatement(context?.messageId, originalStatement, statement);
     }
     queryStore.toggleDrawer(false);
   };
