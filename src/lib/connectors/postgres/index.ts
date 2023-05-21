@@ -18,7 +18,7 @@ const newPostgresClient = async (connection: Connection) => {
       key: connection.ssl?.key,
     };
   } else {
-    // Use rejectUnauthorized to infer sslmode=prefer since hosted PG venders have SSL enabled.
+    // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
     clientConfig.ssl = {
       rejectUnauthorized: false,
     };
