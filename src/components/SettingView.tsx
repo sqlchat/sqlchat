@@ -36,15 +36,15 @@ const SettingView = () => {
         </div>
       )}
 
-      {hasFeature("account") && (
+      {hasFeature("payment") && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
-          <AccountView />
+          <PricingView />
         </div>
       )}
 
-      {hasFeature("payment") && session?.user?.subscription.plan != "PRO" && (
+      {hasFeature("account") && (
         <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-2">
-          <PricingView />
+          <AccountView />
         </div>
       )}
 

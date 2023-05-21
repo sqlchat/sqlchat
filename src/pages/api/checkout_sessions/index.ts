@@ -56,7 +56,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           metadata: {
             email: session?.user?.email!,
             plan: "PRO",
-            description: "Pro 1 Year License (Early Bird)",
+            description: "Pro 1 Year (Early Bird)",
           },
         },
         // Link customer if present otherwise pass email and let Stripe create a new customer.
