@@ -1,5 +1,7 @@
 # SQL Chat Privacy Policy
 
+*Last Updated: May 21, 2023*
+
 We respect your privacy and are committed to protecting your personal information. This Privacy Policy explains how we collect, use, and disclose your personal information when you use our application that calls LLM provider's API.
 
 ## Collection of Application Data
@@ -42,5 +44,3 @@ For more information about our privacy and data protection practices, including 
 ## Contact Us
 
 Please contact us at support@bytebase.com if you have questions about this Privacy Policy.
-
-*Last Updated: May 21, 2023*
