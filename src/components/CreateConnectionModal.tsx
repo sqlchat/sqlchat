@@ -243,7 +243,7 @@ const CreateConnectionModal = (props: Props) => {
                     checked={connection.engineType === engine.type}
                     onChange={(value) => setPartialConnection({ engineType: value as Engine, port: engine.defaultPort as string })}
                   />
-                  <EngineIcon className="h-8 w-8 rounded-full" engine={engine.type} />
+                  <EngineIcon className="h-6 w-6" engine={engine.type} />
                   <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                     {engine.name}
                   </label>

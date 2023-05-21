@@ -51,7 +51,7 @@ const ConnectionList = () => {
   return (
     <>
       <button
-        className={`w-full h-14 rounded-l-lg p-2 mt-1 group ${currentConnectionCtx === undefined && "bg-gray-100 dark:bg-zinc-700 shadow"}`}
+        className={`w-full h-12 rounded-l-lg p-2 mt-1 group ${currentConnectionCtx === undefined && "bg-gray-100 dark:bg-zinc-700 shadow"}`}
         onClick={() => connectionStore.setCurrentConnectionCtx(undefined)}
       >
         <img src="/chat-logo-bot.webp" className="w-7 h-auto mx-auto" alt="" />
@@ -59,7 +59,7 @@ const ConnectionList = () => {
       {connectionList.map((connection) => (
         <Tooltip key={connection.id} title={connection.title} side="right">
           <button
-            className={`relative w-full h-14 rounded-l-lg p-2 mt-2 group ${
+            className={`relative w-full h-12 rounded-l-lg p-2 mt-2 group ${
               currentConnectionCtx?.connection.id === connection.id && "bg-gray-100 dark:bg-zinc-700 shadow"
             }`}
             onClick={() => handleConnectionSelect(connection)}

@@ -99,7 +99,7 @@ const MessageView = (props: Props) => {
         <>
           <div className="flex justify-center items-center mr-2 shrink-0">
             {connection ? (
-              <EngineIcon className="w-10 h-auto p-1 border dark:border-zinc-700 rounded-full" engine={connection.engineType} />
+              <EngineIcon className="w-10 h-auto p-1 dark:border-zinc-700" engine={connection.engineType} />
             ) : (
               <img className="w-10 h-auto p-1" src="/chat-logo-bot.webp" alt="" />
             )}

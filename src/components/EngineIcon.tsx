@@ -10,13 +10,13 @@ const EngineIcon = (props: Props) => {
   const { className, engine } = props;
 
   if (engine === Engine.MySQL) {
-    return <Icon.DiMysql className={className} />;
+    return <img src="/db-mysql.png" className={className} alt="mysql" />;
   } else if (engine === Engine.PostgreSQL) {
-    return <Icon.DiPostgresql className={className} />;
+    return <img src="/db-postgres.png" className={className} alt="postgres" />;
   } else if (engine === Engine.MSSQL) {
-    return <Icon.DiMsqlServer className={className} />;
+    return <img src="/db-sqlserver.png" className={className} alt="sqlserver" />;
   } else if (engine === Engine.TiDBServerless) {
-    return <Icon.TiDBCloudIcon className={className} />;
+    return <img src="/db-tidb.png" className={className} alt="tidb" />;
   } else {
     return <Icon.DiDatabase className={className} />;
   }
