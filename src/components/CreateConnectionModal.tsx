@@ -396,7 +396,7 @@ const CreateConnectionModal = (props: Props) => {
           <div>
             {isEditing && (
               <button className="btn btn-outline" onClick={() => setShowDeleteConnectionModal(true)}>
-                Delete
+                {t("common.delete")}
               </button>
             )}
           </div>
