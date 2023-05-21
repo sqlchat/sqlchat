@@ -1,6 +1,7 @@
 import { cloneDeep, head } from "lodash-es";
 import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
 import { useConnectionStore } from "@/store";
 import { Connection, Engine, ResponseObject, SSLOptions } from "@/types";
@@ -8,10 +9,10 @@ import Radio from "./kit/Radio";
 import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
 import Icon from "./Icon";
+import EngineIcon from "./EngineIcon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
-import { useTranslation } from "react-i18next";
-import EngineIcon from "./EngineIcon";
+import RequiredStar from "./RequiredStar";
 
 interface Props {
   connection?: Connection;
@@ -81,7 +82,7 @@ const CreateConnectionModal = (props: Props) => {
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
   const isEditing = editConnection !== undefined;
-  const allowSave = connection.host !== "" && connection.username !== "" && connection.title !== "";
+  const allowSave = connection.title !== "" && connection.host !== "" && connection.username !== "";
 
   useEffect(() => {
     const connection = isEditing ? editConnection : defaultConnection;
@@ -231,18 +232,18 @@ const CreateConnectionModal = (props: Props) => {
         <div className="w-full flex flex-col justify-start items-start space-y-3 mt-2">
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-type")}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t("connection.database-type")}
+              <RequiredStar />
+            </label>
             <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {engines.map((engine) => (
                 <div
                   key={engine.type}
                   className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                  onClick={() => setPartialConnection({ engineType: engine.type, port: engine.defaultPort })}
                 >
-                  <Radio
-                    value={engine.type}
-                    checked={connection.engineType === engine.type}
-                    onChange={(value) => setPartialConnection({ engineType: value as Engine, port: engine.defaultPort as string })}
-                  />
+                  <Radio value={engine.type} checked={connection.engineType === engine.type} />
                   <EngineIcon className="h-6 w-6" engine={engine.type} />
                   <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                     {engine.name}
@@ -252,11 +253,17 @@ const CreateConnectionModal = (props: Props) => {
             </div>
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.title")}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t("connection.title")}
+              <RequiredStar />
+            </label>
             <TextField placeholder="Title" value={connection.title} onChange={(value) => setPartialConnection({ title: value })} />
           </div>
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.host")}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t("connection.host")}
+              <RequiredStar />
+            </label>
             <TextField placeholder="Connection host" value={connection.host} onChange={(value) => setPartialConnection({ host: value })} />
           </div>
           <div className="w-full flex flex-col">
@@ -274,7 +281,10 @@ const CreateConnectionModal = (props: Props) => {
             </div>
           )}
           <div className="w-full flex flex-col">
-            <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.username")}</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              {t("connection.username")}
+              <RequiredStar />
+            </label>
             <TextField
               placeholder="Connection username"
               value={connection.username || ""}

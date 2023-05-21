@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSession } from "next-auth/react";
 import { hasFeature } from "../utils";
 import Icon from "./Icon";
 import AccountView from "./AccountView";
@@ -14,10 +13,9 @@ import OpenAIApiConfigView from "./OpenAIApiConfigView";
 
 const SettingGeneralView = () => {
   const { t } = useTranslation();
-  const { data: session } = useSession();
 
   return (
-    <div className="w-full flex flex-col justify-start items-start space-y-3 py-4 sm:py-8">
+    <div className="w-full flex flex-col justify-start items-start space-y-2 sm:space-y-4 py-4 sm:py-8">
       <div className="w-full flex flex-row justify-start items-start flex-wrap gap-2">
         <a
           href="https://discord.gg/z6kakemDjm"
@@ -61,24 +59,21 @@ const SettingGeneralView = () => {
         </div>
       </div>
 
-      <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg space-y-4">
-        <div className="w-full flex flex-row justify-between items-center gap-2">
-          <a href={"privacy"} target="_blank">
-            Privacy
-          </a>
-        </div>
-        <div className="w-full flex flex-row justify-between items-center gap-22">
-          <a href={"terms"} target="_blank">
-            Terms
-          </a>
-        </div>
-      </div>
-
       <div className="w-full border border-red-200 dark:border-zinc-700 p-4 rounded-lg">
         <div className="w-full flex flex-row justify-between items-center gap-2">
           <span>{t("setting.data.clear-all-data")}</span>
           <ClearDataButton />
         </div>
+      </div>
+
+      <div className="w-full flex flex-row justify-start items-center p-4 gap-2">
+        <a className="text-blue-600 hover:underline" href={"privacy"} target="_blank">
+          Privacy
+        </a>
+        <span>·</span>
+        <a className="text-blue-600 hover:underline" href={"terms"} target="_blank">
+          Terms
+        </a>
       </div>
     </div>
   );
