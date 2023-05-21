@@ -71,8 +71,8 @@
       "n-question-per-month": "{{count}} quota / month",
       "early-bird-checkout": "Early bird discount, 50% off for 1 year"
     },
-    "billing": {
-      "self": "Billing",
+    "subscription": {
+      "self": "Subscription",
       "view-receipt": "View receipt"
     },
     "account": {

@@ -69,8 +69,8 @@
       "n-question-per-month": "{{count}} Cuota / mes",
       "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
     },
-    "billing": {
-      "self": "Facturación",
+    "subscription": {
+      "self": "Suscripción",
       "view-receipt": "Ver recibo"
     },
     "account": {

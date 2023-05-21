@@ -12,7 +12,7 @@ import LocaleSelector from "./LocaleSelector";
 import ThemeSelector from "./ThemeSelector";
 import OpenAIApiConfigView from "./OpenAIApiConfigView";
 
-const SettingView = () => {
+const SettingGeneralView = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
 
@@ -84,4 +84,4 @@ const SettingView = () => {
   );
 };
 
-export default SettingView;
+export default SettingGeneralView;

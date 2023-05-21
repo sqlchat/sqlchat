@@ -71,8 +71,8 @@
       "n-question-per-month": "{{count}} 点额度 / 月",
       "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
     },
-    "billing": {
-      "self": "计费",
+    "subscription": {
+      "self": "订阅",
       "view-receipt": "查看收据"
     },
     "account": {
