@@ -64,12 +64,16 @@
       "guest": "Guest",
       "free": "Free",
       "pro": "Pro",
+      "pro-early-bird": "🐤 Early Bird - Pro 50% OFF",
       "signup-for-more": "Sign up for more",
       "upgrade": "Upgrade",
       "renew": "Renew",
       "expired": "Expired",
       "n-question-per-month": "{{count}} quota / month",
-      "early-bird-checkout": "Early bird discount, 50% off for 1 year"
+      "1-month": "1 month",
+      "n-months": "{{count}} months",
+      "purhcase-1-month": "Purchase 1 month",
+      "purhcase-n-months": "Purchase {{count}} months"
     },
     "subscription": {
       "self": "Subscription",

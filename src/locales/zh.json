@@ -64,12 +64,16 @@
       "guest": "访客",
       "free": "免费版",
       "pro": "专业版",
+      "pro-early-bird": "🐤 早鸟优惠 - 专业版 5 折",
       "signup-for-more": "注册获得额度",
       "upgrade": "升级",
       "renew": "续费",
       "expired": "已过期",
       "n-question-per-month": "{{count}} 点额度 / 月",
-      "early-bird-checkout": "早鸟优惠，5 折购买 1 年"
+      "1-month": "1 个月",
+      "n-months": "{{count}} 个月",
+      "purhcase-1-month": "购买 1 个月",
+      "purhcase-n-months": "购买 {{count}} 个月"
     },
     "subscription": {
       "self": "订阅",

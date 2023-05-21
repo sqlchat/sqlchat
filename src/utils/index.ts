@@ -6,3 +6,4 @@ export * from "./model";
 export * from "./feature";
 export * from "./tidb";
 export * from "./misc";
+export * from "./plan";

@@ -4,9 +4,11 @@ import { useTranslation } from "react-i18next";
 import getStripe from "../utils/get-stripejs";
 import { fetchPostJSON } from "../utils/api-helpers";
 
-const checkout = async () => {
+const checkout = async (priceId: string) => {
   // Create a Checkout Session.
-  const response = await fetchPostJSON("/api/checkout_sessions", {});
+  const response = await fetchPostJSON("/api/checkout_sessions", {
+    price: priceId,
+  });
 
   if (response.statusCode === 500) {
     console.error(response.message);
@@ -31,24 +33,62 @@ const PricingView = () => {
   const { t } = useTranslation();
   const { data: session, status } = useSession();
 
+  const tiers = [
+    {
+      name: t("setting.plan.1-month"),
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_MONTH_SUBSCRIPTION,
+      priceMonthly: "$5",
+      buyButton: t("setting.plan.purhcase-1-month"),
+    },
+    {
+      name: t("setting.plan.n-months", {
+        count: 3,
+      }),
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_3_MONTH_SUBSCRIPTION,
+      priceMonthly: "$15",
+      buyButton: t("setting.plan.purhcase-n-months", {
+        count: 3,
+      }),
+    },
+    {
+      name: t("setting.plan.n-months", {
+        count: 12,
+      }),
+      priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION,
+      priceMonthly: "$50",
+      buyButton: t("setting.plan.purhcase-n-months", {
+        count: 12,
+      }),
+    },
+  ];
+
   return (
-    <div className="bg-white dark:bg-zinc-800">
-      <span className="rounded-full bg-green-50 px-4 py-1.5 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-        {"🎈 "} {t(`setting.plan.pro`)}
-      </span>
-      <div className="mx-auto max-w-7xl p-6 lg:flex lg:items-center lg:justify-between lg:px-8">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+    <div className="bg-white dark:bg-zinc-800 py-4">
+      <div className="mx-auto max-w-4xl text-center">
+        <span className="rounded-full bg-green-50 px-4 py-1.5 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+          {t(`setting.plan.pro-early-bird`)}
+        </span>
+        <p className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl">
           {t("setting.plan.n-question-per-month", {
             count: 1000,
           })}
-        </h2>
-        <div className="mt-10 flex items-center gap-x-6 lg:mt-0 lg:flex-shrink-0">
-          <button
-            className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-xl font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            onClick={() => (session?.user?.email ? checkout() : signIn())}
-          >
-            {session?.user?.email ? t("setting.plan.early-bird-checkout") : t("payment.sign-in-to-buy")}
-          </button>
+        </p>
+      </div>
+      <div className="mt-12 flow-root">
+        <div className="isolate -mt-16 grid max-w-sm grid-cols-1 gap-y-16 divide-y divide-gray-100 sm:mx-auto lg:-mx-8 lg:mt-0 lg:max-w-none lg:grid-cols-3 lg:divide-x lg:divide-y-0 xl:-mx-4">
+          {tiers.map((tier) => (
+            <div key={tier.priceId} className="pt-16 lg:px-8 lg:pt-0 xl:px-14 flex flex-col justify-center">
+              <h3 id={tier.priceId} className="text-center text-3xl font-semibold leading-7">
+                {tier.name} - {tier.priceMonthly}
+              </h3>
+              <button
+                onClick={() => (session?.user?.email ? checkout(tier.priceId) : signIn())}
+                className="mt-6 block rounded-md bg-indigo-600 px-4 py-2.5 text-center text-xl font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                {session?.user?.email ? tier.buyButton : t("payment.sign-in-to-buy")}
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>

@@ -62,12 +62,16 @@
       "guest": "Invitada",
       "free": "Gratis",
       "pro": "Pro",
+      "pro-early-bird": "🐤 Early Bird - Pro 50% de descuento",
       "signup-for-more": "Regístrese para obtener más",
       "upgrade": "Mejora",
       "renew": "Renovar",
       "expired": "Expirado",
       "n-question-per-month": "{{count}} Cuota / mes",
-      "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
+      "1-month": "1 mes",
+      "n-months": "{{count}} meses",
+      "purhcase-1-month": "Comprar 1 mes",
+      "purhcase-n-months": "Comprar {{count}} meses"
     },
     "subscription": {
       "self": "Suscripción",

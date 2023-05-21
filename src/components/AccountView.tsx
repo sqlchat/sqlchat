@@ -48,9 +48,9 @@ const AccountView = () => {
               <span
                 className={`${
                   session?.user.subscription.plan == "PRO"
-                    ? "ring-green-600/2 bg-green-50 text-green-700"
-                    : "ring-gray-600/2 bg-gray-50 text-gray-700"
-                } rounded-full px-3 py-1 ring-1 ring-inset`}
+                    ? "ring-green-600/20 bg-green-50 text-green-700"
+                    : "ring-gray-600/20 bg-gray-50 text-gray-700"
+                } rounded-full px-4 py-1.5 ring-1 ring-inset`}
               >
                 {t(`setting.plan.${session.user.subscription.plan.toLowerCase()}`)}
               </span>

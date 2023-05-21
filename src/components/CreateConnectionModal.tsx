@@ -59,6 +59,16 @@ const engines = [
     name: "TiDB Serverless",
     defaultPort: "4000",
   },
+  {
+    type: Engine.Snowflake,
+    name: "Snowflake",
+    defaultPort: "443",
+  },
+  {
+    type: Engine.Hive,
+    name: "Hive",
+    defaultPort: "4000",
+  },
 ];
 
 const defaultConnection: Connection = {

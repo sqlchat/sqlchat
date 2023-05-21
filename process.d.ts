@@ -30,7 +30,11 @@ declare namespace NodeJS {
     STRIPE_API_KEY: string;
     // Optional. Stripe webhook secret.
     STRIPE_WEBHOOK_SECRET: string;
+    // Optional. Stripe price id for Pro plan 1 month subscription.
+    NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_MONTH_SUBSCRIPTION: string;
+    // Optional. Stripe price id for Pro plan 3 month subscription.
+    NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_3_MONTH_SUBSCRIPTION: string;
     // Optional. Stripe price id for Pro plan 1 year subscription.
-    STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION: string;
+    NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION: string;
   }
 }

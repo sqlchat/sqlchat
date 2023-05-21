@@ -20,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   if (req.method === "POST") {
-    const session = await getServerSession(req, res, authOptions);
     const email = session?.user?.email!;
     const user = await prisma.user.findUniqueOrThrow({
       where: { email: email },
@@ -33,7 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         payment_method_types: ["affirm", "alipay", "card", "cashapp", "klarna", "link", "wechat_pay"],
         line_items: [
           {
-            price: process.env.STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION,
+            price: req.body.price,
             quantity: 1,
           },
         ],
@@ -48,7 +47,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           metadata: {
             email: session?.user?.email!,
             plan: "PRO",
-            description: "Pro 1 Year (Early Bird)",
+            price: req.body.price,
           },
         },
         // Link customer if present otherwise pass email and let Stripe create a new customer.

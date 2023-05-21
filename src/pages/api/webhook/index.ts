@@ -4,6 +4,7 @@ import Cors from "micro-cors";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
 import { getSubscriptionByEmail } from "../utils/subscription";
+import { getPlanFromPriceId } from "@/utils";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
@@ -47,6 +48,15 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
       const charge = await stripe.charges.retrieve(paymentIntent.latest_charge as string);
 
+      let plan;
+      try {
+        plan = getPlanFromPriceId(paymentIntent.metadata.price);
+      } catch (err) {
+        console.log(err);
+        res.status(400).send(`Invalid price id: ${paymentIntent.metadata.price}`);
+        return;
+      }
+
       const customerId = paymentIntent.customer as string;
       if (customerId) {
         // Save the stripe customer id so that we can relate this customer to future payments.
@@ -70,7 +80,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         createdAt: new Date(paymentIntent.created * 1000),
         paymentId: paymentIntent.id,
         customerId: customerId || "",
-        description: paymentIntent.metadata.description,
+        description: plan.description,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
         receipt: charge.receipt_url as string,
@@ -82,7 +92,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       if (currentSubscription.plan === "FREE" || currentSubscription.canceledAt || currentSubscription.expireAt < new Date().getTime()) {
         const today = new Date(new Date().setHours(0, 0, 0, 0));
         // Subtract 1 second from the year from now to make it 23:59:59
-        const yearFromNow = new Date(new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(today.getFullYear() + 1) - 1000);
+        const yearFromNow = new Date(new Date(new Date().setHours(0, 0, 0, 0)).setMonth(today.getMonth() + plan.month) - 1000);
         const subscription: Prisma.SubscriptionUncheckedCreateInput = {
           userId: user.id,
           email: paymentIntent.metadata.email,
@@ -95,7 +105,7 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
       } else {
         // Extend the current subscription if there is an active paid subscription.
         const expireAt = new Date(Math.max(currentSubscription.expireAt, new Date().getTime()));
-        expireAt.setFullYear(expireAt.getFullYear() + 1);
+        expireAt.setMonth(expireAt.getMonth() + plan.month);
         await prisma.subscription.update({
           where: { id: currentSubscription.id },
           data: {
