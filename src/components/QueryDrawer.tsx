@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useQueryStore } from "@/store";
+import { useQueryStore, useMessageStore } from "@/store";
 import { ExecutionResult, ResponseObject } from "@/types";
 import { checkStatementIsSelect, getMessageFromExecutionResult } from "@/utils";
 import Tooltip from "./kit/Tooltip";
@@ -16,7 +16,9 @@ import ExecutionWarningBanner from "./ExecutionView/ExecutionWarningBanner";
 const QueryDrawer = () => {
   const { t } = useTranslation();
   const queryStore = useQueryStore();
+  const messageStore = useMessageStore();
   const [executionResult, setExecutionResult] = useState<ExecutionResult | undefined>(undefined);
+  const [originalStatement, setOriginalStatement] = useState<string>("");
   const [statement, setStatement] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const context = queryStore.context;
@@ -30,11 +32,23 @@ const QueryDrawer = () => {
 
     const statement = context?.statement || "";
     setStatement(statement);
+    // Save original statement when open QueryDrawer.
+    if (!originalStatement) {
+      setOriginalStatement(statement);
+    }
+
     if (statement !== "" && checkStatementIsSelect(statement)) {
       executeStatement(statement);
     }
     setExecutionResult(undefined);
   }, [context, queryStore.showDrawer]);
+
+  // Reset original statement to "" when close QueryDrawer.
+  useEffect(() => {
+    if (!queryStore.showDrawer) {
+      setOriginalStatement("");
+    }
+  }, [queryStore.showDrawer]);
 
   const executeStatement = async (statement: string) => {
     if (!statement) {
@@ -81,7 +95,12 @@ const QueryDrawer = () => {
     }
   };
 
-  const close = () => queryStore.toggleDrawer(false);
+  const close = () => {
+    if (originalStatement !== statement && context?.messageId) {
+      messageStore.updateStatement(context?.messageId, originalStatement, statement);
+    }
+    queryStore.toggleDrawer(false);
+  };
 
   return (
     <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
