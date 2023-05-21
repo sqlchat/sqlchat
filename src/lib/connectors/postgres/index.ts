@@ -2,6 +2,11 @@ import { Client, ClientConfig } from "pg";
 import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
+const systemSchemas =
+  "'information_schema', 'pg_catalog', 'pg_toast', '_timescaledb_cache', '_timescaledb_catalog', '_timescaledb_internal', '_timescaledb_config', 'timescaledb_information', 'timescaledb_experimental'";
+
+const systemTables = "'_prisma_migrations'";
+
 const newPostgresClient = async (connection: Connection) => {
   const clientConfig: ClientConfig = {
     host: connection.host,
@@ -75,13 +80,17 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' AND table_catalog=$1;`,
+    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
     [databaseName]
   );
   await client.end();
   const tableList = [];
   for (const row of rows) {
     if (row["table_name"]) {
+      if (row["table_schema"] !== "public") {
+        tableList.push(`${row["table_schema"]}.${row["table_name"]}`);
+        continue;
+      }
       tableList.push(row["table_name"]);
     }
   }
@@ -97,7 +106,7 @@ const getTableStructure = async (
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
     [tableName]
   );
   await client.end();
@@ -127,7 +136,7 @@ const getTableStructureBatch = async (
   await Promise.all(
     tableNameList.map(async (tableName) => {
       const { rows } = await client.query(
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
         [tableName]
       );
       const columnList = [];
