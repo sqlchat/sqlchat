@@ -59,16 +59,16 @@ const engines = [
     name: "TiDB Serverless",
     defaultPort: "4000",
   },
-  {
-    type: Engine.Snowflake,
-    name: "Snowflake",
-    defaultPort: "443",
-  },
-  {
-    type: Engine.Hive,
-    name: "Hive",
-    defaultPort: "4000",
-  },
+  // {
+  //   type: Engine.Snowflake,
+  //   name: "Snowflake",
+  //   defaultPort: "443",
+  // },
+  // {
+  //   type: Engine.Hive,
+  //   name: "Hive",
+  //   defaultPort: "4000",
+  // },
 ];
 
 const defaultConnection: Connection = {
@@ -250,12 +250,12 @@ const CreateConnectionModal = (props: Props) => {
               {engines.map((engine) => (
                 <div
                   key={engine.type}
-                  className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                  className="cursor-pointer relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
                   onClick={() => setPartialConnection({ engineType: engine.type, port: engine.defaultPort })}
                 >
                   <Radio value={engine.type} checked={connection.engineType === engine.type} />
                   <EngineIcon className="h-6 w-6" engine={engine.type} />
-                  <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor={engine.type} className="cursor-pointer ml-3 block text-sm font-medium leading-6 text-gray-900">
                     {engine.name}
                   </label>
                 </div>

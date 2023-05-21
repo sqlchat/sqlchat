@@ -5,6 +5,8 @@ export enum Engine {
   PostgreSQL = "POSTGRESQL",
   MSSQL = "MSSQL",
   TiDBServerless = "TiDBServerless",
+  Snowflake = "SNOWFLAKE",
+  Hive = "HIVE",
 }
 
 export interface SSLOptions {
