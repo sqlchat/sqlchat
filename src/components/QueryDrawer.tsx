@@ -18,6 +18,7 @@ const QueryDrawer = () => {
   const queryStore = useQueryStore();
   const messageStore = useMessageStore();
   const [executionResult, setExecutionResult] = useState<ExecutionResult | undefined>(undefined);
+  const [originalStatement, setOriginalStatement] = useState<string>("");
   const [statement, setStatement] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const context = queryStore.context;
@@ -36,6 +37,20 @@ const QueryDrawer = () => {
     }
     setExecutionResult(undefined);
   }, [context, queryStore.showDrawer]);
+
+  // Reset old statement when close QueryDrawer.
+  useEffect(() => {
+    if (!queryStore.showDrawer) {
+      setOriginalStatement("");
+    }
+  }, [queryStore.showDrawer]);
+
+  // Save old statement when open QueryDrawer.
+  useEffect(() => {
+    if (!originalStatement) {
+      setOriginalStatement(statement);
+    }
+  }, [statement]);
 
   const executeStatement = async (statement: string) => {
     if (!statement) {
@@ -82,11 +97,14 @@ const QueryDrawer = () => {
     }
   };
 
-  const close = () => queryStore.toggleDrawer(false);
+  const close = () => {
+    if (originalStatement !== statement) {
+      messageStore.updateStatement(context?.messageId || "", originalStatement, statement);
+    }
+    queryStore.toggleDrawer(false);
+  };
 
   const handleSQLChange = (newStatement: string) => {
-    messageStore.updateStatement(context?.messageId || "", statement, newStatement);
-
     setStatement(newStatement);
   };
 
