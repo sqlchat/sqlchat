@@ -102,10 +102,6 @@ const QueryDrawer = () => {
     queryStore.toggleDrawer(false);
   };
 
-  const handleSQLChange = (newStatement: string) => {
-    setStatement(newStatement);
-  };
-
   return (
     <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
       <div className="dark:text-gray-300 w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
@@ -134,7 +130,7 @@ const QueryDrawer = () => {
                 minRows={1}
                 maxRows={5}
                 placeholder="Enter your SQL statement here..."
-                onChange={(e) => handleSQLChange(e.target.value)}
+                onChange={(e) => setStatement(e.target.value)}
               />
               <Tooltip title={t("common.execute")} side="top">
                 <button
