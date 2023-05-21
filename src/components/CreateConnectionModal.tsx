@@ -37,33 +37,26 @@ const SSLTypeOptions = [
   },
 ];
 
-const defaultPort = {
-  [Engine.MySQL]: "3306",
-  [Engine.PostgreSQL]: "5432",
-  [Engine.MSSQL]: "1433",
-  [Engine.TiDBServerless]: "4000",
-};
-
 const engines = [
   {
     type: Engine.MySQL,
     name: "MySQL",
-    defualtPort: "3306",
+    defaultPort: "3306",
   },
   {
     type: Engine.PostgreSQL,
     name: "PostgreSQL",
-    defualtPort: "5432",
+    defaultPort: "5432",
   },
   {
     type: Engine.MSSQL,
     name: "SQL Server",
-    defualtPort: "1433",
+    defaultPort: "1433",
   },
   {
     type: Engine.TiDBServerless,
     name: "TiDB Serverless",
-    defualtPort: "4000",
+    defaultPort: "4000",
   },
 ];
 
@@ -72,7 +65,7 @@ const defaultConnection: Connection = {
   title: "",
   engineType: Engine.MySQL,
   host: "",
-  port: defaultPort[Engine.MySQL],
+  port: "3306",
   username: "",
   password: "",
 };
@@ -126,7 +119,6 @@ const CreateConnectionModal = (props: Props) => {
     setConnection({
       ...connection,
       ...state,
-      port: defaultPort[state.engineType || Engine.MySQL],
     });
   };
 
@@ -249,7 +241,7 @@ const CreateConnectionModal = (props: Props) => {
                   <Radio
                     value={engine.type}
                     checked={connection.engineType === engine.type}
-                    onChange={(value) => setPartialConnection({ engineType: value as Engine })}
+                    onChange={(value) => setPartialConnection({ engineType: value as Engine, port: engine.defaultPort as string })}
                   />
                   <EngineIcon className="h-8 w-8 rounded-full" engine={engine.type} />
                   <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
