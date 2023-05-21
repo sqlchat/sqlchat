@@ -1,12 +1,14 @@
 import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
-import SubscriptionHistoryTable from "./SubscriptionHistoryTable";
+import PaymentHistoryTable from "./PaymentHistoryTable";
 import { getDateString } from "@/utils";
 
 const AccountView = () => {
   const { t } = useTranslation();
   const { data: session } = useSession();
+
+  const expired = session?.user?.subscription?.expireAt && session?.user?.subscription?.expireAt < Date.now();
 
   return (
     <>
@@ -38,6 +40,11 @@ const AccountView = () => {
               </Link>
             </div>
             <div className="flex text-base font-semibold tracking-tight items-center">
+              {!!expired && (
+                <span className="mr-2 rounded-full bg-yellow-50 px-3 py-1 font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20">
+                  {t("setting.plan.expired")}
+                </span>
+              )}
               <span
                 className={`${
                   session?.user.subscription.plan == "PRO"
@@ -61,7 +68,7 @@ const AccountView = () => {
               )}
             </div>
           </div>
-          <SubscriptionHistoryTable />
+          <PaymentHistoryTable />
         </div>
       )}
     </>

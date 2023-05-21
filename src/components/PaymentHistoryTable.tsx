@@ -2,18 +2,18 @@ import axios from "axios";
 import { t } from "i18next";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { SubscriptionPurchase } from "@/types";
+import { Payment } from "@/types";
 import { getCurrencySymbol, getDateString } from "@/utils";
 
-const SubscriptionHistoryTable = () => {
-  const [list, setList] = useState<SubscriptionPurchase[]>([]);
+const PaymentHistoryTable = () => {
+  const [list, setList] = useState<Payment[]>([]);
   const { data: session } = useSession();
 
   useEffect(() => {
-    const refreshSubscriptionList = async (userId: string) => {
-      let list: SubscriptionPurchase[] = [];
+    const refreshPaymentList = async (userId: string) => {
+      let list: Payment[] = [];
       try {
-        const { data } = await axios.get("/api/subscription", {
+        const { data } = await axios.get("/api/payment", {
           headers: { Authorization: `Bearer ${userId}` },
         });
         list = data;
@@ -24,7 +24,7 @@ const SubscriptionHistoryTable = () => {
     };
 
     if (session?.user.id) {
-      refreshSubscriptionList(session.user.id);
+      refreshPaymentList(session.user.id);
     }
   }, [session]);
 
@@ -53,18 +53,18 @@ const SubscriptionHistoryTable = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                {list.map((subscription) => (
-                  <tr key={subscription.id}>
+                {list.map((payment) => (
+                  <tr key={payment.id}>
                     <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                      {getDateString(subscription.createdAt)}
+                      {getDateString(payment.createdAt)}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{subscription.description}</td>
+                    <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{payment.description}</td>
                     <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                      {getCurrencySymbol(subscription.currency.toLocaleUpperCase())}
-                      {subscription.amount / 100}
+                      {getCurrencySymbol(payment.currency.toLocaleUpperCase())}
+                      {payment.amount / 100}
                     </td>
                     <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                      <a href={subscription.receipt} target="_blank" className="text-indigo-600 hover:text-indigo-900">
+                      <a href={payment.receipt} target="_blank" className="text-indigo-600 hover:text-indigo-900">
                         {t("setting.subscription.view-receipt")}
                       </a>
                     </td>
@@ -79,4 +79,4 @@ const SubscriptionHistoryTable = () => {
   );
 };
 
-export default SubscriptionHistoryTable;
+export default PaymentHistoryTable;

@@ -58,36 +58,44 @@ model Usage {
 }
 
 model Subscription {
-  id          String             @id @default(cuid())
-  user        User               @relation(fields: [userId], references: [id])
-  userId      String             @default("") @map("user_id")
+  id         String           @id @default(cuid())
+  user       User             @relation(fields: [userId], references: [id])
+  userId     String           @default("") @map("user_id")
   // Denormalize to avoid join with the user table
-  email       String             @default("") @map("email")
-  createdAt   DateTime           @default(now()) @map("created_at")
-  status      SubscriptionStatus @default(ACTIVE)
-  startAt     DateTime           @default(now()) @map("start_at")
-  expireAt    DateTime           @default(now()) @map("expire_at")
-  paymentId   String             @default("") @map("payment_id")
-  customerId  String             @default("") @map("customer_id")
-  plan        SubscriptionPlan
-  description String             @default("")
-  amount      Int                @default(0)
-  currency    String             @default("")
-  receipt     String             @default("")
+  email      String           @default("") @map("email")
+  createdAt  DateTime         @default(now()) @map("created_at")
+  canceledAt DateTime?        @map("canceled_at")
+  startAt    DateTime         @default(now()) @map("start_at")
+  expireAt   DateTime         @default(now()) @map("expire_at")
+  plan       SubscriptionPlan
 
-  @@unique([paymentId])
   @@index([userId], map: "subscription_user_id_idx")
   @@index([email], map: "subscription_email_idx")
   @@map("subscription")
 }
 
-enum SubscriptionStatus {
-  ACTIVE
-  CANCELED
-}
-
 enum SubscriptionPlan {
   PRO
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @default("") @map("user_id")
+  // Denormalize to avoid join with the user table
+  email       String   @default("") @map("email")
+  createdAt   DateTime @default(now()) @map("created_at")
+  paymentId   String   @default("") @map("payment_id")
+  customerId  String   @default("") @map("customer_id")
+  description String   @default("")
+  amount      Int      @default(0)
+  currency    String   @default("")
+  receipt     String   @default("")
+
+  @@unique([paymentId])
+  @@index([userId], map: "payment_user_id_idx")
+  @@index([email], map: "payment_email_idx")
+  @@map("payment")
 }
 
 // NextAuth Prisma Schema Begin
@@ -133,6 +141,7 @@ model User {
   sessions      Session[]
 
   subscriptions Subscription[]
+  payments      Payment[]
   // The stripe customer id corresponds to this user
   stripeId      String?        @unique @map("stripe_id")
   createdAt     DateTime       @default(now()) @map("created_at")
