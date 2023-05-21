@@ -43,7 +43,7 @@ const QueryDrawer = () => {
     setExecutionResult(undefined);
   }, [context, queryStore.showDrawer]);
 
-  // Reset old statement to "" when close QueryDrawer.
+  // Reset original statement to "" when close QueryDrawer.
   useEffect(() => {
     if (!queryStore.showDrawer) {
       setOriginalStatement("");
