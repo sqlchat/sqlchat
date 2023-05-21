@@ -32,25 +32,23 @@ const QueryDrawer = () => {
 
     const statement = context?.statement || "";
     setStatement(statement);
+    // Save original statement when open QueryDrawer.
+    if (!originalStatement) {
+      setOriginalStatement(statement);
+    }
+
     if (statement !== "" && checkStatementIsSelect(statement)) {
       executeStatement(statement);
     }
     setExecutionResult(undefined);
   }, [context, queryStore.showDrawer]);
 
-  // Reset old statement when close QueryDrawer.
+  // Reset old statement to "" when close QueryDrawer.
   useEffect(() => {
     if (!queryStore.showDrawer) {
       setOriginalStatement("");
     }
   }, [queryStore.showDrawer]);
-
-  // Save old statement when open QueryDrawer.
-  useEffect(() => {
-    if (!originalStatement) {
-      setOriginalStatement(statement);
-    }
-  }, [statement]);
 
   const executeStatement = async (statement: string) => {
     if (!statement) {
