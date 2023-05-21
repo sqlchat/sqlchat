@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getEndUser } from "./auth/end-user";
-import { getSubscriptionListByEmail } from "./utils/subscription";
+import { getPaymentListByEmail } from "./utils/payment";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method !== "GET") {
@@ -8,9 +8,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const endUser = await getEndUser(req, res);
-  const subscriptionList = await getSubscriptionListByEmail(endUser);
+  const paymentList = await getPaymentListByEmail(endUser);
 
-  res.status(200).json(subscriptionList);
+  res.status(200).json(paymentList);
 };
 
 export default handler;

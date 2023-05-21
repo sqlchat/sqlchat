@@ -1,4 +1,4 @@
-import { SubscriptionPlan, SubscriptionStatus } from "@prisma/client";
+import { SubscriptionPlan } from "@prisma/client";
 
 export type PlanType = SubscriptionPlan | "GUEST" | "FREE";
 
@@ -20,22 +20,20 @@ export const PlanConfig: {
 };
 
 export interface Subscription {
+  id: string;
   plan: PlanType;
   quota: number;
-  status: SubscriptionStatus;
   startAt: number;
   expireAt: number;
+  canceledAt?: number;
 }
 
-export interface SubscriptionPurchase {
+export interface Payment {
   id: string;
   email: string;
+  createdAt: number;
   amount: number;
   currency: string;
   receipt: string;
-  plan: PlanType;
   description: string;
-  createdAt: number;
-  startAt: number;
-  expireAt: number;
 }

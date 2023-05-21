@@ -3,6 +3,7 @@ import { buffer } from "micro";
 import Cors from "micro-cors";
 import { NextApiRequest, NextApiResponse } from "next";
 import Stripe from "stripe";
+import { getSubscriptionByEmail } from "../utils/subscription";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY, {
   // https://github.com/stripe/stripe-node#configuration
@@ -63,25 +64,45 @@ const webhookHandler = async (req: NextApiRequest, res: NextApiResponse) => {
         where: { email: paymentIntent.metadata.email },
       });
 
-      const today = new Date(new Date().setHours(0, 0, 0, 0));
-      // Subtract 1 second from the year from now to make it 23:59:59
-      const yearFromNow = new Date(new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(today.getFullYear() + 1) - 1000);
-      const subscription: Prisma.SubscriptionUncheckedCreateInput = {
+      const payment: Prisma.PaymentUncheckedCreateInput = {
         userId: user.id,
         email: paymentIntent.metadata.email,
         createdAt: new Date(paymentIntent.created * 1000),
-        status: "ACTIVE",
-        startAt: today,
-        expireAt: yearFromNow,
         paymentId: paymentIntent.id,
         customerId: customerId || "",
-        plan: paymentIntent.metadata.plan as SubscriptionPlan,
         description: paymentIntent.metadata.description,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
         receipt: charge.receipt_url as string,
       };
-      await prisma.subscription.create({ data: subscription });
+      await prisma.payment.create({ data: payment });
+
+      const currentSubscription = await getSubscriptionByEmail(paymentIntent.metadata.email);
+      // Create a new subscription if there is no active paid subscription.
+      if (currentSubscription.plan === "FREE" || currentSubscription.canceledAt || currentSubscription.expireAt < new Date().getTime()) {
+        const today = new Date(new Date().setHours(0, 0, 0, 0));
+        // Subtract 1 second from the year from now to make it 23:59:59
+        const yearFromNow = new Date(new Date(new Date().setHours(0, 0, 0, 0)).setFullYear(today.getFullYear() + 1) - 1000);
+        const subscription: Prisma.SubscriptionUncheckedCreateInput = {
+          userId: user.id,
+          email: paymentIntent.metadata.email,
+          createdAt: new Date(paymentIntent.created * 1000),
+          startAt: today,
+          expireAt: yearFromNow,
+          plan: paymentIntent.metadata.plan as SubscriptionPlan,
+        };
+        await prisma.subscription.create({ data: subscription });
+      } else {
+        // Extend the current subscription if there is an active paid subscription.
+        const expireAt = new Date(Math.max(currentSubscription.expireAt, new Date().getTime()));
+        expireAt.setFullYear(expireAt.getFullYear() + 1);
+        await prisma.subscription.update({
+          where: { id: currentSubscription.id },
+          data: {
+            expireAt,
+          },
+        });
+      }
     } else if (event.type === "payment_intent.payment_failed") {
       const paymentIntent = event.data.object as Stripe.PaymentIntent;
       console.log(`❌ Payment failed: ${paymentIntent.last_payment_error?.message}`);
