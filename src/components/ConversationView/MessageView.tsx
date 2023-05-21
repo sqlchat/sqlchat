@@ -125,6 +125,7 @@ const MessageView = (props: Props) => {
                         <pre className={`${className || ""} w-full p-0 my-1`} {...props}>
                           <CodeBlock
                             key={Math.random()}
+                            messageId={message.id}
                             language={language || "SQL"}
                             value={String(child.props.children).replace(/\n$/, "")}
                             {...props}

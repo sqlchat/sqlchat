@@ -6,14 +6,16 @@ import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import { useConnectionStore, useQueryStore } from "@/store";
 import Icon from "./Icon";
 import Tooltip from "./kit/Tooltip";
+import { Id } from "@/types";
 
 interface Props {
   language: string;
   value: string;
+  messageId: Id;
 }
 
 export const CodeBlock = (props: Props) => {
-  const { language, value } = props;
+  const { language, value, messageId } = props;
   const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const queryStore = useQueryStore();
@@ -37,6 +39,7 @@ export const CodeBlock = (props: Props) => {
     queryStore.setContext({
       connection: currentConnectionCtx.connection,
       database: currentConnectionCtx.database,
+      messageId: messageId,
       statement: value,
     });
     queryStore.toggleDrawer(true);

@@ -1,11 +1,12 @@
 import { merge } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Timestamp } from "@/types";
+import { Connection, Database, Id, Timestamp } from "@/types";
 
 interface ExecuteQueryContext {
   connection: Connection;
   database?: Database;
+  messageId?: Id;
   statement: string;
 }
 
