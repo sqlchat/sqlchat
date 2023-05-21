@@ -244,7 +244,7 @@ const CreateConnectionModal = (props: Props) => {
               {engines.map((engine) => (
                 <div
                   key={engine.type}
-                  className="cursor-pointer relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                  className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
                 >
                   <Radio
                     value={engine.type}
@@ -252,7 +252,7 @@ const CreateConnectionModal = (props: Props) => {
                     onChange={(value) => setPartialConnection({ engineType: value as Engine })}
                   />
                   <EngineIcon className="h-8 w-8 rounded-full" engine={engine.type} />
-                  <label htmlFor={engine.type} className="cursor-pointer ml-3 block text-sm font-medium leading-6 text-gray-900">
+                  <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                     {engine.name}
                   </label>
                 </div>
