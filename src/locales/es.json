@@ -66,11 +66,11 @@
       "upgrade": "Mejora",
       "renew": "Renovar",
       "expired": "Expirado",
-      "n-question-per-month": "{{count}} preguntas / mes",
+      "n-question-per-month": "{{count}} Cuota / mes",
       "early-bird-checkout": "Descuento por reserva anticipada, 50 % de descuento durante 1 año"
     },
-    "billing": {
-      "self": "Facturación",
+    "subscription": {
+      "self": "Suscripción",
       "view-receipt": "Ver recibo"
     },
     "account": {
@@ -87,7 +87,13 @@
       "dark": "Oscuro"
     },
     "openai-api-configuration": {
-      "self": "Configuración del API de OpenAI"
+      "self": "Configuración del API de OpenAI",
+      "model": "Modelo",
+      "model-description": "La cuota no se consumirá si proporciona su propia clave a continuación.",
+      "quota-per-ask": "{{count}} cuotas por pedido",
+      "provide-gpt4-key": "Requerir su propia clave API habilitada para GPT-4",
+      "key-description": "Traiga su propia llave para renunciar al requisito de cuota.",
+      "endpoint-description": "Punto final opcional que apunta a su propio servidor o puerta de enlace compatible."
     },
     "data": {
       "self": "Datos",

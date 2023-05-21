@@ -4,27 +4,28 @@ import { toast } from "react-hot-toast";
 import TextareaAutosize from "react-textarea-autosize";
 import { useConnectionStore } from "@/store";
 import { Connection, Engine, ResponseObject, SSLOptions } from "@/types";
-import Select from "./kit/Select";
+import Radio from "./kit/Radio";
 import TextField from "./kit/TextField";
 import Modal from "./kit/Modal";
 import Icon from "./Icon";
 import DataStorageBanner from "./DataStorageBanner";
 import ActionConfirmModal from "./ActionConfirmModal";
 import { useTranslation } from "react-i18next";
+import EngineIcon from "./EngineIcon";
 
 interface Props {
   connection?: Connection;
   close: () => void;
 }
 
-type SSLType = "none" | "ca-only" | "full";
+type SSLType = "preferred" | "ca-only" | "full";
 
 type SSLFieldType = "ca" | "cert" | "key";
 
 const SSLTypeOptions = [
   {
-    label: "None",
-    value: "none",
+    label: "Preferred",
+    value: "preferred",
   },
   {
     label: "CA Only",
@@ -36,19 +37,35 @@ const SSLTypeOptions = [
   },
 ];
 
-const defaultPort = {
-  [Engine.MySQL]: "3306",
-  [Engine.PostgreSQL]: "5432",
-  [Engine.MSSQL]: "1433",
-  [Engine.TiDBServerless]: "4000",
-};
+const engines = [
+  {
+    type: Engine.MySQL,
+    name: "MySQL",
+    defaultPort: "3306",
+  },
+  {
+    type: Engine.PostgreSQL,
+    name: "PostgreSQL",
+    defaultPort: "5432",
+  },
+  {
+    type: Engine.MSSQL,
+    name: "SQL Server",
+    defaultPort: "1433",
+  },
+  {
+    type: Engine.TiDBServerless,
+    name: "TiDB Serverless",
+    defaultPort: "4000",
+  },
+];
 
 const defaultConnection: Connection = {
   id: "",
   title: "",
   engineType: Engine.MySQL,
   host: "",
-  port: defaultPort[Engine.MySQL],
+  port: "3306",
   username: "",
   password: "",
 };
@@ -59,7 +76,7 @@ const CreateConnectionModal = (props: Props) => {
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
-  const [sslType, setSSLType] = useState<SSLType>("none");
+  const [sslType, setSSLType] = useState<SSLType>("preferred");
   const [selectedSSLField, setSelectedSSLField] = useState<SSLFieldType>("ca");
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
@@ -102,7 +119,6 @@ const CreateConnectionModal = (props: Props) => {
     setConnection({
       ...connection,
       ...state,
-      port: defaultPort[state.engineType || Engine.MySQL],
     });
   };
 
@@ -216,17 +232,24 @@ const CreateConnectionModal = (props: Props) => {
           <DataStorageBanner className="rounded-lg bg-white border dark:border-zinc-700 py-2 !justify-start" alwaysShow={true} />
           <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.database-type")}</label>
-            <Select
-              className="w-full"
-              value={connection.engineType}
-              itemList={[
-                { value: Engine.MySQL, label: "MySQL" },
-                { value: Engine.PostgreSQL, label: "PostgreSQL" },
-                { value: Engine.MSSQL, label: "MSSQL" },
-                { value: Engine.TiDBServerless, label: "TiDB Serverless Tier" },
-              ]}
-              onValueChange={(value) => setPartialConnection({ engineType: value as Engine })}
-            />
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              {engines.map((engine) => (
+                <div
+                  key={engine.type}
+                  className="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-4 py-2 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400"
+                >
+                  <Radio
+                    value={engine.type}
+                    checked={connection.engineType === engine.type}
+                    onChange={(value) => setPartialConnection({ engineType: value as Engine, port: engine.defaultPort as string })}
+                  />
+                  <EngineIcon className="h-8 w-8 rounded-full" engine={engine.type} />
+                  <label htmlFor={engine.type} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
+                    {engine.name}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
           <div className="w-full flex flex-col">
             <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.title")}</label>
@@ -277,18 +300,17 @@ const CreateConnectionModal = (props: Props) => {
               <div className="w-full flex flex-row justify-start items-start flex-wrap">
                 {SSLTypeOptions.map((option) => (
                   <label key={option.value} className="w-auto flex flex-row justify-start items-center cursor-pointer mr-3 mb-3">
-                    <input
-                      type="radio"
+                    <Radio
                       className="radio w-4 h-4 mr-1"
                       value={option.value}
                       checked={sslType === option.value}
-                      onChange={(e) => setSSLType(e.target.value as SSLType)}
+                      onChange={(value) => setSSLType(value as SSLType)}
                     />
                     <span className="text-sm">{option.label}</span>
                   </label>
                 ))}
               </div>
-              {sslType !== "none" && (
+              {sslType !== "preferred" && (
                 <>
                   <div className="text-sm space-x-3 mb-2">
                     <span
@@ -366,7 +388,7 @@ const CreateConnectionModal = (props: Props) => {
           <div>
             {isEditing && (
               <button className="btn btn-outline" onClick={() => setShowDeleteConnectionModal(true)}>
-                Delete
+                {t("common.delete")}
               </button>
             )}
           </div>

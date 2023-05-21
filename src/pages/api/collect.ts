@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Conversation, Message } from "@/types";
-import { gpt35 } from "@/utils";
+import { getModel, gpt35 } from "@/utils";
 import { getEndUser } from "./auth/end-user";
 
 const prisma = new PrismaClient();
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         data: {
           id: conversation.id,
           createdAt: new Date(conversation.createdAt),
-          model: gpt35,
+          model: getModel((req.headers["x-openai-model"] as string) || ""),
           ctx: {},
           messages: {
             create: messages.map((message) => ({

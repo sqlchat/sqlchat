@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import { Dialog, Transition } from "@headlessui/react";
 import { ArrowUturnLeftIcon, Bars3Icon, Cog6ToothIcon, XMarkIcon, CreditCardIcon } from "@heroicons/react/24/outline";
-import SettingView from "../../components/SettingView";
+import SettingGeneralView from "../../components/SettingGeneralView";
 import StripeCheckPaymentBanner from "../../components/StripeCheckPaymentBanner";
 
 function classNames(...classes: string[]) {
@@ -174,8 +174,8 @@ const SettingPage: NextPage = () => {
 
         <main className="lg:pl-72">
           {router.query.session_id && <StripeCheckPaymentBanner sessionId={router.query.session_id as string} />}
-          <div className="px-4 sm:px-6 lg:px-8">
-            <SettingView />
+          <div className="px-4 sm:px-6 lg:px-8 dark:bg-zinc-800">
+            <SettingGeneralView />
           </div>
         </main>
       </div>

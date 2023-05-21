@@ -2,13 +2,19 @@ import { Client, ClientConfig } from "pg";
 import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
 
-const newPostgresClient = (connection: Connection) => {
+const systemSchemas =
+  "'information_schema', 'pg_catalog', 'pg_toast', '_timescaledb_cache', '_timescaledb_catalog', '_timescaledb_internal', '_timescaledb_config', 'timescaledb_information', 'timescaledb_experimental'";
+
+const systemTables = "'_prisma_migrations'";
+
+const newPostgresClient = async (connection: Connection) => {
   const clientConfig: ClientConfig = {
     host: connection.host,
     port: Number(connection.port),
     user: connection.username,
     password: connection.password,
     database: connection.database,
+    application_name: "sqlchat",
   };
   if (connection.ssl) {
     clientConfig.ssl = {
@@ -16,21 +22,27 @@ const newPostgresClient = (connection: Connection) => {
       cert: connection.ssl?.cert,
       key: connection.ssl?.key,
     };
+  } else {
+    // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
+    clientConfig.ssl = {
+      rejectUnauthorized: false,
+    };
   }
-  return new Client(clientConfig);
+
+  let client = new Client(clientConfig);
+  await client.connect();
+  return client;
 };
 
 const testConnection = async (connection: Connection): Promise<boolean> => {
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   await client.end();
   return true;
 };
 
 const execute = async (connection: Connection, databaseName: string, statement: string): Promise<any> => {
   connection.database = databaseName;
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   const { rows, rowCount } = await client.query(statement);
   await client.end();
 
@@ -46,8 +58,7 @@ const execute = async (connection: Connection, databaseName: string, statement: 
 };
 
 const getDatabases = async (connection: Connection): Promise<string[]> => {
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   if (connection.database) {
     await client.end();
     return [connection.database];
@@ -67,16 +78,19 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
 
 const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
   connection.database = databaseName;
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT table_name FROM information_schema.tables WHERE table_schema='public' AND table_type='BASE TABLE' AND table_catalog=$1;`,
+    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
     [databaseName]
   );
   await client.end();
   const tableList = [];
   for (const row of rows) {
     if (row["table_name"]) {
+      if (row["table_schema"] !== "public") {
+        tableList.push(`${row["table_schema"]}.${row["table_name"]}`);
+        continue;
+      }
       tableList.push(row["table_name"]);
     }
   }
@@ -90,10 +104,9 @@ const getTableStructure = async (
   structureFetched: (tableName: string, structure: string) => void
 ): Promise<void> => {
   connection.database = databaseName;
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
     [tableName]
   );
   await client.end();
@@ -119,12 +132,11 @@ const getTableStructureBatch = async (
   structureFetched: (tableName: string, structure: string) => void
 ): Promise<void> => {
   connection.database = databaseName;
-  const client = newPostgresClient(connection);
-  await client.connect();
+  const client = await newPostgresClient(connection);
   await Promise.all(
     tableNameList.map(async (tableName) => {
       const { rows } = await client.query(
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema='public' AND table_name=$1;`,
+        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
         [tableName]
       );
       const columnList = [];

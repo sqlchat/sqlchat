@@ -1,6 +1,6 @@
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
-import { openAIApiEndpoint, openAIApiKey, gpt35, hasFeature } from "@/utils";
+import { openAIApiEndpoint, openAIApiKey, hasFeature, getModel } from "@/utils";
 
 // Needs Edge for streaming response.
 export const config = {
@@ -90,6 +90,7 @@ const handler = async (req: NextRequest) => {
   }
 
   const apiEndpoint = getApiEndpoint(req.headers.get("x-openai-endpoint") || openAIApiEndpoint);
+  const model = getModel(req.headers.get("x-openai-model") || "");
   const remoteRes = await fetch(apiEndpoint, {
     headers: {
       "Content-Type": "application/json",
@@ -97,13 +98,14 @@ const handler = async (req: NextRequest) => {
     },
     method: "POST",
     body: JSON.stringify({
-      model: gpt35.name,
+      model: model.name,
       messages: reqBody.messages,
-      temperature: gpt35.temperature,
-      frequency_penalty: gpt35.frequency_penalty,
-      presence_penalty: gpt35.presence_penalty,
+      temperature: model.temperature,
+      frequency_penalty: model.frequency_penalty,
+      presence_penalty: model.presence_penalty,
       stream: true,
-      // Send end-user ID to help OpenAI monitor and detect abuse.
+      // Send end-user IP to help OpenAI monitor and detect abuse.
+      // It's intentionally not using email to avoid leaking user's email to OpenAI.
       user: req.ip,
     }),
   });

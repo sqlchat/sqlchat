@@ -217,6 +217,9 @@ const ConversationView = () => {
     if (settingStore.setting.openAIApiConfig?.endpoint) {
       requestHeaders["x-openai-endpoint"] = settingStore.setting.openAIApiConfig?.endpoint;
     }
+    if (settingStore.setting.openAIApiConfig?.model) {
+      requestHeaders["x-openai-model"] = settingStore.setting.openAIApiConfig?.model;
+    }
     const rawRes = await fetch("/api/chat", {
       method: "POST",
       body: JSON.stringify({
@@ -311,7 +314,7 @@ const ConversationView = () => {
           messages: usageMessageList,
         },
         {
-          headers: session?.user.id ? { Authorization: `Bearer ${session?.user.id}` } : undefined,
+          headers: requestHeaders,
         }
       )
       .catch(() => {

@@ -10,6 +10,7 @@ const getDefaultSetting = (): Setting => {
     openAIApiConfig: {
       key: "",
       endpoint: "",
+      model: "gpt-3.5-turbo",
     },
   };
 };

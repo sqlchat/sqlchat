@@ -49,9 +49,11 @@ const Header = (props: Props) => {
           >
             <img className="h-5 sm:h-6 w-auto" src={isDarkMode ? "/craft-by-bytebase-dark-mode.webp" : "/craft-by-bytebase.webp"} alt="" />
           </a>
-          <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
-            <Icon.FiSettings className="w-5 h-auto" onClick={() => setShowSchemaDrawer(true)} />
-          </button>
+          {hasFeature("debug") && (
+            <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
+              <Icon.FiSettings className="w-5 h-auto" onClick={() => setShowSchemaDrawer(true)} />
+            </button>
+          )}
         </div>
       </div>
 

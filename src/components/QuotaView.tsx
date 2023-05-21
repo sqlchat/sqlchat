@@ -58,7 +58,7 @@ const QuotaView = (props: Props) => {
       </div>
       <div className="flex justify-between pt-1">
         <div>{t("common.quota")}</div>
-        <div className={quota.current >= quota.limit ? "text-red-600" : "text-black"}>
+        <div className={quota.current >= quota.limit ? "text-red-600" : "text-black dark:text-gray-300"}>
           {quota.current}/{quota.limit}
         </div>
       </div>
