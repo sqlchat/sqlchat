@@ -19,6 +19,11 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
       cert: connection.ssl?.cert,
       key: connection.ssl?.key,
     };
+  } else {
+    // rejectUnauthorized=false to infer sslmode=prefer since hosted MySQL venders have SSL enabled.
+    connectionOptions.ssl = {
+      rejectUnauthorized: false,
+    };
   }
   const conn = await mysql.createConnection(connectionOptions);
   return conn;

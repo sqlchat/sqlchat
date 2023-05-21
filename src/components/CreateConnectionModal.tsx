@@ -18,14 +18,14 @@ interface Props {
   close: () => void;
 }
 
-type SSLType = "none" | "ca-only" | "full";
+type SSLType = "preferred" | "ca-only" | "full";
 
 type SSLFieldType = "ca" | "cert" | "key";
 
 const SSLTypeOptions = [
   {
-    label: "None",
-    value: "none",
+    label: "Preferred",
+    value: "preferred",
   },
   {
     label: "CA Only",
@@ -76,7 +76,7 @@ const CreateConnectionModal = (props: Props) => {
   const connectionStore = useConnectionStore();
   const [connection, setConnection] = useState<Connection>(defaultConnection);
   const [showDeleteConnectionModal, setShowDeleteConnectionModal] = useState(false);
-  const [sslType, setSSLType] = useState<SSLType>("none");
+  const [sslType, setSSLType] = useState<SSLType>("preferred");
   const [selectedSSLField, setSelectedSSLField] = useState<SSLFieldType>("ca");
   const [isRequesting, setIsRequesting] = useState(false);
   const showDatabaseField = connection.engineType === Engine.PostgreSQL;
@@ -310,7 +310,7 @@ const CreateConnectionModal = (props: Props) => {
                   </label>
                 ))}
               </div>
-              {sslType !== "none" && (
+              {sslType !== "preferred" && (
                 <>
                   <div className="text-sm space-x-3 mb-2">
                     <span
