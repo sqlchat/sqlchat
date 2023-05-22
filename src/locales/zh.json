@@ -119,6 +119,6 @@
   },
   "payment": {
     "self": "支付",
-    "sign-in-to-buy": "登陆后购买"
+    "sign-in-to-buy": "登录后购买"
   }
 }
