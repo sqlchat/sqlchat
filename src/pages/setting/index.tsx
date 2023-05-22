@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { Fragment, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,9 +14,9 @@ function classNames(...classes: string[]) {
 }
 
 const SettingPage: NextPage = () => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const router = useRouter();
   const { t } = useTranslation();
+  const router = useRouter();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
     {
@@ -34,14 +35,9 @@ const SettingPage: NextPage = () => {
 
   return (
     <>
-      {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-white">
-        <body class="h-full">
-        ```
-      */}
+      <Head>
+        <title>{t("setting.self")}</title>
+      </Head>
 
       <div className="dark:bg-zinc-800">
         <Transition.Root show={sidebarOpen} as={Fragment}>
