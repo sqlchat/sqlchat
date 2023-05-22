@@ -203,6 +203,7 @@ const ConnectionSidebar = () => {
                     </div>
                   )
                 ))}
+              {/* TODO(steven): remove this after we finish left sidebar */}
               <ConversationList />
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
