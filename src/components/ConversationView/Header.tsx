@@ -27,7 +27,7 @@ const Header = (props: Props) => {
   return (
     <>
       <div className={`${className || ""} w-full border-b dark:border-zinc-700 z-1`}>
-        <div className="mt-2 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3">
+        <div className="my-2 w-full flex flex-row justify-between items-center lg:grid lg:grid-cols-3">
           <div className="ml-2 flex justify-start items-center">
             <button
               className="w-8 h-8 p-1 mr-1 block lg:hidden rounded-md cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700"
