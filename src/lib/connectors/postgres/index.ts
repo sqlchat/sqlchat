@@ -17,6 +17,7 @@ const newPostgresClient = async (connection: Connection) => {
     application_name: "sqlchat",
   };
   if (connection.ssl) {
+    // when option is preferred, ca-only and full
     if (connection.ssl.ca) {
       clientConfig.ssl = {
         ca: connection.ssl?.ca,
@@ -30,6 +31,7 @@ const newPostgresClient = async (connection: Connection) => {
       };
     }
   }
+  // when option is none. the `clientConfig.ssl` should is undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
 
   let client = new Client(clientConfig);
   await client.connect();
