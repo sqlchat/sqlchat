@@ -38,6 +38,7 @@
     "password": "Contraseña",
     "empty-select": "selección clara",
     "select-all": "seleccionar todo",
+    "total-token": "Total Tokens",
     "tidb-serverless-ssl-hint": "Se requiere SSL y ya está configurado"
   },
   "assistant": {

@@ -32,6 +32,7 @@
     "select-table": "选择数据表",
     "all-tables": "全部表",
     "select-all": "选择全部",
+    "total-token": "总计 Token",
     "empty-select": "清空选择",
     "database-type": "数据库类型",
     "title": "标题",

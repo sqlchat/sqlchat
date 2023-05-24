@@ -191,7 +191,9 @@ const ConnectionSidebar = () => {
               </div>
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-              <div className="text-black dark:text-gray-300">Total token: {totalToken}</div>
+              <div className="text-black dark:text-gray-300">
+                {t("connection.total-token")} {totalToken}
+              </div>
               {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
                 <div className="mb-4">
                   <QuotaView />

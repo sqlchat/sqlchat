@@ -16,7 +16,7 @@ const Checkbox = (props: CheckboxProps) => {
         <CheckboxUI.Root
           checked={value}
           onCheckedChange={(value: boolean) => onValueChange(label, value)}
-          className="bg-white w-5 h-5  shrink-0	  cursor-pointer rounded-sm flex border border-gray-300 hover:border-black m-auto"
+          className="bg-white w-5 h-5 shrink-0 cursor-pointer rounded-sm flex border border-gray-300 hover:border-black m-auto"
           id={label}
         >
           <CheckboxUI.Indicator className="m-auto text-black 	">
