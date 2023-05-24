@@ -50,6 +50,15 @@ const ConnectionSidebar = () => {
   }, []);
 
   useEffect(() => {
+    // update total token
+    const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
+      const table = tableList.find((table) => table.name === tableName);
+      return totalToken + countTextTokens(table?.structure || "");
+    }, 0);
+    setTotalToken(totalToken);
+  }, [selectedTablesName, tableList]);
+
+  useEffect(() => {
     if (currentConnectionCtx?.connection) {
       setIsRequestingDatabase(true);
       connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
@@ -96,8 +105,6 @@ const ConnectionSidebar = () => {
         tableSchemaLoadingState.setFinish();
       });
     }
-    console.log(countTextTokensByTableName(databaseName));
-    setTotalToken(countTextTokensByTableName(databaseName));
   };
 
   // only create conversation when currentConversation is null.
@@ -135,13 +142,13 @@ const ConnectionSidebar = () => {
   const handleTableCheck = async (tableName: string, value: boolean) => {
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
-      setTotalToken((totalToken) => totalToken + countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
+      // setTotalToken((totalToken) => totalToken + countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
     } else {
       conversationStore.updateSelectedTablesName(selectedTablesName.filter((name) => name !== tableName));
-      setTotalToken((totalToken) => totalToken - countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
+      // setTotalToken((totalToken) => totalToken - countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
     }
   };
-  console.log(selectedTablesName);
+  console.log("被select的有", selectedTablesName);
   return (
     <>
       <Drawer
