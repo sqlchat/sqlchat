@@ -17,16 +17,18 @@ const newPostgresClient = async (connection: Connection) => {
     application_name: "sqlchat",
   };
   if (connection.ssl) {
-    clientConfig.ssl = {
-      ca: connection.ssl?.ca,
-      cert: connection.ssl?.cert,
-      key: connection.ssl?.key,
-    };
-  } else {
-    // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
-    clientConfig.ssl = {
-      rejectUnauthorized: false,
-    };
+    if (connection.ssl.ca) {
+      clientConfig.ssl = {
+        ca: connection.ssl?.ca,
+        cert: connection.ssl?.cert,
+        key: connection.ssl?.key,
+      };
+    } else {
+      // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
+      clientConfig.ssl = {
+        rejectUnauthorized: false,
+      };
+    }
   }
 
   let client = new Client(clientConfig);
