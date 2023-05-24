@@ -17,19 +17,21 @@ const newPostgresClient = async (connection: Connection) => {
     application_name: "sqlchat",
   };
   if (connection.ssl) {
-    console.log(connection.ssl);
-    clientConfig.ssl = {
-      ca: connection.ssl?.ca,
-      cert: connection.ssl?.cert,
-      key: connection.ssl?.key,
-    };
-  } else {
-    // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
-    console.log("ssl is not enabled");
-    clientConfig.ssl = {
-      rejectUnauthorized: false,
-    };
+    // when option is preferred, ca-only and full
+    if (connection.ssl.ca) {
+      clientConfig.ssl = {
+        ca: connection.ssl?.ca,
+        cert: connection.ssl?.cert,
+        key: connection.ssl?.key,
+      };
+    } else {
+      // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
+      clientConfig.ssl = {
+        rejectUnauthorized: false,
+      };
+    }
   }
+  // when option is none. the `clientConfig.ssl` should be undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
 
   let client = new Client(clientConfig);
   await client.connect();
