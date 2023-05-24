@@ -7,12 +7,11 @@ import useLoading from "@/hooks/useLoading";
 import Select from "./kit/Select";
 import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
-import ConversationList from "./Sidebar/ConversationList";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaView from "./QuotaView";
-import { hasFeature } from "../utils";
-import MultipleSelect from "./kit/MultipleSelect";
+import { countTextTokens, hasFeature } from "../utils";
 import SettingAvatarIcon from "./SettingAvatarIcon";
+import Checkbox from "./kit/Checkbox";
 
 interface State {}
 
@@ -30,7 +29,7 @@ const ConnectionSidebar = () => {
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
-
+  const [totalToken, setTotalToken] = useState<number>(0);
   useEffect(() => {
     const handleWindowResize = () => {
       if (window.innerWidth < ResponsiveWidth.sm) {
@@ -97,6 +96,8 @@ const ConnectionSidebar = () => {
         tableSchemaLoadingState.setFinish();
       });
     }
+    console.log(countTextTokensByTableName(databaseName));
+    setTotalToken(countTextTokensByTableName(databaseName));
   };
 
   // only create conversation when currentConversation is null.
@@ -110,6 +111,10 @@ const ConnectionSidebar = () => {
         conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
       }
     }
+  };
+
+  const countTextTokensByTableName = (databaseName: string) => {
+    // found out be selected tables and count their tokens
   };
 
   const handleTableNameSelect = async (selectedTablesName: string[]) => {
@@ -126,6 +131,17 @@ const ConnectionSidebar = () => {
     createConversation();
     conversationStore.updateSelectedTablesName([]);
   };
+
+  const handleTableCheck = async (tableName: string, value: boolean) => {
+    if (value) {
+      conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
+      setTotalToken((totalToken) => totalToken + countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
+    } else {
+      conversationStore.updateSelectedTablesName(selectedTablesName.filter((name) => name !== tableName));
+      setTotalToken((totalToken) => totalToken - countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
+    }
+  };
+  console.log(selectedTablesName);
   return (
     <>
       <Drawer
@@ -169,44 +185,25 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {currentConnectionCtx &&
-                (tableSchemaLoadingState.isLoading ? (
-                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
-                    <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
-                  </div>
-                ) : (
-                  tableList.length > 0 && (
-                    <div className="w-full sticky top-0 z-1 my-4">
-                      <MultipleSelect
-                        className="w-full px-4 py-3 !text-base"
-                        value={selectedTablesName}
-                        itemList={tableList.map((table) => {
-                          return {
-                            label: table.name === "" ? t("connection.all-tables") : table.name,
-                            value: table.name,
-                          };
-                        })}
-                        onValueChange={(tableName) => handleTableNameSelect(tableName)}
-                        placeholder={(selectedTablesName.length ? selectedTablesName.join(",") : t("connection.all-tables")) || ""}
-                      >
-                        <button
-                          className="whitespace-nowrap rounded w-full bg-indigo-600 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                          onClick={(e) => {
-                            selectedTablesName.length ? handleEmptySelect() : handleAllSelect();
-                            // The Button area is a option that have select event. So must to stop Propagation
-                            e.stopPropagation();
-                          }}
-                        >
-                          {selectedTablesName.length ? t("connection.empty-select") : t("connection.select-all")}
-                        </button>
-                      </MultipleSelect>
-                    </div>
-                  )
-                ))}
-              {/* TODO(steven): remove this after we finish left sidebar */}
-              <ConversationList />
+              <div>schema</div>
+              <div className="">
+                {tableList.length > 0 &&
+                  tableList.map((table) => {
+                    return (
+                      <div key={table.name}>
+                        <Checkbox
+                          value={selectedTablesName.includes(table.name)}
+                          label={table.name}
+                          token={table.token || countTextTokens(table.structure)}
+                          onValueChange={handleTableCheck}
+                        />
+                      </div>
+                    );
+                  })}
+              </div>
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
+              <div className="text-black dark:text-gray-300">Total token: {totalToken}</div>
               {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
                 <div className="mb-4">
                   <QuotaView />
