@@ -19,7 +19,7 @@ interface Props {
   close: () => void;
 }
 
-type SSLType = "none" | "preferred" | "ca-only" | "full";
+type SSLType = "preferred" | "ca-only" | "full";
 
 type SSLFieldType = "ca" | "cert" | "key";
 
@@ -35,10 +35,6 @@ const SSLTypeOptions = [
   {
     label: "Full",
     value: "full",
-  },
-  {
-    label: "None",
-    value: "none",
   },
 ];
 
@@ -121,10 +117,6 @@ const CreateConnectionModal = (props: Props) => {
         ca: "",
         cert: "",
         key: "",
-      };
-    } else if (sslType == "preferred") {
-      ssl = {
-        rejectUnauthorized: false,
       };
     }
     setConnection((connection) => ({
@@ -338,7 +330,7 @@ const CreateConnectionModal = (props: Props) => {
                   </label>
                 ))}
               </div>
-              {sslType !== "preferred" && sslType !== "none" && (
+              {sslType !== "preferred" && (
                 <>
                   <div className="text-sm space-x-3 mb-2">
                     <span
