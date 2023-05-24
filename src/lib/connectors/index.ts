@@ -18,6 +18,7 @@ export interface Connector {
     tableNameList: string[],
     structureFetched: (tableName: string, structure: string) => void
   ) => Promise<void>;
+  getTableSchema?: () => Promise<Array<string>>;
 }
 
 export const newConnector = (connection: Connection): Connector => {

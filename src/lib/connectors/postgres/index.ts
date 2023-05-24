@@ -17,6 +17,7 @@ const newPostgresClient = async (connection: Connection) => {
     application_name: "sqlchat",
   };
   if (connection.ssl) {
+    console.log(connection.ssl);
     clientConfig.ssl = {
       ca: connection.ssl?.ca,
       cert: connection.ssl?.cert,
@@ -24,6 +25,7 @@ const newPostgresClient = async (connection: Connection) => {
     };
   } else {
     // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
+    console.log("ssl is not enabled");
     clientConfig.ssl = {
       rejectUnauthorized: false,
     };
@@ -31,6 +33,7 @@ const newPostgresClient = async (connection: Connection) => {
 
   let client = new Client(clientConfig);
   await client.connect();
+  console.log(client);
   return client;
 };
 
@@ -95,6 +98,20 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
     }
   }
   return tableList;
+};
+
+const getTableSchema = async (connection: Connection): Promise<Array<string>> => {
+  const client = await newPostgresClient(connection);
+  const { rows } = await client.query(
+    `SELECT schema_name
+      FROM information_schema.schemata`
+  );
+  await client.end();
+  const schema_names = [];
+  for (const row of rows) {
+    schema_names.push(`${row["schema_name"]}`);
+  }
+  return schema_names;
 };
 
 const getTableStructure = async (
@@ -171,6 +188,7 @@ const newConnector = (connection: Connection): Connector => {
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
     ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    getTableSchema: () => getTableSchema(connection),
   };
 };
 

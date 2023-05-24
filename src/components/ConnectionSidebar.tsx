@@ -124,10 +124,8 @@ const ConnectionSidebar = () => {
     createConversation();
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
-      // setTotalToken((totalToken) => totalToken + countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
     } else {
       conversationStore.updateSelectedTablesName(selectedTablesName.filter((name) => name !== tableName));
-      // setTotalToken((totalToken) => totalToken - countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
     }
   };
   return (
@@ -173,8 +171,8 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && <div>schema</div>}
-              <div className="">
+              {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && <div>hello</div>}
+              <div>
                 {currentConnectionCtx &&
                   (tableSchemaLoadingState.isLoading ? (
                     <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0  z-1 mb-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
