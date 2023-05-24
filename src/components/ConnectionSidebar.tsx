@@ -2,7 +2,7 @@ import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useConnectionStore, useConversationStore, useLayoutStore, ResponsiveWidth, useSettingStore } from "@/store";
-import { Table } from "@/types";
+import { Engine, Table } from "@/types";
 import useLoading from "@/hooks/useLoading";
 import Select from "./kit/Select";
 import Icon from "./Icon";
@@ -53,7 +53,7 @@ const ConnectionSidebar = () => {
     // update total token
     const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
       const table = tableList.find((table) => table.name === tableName);
-      return totalToken + countTextTokens(table?.structure || "");
+      return totalToken + (table?.token || countTextTokens(table?.structure || ""));
     }, 0);
     setTotalToken(totalToken);
   }, [selectedTablesName, tableList]);
@@ -121,6 +121,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleTableCheck = async (tableName: string, value: boolean) => {
+    createConversation();
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
       // setTotalToken((totalToken) => totalToken + countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
@@ -129,7 +130,6 @@ const ConnectionSidebar = () => {
       // setTotalToken((totalToken) => totalToken - countTextTokens(tableList.find((table) => table.name === tableName)?.structure || ""));
     }
   };
-  console.log("被select的有", selectedTablesName);
   return (
     <>
       <Drawer
@@ -173,21 +173,28 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              <div>schema</div>
+              {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && <div>schema</div>}
               <div className="">
-                {tableList.length > 0 &&
-                  tableList.map((table) => {
-                    return (
-                      <div key={table.name}>
-                        <Checkbox
-                          value={selectedTablesName.includes(table.name)}
-                          label={table.name}
-                          token={table.token || countTextTokens(table.structure)}
-                          onValueChange={handleTableCheck}
-                        />
-                      </div>
-                    );
-                  })}
+                {currentConnectionCtx &&
+                  (tableSchemaLoadingState.isLoading ? (
+                    <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0  z-1 mb-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
+                      <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
+                    </div>
+                  ) : (
+                    tableList.length > 0 &&
+                    tableList.map((table) => {
+                      return (
+                        <div key={table.name}>
+                          <Checkbox
+                            value={selectedTablesName.includes(table.name)}
+                            label={table.name}
+                            token={table.token || countTextTokens(table.structure)}
+                            onValueChange={handleTableCheck}
+                          />
+                        </div>
+                      );
+                    })
+                  ))}
               </div>
             </div>
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
