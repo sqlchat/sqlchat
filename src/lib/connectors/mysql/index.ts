@@ -13,7 +13,7 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
     password: connection.password,
     database: connection.database,
   };
-  if (connection.ssl) {
+  if (connection.ssl && connection.ssl.ca) {
     connectionOptions.ssl = {
       ca: connection.ssl?.ca,
       cert: connection.ssl?.cert,
