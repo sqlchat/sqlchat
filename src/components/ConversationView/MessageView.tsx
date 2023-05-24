@@ -140,7 +140,7 @@ const MessageView = (props: Props) => {
                 >
                   {message.content}
                 </ReactMarkdown>
-                <span className="self-end text-sm text-gray-400 pt-1 pr-1">
+                <span className="self-start text-sm text-gray-400 pt-1 pl-1">
                   {dayjs(message.createdAt).locale(settingStore.setting.locale).format("lll")}
                 </span>
               </div>

@@ -167,7 +167,7 @@ const ConversationView = () => {
         if (tableList) {
           for (const table of tableList) {
             if (tokens < MAX_TOKENS / 2) {
-              tokens += countTextTokens(schema + table);
+              tokens += countTextTokens(table);
               schema += table;
             }
           }
