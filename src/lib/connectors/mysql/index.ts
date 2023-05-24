@@ -14,6 +14,7 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
     database: connection.database,
   };
   if (connection.ssl && connection.ssl.ca) {
+    // when option is ca-only and full
     connectionOptions.ssl = {
       ca: connection.ssl?.ca,
       cert: connection.ssl?.cert,
@@ -21,6 +22,7 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
     };
   } else {
     // rejectUnauthorized=false to infer sslmode=prefer since hosted MySQL venders have SSL enabled.
+    // when connectionOptions have ssl value, it still can connect to non-SSL MySQL server.
     connectionOptions.ssl = {
       rejectUnauthorized: false,
     };

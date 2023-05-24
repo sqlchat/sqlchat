@@ -31,7 +31,7 @@ const newPostgresClient = async (connection: Connection) => {
       };
     }
   }
-  // when option is none. the `clientConfig.ssl` should is undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
+  // when option is none. the `clientConfig.ssl` should be undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
 
   let client = new Client(clientConfig);
   await client.connect();
