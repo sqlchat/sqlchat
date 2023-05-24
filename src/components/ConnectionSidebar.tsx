@@ -185,12 +185,9 @@ const ConnectionSidebar = () => {
                     tableList.map((table) => {
                       return (
                         <div key={table.name}>
-                          <Checkbox
-                            value={selectedTablesName.includes(table.name)}
-                            label={table.name}
-                            token={table.token || countTextTokens(table.structure)}
-                            onValueChange={handleTableCheck}
-                          />
+                          <Checkbox value={selectedTablesName.includes(table.name)} label={table.name} onValueChange={handleTableCheck}>
+                            <div className="text-black dark:text-gray-300">{table.token || countTextTokens(table.structure)}</div>
+                          </Checkbox>
                         </div>
                       );
                     })

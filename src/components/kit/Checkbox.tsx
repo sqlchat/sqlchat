@@ -1,15 +1,14 @@
 import * as CheckboxUI from "@radix-ui/react-checkbox";
 import { CheckIcon, DividerHorizontalIcon } from "@radix-ui/react-icons";
-import { useState } from "react";
+import { ReactNode } from "react";
 
 interface CheckboxProps {
   value: boolean;
   label: string;
-  token: number;
   onValueChange: (tableName: string, value: boolean) => void;
 }
-const Checkbox = (props: CheckboxProps) => {
-  const { value, label, token, onValueChange } = props;
+const Checkbox = (props: CheckboxProps & { children?: ReactNode }) => {
+  const { value, label, onValueChange, children } = props;
   return (
     <form>
       <div className=" px-3 py-2 flex justify-between items-center	">
@@ -26,7 +25,7 @@ const Checkbox = (props: CheckboxProps) => {
         <label className="Label  grow m-auto px-3 py-2 cursor-pointer truncate text-black dark:text-gray-300 " htmlFor={label}>
           {label}
         </label>
-        <div className="text-black dark:text-gray-300">{token}</div>
+        {children}
       </div>
     </form>
   );
