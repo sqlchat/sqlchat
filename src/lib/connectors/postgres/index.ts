@@ -32,7 +32,7 @@ const newPostgresClient = async (connection: Connection) => {
   try {
     await client.connect();
   } catch (error) {
-    // Because node-postgres didn't implement `sslmode: preferred`. So first try connect via ssl, otherwise connect via non-ssl.
+    // Because node-postgres didn't implement `sslmode: preferred`. So first try to connect via SSL, otherwise connect via non-SSL.
     // Connecting postgres via non-ssl requires `clientConfig.ssl` is undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
     clientConfig.ssl = undefined;
     client = new Client(clientConfig);
