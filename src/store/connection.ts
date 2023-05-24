@@ -68,11 +68,11 @@ export const useConnectionStore = create<ConnectionState>()(
           connection,
         });
 
+        console.log(connection.engineType);
         if (connection.engineType === Engine.PostgreSQL) {
           const { data: schema } = await axios.post<ResponseObject<string[]>>("/api/connection/postgresql_schema", {
             connection,
           });
-
           console.log(schema);
         }
         const fetchedDatabaseList = data.map(

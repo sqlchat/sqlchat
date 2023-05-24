@@ -33,7 +33,7 @@ const ConnectionList = () => {
   };
 
   const handleConnectionSelect = async (connection: Connection) => {
-    const databaseList = await connectionStore.getOrFetchDatabaseList(connection);
+    const databaseList = await connectionStore.getOrFetchDatabaseList(connection, true);
     connectionStore.setCurrentConnectionCtx({
       connection,
       database: head(databaseList),
