@@ -120,25 +120,6 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const countTextTokensByTableName = (databaseName: string) => {
-    // found out be selected tables and count their tokens
-  };
-
-  const handleTableNameSelect = async (selectedTablesName: string[]) => {
-    createConversation();
-    conversationStore.updateSelectedTablesName(selectedTablesName);
-  };
-
-  const handleAllSelect = async () => {
-    createConversation();
-    conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
-  };
-
-  const handleEmptySelect = async () => {
-    createConversation();
-    conversationStore.updateSelectedTablesName([]);
-  };
-
   const handleTableCheck = async (tableName: string, value: boolean) => {
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
