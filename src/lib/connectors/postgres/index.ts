@@ -158,6 +158,22 @@ const getTableStructureBatch = async (
   });
 };
 
+const getSchema = async (connection: Connection, databaseName: string): Promise<Array<string>> => {
+  connection.database = databaseName;
+  const client = await newPostgresClient(connection);
+  const { rows } = await client.query(
+    `SELECT nspname
+    FROM pg_catalog.pg_namespace
+    WHERE nspname NOT IN (${systemSchemas});
+    `
+  );
+  console.log(`SELECT nspname
+  FROM pg_catalog.pg_namespace
+  WHERE nspname NOT IN (${systemSchemas});
+  `);
+
+  return [];
+};
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
@@ -171,6 +187,7 @@ const newConnector = (connection: Connection): Connector => {
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
     ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    getSchema: (databaseName: string) => getSchema(connection, databaseName),
   };
 };
 

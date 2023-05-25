@@ -3,6 +3,7 @@ import { newConnector } from "@/lib/connectors";
 import { Connection, Table } from "@/types";
 import { changeTiDBConnectionToMySQL } from "@/utils";
 import { Engine } from "@/types/connection";
+import { raw } from "mysql2";
 
 // POST /api/connection/db_schema
 // req body: { connection: Connection, db: string }
@@ -18,10 +19,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const db = req.body.db as string;
+
   try {
     const connector = newConnector(connection);
     const tableStructures: Table[] = [];
     const rawTableNameList = await connector.getTables(db);
+    if (connection.engineType === Engine.PostgreSQL) {
+      if (connector.getSchema) {
+        const rawSchema = await connector.getSchema(db);
+        console.log(rawSchema);
+      }
+    }
     const structureFetched = (tableName: string, structure: string) => {
       tableStructures.push({
         name: tableName,
