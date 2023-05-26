@@ -3,7 +3,11 @@ import { newConnector } from "@/lib/connectors";
 import { Connection, Table } from "@/types";
 import { changeTiDBConnectionToMySQL } from "@/utils";
 import { Engine } from "@/types/connection";
-import { raw } from "mysql2";
+import { Schema } from "@/types/schema";
+
+function isStringArray(x: any[]): x is string[] {
+  return x.every((i) => typeof i === "string");
+}
 
 // POST /api/connection/db_schema
 // req body: { connection: Connection, db: string }
@@ -22,24 +26,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
   try {
     const connector = newConnector(connection);
-    const tableStructures: Table[] = [];
-    const rawTableNameList = await connector.getTables(db);
-    if (connection.engineType === Engine.PostgreSQL) {
-      if (connector.getSchema) {
-        const rawSchema = await connector.getSchema(db);
-        console.log(rawSchema);
-      }
-    }
-    const structureFetched = (tableName: string, structure: string) => {
-      tableStructures.push({
-        name: tableName,
-        structure,
-      });
-    };
-    await connector.getTableStructureBatch(db, rawTableNameList, structureFetched);
+    const schemaList: Schema[] = await connector.getTableSchema(db);
 
     res.status(200).json({
-      data: tableStructures,
+      data: schemaList,
     });
   } catch (error: any) {
     res.status(400).json({

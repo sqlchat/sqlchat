@@ -2,12 +2,13 @@ import { Connection, Engine, ExecutionResult } from "@/types";
 import mysql from "./mysql";
 import postgres from "./postgres";
 import mssql from "./mssql";
+import { Schema } from "@/types/schema";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
   execute: (databaseName: string, statement: string) => Promise<ExecutionResult>;
   getDatabases: () => Promise<string[]>;
-  getTables: (databaseName: string) => Promise<string[]>;
+  getTables: (databaseName: string) => Promise<string[] | Schema[]>;
   getTableStructure: (
     databaseName: string,
     tableName: string,
@@ -18,7 +19,7 @@ export interface Connector {
     tableNameList: string[],
     structureFetched: (tableName: string, structure: string) => void
   ) => Promise<void>;
-  getSchema?: (databaseName: string) => Promise<string[]>;
+  getTableSchema: (databaseName: string) => Promise<Schema[]>;
 }
 
 export const newConnector = (connection: Connection): Connector => {

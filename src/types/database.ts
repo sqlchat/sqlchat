@@ -1,9 +1,9 @@
 import { Id } from ".";
-
+import { Schema } from "./schema";
 export interface Database {
   connectionId: Id;
   name: string;
-  tableList: Table[];
+  schemaList: Schema[];
 }
 
 export interface Table {

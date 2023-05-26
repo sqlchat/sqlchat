@@ -1,6 +1,7 @@
 import { Client, ClientConfig } from "pg";
-import { Connection, ExecutionResult } from "@/types";
+import { Connection, ExecutionResult, Table } from "@/types";
 import { Connector } from "..";
+import { Schema } from "@/types/schema";
 
 const systemSchemas =
   "'information_schema', 'pg_catalog', 'pg_toast', '_timescaledb_cache', '_timescaledb_catalog', '_timescaledb_internal', '_timescaledb_config', 'timescaledb_information', 'timescaledb_experimental'";
@@ -92,25 +93,31 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+const getTables = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
     `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
     [databaseName]
   );
+
   await client.end();
-  const tableList = [];
+  const schemaList: Schema[] = [];
   for (const row of rows) {
     if (row["table_name"]) {
-      if (row["table_schema"] !== "public") {
-        tableList.push(`${row["table_schema"]}.${row["table_name"]}`);
-        continue;
+      const schema = schemaList.find((schema) => schema.name === row["table_schema"]);
+      if (schema) {
+        schema.tables.push(row["table_name"]);
+      } else {
+        schemaList.push({
+          name: row["table_schema"],
+          tables: [row["table_name"]],
+        });
       }
-      tableList.push(row["table_name"]);
     }
   }
-  return tableList;
+  console.log(schemaList);
+  return schemaList;
 };
 
 const getTableStructure = async (
@@ -173,23 +180,54 @@ const getTableStructureBatch = async (
     await client.end();
   });
 };
-
-const getSchema = async (connection: Connection, databaseName: string): Promise<Array<string>> => {
+const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT nspname
-    FROM pg_catalog.pg_namespace
-    WHERE nspname NOT IN (${systemSchemas});
-    `
+    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
+    [databaseName]
   );
-  console.log(`SELECT nspname
-  FROM pg_catalog.pg_namespace
-  WHERE nspname NOT IN (${systemSchemas});
-  `);
 
+  const schemaList: Schema[] = [];
+  for (const row of rows) {
+    if (row["table_name"]) {
+      const schema = schemaList.find((schema) => schema.name === row["table_schema"]);
+      if (schema) {
+        schema.tables.push({ name: row["table_name"] as string, structure: "" } as Table);
+      } else {
+        schemaList.push({
+          name: row["table_schema"],
+          tables: [{ name: row["table_name"], structure: "" } as Table],
+        });
+      }
+    }
+  }
+
+  for (const schema of schemaList) {
+    for (const table of schema.tables) {
+      const { rows: result } = await client.query(
+        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1 AND table_schema=$2;`,
+        [table.name, schema.name]
+      );
+      const columnList = [];
+      // TODO(steven): transform it to standard schema string.
+      for (const row of result) {
+        columnList.push(
+          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+        );
+      }
+      table.structure = `CREATE TABLE \`${table.name}\` (
+        ${columnList.join(",\n")}
+      );`;
+    }
+  }
+
+  await client.end();
+  console.log(schemaList);
+  return schemaList;
   return [];
 };
+
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
@@ -203,7 +241,7 @@ const newConnector = (connection: Connection): Connector => {
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
     ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
-    getSchema: (databaseName: string) => getSchema(connection, databaseName),
+    getTableSchema: (databaseName: string) => getTableSchema(connection, databaseName),
   };
 };
 

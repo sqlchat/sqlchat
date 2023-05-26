@@ -2,7 +2,7 @@ import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useConnectionStore, useConversationStore, useLayoutStore, ResponsiveWidth, useSettingStore } from "@/store";
-import { Table } from "@/types";
+import { Engine, Table } from "@/types";
 import useLoading from "@/hooks/useLoading";
 import Select from "./kit/Select";
 import Icon from "./Icon";
@@ -13,7 +13,7 @@ import QuotaView from "./QuotaView";
 import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 import SettingAvatarIcon from "./SettingAvatarIcon";
-
+import { Schema } from "@/types/schema";
 interface State {}
 
 const ConnectionSidebar = () => {
@@ -26,10 +26,19 @@ const ConnectionSidebar = () => {
   const currentConnectionCtx = connectionStore.currentConnectionCtx;
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const [tableList, updateTableList] = useState<Table[]>([]);
+  const [schemaList, updateSchemaList] = useState<Schema[]>([]);
+  const [selectSchema, updateSelectSchema] = useState<string>("");
+  const [hasSchemaProperty, updateHasSchemaProperty] = useState<boolean>(false);
   const selectedTablesName: string[] =
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
   const tableSchemaLoadingState = useLoading();
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+
+  useEffect(() => {
+    updateHasSchemaProperty(
+      currentConnectionCtx?.connection.engineType === Engine.PostgreSQL || currentConnectionCtx?.connection.engineType === Engine.MSSQL
+    );
+  }, [currentConnectionCtx?.connection]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -71,14 +80,24 @@ const ConnectionSidebar = () => {
   }, [currentConnectionCtx?.connection]);
 
   useEffect(() => {
-    const tableList =
+    const schemaList =
       connectionStore.databaseList.find(
         (database) =>
           database.connectionId === currentConnectionCtx?.connection.id && database.name === currentConnectionCtx?.database?.name
-      )?.tableList || [];
+      )?.schemaList || [];
 
-    updateTableList(tableList);
+    updateSchemaList(schemaList);
+    if (hasSchemaProperty) {
+      updateSelectSchema(schemaList[0]?.name || "");
+    } else {
+      updateSelectSchema("");
+    }
   }, [connectionStore, currentConnectionCtx]);
+
+  useEffect(() => {
+    const tableList = schemaList.find((schema) => schema.name === selectSchema)?.tables || [];
+    updateTableList(tableList);
+  }, [selectSchema]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
@@ -117,10 +136,10 @@ const ConnectionSidebar = () => {
     conversationStore.updateSelectedTablesName(selectedTablesName);
   };
 
-  const handleAllSelect = async () => {
-    createConversation();
-    conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
-  };
+  // const handleAllSelect = async () => {
+  //   createConversation();
+  //   conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
+  // };
 
   const handleEmptySelect = async () => {
     createConversation();
@@ -168,6 +187,20 @@ const ConnectionSidebar = () => {
                     placeholder={t("connection.select-database") || ""}
                   />
                 </div>
+              )}
+              {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && schemaList.length > 0 && (
+                <Select
+                  className="w-full px-4 py-3 !text-base"
+                  value={selectSchema}
+                  itemList={schemaList.map((schema) => {
+                    return {
+                      label: schema.name,
+                      value: schema.name,
+                    };
+                  })}
+                  onValueChange={(schema) => updateSelectSchema(schema)}
+                  placeholder={t("connection.select-database") || ""}
+                />
               )}
               {currentConnectionCtx &&
                 (tableSchemaLoadingState.isLoading ? (

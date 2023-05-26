@@ -4,6 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
 import { generateUUID } from "@/utils";
+import { Schema } from "@/types/schema";
 
 interface ConnectionContext {
   connection: Connection;
@@ -28,7 +29,7 @@ interface ConnectionState {
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
   getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
-  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Table[]>;
+  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Schema[]>;
   getConnectionById: (connectionId: string) => Connection | undefined;
   updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
@@ -67,12 +68,14 @@ export const useConnectionStore = create<ConnectionState>()(
         const { data } = await axios.post<string[]>("/api/connection/db", {
           connection,
         });
+
+        console.log("fetch db", data);
         const fetchedDatabaseList = data.map(
           (dbName) =>
             ({
               connectionId: connection.id,
               name: dbName,
-              tableList: [],
+              schemaList: [],
             } as Database)
         );
         const databaseList = uniqBy(
@@ -90,8 +93,8 @@ export const useConnectionStore = create<ConnectionState>()(
 
         if (!skipCache) {
           const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name);
-          if (db !== undefined && Array.isArray(db.tableList) && db.tableList.length !== 0) {
-            return db.tableList;
+          if (db !== undefined && Array.isArray(db.schemaList) && db.schemaList.length !== 0) {
+            return db.schemaList;
           }
         }
 
@@ -100,19 +103,22 @@ export const useConnectionStore = create<ConnectionState>()(
           return [];
         }
 
-        const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
+        const { data: result } = await axios.post<ResponseObject<Schema[]>>("/api/connection/db_schema", {
           connection,
           db: database.name,
         });
+
+        console.log("fetch db_schema", result);
+
         if (result.message) {
           throw result.message;
         }
 
-        const fetchedTableList = result.data;
+        const fetchedTableList: Schema[] = result.data;
         set((state) => ({
           ...state,
           databaseList: state.databaseList.map((item) =>
-            item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item
+            item.connectionId === database.connectionId && item.name === database.name ? { ...item, schemaList: fetchedTableList } : item
           ),
         }));
 
