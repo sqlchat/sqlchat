@@ -47,14 +47,23 @@ to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://v
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
-Required environment variables:
 
-- `DATABASE_URL`: Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`,[explicate](https://www.prisma.io/docs/concepts/database-connectors/postgresql).
+### OpenAI related variables:
+
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 
-Optional environment variables:
-
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
+
+
+### Database related variables:
+
+- `NEXT_PUBLIC_DATABASE_LESS`: Set to true to start SQL Chat in database-less mode. This will
+disable following features:
+  1. Account system.
+  1. Per-user quota enforcement.
+  1. Payment.
+  1. Usage data collection.
+- `DATABASE_URL`: Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
@@ -62,17 +71,28 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 ## Local Development
 
+1. Install dependencies
+
+   ```bash
+   pnpm i
+   ```
+
 1. Make a copy of the example environment variables file:
 
    ```bash
    cp .env.example .env
    ```
 
-2. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
+1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
 
-3. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/).
 
-4. Create a database:
+### Setup database
+
+**You can skip this section with `NEXT_PUBLIC_DATABASE_LESS=true` if you don't build features requiring database**
+
+1. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/).
+
+1. Create a database:
 
    ```sql
    CREATE DATABASE sqlchat;
@@ -80,13 +100,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
    In `.env` file, assign the connection string to environment variable `DATABASE_URL`.
 
-5. Install dependencies
-
-   ```bash
-   pnpm i
-   ```
-
-6. Generate schema
+1. Generate schema
 
    1. Generate prisma client from the model
 
