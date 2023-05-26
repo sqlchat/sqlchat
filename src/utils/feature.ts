@@ -1,4 +1,4 @@
-type FeatureType = "debug" | "account" | "payment" | "quota";
+type FeatureType = "debug" | "account" | "payment" | "quota" | "collect";
 
 const matrix: { [key: string]: { [feature: string]: boolean } } = {
   development: {
@@ -6,12 +6,14 @@ const matrix: { [key: string]: { [feature: string]: boolean } } = {
     account: true,
     payment: true,
     quota: true,
+    collect: true,
   },
   production: {
     debug: false,
     account: true,
     payment: true,
     quota: true,
+    collect: true,
   },
 };
 

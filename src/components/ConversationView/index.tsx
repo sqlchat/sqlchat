@@ -14,7 +14,7 @@ import {
   useUserStore,
 } from "@/store";
 import { Conversation, CreatorRole, Message } from "@/types";
-import { countTextTokens, generateUUID } from "@/utils";
+import { countTextTokens, generateUUID, hasFeature } from "@/utils";
 import getEventEmitter from "@/utils/event-emitter";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
@@ -290,36 +290,38 @@ const ConversationView = () => {
     // Emit usage update event so quota widget can update.
     getEventEmitter().emit("usage.update");
 
-    // Collect system prompt
-    // We only collect the db prompt for the system prompt. We do not collect the intermediate
-    // exchange to save space since those can be derived from the previous record.
-    usageMessageList.push({
-      id: generateUUID(),
-      createdAt: Date.now(),
-      creatorRole: CreatorRole.System,
-      content: dbPrompt,
-    } as Message);
+    if (hasFeature("collect")) {
+      // Collect system prompt
+      // We only collect the db prompt for the system prompt. We do not collect the intermediate
+      // exchange to save space since those can be derived from the previous record.
+      usageMessageList.push({
+        id: generateUUID(),
+        createdAt: Date.now(),
+        creatorRole: CreatorRole.System,
+        content: dbPrompt,
+      } as Message);
 
-    // Collect user message
-    usageMessageList.push(userMessage);
+      // Collect user message
+      usageMessageList.push(userMessage);
 
-    // Collect assistant response
-    usageMessageList.push(assistantMessage);
+      // Collect assistant response
+      usageMessageList.push(assistantMessage);
 
-    axios
-      .post<string[]>(
-        "/api/collect",
-        {
-          conversation: currentConversation,
-          messages: usageMessageList,
-        },
-        {
-          headers: requestHeaders,
-        }
-      )
-      .catch(() => {
-        // do nth
-      });
+      axios
+        .post<string[]>(
+          "/api/collect",
+          {
+            conversation: currentConversation,
+            messages: usageMessageList,
+          },
+          {
+            headers: requestHeaders,
+          }
+        )
+        .catch(() => {
+          // do nth
+        });
+    }
   };
 
   return (
