@@ -59,80 +59,6 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
-  const pool = await getMSSQLConnection(connection);
-  const request = pool.request();
-  const result = await request.query(
-    `SELECT TABLE_NAME as table_name FROM ${databaseName}.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE';`
-  );
-  await pool.close();
-  const tableList = [];
-  for (const row of result.recordset) {
-    if (row["table_name"]) {
-      tableList.push(row["table_name"]);
-    }
-  }
-  return tableList;
-};
-
-const getTableStructure = async (
-  connection: Connection,
-  databaseName: string,
-  tableName: string,
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  const pool = await getMSSQLConnection(connection);
-  const request = pool.request();
-  const { recordset } = await request.query(
-    `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='${tableName}';`
-  );
-
-  const columnList = [];
-  // Transform to standard schema string.
-  for (const row of recordset) {
-    columnList.push(
-      `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-    );
-  }
-  structureFetched(
-    tableName,
-    `CREATE TABLE [${tableName}] (
-    ${columnList.join(",\n")}
-  );`
-  );
-};
-
-const getTableStructureBatch = async (
-  connection: Connection,
-  databaseName: string,
-  tableNameList: string[],
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  const pool = await getMSSQLConnection(connection);
-  const request = pool.request();
-
-  await Promise.all(
-    tableNameList.map(async (tableName) => {
-      const { recordset } = await request.query(
-        `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='dbo' AND TABLE_NAME='${tableName}';`
-      );
-      const columnList = [];
-      // Transform to standard schema string.
-      for (const row of recordset) {
-        columnList.push(
-          `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-        );
-      }
-      structureFetched(
-        tableName,
-        `CREATE TABLE [${tableName}] (
-        ${columnList.join(",\n")}
-      );`
-      );
-    })
-  );
-};
-
 const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
   const pool = await getMSSQLConnection(connection);
   const request = pool.request();
@@ -172,7 +98,6 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
       );`;
     }
   }
-  console.log(schemaList);
   await pool.close();
   return schemaList;
 };
@@ -182,14 +107,6 @@ const newConnector = (connection: Connection): Connector => {
     testConnection: () => testConnection(connection),
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
-    getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) =>
-      getTableStructure(connection, databaseName, tableName, structureFetched),
-    getTableStructureBatch: (
-      databaseName: string,
-      tableNameList: string[],
-      structureFetched: (tableName: string, structure: string) => void
-    ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
     getTableSchema: (databaseName: string) => getTableSchema(connection, databaseName),
   };
 };

@@ -92,92 +92,6 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
-  connection.database = databaseName;
-  const client = await newPostgresClient(connection);
-  const { rows } = await client.query(
-    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
-    [databaseName]
-  );
-
-  await client.end();
-  const schemaList: Schema[] = [];
-  for (const row of rows) {
-    if (row["table_name"]) {
-      const schema = schemaList.find((schema) => schema.name === row["table_schema"]);
-      if (schema) {
-        schema.tables.push(row["table_name"]);
-      } else {
-        schemaList.push({
-          name: row["table_schema"],
-          tables: [row["table_name"]],
-        });
-      }
-    }
-  }
-  return schemaList;
-};
-
-const getTableStructure = async (
-  connection: Connection,
-  databaseName: string,
-  tableName: string,
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  connection.database = databaseName;
-  const client = await newPostgresClient(connection);
-  const { rows } = await client.query(
-    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
-    [tableName]
-  );
-  await client.end();
-  const columnList = [];
-  // TODO(steven): transform it to standard schema string.
-  for (const row of rows) {
-    columnList.push(
-      `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-    );
-  }
-  structureFetched(
-    tableName,
-    `CREATE TABLE \`${tableName}\` (
-    ${columnList.join(",\n")}
-  );`
-  );
-};
-
-const getTableStructureBatch = async (
-  connection: Connection,
-  databaseName: string,
-  tableNameList: string[],
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  connection.database = databaseName;
-  const client = await newPostgresClient(connection);
-  await Promise.all(
-    tableNameList.map(async (tableName) => {
-      const { rows } = await client.query(
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
-        [tableName]
-      );
-      const columnList = [];
-      // TODO(steven): transform it to standard schema string.
-      for (const row of rows) {
-        columnList.push(
-          `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-        );
-      }
-      structureFetched(
-        tableName,
-        `CREATE TABLE \`${tableName}\` (
-        ${columnList.join(",\n")}
-      );`
-      );
-    })
-  ).finally(async () => {
-    await client.end();
-  });
-};
 const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
@@ -230,14 +144,6 @@ const newConnector = (connection: Connection): Connector => {
     testConnection: () => testConnection(connection),
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
-    getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) =>
-      getTableStructure(connection, databaseName, tableName, structureFetched),
-    getTableStructureBatch: (
-      databaseName: string,
-      tableNameList: string[],
-      structureFetched: (tableName: string, structure: string) => void
-    ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
     getTableSchema: (databaseName: string) => getTableSchema(connection, databaseName),
   };
 };
