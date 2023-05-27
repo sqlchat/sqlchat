@@ -1,5 +1,5 @@
 import { ConnectionPool } from "mssql";
-import { Connection, ExecutionResult, Schema } from "@/types";
+import { Connection, ExecutionResult, Schema, Table } from "@/types";
 import { Connector } from "..";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
@@ -134,7 +134,47 @@ const getTableStructureBatch = async (
 };
 
 const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
-  return [];
+  const pool = await getMSSQLConnection(connection);
+  const request = pool.request();
+  const schemaList: Schema[] = [];
+  const result = await request.query(
+    `SELECT TABLE_NAME as table_name, TABLE_SCHEMA as table_schema FROM ${databaseName}.INFORMATION_SCHEMA.TABLES WHERE TABLE_TYPE='BASE TABLE';`
+  );
+  for (const row of result.recordset) {
+    if (row["table_name"]) {
+      const schema = schemaList.find((schema) => schema.name === row["table_schema"]);
+      if (schema) {
+        schema.tables.push({ name: row["table_name"] as string, structure: "" } as Table);
+      } else {
+        schemaList.push({
+          name: row["table_schema"],
+          tables: [{ name: row["table_name"], structure: "" } as Table],
+        });
+      }
+    }
+  }
+
+  for (const schema of schemaList) {
+    for (const table of schema.tables) {
+      const { recordset } = await request.query(
+        `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='${schema.name}' AND TABLE_NAME='${table.name}';`
+      );
+      console.log(recordset);
+      const columnList = [];
+      // Transform to standard schema string.
+      for (const row of recordset) {
+        columnList.push(
+          `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
+        );
+      }
+      table.structure = `CREATE TABLE [${table.name}] (
+        ${columnList.join(",\n")}
+      );`;
+    }
+  }
+  console.log(schemaList);
+  await pool.close();
+  return schemaList;
 };
 
 const newConnector = (connection: Connection): Connector => {

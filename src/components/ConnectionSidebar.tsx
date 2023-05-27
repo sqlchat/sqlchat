@@ -195,7 +195,7 @@ const ConnectionSidebar = () => {
                   />
                 </div>
               )}
-              {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && schemaList.length > 0 && (
+              {hasSchemaProperty && schemaList.length > 0 && (
                 <Select
                   className="w-full px-4 py-3 !text-base"
                   value={selectedSchemaName}
@@ -206,7 +206,7 @@ const ConnectionSidebar = () => {
                     };
                   })}
                   onValueChange={(schema) => handleSchemaNameSelect(schema)}
-                  placeholder={t("connection.select-database") || ""}
+                  placeholder={t("connection.select-schema") || ""}
                 />
               )}
               {currentConnectionCtx &&

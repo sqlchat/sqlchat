@@ -30,6 +30,7 @@
     "edit": "编辑连接",
     "select-database": "选择数据库",
     "select-table": "选择数据表",
+    "select-schema": "选择 Schema",
     "all-tables": "全部表",
     "select-all": "选择全部",
     "empty-select": "清空选择",
