@@ -24,6 +24,7 @@ interface ConversationState {
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
   updateSelectedTablesName: (selectedTablesName: string[]) => void;
+  updateSelectedSchemaName: (selectedSchemaName: string) => void;
 }
 
 export const useConversationStore = create<ConversationState>()(
@@ -69,6 +70,14 @@ export const useConversationStore = create<ConversationState>()(
         if (currentConversation) {
           get().updateConversation(currentConversation.id, {
             selectedTablesName,
+          });
+        }
+      },
+      updateSelectedSchemaName: (selectedSchemaName: string) => {
+        const currentConversation = get().getConversationById(get().currentConversationId);
+        if (currentConversation) {
+          get().updateConversation(currentConversation.id, {
+            selectedSchemaName,
           });
         }
       },

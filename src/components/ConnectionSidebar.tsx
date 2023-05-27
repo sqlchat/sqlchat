@@ -27,10 +27,11 @@ const ConnectionSidebar = () => {
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const [tableList, updateTableList] = useState<Table[]>([]);
   const [schemaList, updateSchemaList] = useState<Schema[]>([]);
-  const [selectSchema, updateSelectSchema] = useState<string>("");
   const [hasSchemaProperty, updateHasSchemaProperty] = useState<boolean>(false);
   const selectedTablesName: string[] =
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
+  const selectedSchemaName: string =
+    conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedSchemaName || "";
   const tableSchemaLoadingState = useLoading();
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
 
@@ -88,16 +89,16 @@ const ConnectionSidebar = () => {
 
     updateSchemaList(schemaList);
     if (hasSchemaProperty) {
-      updateSelectSchema(schemaList[0]?.name || "");
+      conversationStore.updateSelectedSchemaName(schemaList[0]?.name || "");
     } else {
-      updateSelectSchema("");
+      conversationStore.updateSelectedSchemaName("");
     }
   }, [connectionStore, currentConnectionCtx]);
 
   useEffect(() => {
-    const tableList = schemaList.find((schema) => schema.name === selectSchema)?.tables || [];
+    const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
-  }, [selectSchema]);
+  }, [selectedSchemaName]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
@@ -191,14 +192,14 @@ const ConnectionSidebar = () => {
               {currentConnectionCtx?.connection.engineType === Engine.PostgreSQL && schemaList.length > 0 && (
                 <Select
                   className="w-full px-4 py-3 !text-base"
-                  value={selectSchema}
+                  value={selectedSchemaName}
                   itemList={schemaList.map((schema) => {
                     return {
                       label: schema.name,
                       value: schema.name,
                     };
                   })}
-                  onValueChange={(schema) => updateSelectSchema(schema)}
+                  onValueChange={(schema) => conversationStore.updateSelectedSchemaName(schema)}
                   placeholder={t("connection.select-database") || ""}
                 />
               )}
