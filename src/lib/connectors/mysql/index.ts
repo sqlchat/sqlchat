@@ -1,8 +1,7 @@
 import { ConnectionOptions } from "mysql2";
 import mysql, { RowDataPacket } from "mysql2/promise";
-import { Connection, ExecutionResult, Table } from "@/types";
+import { Connection, ExecutionResult, Table, Schema } from "@/types";
 import { Connector } from "..";
-import { Schema } from "@/types";
 
 const systemDatabases = ["information_schema", "mysql", "performance_schema", "sys"];
 

@@ -2,10 +2,8 @@ import axios from "axios";
 import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
+import { Connection, Database, Engine, ResponseObject, Schema } from "@/types";
 import { generateUUID } from "@/utils";
-import { Schema } from "@/types";
-import { stat } from "fs";
 
 interface ConnectionContext {
   connection: Connection;

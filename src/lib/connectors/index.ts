@@ -1,8 +1,7 @@
-import { Connection, Engine, ExecutionResult } from "@/types";
+import { Connection, Engine, ExecutionResult, Schema } from "@/types";
 import mysql from "./mysql";
 import postgres from "./postgres";
 import mssql from "./mssql";
-import { Schema } from "@/types";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;

@@ -1,13 +1,8 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { newConnector } from "@/lib/connectors";
-import { Connection, Table } from "@/types";
+import { Connection, Schema } from "@/types";
 import { changeTiDBConnectionToMySQL } from "@/utils";
 import { Engine } from "@/types/connection";
-import { Schema } from "@/types";
-
-function isStringArray(x: any[]): x is string[] {
-  return x.every((i) => typeof i === "string");
-}
 
 // POST /api/connection/db_schema
 // req body: { connection: Connection, db: string }

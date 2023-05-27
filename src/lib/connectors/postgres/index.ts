@@ -1,7 +1,6 @@
 import { Client, ClientConfig } from "pg";
-import { Connection, ExecutionResult, Table } from "@/types";
+import { Connection, ExecutionResult, Table, Schema } from "@/types";
 import { Connector } from "..";
-import { Schema } from "@/types";
 
 const systemSchemas =
   "'information_schema', 'pg_catalog', 'pg_toast', '_timescaledb_cache', '_timescaledb_catalog', '_timescaledb_internal', '_timescaledb_config', 'timescaledb_information', 'timescaledb_experimental'";

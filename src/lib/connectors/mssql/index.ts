@@ -1,7 +1,6 @@
 import { ConnectionPool } from "mssql";
-import { Connection, ExecutionResult } from "@/types";
+import { Connection, ExecutionResult, Schema } from "@/types";
 import { Connector } from "..";
-import { Schema } from "@/types";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
 

@@ -2,7 +2,7 @@ import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useConnectionStore, useConversationStore, useLayoutStore, ResponsiveWidth, useSettingStore } from "@/store";
-import { Engine, Table } from "@/types";
+import { Engine, Table, Schema } from "@/types";
 import useLoading from "@/hooks/useLoading";
 import Select from "./kit/Select";
 import Icon from "./Icon";
@@ -13,7 +13,6 @@ import QuotaView from "./QuotaView";
 import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 import SettingAvatarIcon from "./SettingAvatarIcon";
-import { Schema } from "@/types";
 
 interface State {}
 
