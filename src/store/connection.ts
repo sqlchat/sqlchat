@@ -4,7 +4,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
 import { generateUUID } from "@/utils";
-import { Schema } from "@/types/schema";
+import { Schema } from "@/types";
 import { stat } from "fs";
 
 interface ConnectionContext {

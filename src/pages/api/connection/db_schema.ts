@@ -3,7 +3,7 @@ import { newConnector } from "@/lib/connectors";
 import { Connection, Table } from "@/types";
 import { changeTiDBConnectionToMySQL } from "@/utils";
 import { Engine } from "@/types/connection";
-import { Schema } from "@/types/schema";
+import { Schema } from "@/types";
 
 function isStringArray(x: any[]): x is string[] {
   return x.every((i) => typeof i === "string");

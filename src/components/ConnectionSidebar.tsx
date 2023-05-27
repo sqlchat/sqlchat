@@ -13,7 +13,7 @@ import QuotaView from "./QuotaView";
 import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 import SettingAvatarIcon from "./SettingAvatarIcon";
-import { Schema } from "@/types/schema";
+import { Schema } from "@/types";
 
 interface State {}
 
