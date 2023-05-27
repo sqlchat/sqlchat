@@ -70,7 +70,6 @@ export const useConnectionStore = create<ConnectionState>()(
           connection,
         });
 
-        console.log("fetch db", data);
         const fetchedDatabaseList = data.map(
           (dbName) =>
             ({
@@ -108,8 +107,6 @@ export const useConnectionStore = create<ConnectionState>()(
           connection,
           db: database.name,
         });
-
-        console.log("fetch db_schema", result);
 
         if (result.message) {
           throw result.message;

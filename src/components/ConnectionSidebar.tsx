@@ -14,6 +14,7 @@ import { hasFeature } from "../utils";
 import MultipleSelect from "./kit/MultipleSelect";
 import SettingAvatarIcon from "./SettingAvatarIcon";
 import { Schema } from "@/types/schema";
+
 interface State {}
 
 const ConnectionSidebar = () => {
@@ -92,16 +93,15 @@ const ConnectionSidebar = () => {
     createConversation();
     if (hasSchemaProperty) {
       conversationStore.updateSelectedSchemaName(schemaList[0]?.name || "");
-      console.log("update", schemaList[0]?.name || "");
     } else {
       conversationStore.updateSelectedSchemaName("");
     }
-  }, [connectionStore, currentConnectionCtx, schemaList]);
+  }, [connectionStore, hasSchemaProperty, currentConnectionCtx, schemaList]);
 
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
-  }, [selectedSchemaName]);
+  }, [selectedSchemaName, selectedTablesName, schemaList]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
@@ -136,18 +136,21 @@ const ConnectionSidebar = () => {
   };
 
   const handleTableNameSelect = async (selectedTablesName: string[]) => {
-    createConversation();
     conversationStore.updateSelectedTablesName(selectedTablesName);
   };
 
   const handleAllSelect = async () => {
-    createConversation();
     conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
   };
 
   const handleEmptySelect = async () => {
-    createConversation();
     conversationStore.updateSelectedTablesName([]);
+  };
+
+  const handleSchemaNameSelect = async (schemaName: string) => {
+    // need to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
+    conversationStore.updateSelectedTablesName([]);
+    conversationStore.updateSelectedSchemaName(schemaName);
   };
 
   return (
@@ -203,7 +206,7 @@ const ConnectionSidebar = () => {
                       value: schema.name,
                     };
                   })}
-                  onValueChange={(schema) => conversationStore.updateSelectedSchemaName(schema)}
+                  onValueChange={(schema) => handleSchemaNameSelect(schema)}
                   placeholder={t("connection.select-database") || ""}
                 />
               )}

@@ -116,7 +116,6 @@ const getTables = async (connection: Connection, databaseName: string): Promise<
       }
     }
   }
-  console.log(schemaList);
   return schemaList;
 };
 
@@ -223,7 +222,6 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
   }
 
   await client.end();
-  console.log(schemaList);
   return schemaList;
   return [];
 };
