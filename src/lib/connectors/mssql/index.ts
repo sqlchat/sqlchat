@@ -85,7 +85,6 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
       const { recordset } = await request.query(
         `SELECT COLUMN_NAME, DATA_TYPE, IS_NULLABLE FROM ${databaseName}.INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='${schema.name}' AND TABLE_NAME='${table.name}';`
       );
-      console.log(recordset);
       const columnList = [];
       // Transform to standard schema string.
       for (const row of recordset) {
