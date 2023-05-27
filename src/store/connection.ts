@@ -5,6 +5,7 @@ import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
 import { generateUUID } from "@/utils";
 import { Schema } from "@/types/schema";
+import { stat } from "fs";
 
 interface ConnectionContext {
   connection: Connection;
@@ -142,6 +143,20 @@ export const useConnectionStore = create<ConnectionState>()(
     }),
     {
       name: "connection-storage",
+      version: 1,
+      migrate: (persistedState: any, version: number) => {
+        let state = persistedState as ConnectionState;
+        if (version === 0 || version === undefined) {
+          // Migration from v0 to v1
+          for (const connection of state.connectionList) {
+            if (state.currentConnectionCtx?.database) {
+              console.log("更新了", state.currentConnectionCtx?.database);
+              state.getOrFetchDatabaseSchema(state.currentConnectionCtx?.database, true);
+            }
+          }
+        }
+        return state;
+      },
     }
   )
 );

@@ -88,12 +88,15 @@ const ConnectionSidebar = () => {
       )?.schemaList || [];
 
     updateSchemaList(schemaList);
+    // need to create a conversation. otherwise updateSelectedSchemaName will failed.
+    createConversation();
     if (hasSchemaProperty) {
       conversationStore.updateSelectedSchemaName(schemaList[0]?.name || "");
+      console.log("update", schemaList[0]?.name || "");
     } else {
       conversationStore.updateSelectedSchemaName("");
     }
-  }, [connectionStore, currentConnectionCtx]);
+  }, [connectionStore, currentConnectionCtx, schemaList]);
 
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
@@ -137,15 +140,16 @@ const ConnectionSidebar = () => {
     conversationStore.updateSelectedTablesName(selectedTablesName);
   };
 
-  // const handleAllSelect = async () => {
-  //   createConversation();
-  //   conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
-  // };
+  const handleAllSelect = async () => {
+    createConversation();
+    conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
+  };
 
   const handleEmptySelect = async () => {
     createConversation();
     conversationStore.updateSelectedTablesName([]);
   };
+
   return (
     <>
       <Drawer

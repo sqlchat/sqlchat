@@ -1,6 +1,7 @@
 import { ConnectionPool } from "mssql";
 import { Connection, ExecutionResult } from "@/types";
 import { Connector } from "..";
+import { Schema } from "@/types/schema";
 
 const systemDatabases = ["master", "tempdb", "model", "msdb"];
 
@@ -133,6 +134,10 @@ const getTableStructureBatch = async (
   );
 };
 
+const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
+  return [];
+};
+
 const newConnector = (connection: Connection): Connector => {
   return {
     testConnection: () => testConnection(connection),
@@ -146,6 +151,7 @@ const newConnector = (connection: Connection): Connector => {
       tableNameList: string[],
       structureFetched: (tableName: string, structure: string) => void
     ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    getTableSchema: (databaseName: string) => getTableSchema(connection, databaseName),
   };
 };
 

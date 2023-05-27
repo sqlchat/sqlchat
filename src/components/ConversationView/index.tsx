@@ -153,7 +153,7 @@ const ConversationView = () => {
         const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
         // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
         const tableList: string[] = [];
-        const selectedSchema = schemaList.find((schema) => schema.name == (currentConversation.selectedTablesName || ""));
+        const selectedSchema = schemaList.find((schema) => schema.name == (currentConversation.selectedSchemaName || ""));
         if (currentConversation.selectedTablesName) {
           currentConversation.selectedTablesName.forEach((tableName: string) => {
             const table = selectedSchema?.tables.find((table) => table.name == tableName);
