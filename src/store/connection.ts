@@ -142,8 +142,11 @@ export const useConnectionStore = create<ConnectionState>()(
       migrate: (persistedState: any, version: number) => {
         let state = persistedState as ConnectionState;
         if (version === 0 || version === undefined) {
+          console.info(`migrate from ${version} to 1`);
+          console.info(state);
           // to clear old data. it will make refetch new schema List
           state.databaseList = [];
+          console.info(state);
         }
         return state;
       },
