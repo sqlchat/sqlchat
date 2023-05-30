@@ -2,8 +2,12 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     // Required. Node environment.
     NODE_ENV: string;
-    // Required. Postgres database connection string to store the data.
-    // e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat
+    // Optional. Set to true to disable the database. Defaults to false.
+    // We can't prefix DATABASE_URL with NEXT_PUBLIC_ because it contains sensitive information that
+    // should not be exposed to the client.
+    NEXT_PUBLIC_DATABASE_LESS: boolean;
+    // Required if NEXT_PUBLIC_DATABASE_LESS is false. Postgres database connection string to store
+    // the data. e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat
     DATABASE_URL: string;
     // Required. Do not share your OpenAI API key with anyone! It should remain a secret.
     OPENAI_API_KEY: string;

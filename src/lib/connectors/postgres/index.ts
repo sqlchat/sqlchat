@@ -17,25 +17,37 @@ const newPostgresClient = async (connection: Connection) => {
     application_name: "sqlchat",
   };
   if (connection.ssl) {
-    // when option is preferred, ca-only and full
-    if (connection.ssl.ca) {
-      clientConfig.ssl = {
-        ca: connection.ssl?.ca,
-        cert: connection.ssl?.cert,
-        key: connection.ssl?.key,
-      };
-    } else {
-      // rejectUnauthorized=false to infer sslmode=prefer since hosted PG venders have SSL enabled.
-      clientConfig.ssl = {
-        rejectUnauthorized: false,
-      };
-    }
+    clientConfig.ssl = {
+      ca: connection.ssl?.ca,
+      cert: connection.ssl?.cert,
+      key: connection.ssl?.key,
+    };
+  } else {
+    clientConfig.ssl = {
+      rejectUnauthorized: false,
+    };
   }
   // when option is none. the `clientConfig.ssl` should be undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
 
   let client = new Client(clientConfig);
-  await client.connect();
-  console.log(client);
+
+  if (connection.ssl) {
+    await client.connect();
+  } else {
+    try {
+      await client.connect();
+    } catch (error) {
+      // Because node-postgres didn't implement `sslmode: preferred`. So first try to connect via SSL, otherwise connect via non-SSL.
+      // Connecting postgres via non-ssl requires `clientConfig.ssl` is undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
+      if (error instanceof Error && error.message.includes("The server does not support SSL connections")) {
+        clientConfig.ssl = undefined;
+        client = new Client(clientConfig);
+        await client.connect();
+      } else {
+        throw error;
+      }
+    }
+  }
   return client;
 };
 

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Conversation, Message } from "@/types";
-import { getModel, gpt35 } from "@/utils";
+import { getModel } from "@/utils";
 import { getEndUser } from "./auth/end-user";
 
 const prisma = new PrismaClient();

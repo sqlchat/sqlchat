@@ -144,7 +144,7 @@ const handler = async (req: NextRequest) => {
     },
   });
 
-  if (useServerKey) {
+  if (useServerKey && hasFeature("quota")) {
     // Increment usage count
     await fetch(usageUrl, {
       method: "POST",
