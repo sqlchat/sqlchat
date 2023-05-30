@@ -1,9 +1,8 @@
 import { Id } from ".";
-
 export interface Database {
   connectionId: Id;
   name: string;
-  tableList: Table[];
+  schemaList: Schema[];
 }
 
 export interface Table {
@@ -13,4 +12,8 @@ export interface Table {
   structure: string;
   token?: number;
   // because old cache didn't have token, So the value may is undefined.
+}
+export interface Schema {
+  name: string;
+  tables: Table[];
 }

@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { newConnector } from "@/lib/connectors";
-import { Connection, Table } from "@/types";
+import { Connection, Schema } from "@/types";
 import { changeTiDBConnectionToMySQL } from "@/utils";
 import { Engine } from "@/types/connection";
 
@@ -18,20 +18,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   const db = req.body.db as string;
+
   try {
     const connector = newConnector(connection);
-    const tableStructures: Table[] = [];
-    const rawTableNameList = await connector.getTables(db);
-    const structureFetched = (tableName: string, structure: string) => {
-      tableStructures.push({
-        name: tableName,
-        structure,
-      });
-    };
-    await connector.getTableStructureBatch(db, rawTableNameList, structureFetched);
+    const schemaList: Schema[] = await connector.getTableSchema(db);
 
     res.status(200).json({
-      data: tableStructures,
+      data: schemaList,
     });
   } catch (error: any) {
     res.status(400).json({
