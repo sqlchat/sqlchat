@@ -150,17 +150,6 @@ const ConnectionSidebar = () => {
       conversationStore.updateSelectedTablesName(selectedTablesName.filter((name) => name !== tableName));
     }
   };
-  const handleTableNameSelect = async (selectedTablesName: string[]) => {
-    conversationStore.updateSelectedTablesName(selectedTablesName);
-  };
-
-  const handleAllSelect = async () => {
-    conversationStore.updateSelectedTablesName(tableList.map((table) => table.name));
-  };
-
-  const handleEmptySelect = async () => {
-    conversationStore.updateSelectedTablesName([]);
-  };
 
   const handleSchemaNameSelect = async (schemaName: string) => {
     // need to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
@@ -227,7 +216,7 @@ const ConnectionSidebar = () => {
               )}
               {currentConnectionCtx &&
                 (tableSchemaLoadingState.isLoading ? (
-                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 border z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
                     <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                   </div>
                 ) : (
@@ -243,42 +232,43 @@ const ConnectionSidebar = () => {
                   })
                 ))}
             </div>
-          </div>
-          <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-            <div className="text-black dark:text-gray-300">
-              {t("connection.total-token")} {totalToken}
-            </div>
-            {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
-              <div className="mb-4">
-                <QuotaView />
+
+            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
+              <div className="text-black dark:text-gray-300">
+                {t("connection.total-token")} {totalToken}
               </div>
-            )}
-            <a
-              className="dark:hidden"
-              href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
-              target="_blank"
-            >
-              <img
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=390216&theme=light"
-                alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
-                style={{ width: "250px", height: "54px" }}
-                width="250"
-                height="54"
-              />
-            </a>
-            <a
-              className="hidden dark:block"
-              href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
-              target="_blank"
-            >
-              <img
-                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=390216&theme=dark"
-                alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
-                style={{ width: "250px", height: "54px" }}
-                width="250"
-                height="54"
-              />
-            </a>
+              {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
+                <div className="mb-4">
+                  <QuotaView />
+                </div>
+              )}
+              <a
+                className="dark:hidden"
+                href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
+                target="_blank"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=390216&theme=light"
+                  alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
+                  style={{ width: "250px", height: "54px" }}
+                  width="250"
+                  height="54"
+                />
+              </a>
+              <a
+                className="hidden dark:block"
+                href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
+                target="_blank"
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=390216&theme=dark"
+                  alt="SQL&#0032;Chat - ChatGPT&#0032;powered&#0032;SQL&#0032;client&#0032;for&#0032;Postgres&#0044;&#0032;MySQL&#0032;&#0038;&#0032;SQL&#0032;Server | Product Hunt"
+                  style={{ width: "250px", height: "54px" }}
+                  width="250"
+                  height="54"
+                />
+              </a>
+            </div>
           </div>
         </div>
       </Drawer>
