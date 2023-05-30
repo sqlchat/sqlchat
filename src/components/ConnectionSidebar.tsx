@@ -143,7 +143,6 @@ const ConnectionSidebar = () => {
   };
 
   const handleTableCheck = async (tableName: string, value: boolean) => {
-    createConversation();
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
     } else {
