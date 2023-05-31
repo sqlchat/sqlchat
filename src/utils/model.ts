@@ -3,6 +3,7 @@ const gpt35 = {
   temperature: 0,
   frequency_penalty: 0.0,
   presence_penalty: 0.0,
+  max_token: 4000,
 };
 
 const gpt4 = {
@@ -10,6 +11,7 @@ const gpt4 = {
   temperature: 0,
   frequency_penalty: 0.0,
   presence_penalty: 0.0,
+  max_token: 8000,
 };
 
 export const models = [gpt35, gpt4];

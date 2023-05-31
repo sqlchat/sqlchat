@@ -14,7 +14,7 @@ import {
   useUserStore,
 } from "@/store";
 import { Conversation, CreatorRole, Message } from "@/types";
-import { countTextTokens, generateUUID, hasFeature } from "@/utils";
+import { countTextTokens, generateUUID, getModel, hasFeature } from "@/utils";
 import getEventEmitter from "@/utils/event-emitter";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
@@ -22,10 +22,6 @@ import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
-
-// The maximum number of tokens that can be sent to the OpenAI API.
-// reference: https://platform.openai.com/docs/api-reference/completions/create#completions/create-max_tokens
-const MAX_TOKENS = 4000;
 
 const ConversationView = () => {
   const { data: session } = useSession();
@@ -135,6 +131,7 @@ const ConversationView = () => {
     const messageList = messageStore.getState().messageList.filter((message: Message) => message.conversationId === currentConversation.id);
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
     let dbPrompt = promptGenerator();
+    const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
     // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
     // 1. Assistant specific prompt with database schema if applicable.
     // 2. A list of previous exchanges.
@@ -166,7 +163,7 @@ const ConversationView = () => {
         }
         if (tableList) {
           for (const table of tableList) {
-            if (tokens < MAX_TOKENS / 2) {
+            if (tokens < maxToken / 2) {
               tokens += countTextTokens(table);
               schema += table;
             }
@@ -185,7 +182,7 @@ const ConversationView = () => {
     for (let i = messageList.length - 1; i >= 0; i--) {
       const message = messageList[i];
       if (message.status === "DONE") {
-        if (tokens < MAX_TOKENS) {
+        if (tokens < maxToken) {
           tokens += countTextTokens(message.content);
           formatedMessageList.unshift({
             role: message.creatorRole,
