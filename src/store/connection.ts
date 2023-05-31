@@ -17,8 +17,8 @@ const samplePGConnection: Connection = {
   engineType: Engine.PostgreSQL,
   host: "ep-throbbing-thunder-042250.us-west-2.aws.neon.tech",
   port: "5432",
-  username: "sqlchat_readonly",
-  password: "U5rI8tJMiKWp",
+  username: "sqlchat",
+  password: "h8yik1pvTQIs",
   database: "sample-employee",
 };
 
