@@ -71,7 +71,7 @@ const ConnectionSidebar = () => {
   useEffect(() => {
     if (currentConnectionCtx?.connection) {
       setIsRequestingDatabase(true);
-      connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection, true).finally(() => {
+      connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection).finally(() => {
         setIsRequestingDatabase(false);
         const database = databaseList.find(
           (database) => database.name === useConnectionStore.getState().currentConnectionCtx?.database?.name
@@ -115,7 +115,7 @@ const ConnectionSidebar = () => {
       return;
     }
 
-    const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection, true);
+    const databaseList = await connectionStore.getOrFetchDatabaseList(currentConnectionCtx.connection);
     const database = databaseList.find((database) => database.name === databaseName);
     connectionStore.setCurrentConnectionCtx({
       connection: currentConnectionCtx.connection,
