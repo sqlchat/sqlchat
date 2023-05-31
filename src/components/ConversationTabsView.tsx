@@ -20,7 +20,7 @@ const ConversationTab = (props: ConversationTabProps) => {
 
   return (
     <div
-      className={`shrink-0 flex flex-row justify-center items-center cursor-pointer text-sm border px-2 py-1 rounded-md text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-700 dark:border-zinc-700 ${
+      className={`shrink-0 flex flex-row justify-center items-center cursor-pointer text-sm border pl-4 pr-2 py-1 rounded-sm text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-700 dark:border-zinc-700 ${
         selected && "!bg-indigo-600 !text-white !border-transparent shadow"
       }`}
       onClick={() => onClick(conversation)}
@@ -28,7 +28,7 @@ const ConversationTab = (props: ConversationTabProps) => {
       <span>{conversation.title}</span>
       <Dropdown
         tigger={
-          <button className="w-4 h-auto shrink-0 ml-0.5 flex justify-center items-center text-gray-300 hover:opacity-80">
+          <button className="w-4 h-auto shrink-0 ml-1 flex justify-center items-center text-gray-300 hover:opacity-80">
             <Icon.FiMoreVertical className="w-full h-auto" />
           </button>
         }
@@ -112,7 +112,7 @@ const ConversationTabsView = () => {
         </div>
         <div className={`shrink-0 my-2 ${conversationList.length > 0 && "ml-2"}`}>
           <button
-            className="border px-2 py-1.5 text-sm rounded-md flex flex-row justify-center items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-700 dark:border-zinc-700"
+            className="border px-2 py-1.5 text-sm rounded-sm flex flex-row justify-center items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-700 dark:border-zinc-700"
             onClick={handleCreateConversation}
           >
             <Icon.AiOutlinePlus className="w-4 h-auto" />

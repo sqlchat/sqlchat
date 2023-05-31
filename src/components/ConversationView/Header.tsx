@@ -60,7 +60,7 @@ const Header = (props: Props) => {
           </div>
         </div>
 
-        {hasFeature("debug") && <ConversationTabsView />}
+        <ConversationTabsView />
       </div>
 
       {hasFeature("debug") && showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
