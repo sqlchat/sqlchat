@@ -1,9 +1,8 @@
 import { Id } from ".";
-
 export interface Database {
   connectionId: Id;
   name: string;
-  tableList: Table[];
+  schemaList: Schema[];
 }
 
 export interface Table {
@@ -11,4 +10,8 @@ export interface Table {
   // structure is a string of the table structure.
   // It's mainly used for providing a chat context for the assistant.
   structure: string;
+}
+export interface Schema {
+  name: string;
+  tables: Table[];
 }

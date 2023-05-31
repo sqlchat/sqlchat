@@ -2,7 +2,7 @@ import axios from "axios";
 import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { Connection, Database, Engine, ResponseObject, Table } from "@/types";
+import { Connection, Database, Engine, ResponseObject, Schema } from "@/types";
 import { generateUUID } from "@/utils";
 
 interface ConnectionContext {
@@ -28,7 +28,7 @@ interface ConnectionState {
   createConnection: (connection: Connection) => Connection;
   setCurrentConnectionCtx: (connectionCtx: ConnectionContext | undefined) => void;
   getOrFetchDatabaseList: (connection: Connection, skipCache?: boolean) => Promise<Database[]>;
-  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Table[]>;
+  getOrFetchDatabaseSchema: (database: Database, skipCache?: boolean) => Promise<Schema[]>;
   getConnectionById: (connectionId: string) => Connection | undefined;
   updateConnection: (connectionId: string, connection: Partial<Connection>) => void;
   clearConnection: (filter: (connection: Connection) => boolean) => void;
@@ -67,12 +67,13 @@ export const useConnectionStore = create<ConnectionState>()(
         const { data } = await axios.post<string[]>("/api/connection/db", {
           connection,
         });
+
         const fetchedDatabaseList = data.map(
           (dbName) =>
             ({
               connectionId: connection.id,
               name: dbName,
-              tableList: [],
+              schemaList: [],
             } as Database)
         );
         const databaseList = uniqBy(
@@ -90,8 +91,8 @@ export const useConnectionStore = create<ConnectionState>()(
 
         if (!skipCache) {
           const db = state.databaseList.find((db) => db.connectionId === database.connectionId && db.name === database.name);
-          if (db !== undefined && Array.isArray(db.tableList) && db.tableList.length !== 0) {
-            return db.tableList;
+          if (db !== undefined && Array.isArray(db.schemaList) && db.schemaList.length !== 0) {
+            return db.schemaList;
           }
         }
 
@@ -100,19 +101,20 @@ export const useConnectionStore = create<ConnectionState>()(
           return [];
         }
 
-        const { data: result } = await axios.post<ResponseObject<Table[]>>("/api/connection/db_schema", {
+        const { data: result } = await axios.post<ResponseObject<Schema[]>>("/api/connection/db_schema", {
           connection,
           db: database.name,
         });
+
         if (result.message) {
           throw result.message;
         }
 
-        const fetchedTableList = result.data;
+        const fetchedTableList: Schema[] = result.data;
         set((state) => ({
           ...state,
           databaseList: state.databaseList.map((item) =>
-            item.connectionId === database.connectionId && item.name === database.name ? { ...item, tableList: fetchedTableList } : item
+            item.connectionId === database.connectionId && item.name === database.name ? { ...item, schemaList: fetchedTableList } : item
           ),
         }));
 
@@ -136,6 +138,16 @@ export const useConnectionStore = create<ConnectionState>()(
     }),
     {
       name: "connection-storage",
+      version: 1,
+      migrate: (persistedState: any, version: number) => {
+        let state = persistedState as ConnectionState;
+        if (version === 0) {
+          console.info(`migrate from ${version} to 1`);
+          // to clear old data. it will make refetch new schema List
+          state.databaseList = [];
+        }
+        return state;
+      },
     }
   )
 );

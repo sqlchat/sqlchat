@@ -150,17 +150,17 @@ const ConversationView = () => {
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
-        const tables = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
+        const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
         // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
-
         const tableList: string[] = [];
+        const selectedSchema = schemaList.find((schema) => schema.name == (currentConversation.selectedSchemaName || ""));
         if (currentConversation.selectedTablesName) {
           currentConversation.selectedTablesName.forEach((tableName: string) => {
-            const table = tables.find((table) => table.name === tableName);
+            const table = selectedSchema?.tables.find((table) => table.name == tableName);
             tableList.push(table!.structure);
           });
         } else {
-          for (const table of tables) {
+          for (const table of selectedSchema?.tables || []) {
             tableList.push(table!.structure);
           }
         }

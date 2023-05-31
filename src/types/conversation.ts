@@ -5,6 +5,7 @@ export interface Conversation {
   connectionId?: Id;
   databaseName?: string;
   selectedTablesName?: string[];
+  selectedSchemaName?: string;
   assistantId: Id;
   title: string;
   createdAt: Timestamp;

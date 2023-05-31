@@ -1,5 +1,5 @@
 import { Client, ClientConfig } from "pg";
-import { Connection, ExecutionResult } from "@/types";
+import { Connection, ExecutionResult, Table, Schema } from "@/types";
 import { Connector } from "..";
 
 const systemSchemas =
@@ -92,86 +92,51 @@ const getDatabases = async (connection: Connection): Promise<string[]> => {
   return databaseList;
 };
 
-const getTables = async (connection: Connection, databaseName: string): Promise<string[]> => {
+const getTableSchema = async (connection: Connection, databaseName: string): Promise<Schema[]> => {
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
     `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
     [databaseName]
   );
-  await client.end();
-  const tableList = [];
+
+  const schemaList: Schema[] = [];
   for (const row of rows) {
     if (row["table_name"]) {
-      if (row["table_schema"] !== "public") {
-        tableList.push(`${row["table_schema"]}.${row["table_name"]}`);
-        continue;
+      const schema = schemaList.find((schema) => schema.name === row["table_schema"]);
+      if (schema) {
+        schema.tables.push({ name: row["table_name"] as string, structure: "" } as Table);
+      } else {
+        schemaList.push({
+          name: row["table_schema"],
+          tables: [{ name: row["table_name"], structure: "" } as Table],
+        });
       }
-      tableList.push(row["table_name"]);
     }
   }
-  return tableList;
-};
 
-const getTableStructure = async (
-  connection: Connection,
-  databaseName: string,
-  tableName: string,
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  connection.database = databaseName;
-  const client = await newPostgresClient(connection);
-  const { rows } = await client.query(
-    `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
-    [tableName]
-  );
-  await client.end();
-  const columnList = [];
-  // TODO(steven): transform it to standard schema string.
-  for (const row of rows) {
-    columnList.push(
-      `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
-    );
-  }
-  structureFetched(
-    tableName,
-    `CREATE TABLE \`${tableName}\` (
-    ${columnList.join(",\n")}
-  );`
-  );
-};
-
-const getTableStructureBatch = async (
-  connection: Connection,
-  databaseName: string,
-  tableNameList: string[],
-  structureFetched: (tableName: string, structure: string) => void
-): Promise<void> => {
-  connection.database = databaseName;
-  const client = await newPostgresClient(connection);
-  await Promise.all(
-    tableNameList.map(async (tableName) => {
-      const { rows } = await client.query(
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1;`,
-        [tableName]
+  for (const schema of schemaList) {
+    for (const table of schema.tables) {
+      const { rows: result } = await client.query(
+        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1 AND table_schema=$2;`,
+        [table.name, schema.name]
       );
       const columnList = [];
       // TODO(steven): transform it to standard schema string.
-      for (const row of rows) {
+      for (const row of result) {
         columnList.push(
           `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
         );
       }
-      structureFetched(
-        tableName,
-        `CREATE TABLE \`${tableName}\` (
+      table.structure = `CREATE TABLE \`${table.name}\` (
         ${columnList.join(",\n")}
-      );`
-      );
-    })
-  ).finally(async () => {
-    await client.end();
-  });
+      );`;
+    }
+  }
+
+  await client.end();
+  return schemaList;
+  return [];
 };
 
 const newConnector = (connection: Connection): Connector => {
@@ -179,14 +144,7 @@ const newConnector = (connection: Connection): Connector => {
     testConnection: () => testConnection(connection),
     execute: (databaseName: string, statement: string) => execute(connection, databaseName, statement),
     getDatabases: () => getDatabases(connection),
-    getTables: (databaseName: string) => getTables(connection, databaseName),
-    getTableStructure: (databaseName: string, tableName: string, structureFetched: (tableName: string, structure: string) => void) =>
-      getTableStructure(connection, databaseName, tableName, structureFetched),
-    getTableStructureBatch: (
-      databaseName: string,
-      tableNameList: string[],
-      structureFetched: (tableName: string, structure: string) => void
-    ) => getTableStructureBatch(connection, databaseName, tableNameList, structureFetched),
+    getTableSchema: (databaseName: string) => getTableSchema(connection, databaseName),
   };
 };
 
