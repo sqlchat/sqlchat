@@ -41,6 +41,12 @@ const ConnectionSidebar = () => {
   }, [currentConnectionCtx?.connection]);
 
   useEffect(() => {
+    updateHasSchemaProperty(
+      currentConnectionCtx?.connection.engineType === Engine.PostgreSQL || currentConnectionCtx?.connection.engineType === Engine.MSSQL
+    );
+  }, [currentConnectionCtx?.connection]);
+
+  useEffect(() => {
     const handleWindowResize = () => {
       if (window.innerWidth < ResponsiveWidth.sm) {
         layoutStore.toggleSidebar(false);
@@ -151,7 +157,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleSchemaNameSelect = async (schemaName: string) => {
-    // to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
+    // need to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
     conversationStore.updateSelectedTablesName([]);
     conversationStore.updateSelectedSchemaName(schemaName);
   };

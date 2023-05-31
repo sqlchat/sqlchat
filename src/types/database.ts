@@ -17,3 +17,7 @@ export interface Schema {
   name: string;
   tables: Table[];
 }
+export interface Schema {
+  name: string;
+  tables: Table[];
+}
