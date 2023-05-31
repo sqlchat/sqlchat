@@ -3,7 +3,8 @@ import { uniqBy } from "lodash-es";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, ResponseObject, Schema } from "@/types";
-import { generateUUID } from "@/utils";
+import { countTextTokens, generateUUID } from "@/utils";
+import { count } from "console";
 
 interface ConnectionContext {
   connection: Connection;
@@ -111,6 +112,11 @@ export const useConnectionStore = create<ConnectionState>()(
         }
 
         const fetchedTableList: Schema[] = result.data;
+        fetchedTableList.forEach((schema) => {
+          schema.tables.forEach((table) => {
+            table.token = countTextTokens(table.structure);
+          });
+        });
         set((state) => ({
           ...state,
           databaseList: state.databaseList.map((item) =>

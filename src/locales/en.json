@@ -32,6 +32,7 @@
     "select-table": "Select your table",
     "select-schema": "Select your Schema",
     "all-tables": "All Tables",
+    "total-token": "Total Tokens",
     "database-type": "Database type",
     "title": "Title",
     "host": "Host",

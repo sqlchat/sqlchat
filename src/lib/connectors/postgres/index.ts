@@ -136,7 +136,6 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
 
   await client.end();
   return schemaList;
-  return [];
 };
 
 const newConnector = (connection: Connection): Connector => {
