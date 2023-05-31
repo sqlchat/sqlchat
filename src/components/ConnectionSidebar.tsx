@@ -69,6 +69,7 @@ const ConnectionSidebar = () => {
     // update total token
     const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
       const table = tableList.find((table) => table.name === tableName);
+      // because old cache didn't have token, So the value may is undefined.
       return totalToken + (table?.token || countTextTokens(table?.structure || ""));
     }, 0);
     setTotalToken(totalToken);

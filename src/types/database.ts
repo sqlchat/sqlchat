@@ -11,7 +11,6 @@ export interface Table {
   // It's mainly used for providing a chat context for the assistant.
   structure: string;
   token?: number;
-  // because old cache didn't have token, So the value may is undefined.
 }
 export interface Schema {
   name: string;

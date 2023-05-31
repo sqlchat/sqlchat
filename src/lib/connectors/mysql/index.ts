@@ -14,7 +14,6 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
     database: connection.database,
   };
   if (connection.ssl) {
-    // when option is ca-only and full
     connectionOptions.ssl = {
       ca: connection.ssl?.ca,
       cert: connection.ssl?.cert,
