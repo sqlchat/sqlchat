@@ -11,7 +11,7 @@ const Checkbox = (props: CheckboxProps & { children?: ReactNode }) => {
   const { value, label, onValueChange, children } = props;
   return (
     <form>
-      <div className="flex justify-between items-center px-3 py-2">
+      <div className="flex justify-between items-center px-1">
         <CheckboxUI.Root
           checked={value}
           onCheckedChange={(value: boolean) => onValueChange(label, value)}
@@ -22,7 +22,7 @@ const Checkbox = (props: CheckboxProps & { children?: ReactNode }) => {
             <CheckIcon />
           </CheckboxUI.Indicator>
         </CheckboxUI.Root>
-        <label className="Label grow m-auto px-3 py-2 cursor-pointer truncate text-black dark:text-gray-300" htmlFor={label}>
+        <label className="Label grow m-auto px-2 py-1 cursor-pointer truncate text-black dark:text-gray-300" htmlFor={label}>
           {label}
         </label>
         {children}

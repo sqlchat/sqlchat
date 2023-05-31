@@ -9,7 +9,7 @@ import Icon from "./Icon";
 import DarkModeSwitch from "./DarkModeSwitch";
 import ConnectionList from "./Sidebar/ConnectionList";
 import QuotaView from "./QuotaView";
-import { countTextTokens, hasFeature } from "../utils";
+import { countTextTokens, getModel, hasFeature } from "../utils";
 import SettingAvatarIcon from "./SettingAvatarIcon";
 import Checkbox from "./kit/Checkbox";
 
@@ -33,6 +33,7 @@ const ConnectionSidebar = () => {
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedSchemaName || "";
   const tableSchemaLoadingState = useLoading();
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
   const [totalToken, setTotalToken] = useState<number>(0);
   useEffect(() => {
     updateHasSchemaProperty(
@@ -193,7 +194,7 @@ const ConnectionSidebar = () => {
               {databaseList.length > 0 && (
                 <div className="w-full sticky top-0 z-1 my-4">
                   <Select
-                    className="w-full px-4 py-3 !text-base"
+                    className="w-full px-4 py-3 !text-base mb-2"
                     value={currentConnectionCtx?.database?.name}
                     itemList={databaseList.map((database) => {
                       return {
@@ -208,7 +209,7 @@ const ConnectionSidebar = () => {
               )}
               {hasSchemaProperty && schemaList.length > 0 && (
                 <Select
-                  className="w-full px-4 py-3 !text-base"
+                  className="w-full px-4 py-3 !text-base mb-2"
                   value={selectedSchemaName}
                   itemList={schemaList.map((schema) => {
                     return {
@@ -243,10 +244,15 @@ const ConnectionSidebar = () => {
                 ))}
             </div>
 
-            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700  backdrop-blur bg-opacity-60 pb-4 py-2">
-              <div className="text-black dark:text-gray-300">
-                {t("connection.total-token")} {totalToken}
-              </div>
+            <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700 backdrop-blur bg-opacity-60 pb-4 py-2">
+              {currentConnectionCtx && (
+                <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 mb-2">
+                  <div>{t("connection.total-token")}</div>
+                  <div>
+                    {totalToken}/{maxToken}
+                  </div>
+                </div>
+              )}
               {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
                 <div className="mb-4">
                   <QuotaView />
