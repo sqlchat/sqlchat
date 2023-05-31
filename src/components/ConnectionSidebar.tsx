@@ -236,7 +236,7 @@ const ConnectionSidebar = () => {
                           label={table.name}
                           onValueChange={handleTableCheckboxChange}
                         >
-                          <div className="text-black dark:text-gray-300">{table.token || countTextTokens(table.structure)}</div>
+                          <div className="text-gray-700 text-sm dark:text-gray-300">{table.token || countTextTokens(table.structure)}</div>
                         </Checkbox>
                       </div>
                     );
