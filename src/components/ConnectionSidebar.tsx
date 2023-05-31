@@ -192,9 +192,9 @@ const ConnectionSidebar = () => {
                 </div>
               )}
               {databaseList.length > 0 && (
-                <div className="w-full sticky top-0 z-1 my-4">
+                <div className="w-full sticky top-0 z-1 mt-4">
                   <Select
-                    className="w-full px-4 py-3 !text-base mb-2"
+                    className="w-full px-4 py-3 !text-base"
                     value={currentConnectionCtx?.database?.name}
                     itemList={databaseList.map((database) => {
                       return {
@@ -209,7 +209,7 @@ const ConnectionSidebar = () => {
               )}
               {hasSchemaProperty && schemaList.length > 0 && (
                 <Select
-                  className="w-full px-4 py-3 !text-base mb-2"
+                  className="w-full px-4 py-3 !text-base mt-2"
                   value={selectedSchemaName}
                   itemList={schemaList.map((schema) => {
                     return {
@@ -221,9 +221,19 @@ const ConnectionSidebar = () => {
                   placeholder={t("connection.select-schema") || ""}
                 />
               )}
+
+              {currentConnectionCtx && !tableSchemaLoadingState.isLoading && (
+                <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 mt-3 mb-2 px-1">
+                  <div>{t("connection.total-token")}</div>
+                  <div>
+                    {totalToken}/{maxToken}
+                  </div>
+                </div>
+              )}
+
               {currentConnectionCtx &&
                 (tableSchemaLoadingState.isLoading ? (
-                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 z-1 mb-4 mt-2 rounded-lg text-sm text-gray-600 dark:text-gray-400">
+                  <div className="w-full h-12 flex flex-row justify-start items-center px-4 sticky top-0 z-1 mb-4 rounded-lg text-sm text-gray-600 dark:text-gray-400">
                     <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" /> {t("common.loading")}
                   </div>
                 ) : (
@@ -245,14 +255,6 @@ const ConnectionSidebar = () => {
             </div>
 
             <div className="sticky bottom-0 w-full flex flex-col justify-center bg-gray-100 dark:bg-zinc-700 backdrop-blur bg-opacity-60 pb-4 py-2">
-              {currentConnectionCtx && (
-                <div className="flex justify-between text-sm text-gray-700 dark:text-gray-300 mb-2">
-                  <div>{t("connection.total-token")}</div>
-                  <div>
-                    {totalToken}/{maxToken}
-                  </div>
-                </div>
-              )}
               {!settingStore.setting.openAIApiConfig?.key && hasFeature("quota") && (
                 <div className="mb-4">
                   <QuotaView />
