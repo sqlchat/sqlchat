@@ -15,10 +15,10 @@ const samplePGConnection: Connection = {
   id: "sample-pg",
   title: "Sample PostgreSQL",
   engineType: Engine.PostgreSQL,
-  host: "ep-throbbing-thunder-042250.us-west-2.aws.neon.tech",
+  host: "ep-throbbing-thunder-042250-pooler.us-west-2.aws.neon.tech",
   port: "5432",
-  username: "sqlchat",
-  password: "h8yik1pvTQIs",
+  username: "sqlchat_readonly",
+  password: "U5rI8tJMiKWp",
   database: "sample-employee",
 };
 
