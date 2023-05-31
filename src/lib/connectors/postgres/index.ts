@@ -27,7 +27,6 @@ const newPostgresClient = async (connection: Connection) => {
       rejectUnauthorized: false,
     };
   }
-  // when option is none. the `clientConfig.ssl` should be undefined. ref: https://github.com/sqlchat/sqlchat/issues/108
 
   let client = new Client(clientConfig);
 
