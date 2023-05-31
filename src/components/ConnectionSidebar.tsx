@@ -142,7 +142,7 @@ const ConnectionSidebar = () => {
     }
   };
 
-  const handleTableCheck = async (tableName: string, value: boolean) => {
+  const handleTableCheckboxChange = async (tableName: string, value: boolean) => {
     if (value) {
       conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
     } else {
@@ -151,7 +151,7 @@ const ConnectionSidebar = () => {
   };
 
   const handleSchemaNameSelect = async (schemaName: string) => {
-    // need to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
+    // to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
     conversationStore.updateSelectedTablesName([]);
     conversationStore.updateSelectedSchemaName(schemaName);
   };
@@ -223,7 +223,11 @@ const ConnectionSidebar = () => {
                   tableList.map((table) => {
                     return (
                       <div key={table.name}>
-                        <Checkbox value={selectedTablesName.includes(table.name)} label={table.name} onValueChange={handleTableCheck}>
+                        <Checkbox
+                          value={selectedTablesName.includes(table.name)}
+                          label={table.name}
+                          onValueChange={handleTableCheckboxChange}
+                        >
                           <div className="text-black dark:text-gray-300">{table.token || countTextTokens(table.structure)}</div>
                         </Checkbox>
                       </div>
