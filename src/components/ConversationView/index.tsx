@@ -22,6 +22,8 @@ import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
+import SchemaDrawer from "../SchemaDrawer";
+import Icon from "../Icon";
 
 const ConversationView = () => {
   const { data: session } = useSession();
@@ -39,6 +41,7 @@ const ConversationView = () => {
     ? messageStore.messageList.filter((message: Message) => message.conversationId === currentConversation.id)
     : [];
   const lastMessage = last(messageList);
+  const [showSchemaDrawer, setShowSchemaDrawer] = useState<boolean>(false);
 
   useEffect(() => {
     messageStore.messageList.map((message: Message) => {
@@ -342,6 +345,14 @@ const ConversationView = () => {
       <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
         <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
+        <div className="mr-2 relative flex flex-row justify-end items-center">
+          {hasFeature("debug") && (
+            <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
+              <Icon.FiSettings className="w-4 h-auto" onClick={() => setShowSchemaDrawer(true)} />
+            </button>
+          )}
+        </div>
+        {hasFeature("debug") && showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
       </div>
     </div>
   );
