@@ -68,16 +68,12 @@ const ConnectionSidebar = () => {
 
   useEffect(() => {
     // update total token
-    if (selectedTablesName.length !== 0) {
-      console.log("diid");
-
-      const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
-        const table = tableList.find((table) => table.name === tableName);
-        // because old cache didn't have token, So the value may is undefined.
-        return totalToken + (table?.token || countTextTokens(table?.structure || ""));
-      }, 0);
-      setTotalToken(totalToken);
-    }
+    const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
+      const table = tableList.find((table) => table.name === tableName);
+      // because old cache didn't have token, So the value may is undefined.
+      return totalToken + (table?.token || countTextTokens(table?.structure || ""));
+    }, 0);
+    setTotalToken(totalToken);
   }, [selectedTablesName, tableList]);
 
   useEffect(() => {
