@@ -116,7 +116,7 @@ const ConnectionSidebar = () => {
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
-  }, [selectedSchemaName, selectedTablesName, schemaList]);
+  }, [selectedSchemaName, schemaList]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
