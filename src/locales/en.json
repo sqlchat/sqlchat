@@ -98,7 +98,7 @@
       "self": "OpenAI API configuration",
       "model": "Model",
       "model-description": "Quota won't be consumed if you provide your own key below.",
-      "quota-per-ask": "{{count}} quata per ask",
+      "quota-per-ask": "{{count}} quota per ask",
       "provide-gpt4-key": "Require your own GPT-4 enabled API key",
       "key-description": "Bring your own key to waive quota requirement.",
       "endpoint-description": "Optional endpoint pointing to your own compatible server or gateway."
