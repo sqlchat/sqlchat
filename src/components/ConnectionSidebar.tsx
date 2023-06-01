@@ -111,7 +111,7 @@ const ConnectionSidebar = () => {
     } else {
       conversationStore.updateSelectedSchemaName("");
     }
-  }, [connectionStore, hasSchemaProperty, currentConnectionCtx, schemaList]);
+  }, [connectionStore, hasSchemaProperty, currentConnectionCtx]);
 
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
