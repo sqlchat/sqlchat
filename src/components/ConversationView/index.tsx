@@ -77,7 +77,7 @@ const ConversationView = () => {
       return;
     }
     conversationViewRef.current.scrollTop = conversationViewRef.current.scrollHeight;
-  }, [lastMessage?.id]);
+  }, [currentConversation, lastMessage?.id]);
 
   useEffect(() => {
     if (!conversationViewRef.current) {
