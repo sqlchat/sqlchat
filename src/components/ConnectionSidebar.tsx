@@ -141,15 +141,11 @@ const ConnectionSidebar = () => {
   // Note: This function is used to solve issue #95
   //       https://github.com/sqlchat/sqlchat/issues/95
   const createConversation = () => {
-    console.log("wqe");
     if (!currentConversation) {
-      console.log("wqe");
       if (!currentConnectionCtx) {
         conversationStore.createConversation();
-        console.log("1");
       } else {
         conversationStore.createConversation(currentConnectionCtx.connection.id, currentConnectionCtx.database?.name);
-        console.log("2");
       }
     }
   };
