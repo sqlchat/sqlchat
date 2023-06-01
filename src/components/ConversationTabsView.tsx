@@ -21,7 +21,7 @@ const ConversationTab = (props: ConversationTabProps) => {
   return (
     <div
       className={`shrink-0 flex flex-row justify-center items-center cursor-pointer text-sm border pl-4 pr-2 py-1 rounded-sm text-gray-600 dark:text-gray-400 hover:text-gray-700 hover:bg-gray-50 dark:hover:bg-zinc-700 dark:border-zinc-700 ${
-        selected && "!bg-zinc-700 !text-white !border-transparent shadow"
+        selected && "!border-zinc-700 shadow"
       }`}
       onClick={() => onClick(conversation)}
     >
