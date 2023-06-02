@@ -91,7 +91,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    CREATE DATABASE sqlchat;
    ```
 
-   在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL`。
+   在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL` 和 `DATABASE_DIRECT_URL`。至于需要两个 URL 的原因[见此](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema).
 
 1. 生成 schema
 
