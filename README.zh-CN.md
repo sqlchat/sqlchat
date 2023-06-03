@@ -47,14 +47,19 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
-您可以设置以下环境变量来定制部署:
+### OpenAI 相关变量:
 
-- `DATABASE_URL`: Postgres 连接字符串以存储数据。例如：`postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`，[说明](https://www.prisma.io/docs/concepts/database-connectors/postgresql)。
+- `OPENAI_API_KEY`: OpenAI API Key，通过[这里](https://beta.openai.com/docs/developer-quickstart/api-keys)申请。
 - `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
 
-环境变量（可选）:
+### 数据库相关变量:
 
-- `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
+- `NEXT_PUBLIC_DATABASE_LESS`: 设置为 `true` 如果你想让 SQL Chat 运行时不需要数据库。这个会关闭如下功能:
+  1. 账户系统。
+  1. 用户额度控制。
+  1. 支付。
+  1. 使用数据收集。
+- `DATABASE_URL`: 只有在 NEXT_PUBLIC_DATABASE_LESS 为 true 时有效。Postgres 数据库连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
@@ -62,31 +67,33 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 ## 本地开发环境
 
+1. 安装依赖项
+
+   ```bash
+   pnpm i
+   ```
+
 1. 复制示例环境变量文件;
 
    ```bash
    cp .env.example .env
    ```
 
-2. 将您的 [API 密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点（可选）添加到新创建的 `.env` 文件;
+1. 将您的 [API 密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点（可选）添加到新创建的 `.env` 文件;
 
-3. 启动 Postgres 实例。对于 mac，您可以使用 [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) 或者 [Postgres.app](https://postgresapp.com/)。
+### 配置数据库
 
-4. 创建一个数据库:
+1. 启动 Postgres 实例。对于 mac，您可以使用 [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) 或者 [Postgres.app](https://postgresapp.com/)。
+
+1. 创建一个数据库:
 
    ```sql
    CREATE DATABASE sqlchat;
    ```
 
-   在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL`。
+   在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL` 和 `DATABASE_DIRECT_URL`。至于需要两个 URL 的原因[见此](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema).
 
-5. 安装依赖项
-
-   ```bash
-   pnpm i
-   ```
-
-6. 生成 schema
+1. 生成 schema
 
    1. 从模型生成 `prisma` 客户端
 

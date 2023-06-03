@@ -47,23 +47,21 @@ to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://v
 docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 ```
 
-
 ### OpenAI related variables:
 
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
 
-
 ### Database related variables:
 
-- `NEXT_PUBLIC_DATABASE_LESS`: Set to true to start SQL Chat in database-less mode. This will
-disable following features:
+- `NEXT_PUBLIC_DATABASE_LESS`: Set to `true` to start SQL Chat in database-less mode. This will
+  disable following features:
   1. Account system.
   1. Per-user quota enforcement.
   1. Payment.
   1. Usage data collection.
-- `DATABASE_URL`: Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
+- `DATABASE_URL`: Applicable if `NEXT_PUBLIC_DATABASE_LESS` is `false`. Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
@@ -85,7 +83,6 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
 
-
 ### Setup database
 
 **You can skip this section with `NEXT_PUBLIC_DATABASE_LESS=true` if you don't build features requiring database**
@@ -98,7 +95,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    CREATE DATABASE sqlchat;
    ```
 
-   In `.env` file, assign the connection string to environment variable `DATABASE_URL`.
+   In `.env` file, assign the connection string to environment variable `DATABASE_URL` and `DATABASE_DIRECT_URL`. [This article](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema) explains why we need two URLs.
 
 1. Generate schema
 

@@ -111,12 +111,12 @@ const ConnectionSidebar = () => {
     } else {
       conversationStore.updateSelectedSchemaName("");
     }
-  }, [connectionStore, hasSchemaProperty, currentConnectionCtx, schemaList]);
+  }, [connectionStore, hasSchemaProperty, currentConnectionCtx]);
 
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
-  }, [selectedSchemaName, selectedTablesName, schemaList]);
+  }, [selectedSchemaName, schemaList]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
