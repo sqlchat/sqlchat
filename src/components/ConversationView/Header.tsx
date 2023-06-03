@@ -51,19 +51,9 @@ const Header = (props: Props) => {
               />
             </a>
           </span>
-          <div className="mr-2 relative flex flex-row justify-end items-center">
-            {hasFeature("debug") && (
-              <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
-                <Icon.FiSettings className="w-4 h-auto" onClick={() => setShowSchemaDrawer(true)} />
-              </button>
-            )}
-          </div>
         </div>
-
         <ConversationTabsView />
       </div>
-
-      {hasFeature("debug") && showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
     </>
   );
 };

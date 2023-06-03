@@ -4,6 +4,7 @@ import Icon from "./Icon";
 import { getAssistantById, getPromptGeneratorOfAssistant, useConnectionStore, useConversationStore } from "@/store";
 import { countTextTokens, getModel } from "@/utils";
 import toast from "react-hot-toast";
+import { CodeBlock } from "./CodeBlock";
 
 interface Props {
   close: () => void;
@@ -14,29 +15,15 @@ const SchemaDrawer = (props: Props) => {
   const connectionStore = useConnectionStore();
 
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+  const [prompt, setPrompt] = useState<string>("");
 
-  useEffect(() => {
-    // TODO: initial state with current conversation.
-  }, []);
-  useEffect(async () => {
+  const getPrompt = async () => {
     if (!currentConversation) return;
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
     let dbPrompt = promptGenerator();
-    // const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
     const maxToken = 4000;
-    // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
-    // 1. Assistant specific prompt with database schema if applicable.
-    // 2. A list of previous exchanges.
-    // 3. The current user prompt.
-    //
-    // The priority to fill in the prompt is in the order of:
-    // 1. The current user prompt.
-    // 2. Assistant specific prompt with database schema if applicable.
-    // 3. A list of previous exchanges
-    // let tokens = countTextTokens(userPrompt);
     let tokens = 0;
 
-    // Augument with database schema if available
     if (connectionStore.currentConnectionCtx?.database) {
       let schema = "";
       try {
@@ -67,12 +54,17 @@ const SchemaDrawer = (props: Props) => {
       }
       dbPrompt = promptGenerator(schema);
       setPrompt(dbPrompt);
+      console.log(dbPrompt);
     }
+  };
+  useEffect(() => {
+    // TODO: initial state with current conversation.
+  }, []);
+  useEffect(() => {
+    getPrompt();
   }, []);
 
-  const [prompt, setPrompt] = useState<string>("");
   const close = () => props.close();
-
   return (
     <Drawer open={true} anchor="right" className="w-full" onClose={close}>
       <div className="dark:text-gray-300 w-screen sm:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
@@ -80,7 +72,9 @@ const SchemaDrawer = (props: Props) => {
           <Icon.IoMdClose className="w-full h-auto" />
         </button>
         <h3 className="font-bold text-2xl mt-4">Current conversation related schema</h3>
-        <div>{prompt}</div>
+        <div>
+          <CodeBlock language="SQL" value={prompt} messageId={currentConversation?.id || ""} />
+        </div>
       </div>
     </Drawer>
   );
