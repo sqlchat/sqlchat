@@ -12,6 +12,7 @@ import QuotaView from "./QuotaView";
 import { countTextTokens, getModel, hasFeature } from "../utils";
 import SettingAvatarIcon from "./SettingAvatarIcon";
 import Checkbox from "./kit/Checkbox";
+import { head } from "lodash-es";
 
 interface State {}
 
@@ -26,7 +27,6 @@ const ConnectionSidebar = () => {
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const [tableList, updateTableList] = useState<Table[]>([]);
   const [schemaList, updateSchemaList] = useState<Schema[]>([]);
-  const [hasSchemaProperty, updateHasSchemaProperty] = useState<boolean>(false);
   const selectedTablesName: string[] =
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
   const selectedSchemaName: string =
@@ -35,17 +35,8 @@ const ConnectionSidebar = () => {
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
   const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
   const [totalToken, setTotalToken] = useState<number>(0);
-  useEffect(() => {
-    updateHasSchemaProperty(
-      currentConnectionCtx?.connection.engineType === Engine.PostgreSQL || currentConnectionCtx?.connection.engineType === Engine.MSSQL
-    );
-  }, [currentConnectionCtx?.connection]);
-
-  useEffect(() => {
-    updateHasSchemaProperty(
-      currentConnectionCtx?.connection.engineType === Engine.PostgreSQL || currentConnectionCtx?.connection.engineType === Engine.MSSQL
-    );
-  }, [currentConnectionCtx?.connection]);
+  const hasSchemaProperty: boolean =
+    currentConnectionCtx?.connection.engineType === Engine.PostgreSQL || currentConnectionCtx?.connection.engineType === Engine.MSSQL;
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -106,17 +97,19 @@ const ConnectionSidebar = () => {
     updateSchemaList(schemaList);
     // need to create a conversation. otherwise updateSelectedSchemaName will failed.
     createConversation();
-    if (hasSchemaProperty) {
-      conversationStore.updateSelectedSchemaName(schemaList[0]?.name || "");
-    } else {
-      conversationStore.updateSelectedSchemaName("");
-    }
   }, [connectionStore, hasSchemaProperty, currentConnectionCtx]);
 
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
   }, [selectedSchemaName, schemaList]);
+
+  useEffect(() => {
+    console.log("当前权限是", hasSchemaProperty);
+    if (hasSchemaProperty && selectedSchemaName === "") {
+      conversationStore.updateSelectedSchemaName(head(schemaList)?.name || "");
+    }
+  }, [schemaList, currentConversation]);
 
   const handleDatabaseNameSelect = async (databaseName: string) => {
     if (!currentConnectionCtx?.connection) {
