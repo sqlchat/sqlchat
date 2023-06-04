@@ -14,7 +14,7 @@ import {
   useUserStore,
 } from "@/store";
 import { Conversation, CreatorRole, Message } from "@/types";
-import { countTextTokens, generateUUID, getModel, hasFeature } from "@/utils";
+import { countTextTokens, generateUUID, getModel, hasFeature, generateDbPromptFromContext } from "@/utils";
 import getEventEmitter from "@/utils/event-emitter";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
@@ -22,6 +22,8 @@ import MessageView from "./MessageView";
 import ClearConversationButton from "../ClearConversationButton";
 import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
+import SchemaDrawer from "../SchemaDrawer";
+import Icon from "../Icon";
 
 const ConversationView = () => {
   const { data: session } = useSession();
@@ -39,7 +41,8 @@ const ConversationView = () => {
     ? messageStore.messageList.filter((message: Message) => message.conversationId === currentConversation.id)
     : [];
   const lastMessage = last(messageList);
-
+  const [showSchemaDrawer, setShowSchemaDrawer] = useState<boolean>(false);
+  console.log(showHeaderShadow);
   useEffect(() => {
     messageStore.messageList.map((message: Message) => {
       if (message.status === "LOADING") {
@@ -145,34 +148,19 @@ const ConversationView = () => {
 
     // Augument with database schema if available
     if (connectionStore.currentConnectionCtx?.database) {
-      let schema = "";
+      const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
       try {
-        const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-        // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
-        const tableList: string[] = [];
-        const selectedSchema = schemaList.find((schema) => schema.name == (currentConversation.selectedSchemaName || ""));
-        if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach((tableName: string) => {
-            const table = selectedSchema?.tables.find((table) => table.name == tableName);
-            tableList.push(table!.structure);
-          });
-        } else {
-          for (const table of selectedSchema?.tables || []) {
-            tableList.push(table!.structure);
-          }
-        }
-        if (tableList) {
-          for (const table of tableList) {
-            if (tokens < maxToken / 2) {
-              tokens += countTextTokens(table);
-              schema += table;
-            }
-          }
-        }
+        dbPrompt = generateDbPromptFromContext(
+          promptGenerator,
+          schemaList,
+          currentConversation.selectedSchemaName || "",
+          currentConversation.selectedTablesName || [],
+          maxToken,
+          userPrompt
+        );
       } catch (error: any) {
         toast.error(error.message);
       }
-      dbPrompt = promptGenerator(schema);
     }
 
     // Sliding window to add messages with DONE status all the way back up until we reach the token
@@ -342,6 +330,14 @@ const ConversationView = () => {
       <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
         <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
+        <div className="mr-2 relative flex flex-row justify-end items-center" onClick={() => setShowSchemaDrawer(true)}>
+          {hasFeature("debug") && (
+            <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
+              <Icon.FiSettings className="w-4 h-auto" />
+            </button>
+          )}
+        </div>
+        {hasFeature("debug") && showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
       </div>
     </div>
   );
