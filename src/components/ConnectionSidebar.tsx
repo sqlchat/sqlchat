@@ -105,7 +105,6 @@ const ConnectionSidebar = () => {
   }, [selectedSchemaName, schemaList]);
 
   useEffect(() => {
-    console.log("当前权限是", hasSchemaProperty);
     if (hasSchemaProperty && selectedSchemaName === "") {
       conversationStore.updateSelectedSchemaName(head(schemaList)?.name || "");
     }
