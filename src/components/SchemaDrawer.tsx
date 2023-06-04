@@ -1,8 +1,8 @@
 import { Drawer } from "@mui/material";
 import { useEffect, useState } from "react";
 import Icon from "./Icon";
-import { getAssistantById, getPromptGeneratorOfAssistant, useConnectionStore, useConversationStore } from "@/store";
-import { countTextTokens, getModel } from "@/utils";
+import { getAssistantById, getPromptGeneratorOfAssistant, useConnectionStore, useConversationStore, useSettingStore } from "@/store";
+import { getModel, generateDbPromptFromContext } from "@/utils";
 import toast from "react-hot-toast";
 import { CodeBlock } from "./CodeBlock";
 
@@ -13,53 +13,39 @@ interface Props {
 const SchemaDrawer = (props: Props) => {
   const conversationStore = useConversationStore();
   const connectionStore = useConnectionStore();
+  const settingStore = useSettingStore();
 
   const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
   const [prompt, setPrompt] = useState<string>("");
 
   const getPrompt = async () => {
     if (!currentConversation) return;
+    if (!connectionStore.currentConnectionCtx?.database) return;
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
     let dbPrompt = promptGenerator();
-    const maxToken = 4000;
-    let tokens = 0;
+    const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
+    const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
 
     if (connectionStore.currentConnectionCtx?.database) {
-      let schema = "";
       try {
-        const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-        // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
-        const tableList: string[] = [];
-        const selectedSchema = schemaList.find((schema: any) => schema.name == (currentConversation.selectedSchemaName || ""));
-        if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach((tableName: string) => {
-            const table = selectedSchema?.tables.find((table: any) => table.name == tableName);
-            tableList.push(table!.structure);
-          });
-        } else {
-          for (const table of selectedSchema?.tables || []) {
-            tableList.push(table!.structure);
-          }
-        }
-        if (tableList) {
-          for (const table of tableList) {
-            if (tokens < maxToken / 2) {
-              tokens += countTextTokens(table);
-              schema += table;
-            }
-          }
-        }
+        dbPrompt = generateDbPromptFromContext(
+          promptGenerator,
+          schemaList,
+          currentConversation.selectedSchemaName || "",
+          currentConversation.selectedTablesName || [],
+          maxToken
+        );
+        setPrompt(dbPrompt);
       } catch (error: any) {
         toast.error(error.message);
       }
-      dbPrompt = promptGenerator(schema);
-      setPrompt(dbPrompt);
-      console.log(dbPrompt);
     }
   };
+
   useEffect(() => {
     // TODO: initial state with current conversation.
   }, []);
+
   useEffect(() => {
     getPrompt();
   }, []);

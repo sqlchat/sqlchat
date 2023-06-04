@@ -14,7 +14,7 @@ import {
   useUserStore,
 } from "@/store";
 import { Conversation, CreatorRole, Message } from "@/types";
-import { countTextTokens, generateUUID, getModel, hasFeature } from "@/utils";
+import { countTextTokens, generateUUID, getModel, hasFeature, generateDbPromptFromContext } from "@/utils";
 import getEventEmitter from "@/utils/event-emitter";
 import Header from "./Header";
 import EmptyView from "../EmptyView";
@@ -133,7 +133,6 @@ const ConversationView = () => {
     // Construct the system prompt
     const messageList = messageStore.getState().messageList.filter((message: Message) => message.conversationId === currentConversation.id);
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
-    let dbPrompt = promptGenerator();
     const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
     // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
     // 1. Assistant specific prompt with database schema if applicable.
@@ -145,37 +144,22 @@ const ConversationView = () => {
     // 2. Assistant specific prompt with database schema if applicable.
     // 3. A list of previous exchanges
     let tokens = countTextTokens(userPrompt);
-
+    let dbPrompt = promptGenerator();
     // Augument with database schema if available
     if (connectionStore.currentConnectionCtx?.database) {
-      let schema = "";
+      const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
       try {
-        const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-        // Empty table name(such as []) denote all table. [] and `undefined` both are false in `if`
-        const tableList: string[] = [];
-        const selectedSchema = schemaList.find((schema) => schema.name == (currentConversation.selectedSchemaName || ""));
-        if (currentConversation.selectedTablesName) {
-          currentConversation.selectedTablesName.forEach((tableName: string) => {
-            const table = selectedSchema?.tables.find((table) => table.name == tableName);
-            tableList.push(table!.structure);
-          });
-        } else {
-          for (const table of selectedSchema?.tables || []) {
-            tableList.push(table!.structure);
-          }
-        }
-        if (tableList) {
-          for (const table of tableList) {
-            if (tokens < maxToken / 2) {
-              tokens += countTextTokens(table);
-              schema += table;
-            }
-          }
-        }
+        dbPrompt = generateDbPromptFromContext(
+          promptGenerator,
+          schemaList,
+          currentConversation.selectedSchemaName || "",
+          currentConversation.selectedTablesName || [],
+          maxToken,
+          userPrompt
+        );
       } catch (error: any) {
         toast.error(error.message);
       }
-      dbPrompt = promptGenerator(schema);
     }
 
     // Sliding window to add messages with DONE status all the way back up until we reach the token
