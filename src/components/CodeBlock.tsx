@@ -12,10 +12,11 @@ interface Props {
   language: string;
   value: string;
   messageId: Id;
+  wrapLongLines?: boolean;
 }
 
 export const CodeBlock = (props: Props) => {
-  const { language, value, messageId } = props;
+  const { language, value, messageId, wrapLongLines } = props;
   const { t } = useTranslation();
   const connectionStore = useConnectionStore();
   const queryStore = useQueryStore();
@@ -70,7 +71,12 @@ export const CodeBlock = (props: Props) => {
           )}
         </div>
       </div>
-      <SyntaxHighlighter language={language.toLowerCase()} style={oneDark} customStyle={{ margin: 0 }}>
+      <SyntaxHighlighter
+        language={language.toLowerCase()}
+        wrapLongLines={wrapLongLines || false}
+        style={oneDark}
+        customStyle={{ margin: 0 }}
+      >
         {value}
       </SyntaxHighlighter>
     </div>

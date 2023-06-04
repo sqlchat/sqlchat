@@ -73,7 +73,7 @@ const SchemaDrawer = (props: Props) => {
         </button>
         <h3 className="font-bold text-2xl mt-4">Current conversation related schema</h3>
         <div>
-          <CodeBlock language="SQL" value={prompt} messageId={currentConversation?.id || ""} />
+          <CodeBlock language="Prompt" value={prompt} messageId={currentConversation?.id || ""} wrapLongLines={true} />
         </div>
       </div>
     </Drawer>

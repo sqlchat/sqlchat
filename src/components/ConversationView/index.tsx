@@ -42,7 +42,7 @@ const ConversationView = () => {
     : [];
   const lastMessage = last(messageList);
   const [showSchemaDrawer, setShowSchemaDrawer] = useState<boolean>(false);
-
+  console.log(showHeaderShadow);
   useEffect(() => {
     messageStore.messageList.map((message: Message) => {
       if (message.status === "LOADING") {
@@ -345,10 +345,10 @@ const ConversationView = () => {
       <div className="sticky bottom-0 flex flex-row justify-center items-center w-full max-w-4xl py-2 pb-4 px-4 sm:px-8 mx-auto bg-white dark:bg-zinc-800 bg-opacity-80 backdrop-blur">
         <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
-        <div className="mr-2 relative flex flex-row justify-end items-center">
+        <div className="mr-2 relative flex flex-row justify-end items-center" onClick={() => setShowSchemaDrawer(true)}>
           {hasFeature("debug") && (
             <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
-              <Icon.FiSettings className="w-4 h-auto" onClick={() => setShowSchemaDrawer(true)} />
+              <Icon.FiSettings className="w-4 h-auto" />
             </button>
           )}
         </div>
