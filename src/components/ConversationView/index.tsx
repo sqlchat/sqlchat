@@ -133,6 +133,7 @@ const ConversationView = () => {
     // Construct the system prompt
     const messageList = messageStore.getState().messageList.filter((message: Message) => message.conversationId === currentConversation.id);
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
+    let dbPrompt = promptGenerator();
     const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
     // Squeeze as much prompt as possible under the token limit, the prompt is in the order of:
     // 1. Assistant specific prompt with database schema if applicable.
@@ -144,7 +145,7 @@ const ConversationView = () => {
     // 2. Assistant specific prompt with database schema if applicable.
     // 3. A list of previous exchanges
     let tokens = countTextTokens(userPrompt);
-    let dbPrompt = promptGenerator();
+
     // Augument with database schema if available
     if (connectionStore.currentConnectionCtx?.database) {
       const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
