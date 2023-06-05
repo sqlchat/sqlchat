@@ -2,10 +2,10 @@ declare namespace NodeJS {
   export interface ProcessEnv {
     // Required. Node environment.
     NODE_ENV: string;
-    // Optional. Set to true to disable the database. Defaults to false.
+    // Optional. Set to "true" to disable the database. Need to use string as env is always string.
     // We can't prefix DATABASE_URL with NEXT_PUBLIC_ because it contains sensitive information that
     // should not be exposed to the client.
-    NEXT_PUBLIC_DATABASE_LESS: boolean;
+    NEXT_PUBLIC_DATABASE_LESS: string;
     // Required if NEXT_PUBLIC_DATABASE_LESS is false. Postgres database connection string to store
     // the data. e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat
     DATABASE_URL: string;
