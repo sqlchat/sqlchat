@@ -1,0 +1,126 @@
+{
+    "common": {
+        "clear": "",
+        "close": "",
+        "confirm": "",
+        "save": "",
+        "edit": "",
+        "loading": "",
+        "setting": "",
+        "copy": "",
+        "delete": "",
+        "execute": "",
+        "sign-in": "",
+        "sign-out": "",
+        "back": "",
+        "quota": "",
+        "date": "",
+        "description": "",
+        "amount": ""
+    },
+    "conversation": {
+        "new-chat": "",
+        "conversation-title": "",
+        "update": "",
+        "title": ""
+    },
+    "connection": {
+        "self": "",
+        "new": "",
+        "edit": "",
+        "select-database": "",
+        "select-table": "",
+        "select-schema": "",
+        "all-tables": "",
+        "total-token": "",
+        "database-type": "",
+        "title": "",
+        "host": "",
+        "port": "",
+        "database-name": "",
+        "username": "",
+        "password": "",
+        "empty-select": "",
+        "select-all": "",
+        "tidb-serverless-ssl-hint": ""
+    },
+    "assistant": {
+        "self": "",
+        "create-your-bot": ""
+    },
+    "execution": {
+        "title": "",
+        "message": {
+            "executing": "",
+            "no-connection": "",
+            "no-data": ""
+        }
+    },
+    "editor": {
+        "placeholder": ""
+    },
+    "setting": {
+        "self": "",
+        "general": "",
+        "plan": {
+            "guest": "",
+            "free": "",
+            "pro": "",
+            "pro-early-bird": "",
+            "signup-for-more": "",
+            "upgrade": "",
+            "renew": "",
+            "expired": "",
+            "n-question-per-month": "",
+            "1-month": "",
+            "n-months": "",
+            "purhcase-1-month": "",
+            "purhcase-n-months": ""
+        },
+        "subscription": {
+            "self": "",
+            "view-receipt": ""
+        },
+        "account": {
+            "self": ""
+        },
+        "basic": {
+            "self": "",
+            "language": ""
+        },
+        "theme": {
+            "self": "",
+            "system": "",
+            "light": "",
+            "dark": ""
+        },
+        "openai-api-configuration": {
+            "self": "",
+            "model": "",
+            "model-description": "",
+            "quota-per-ask": "",
+            "provide-gpt4-key": "",
+            "key-description": "",
+            "endpoint-description": ""
+        },
+        "data": {
+            "self": "",
+            "clear-all-data": ""
+        }
+    },
+    "social": {
+        "join-discord-channel": "",
+        "join-wechat-group": ""
+    },
+    "banner": {
+        "data-storage": "",
+        "non-select-sql-warning": "",
+        "product-hunt": "",
+        "quota-overflow": "",
+        "use-my-key": ""
+    },
+    "payment": {
+        "self": "",
+        "sign-in-to-buy": ""
+    }
+}
