@@ -40,9 +40,9 @@
         "select-all": "seleccionar todo",
         "total-token": "Tokens",
         "tidb-serverless-ssl-hint": "Se requiere SSL y ya está configurado",
-        "select-table": "Select your table",
-        "select-schema": "Select your Schema",
-        "all-tables": "All Tables"
+        "select-table": "Selecciona tu tabla",
+        "select-schema": "Selecciona tu Esquema",
+        "all-tables": "Todas las Tablas"
     },
     "assistant": {
         "self": "Bot",
@@ -113,7 +113,7 @@
         "join-wechat-group": "Unirse al grupo de WeChat"
     },
     "banner": {
-        "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador.",
+        "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador",
         "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
         "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀",
         "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
