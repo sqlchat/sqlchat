@@ -105,7 +105,7 @@ const ConnectionSidebar = () => {
   }, [selectedSchemaName, schemaList]);
 
   useEffect(() => {
-    if (hasSchemaProperty && selectedSchemaName === "") {
+    if (hasSchemaProperty && selectedSchemaName === "" && schemaList.length > 0) {
       conversationStore.updateSelectedSchemaName(head(schemaList)?.name || "");
     }
   }, [schemaList, currentConversation]);
