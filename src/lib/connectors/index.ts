@@ -15,6 +15,8 @@ export const newConnector = (connection: Connection): Connector => {
   switch (connection.engineType) {
     case Engine.MySQL:
       return mysql(connection);
+    case Engine.SingleStore:
+      return singlestore(connection);
     case Engine.PostgreSQL:
       return postgres(connection);
     case Engine.MSSQL:

@@ -2,6 +2,7 @@ import { Id } from ".";
 
 export enum Engine {
   MySQL = "MYSQL",
+  SingleStore = "SINGLESTORE",
   PostgreSQL = "POSTGRESQL",
   MSSQL = "MSSQL",
   TiDBServerless = "TiDBServerless",
