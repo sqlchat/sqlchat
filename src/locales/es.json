@@ -12,7 +12,7 @@
         "execute": "Ejecutar",
         "sign-in": "Iniciar sesión",
         "sign-out": "Desconectar",
-        "back": "Devolver",
+        "back": "Volver",
         "quota": "Cuota Mensual",
         "date": "Fecha",
         "description": "Descripción",
@@ -20,7 +20,7 @@
     },
     "conversation": {
         "new-chat": "Nuevo Chat",
-        "conversation-title": "Titulo de conversación",
+        "conversation-title": "Título de la conversación",
         "update": "Actualizar conversación",
         "title": "Titulo"
     },
@@ -36,10 +36,10 @@
         "database-name": "Nombre de Base de Datos",
         "username": "Usuario",
         "password": "Contraseña",
-        "empty-select": "selección clara",
+        "empty-select": "limpiar selección",
         "select-all": "seleccionar todo",
         "total-token": "Tokens",
-        "tidb-serverless-ssl-hint": "Se requiere SSL y ya está configurado",
+        "tidb-serverless-ssl-hint": "SSL es requerido y configurado",
         "select-table": "Selecciona tu tabla",
         "select-schema": "Selecciona tu Esquema",
         "all-tables": "Todas las Tablas"
@@ -63,7 +63,7 @@
         "self": "Configuración",
         "general": "General",
         "plan": {
-            "guest": "Invitada",
+            "guest": "Invitado",
             "free": "Gratis",
             "pro": "Pro",
             "pro-early-bird": "🐤 Early Bird - Pro 50% de descuento",
@@ -100,8 +100,8 @@
             "model-description": "La cuota no se consumirá si proporciona su propia clave a continuación.",
             "quota-per-ask": "{{count}} cuotas por pedido",
             "provide-gpt4-key": "Requerir su propia clave API habilitada para GPT-4",
-            "key-description": "Traiga su propia llave para renunciar al requisito de cuota.",
-            "endpoint-description": "Punto final opcional que apunta a su propio servidor o puerta de enlace compatible."
+            "key-description": "Indique su propia clave para retirarse del límite por cuota.",
+            "endpoint-description": "Endpoint opcional que apunta a su propio servidor o gateway compatible."
         },
         "data": {
             "self": "Datos",
