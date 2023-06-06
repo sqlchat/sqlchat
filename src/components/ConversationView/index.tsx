@@ -42,6 +42,7 @@ const ConversationView = () => {
     : [];
   const lastMessage = last(messageList);
   const [showSchemaDrawer, setShowSchemaDrawer] = useState<boolean>(false);
+  
   useEffect(() => {
     messageStore.messageList.map((message: Message) => {
       if (message.status === "LOADING") {
