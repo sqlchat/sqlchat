@@ -5,7 +5,7 @@
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY">
     <img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel">
   </a>
-  <p><a href="README.md">English</a> | 中文</p>
+  <p><a href="README.md">English</a> | 中文 | <a href="README.es-ES.md">Español</a></p>
 </div>
 
 ## 介绍
