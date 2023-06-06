@@ -11,6 +11,8 @@ const EngineIcon = (props: Props) => {
 
   if (engine === Engine.MySQL) {
     return <img src="/db-mysql.png" className={className} alt="mysql" />;
+  } else if (engine === Engine.SingleStore) {
+    return <img src="/db-singlestore.png" className={className} alt="singlestore" />;
   } else if (engine === Engine.PostgreSQL) {
     return <img src="/db-postgres.png" className={className} alt="postgres" />;
   } else if (engine === Engine.MSSQL) {

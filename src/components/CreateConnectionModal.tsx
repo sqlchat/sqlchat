@@ -45,6 +45,11 @@ const engines = [
     defaultPort: "3306",
   },
   {
+    type: Engine.SingleStore,
+    name: "SingleStore",
+    defaultPort: "3306",
+  },
+  {
     type: Engine.PostgreSQL,
     name: "PostgreSQL",
     defaultPort: "5432",

@@ -2,6 +2,7 @@ import { Connection, Engine, ExecutionResult, Schema } from "@/types";
 import mysql from "./mysql";
 import postgres from "./postgres";
 import mssql from "./mssql";
+import singlestore from "./singlestore";
 
 export interface Connector {
   testConnection: () => Promise<boolean>;
