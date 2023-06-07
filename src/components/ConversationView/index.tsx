@@ -334,14 +334,14 @@ const ConversationView = () => {
         <ClearConversationButton />
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
         <div className="mr-2 relative flex flex-row justify-end items-center" onClick={() => setShowSchemaDrawer(true)}>
-          {hasFeature("debug") && (
+          {
             <button className="flex flex-col items-center m-2 text-blue-600 hover:underline">
               <Icon.FiEye className="w-6 h-auto" />
               <span>{t("prompt.self")}</span>
             </button>
-          )}
+          }
         </div>
-        {hasFeature("debug") && showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
+        {showSchemaDrawer && <SchemaDrawer close={() => setShowSchemaDrawer(false)} />}
       </div>
     </div>
   );
