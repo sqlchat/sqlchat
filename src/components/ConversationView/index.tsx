@@ -24,9 +24,11 @@ import MessageTextarea from "./MessageTextarea";
 import DataStorageBanner from "../DataStorageBanner";
 import SchemaDrawer from "../SchemaDrawer";
 import Icon from "../Icon";
+import { useTranslation } from "react-i18next";
 
 const ConversationView = () => {
   const { data: session } = useSession();
+  const { t } = useTranslation();
   const settingStore = useSettingStore();
   const layoutStore = useLayoutStore();
   const connectionStore = useConnectionStore();
@@ -332,8 +334,9 @@ const ConversationView = () => {
         <MessageTextarea disabled={lastMessage?.status === "LOADING"} sendMessage={sendMessageToCurrentConversation} />
         <div className="mr-2 relative flex flex-row justify-end items-center" onClick={() => setShowSchemaDrawer(true)}>
           {hasFeature("debug") && (
-            <button className="p-2 rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700">
-              <Icon.FiSettings className="w-4 h-auto" />
+            <button className="flex flex-col items-center m-2 text-blue-600 hover:underline">
+              <Icon.FiEye className="w-6 h-auto" />
+              <span>{t("prompt.self")}</span>
             </button>
           )}
         </div>

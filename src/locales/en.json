@@ -44,6 +44,9 @@
     "select-all": "select all",
     "tidb-serverless-ssl-hint": "SSL is required and configured"
   },
+  "prompt": {
+    "self": "Prompt"
+  },
   "assistant": {
     "self": "Bot",
     "create-your-bot": "Can't find the bot you need? Create one"
