@@ -49,7 +49,7 @@ export const CodeBlock = (props: Props) => {
   return (
     <div className="w-full max-w-full relative font-sans text-[16px]">
       <div className="flex items-center justify-between py-2 px-4">
-        <span className="text-xs text-white font-mono">{language}</span>
+        <span className="text-xs text-black dark:text-gray-300 font-mono">{language}</span>
         <div className="flex items-center space-x-2">
           <Tooltip title={t("common.copy")} side="top">
             <button

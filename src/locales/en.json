@@ -45,7 +45,8 @@
     "tidb-serverless-ssl-hint": "SSL is required and configured"
   },
   "prompt": {
-    "self": "Prompt"
+    "self": "Prompt",
+    "current-conversation": "Current conversation prompt"
   },
   "assistant": {
     "self": "Bot",

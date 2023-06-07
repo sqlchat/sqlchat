@@ -45,7 +45,8 @@
     "tidb-serverless-ssl-hint": "必需SSL且已配置"
   },
   "prompt": {
-    "view": "提示词"
+    "view": "提示词",
+    "current-conversation": "当前会话的提示词"
   },
   "assistant": {
     "self": "机器人",

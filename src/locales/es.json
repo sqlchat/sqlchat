@@ -45,7 +45,8 @@
     "all-tables": "Todas las Tablas"
   },
   "prompt": {
-    "view": "Prompt"
+    "view": "Prompt",
+    "current-conversation": "Mensaje de conversación actual"
   },
   "assistant": {
     "self": "Bot",
