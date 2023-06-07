@@ -13,13 +13,12 @@ export const countTextTokens = (text: string) => {
 
 export function generateDbPromptFromContext(
   promptGenerator: (input: string | undefined) => string,
-  schemaList: any,
+  schemaList: Schema[],
   selectedSchemaName: string,
   selectedTablesName: string[],
   maxToken: number,
   userPrompt?: string
 ): string {
-  let schema = "";
   // userPrompt is the message that user want to send to bot. When to look prompt in drawer, userPrompt is undefined.
   let tokens = countTextTokens(userPrompt || "");
 
@@ -38,13 +37,15 @@ export function generateDbPromptFromContext(
       tableList.push(table!.structure);
     }
   }
+
+  let finalTableList = [];
   if (tableList) {
     for (const table of tableList) {
       if (tokens < maxToken / 2) {
-        tokens += countTextTokens(table);
-        schema += table;
+        tokens += countTextTokens(table + "\n\n");
+        finalTableList.push(table);
       }
     }
   }
-  return promptGenerator(schema);
+  return promptGenerator(finalTableList.join("\n\n"));
 }

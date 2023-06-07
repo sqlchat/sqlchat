@@ -92,9 +92,7 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
           `${row["COLUMN_NAME"]} ${row["DATA_TYPE"].toUpperCase()} ${String(row["IS_NULLABLE"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
         );
       }
-      table.structure = `CREATE TABLE [${table.name}] (
-        ${columnList.join(",\n")}
-      );`;
+      table.structure = `CREATE TABLE [${table.name}] (${columnList.join(",\n")});`;
     }
   }
   await pool.close();
