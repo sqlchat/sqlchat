@@ -154,6 +154,7 @@ const ConversationView = () => {
       try {
         dbPrompt = generateDbPromptFromContext(
           promptGenerator,
+          connectionStore.currentConnectionCtx.connection.engineType,
           schemaList,
           currentConversation.selectedSchemaName || "",
           currentConversation.selectedTablesName || [],

@@ -1,5 +1,5 @@
 import { encode } from "@nem035/gpt-3-encoder";
-import { Schema, Table } from "@/types";
+import { Engine, Schema, Table } from "@/types";
 
 // openAIApiKey is the API key for OpenAI API.
 export const openAIApiKey = process.env.OPENAI_API_KEY;
@@ -12,7 +12,8 @@ export const countTextTokens = (text: string) => {
 };
 
 export function generateDbPromptFromContext(
-  promptGenerator: (input: string | undefined) => string,
+  promptGenerator: (engine: Engine | undefined, schema: string | undefined) => string,
+  engine: Engine,
   schemaList: Schema[],
   selectedSchemaName: string,
   selectedTablesName: string[],
@@ -47,5 +48,5 @@ export function generateDbPromptFromContext(
       }
     }
   }
-  return promptGenerator(finalTableList.join("\n\n"));
+  return promptGenerator(engine, finalTableList.join("\n\n"));
 }

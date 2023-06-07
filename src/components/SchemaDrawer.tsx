@@ -28,6 +28,7 @@ const SchemaDrawer = (props: Props) => {
       const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
       dbPrompt = generateDbPromptFromContext(
         promptGenerator,
+        connectionStore.currentConnectionCtx.connection.engineType,
         schemaList,
         currentConversation.selectedSchemaName || "",
         currentConversation.selectedTablesName || [],
