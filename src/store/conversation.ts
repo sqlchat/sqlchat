@@ -3,12 +3,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Conversation, Id } from "@/types";
 import { generateUUID } from "@/utils";
-import { GeneralBotId, SQLChatBotId } from ".";
+import { SQLChatBotId } from ".";
 
 const getDefaultConversation = (): Conversation => {
   return {
     id: generateUUID(),
-    assistantId: GeneralBotId,
+    assistantId: SQLChatBotId,
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
@@ -89,11 +89,7 @@ export const useConversationStore = create<ConversationState>()(
         let state = persistedState as ConversationState;
         if (version === 0) {
           for (const conversation of state.conversationList) {
-            if (!conversation.connectionId) {
-              conversation.assistantId = "general-bot";
-            } else {
-              conversation.assistantId = "sql-chat-bot";
-            }
+            conversation.assistantId = SQLChatBotId;
           }
           state.currentConversationId = undefined;
         }
