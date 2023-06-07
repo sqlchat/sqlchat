@@ -22,26 +22,20 @@ const SchemaDrawer = (props: Props) => {
 
   const getPrompt = async () => {
     if (!currentConversation) return;
-    if (!connectionStore.currentConnectionCtx?.database) return;
     const promptGenerator = getPromptGeneratorOfAssistant(getAssistantById(currentConversation.assistantId)!);
     let dbPrompt = promptGenerator();
-    const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
-    const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
-
     if (connectionStore.currentConnectionCtx?.database) {
-      try {
-        dbPrompt = generateDbPromptFromContext(
-          promptGenerator,
-          schemaList,
-          currentConversation.selectedSchemaName || "",
-          currentConversation.selectedTablesName || [],
-          maxToken
-        );
-        setPrompt(dbPrompt);
-      } catch (error: any) {
-        toast.error(error.message);
-      }
+      const maxToken = getModel(settingStore.setting.openAIApiConfig?.model || "").max_token;
+      const schemaList = await connectionStore.getOrFetchDatabaseSchema(connectionStore.currentConnectionCtx?.database);
+      dbPrompt = generateDbPromptFromContext(
+        promptGenerator,
+        schemaList,
+        currentConversation.selectedSchemaName || "",
+        currentConversation.selectedTablesName || [],
+        maxToken
+      );
     }
+    setPrompt(dbPrompt);
   };
 
   useEffect(() => {
