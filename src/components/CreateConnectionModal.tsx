@@ -55,7 +55,7 @@ const engines = [
     defaultPort: "1433",
   },
   {
-    type: Engine.TiDBServerless,
+    type: Engine.TiDB,
     name: "TiDB Serverless",
     defaultPort: "4000",
   },
@@ -310,7 +310,7 @@ const CreateConnectionModal = (props: Props) => {
               onChange={(value) => setPartialConnection({ password: value })}
             />
           </div>
-          {connection.engineType === Engine.TiDBServerless ? (
+          {connection.engineType === Engine.TiDB ? (
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.tidb-serverless-ssl-hint")}</label>
             </div>

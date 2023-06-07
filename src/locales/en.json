@@ -42,7 +42,7 @@
     "password": "Password",
     "empty-select": "clear selection",
     "select-all": "select all",
-    "tidb-serverless-ssl-hint": "SSL is required and configured"
+    "tidb-serverless-ssl-hint": "SSL is enabled by default"
   },
   "prompt": {
     "self": "Prompt",

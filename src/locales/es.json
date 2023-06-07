@@ -39,7 +39,7 @@
     "empty-select": "limpiar selección",
     "select-all": "seleccionar todo",
     "total-token": "Tokens",
-    "tidb-serverless-ssl-hint": "SSL es requerido y configurado",
+    "tidb-serverless-ssl-hint": "SSL está habilitado de forma predeterminada",
     "select-table": "Selecciona tu tabla",
     "select-schema": "Selecciona tu Esquema",
     "all-tables": "Todas las Tablas"

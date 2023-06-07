@@ -15,7 +15,7 @@ const EngineIcon = (props: Props) => {
     return <img src="/db-postgres.png" className={className} alt="postgres" />;
   } else if (engine === Engine.MSSQL) {
     return <img src="/db-sqlserver.png" className={className} alt="sqlserver" />;
-  } else if (engine === Engine.TiDBServerless) {
+  } else if (engine === Engine.TiDB) {
     return <img src="/db-tidb.png" className={className} alt="tidb" />;
   } else {
     return <Icon.DiDatabase className={className} />;
