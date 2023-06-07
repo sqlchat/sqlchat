@@ -157,7 +157,7 @@ const ConversationView = () => {
           connectionStore.currentConnectionCtx.connection.engineType,
           schemaList,
           currentConversation.selectedSchemaName || "",
-          currentConversation.selectedTablesName || [],
+          currentConversation.selectedTableNameList || [],
           maxToken,
           userPrompt
         );

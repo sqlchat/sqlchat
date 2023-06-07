@@ -16,7 +16,7 @@ export function generateDbPromptFromContext(
   engine: Engine,
   schemaList: Schema[],
   selectedSchemaName: string,
-  selectedTablesName: string[],
+  selectedTableNameList: string[],
   maxToken: number,
   userPrompt?: string
 ): string {
@@ -28,8 +28,8 @@ export function generateDbPromptFromContext(
   // Because in have Token custom number in connectionSidebar. If [] denote all table. the Token will be inconsistent.
   const tableList: string[] = [];
   const selectedSchema = schemaList.find((schema: Schema) => schema.name == (selectedSchemaName || ""));
-  if (selectedTablesName) {
-    selectedTablesName.forEach((tableName: string) => {
+  if (selectedTableNameList) {
+    selectedTableNameList.forEach((tableName: string) => {
       const table = selectedSchema?.tables.find((table: Table) => table.name == tableName);
       tableList.push(table!.structure);
     });

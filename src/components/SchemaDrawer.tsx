@@ -31,7 +31,7 @@ const SchemaDrawer = (props: Props) => {
         connectionStore.currentConnectionCtx.connection.engineType,
         schemaList,
         currentConversation.selectedSchemaName || "",
-        currentConversation.selectedTablesName || [],
+        currentConversation.selectedTableNameList || [],
         maxToken
       );
     }

@@ -27,8 +27,8 @@ const ConnectionSidebar = () => {
   const databaseList = connectionStore.databaseList.filter((database) => database.connectionId === currentConnectionCtx?.connection.id);
   const [tableList, updateTableList] = useState<Table[]>([]);
   const [schemaList, updateSchemaList] = useState<Schema[]>([]);
-  const selectedTablesName: string[] =
-    conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTablesName || [];
+  const selectedTableNameList: string[] =
+    conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedTableNameList || [];
   const selectedSchemaName: string =
     conversationStore.getConversationById(conversationStore.currentConversationId)?.selectedSchemaName || "";
   const tableSchemaLoadingState = useLoading();
@@ -59,13 +59,13 @@ const ConnectionSidebar = () => {
 
   useEffect(() => {
     // update total token
-    const totalToken = selectedTablesName.reduce((totalToken, tableName) => {
+    const totalToken = selectedTableNameList.reduce((totalToken, tableName) => {
       const table = tableList.find((table) => table.name === tableName);
       // because old cache didn't have token, So the value may is undefined.
       return totalToken + (table?.token || countTextTokens(table?.structure || ""));
     }, 0);
     setTotalToken(totalToken);
-  }, [selectedTablesName, tableList]);
+  }, [selectedTableNameList, tableList]);
 
   useEffect(() => {
     if (currentConnectionCtx?.connection) {
@@ -144,14 +144,14 @@ const ConnectionSidebar = () => {
 
   const handleTableCheckboxChange = async (tableName: string, value: boolean) => {
     if (value) {
-      conversationStore.updateSelectedTablesName([...selectedTablesName, tableName]);
+      conversationStore.updateSelectedTablesName([...selectedTableNameList, tableName]);
     } else {
-      conversationStore.updateSelectedTablesName(selectedTablesName.filter((name) => name !== tableName));
+      conversationStore.updateSelectedTablesName(selectedTableNameList.filter((name) => name !== tableName));
     }
   };
 
   const handleSchemaNameSelect = async (schemaName: string) => {
-    // need to empty selectedTablesName when schemaName changed. because selectedTablesName may not exist in new schema.
+    // need to empty selectedTableNameList when schemaName changed. because selectedTableNameList may not exist in new schema.
     conversationStore.updateSelectedTablesName([]);
     conversationStore.updateSelectedSchemaName(schemaName);
   };
@@ -234,7 +234,7 @@ const ConnectionSidebar = () => {
                     return (
                       <div key={table.name}>
                         <Checkbox
-                          value={selectedTablesName.includes(table.name)}
+                          value={selectedTableNameList.includes(table.name)}
                           label={table.name}
                           onValueChange={handleTableCheckboxChange}
                         >

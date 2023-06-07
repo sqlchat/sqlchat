@@ -23,7 +23,7 @@ interface ConversationState {
   getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
-  updateSelectedTablesName: (selectedTablesName: string[]) => void;
+  updateSelectedTablesName: (selectedTableNameList: string[]) => void;
   updateSelectedSchemaName: (selectedSchemaName: string) => void;
 }
 
@@ -65,11 +65,11 @@ export const useConversationStore = create<ConversationState>()(
           conversationList: state.conversationList.filter(filter),
         }));
       },
-      updateSelectedTablesName: (selectedTablesName: string[]) => {
+      updateSelectedTablesName: (selectedTableNameList: string[]) => {
         const currentConversation = get().getConversationById(get().currentConversationId);
         if (currentConversation) {
           get().updateConversation(currentConversation.id, {
-            selectedTablesName,
+            selectedTableNameList,
           });
         }
       },
