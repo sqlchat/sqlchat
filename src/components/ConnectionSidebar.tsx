@@ -102,6 +102,20 @@ const ConnectionSidebar = () => {
   useEffect(() => {
     const tableList = schemaList.find((schema) => schema.name === selectedSchemaName)?.tables || [];
     updateTableList(tableList);
+
+    // By default, select as many tables up to the maximum token.
+    const defaultCheckedTableList = [];
+    if (selectedTableNameList.length === 0) {
+      let tokenCount = 0;
+      for (const table of tableList) {
+        tokenCount += countTextTokens(table?.structure || "");
+        if (tokenCount > maxToken) {
+          break;
+        }
+        defaultCheckedTableList.push(table.name);
+      }
+      conversationStore.updateSelectedTablesNameList(defaultCheckedTableList);
+    }
   }, [selectedSchemaName, schemaList]);
 
   useEffect(() => {
@@ -144,15 +158,15 @@ const ConnectionSidebar = () => {
 
   const handleTableCheckboxChange = async (tableName: string, value: boolean) => {
     if (value) {
-      conversationStore.updateSelectedTablesName([...selectedTableNameList, tableName]);
+      conversationStore.updateSelectedTablesNameList([...selectedTableNameList, tableName]);
     } else {
-      conversationStore.updateSelectedTablesName(selectedTableNameList.filter((name) => name !== tableName));
+      conversationStore.updateSelectedTablesNameList(selectedTableNameList.filter((name) => name !== tableName));
     }
   };
 
   const handleSchemaNameSelect = async (schemaName: string) => {
     // need to empty selectedTableNameList when schemaName changed. because selectedTableNameList may not exist in new schema.
-    conversationStore.updateSelectedTablesName([]);
+    conversationStore.updateSelectedTablesNameList([]);
     conversationStore.updateSelectedSchemaName(schemaName);
   };
 
