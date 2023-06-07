@@ -128,7 +128,7 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
           `${row["column_name"]} ${row["data_type"].toUpperCase()} ${String(row["is_nullable"]).toUpperCase() === "NO" ? "NOT NULL" : ""}`
         );
       }
-      table.structure = `CREATE TABLE \`${table.name}\` (${columnList.join(",\n")});`;
+      table.structure = `CREATE TABLE \`${table.name}\` (\n${columnList.join(",\n")}\n);`;
     }
   }
 
