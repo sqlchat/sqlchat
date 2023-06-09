@@ -169,7 +169,7 @@ const CreateConnectionModal = (props: Props) => {
     });
   };
 
-  const handleCreateConnection = async () => {
+  const handleUpsertConnection = async () => {
     if (isRequesting) {
       return;
     }
@@ -416,7 +416,7 @@ const CreateConnectionModal = (props: Props) => {
             <button className="btn btn-outline" onClick={close}>
               {t("common.close")}
             </button>
-            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
+            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleUpsertConnection}>
               {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
               {t("common.save")}
             </button>
