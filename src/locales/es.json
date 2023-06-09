@@ -28,6 +28,7 @@
     "self": "Conexión",
     "new": "Crear Conexión",
     "edit": "Editar Conexión",
+    "refresh-schema": "Actualizar Esquema",
     "select-database": "Selecciona tu base de datos",
     "database-type": "Tipo de Base de Datos",
     "title": "Nombre",
