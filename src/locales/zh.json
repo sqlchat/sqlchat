@@ -28,6 +28,7 @@
     "self": "连接",
     "new": "创建连接",
     "edit": "编辑连接",
+    "refresh-schema": "刷新 Schema",
     "select-database": "选择数据库",
     "select-table": "选择数据表",
     "select-schema": "选择 Schema",
