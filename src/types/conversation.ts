@@ -4,7 +4,7 @@ export interface Conversation {
   id: string;
   connectionId?: Id;
   databaseName?: string;
-  selectedTablesName?: string[];
+  selectedTableNameList?: string[];
   selectedSchemaName?: string;
   assistantId: Id;
   title: string;

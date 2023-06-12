@@ -5,7 +5,7 @@ export enum Engine {
   SingleStore = "SINGLESTORE",
   PostgreSQL = "POSTGRESQL",
   MSSQL = "MSSQL",
-  TiDBServerless = "TiDBServerless",
+  TiDB = "TiDB",
   Snowflake = "SNOWFLAKE",
   Hive = "HIVE",
 }

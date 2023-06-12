@@ -1,5 +1,5 @@
 import { encode } from "@nem035/gpt-3-encoder";
-import { Schema, Table } from "@/types";
+import { Engine, Schema, Table } from "@/types";
 
 // openAIApiKey is the API key for OpenAI API.
 export const openAIApiKey = process.env.OPENAI_API_KEY;
@@ -12,14 +12,14 @@ export const countTextTokens = (text: string) => {
 };
 
 export function generateDbPromptFromContext(
-  promptGenerator: (input: string | undefined) => string,
-  schemaList: any,
+  promptGenerator: (engine: Engine | undefined, schema: string | undefined) => string,
+  engine: Engine,
+  schemaList: Schema[],
   selectedSchemaName: string,
-  selectedTablesName: string[],
+  selectedTableNameList: string[],
   maxToken: number,
   userPrompt?: string
 ): string {
-  let schema = "";
   // userPrompt is the message that user want to send to bot. When to look prompt in drawer, userPrompt is undefined.
   let tokens = countTextTokens(userPrompt || "");
 
@@ -28,8 +28,8 @@ export function generateDbPromptFromContext(
   // Because in have Token custom number in connectionSidebar. If [] denote all table. the Token will be inconsistent.
   const tableList: string[] = [];
   const selectedSchema = schemaList.find((schema: Schema) => schema.name == (selectedSchemaName || ""));
-  if (selectedTablesName) {
-    selectedTablesName.forEach((tableName: string) => {
+  if (selectedTableNameList) {
+    selectedTableNameList.forEach((tableName: string) => {
       const table = selectedSchema?.tables.find((table: Table) => table.name == tableName);
       tableList.push(table!.structure);
     });
@@ -38,13 +38,15 @@ export function generateDbPromptFromContext(
       tableList.push(table!.structure);
     }
   }
+
+  let finalTableList = [];
   if (tableList) {
     for (const table of tableList) {
       if (tokens < maxToken / 2) {
-        tokens += countTextTokens(table);
-        schema += table;
+        tokens += countTextTokens(table + "\n\n");
+        finalTableList.push(table);
       }
     }
   }
-  return promptGenerator(schema);
+  return promptGenerator(engine, finalTableList.join("\n\n"));
 }

@@ -12,7 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   let connection = req.body.connection as Connection;
-  if (connection.engineType === Engine.TiDBServerless) {
+  if (connection.engineType === Engine.TiDB) {
     connection = changeTiDBConnectionToMySQL(connection);
   }
   const db = req.body.db as string;

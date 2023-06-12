@@ -60,7 +60,7 @@ const engines = [
     defaultPort: "1433",
   },
   {
-    type: Engine.TiDBServerless,
+    type: Engine.TiDB,
     name: "TiDB Serverless",
     defaultPort: "4000",
   },
@@ -174,7 +174,7 @@ const CreateConnectionModal = (props: Props) => {
     });
   };
 
-  const handleCreateConnection = async () => {
+  const handleUpsertConnection = async () => {
     if (isRequesting) {
       return;
     }
@@ -315,7 +315,7 @@ const CreateConnectionModal = (props: Props) => {
               onChange={(value) => setPartialConnection({ password: value })}
             />
           </div>
-          {connection.engineType === Engine.TiDBServerless ? (
+          {connection.engineType === Engine.TiDB ? (
             <div className="w-full flex flex-col">
               <label className="block text-sm font-medium text-gray-700 mb-1">{t("connection.tidb-serverless-ssl-hint")}</label>
             </div>
@@ -421,7 +421,7 @@ const CreateConnectionModal = (props: Props) => {
             <button className="btn btn-outline" onClick={close}>
               {t("common.close")}
             </button>
-            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleCreateConnection}>
+            <button className="btn" disabled={isRequesting || !allowSave} onClick={handleUpsertConnection}>
               {isRequesting && <Icon.BiLoaderAlt className="w-4 h-auto animate-spin mr-1" />}
               {t("common.save")}
             </button>

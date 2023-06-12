@@ -3,12 +3,12 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Conversation, Id } from "@/types";
 import { generateUUID } from "@/utils";
-import { GeneralBotId, SQLChatBotId } from ".";
+import { SQLChatBotId } from ".";
 
 const getDefaultConversation = (): Conversation => {
   return {
     id: generateUUID(),
-    assistantId: GeneralBotId,
+    assistantId: SQLChatBotId,
     title: dayjs().format("LTS"),
     createdAt: Date.now(),
   };
@@ -23,7 +23,7 @@ interface ConversationState {
   getConversationById: (conversationId: Id | undefined) => Conversation | undefined;
   updateConversation: (conversationId: Id, conversation: Partial<Conversation>) => void;
   clearConversation: (filter: (conversation: Conversation) => boolean) => void;
-  updateSelectedTablesName: (selectedTablesName: string[]) => void;
+  updateSelectedTablesNameList: (selectedTableNameList: string[]) => void;
   updateSelectedSchemaName: (selectedSchemaName: string) => void;
 }
 
@@ -65,11 +65,11 @@ export const useConversationStore = create<ConversationState>()(
           conversationList: state.conversationList.filter(filter),
         }));
       },
-      updateSelectedTablesName: (selectedTablesName: string[]) => {
+      updateSelectedTablesNameList: (selectedTableNameList: string[]) => {
         const currentConversation = get().getConversationById(get().currentConversationId);
         if (currentConversation) {
           get().updateConversation(currentConversation.id, {
-            selectedTablesName,
+            selectedTableNameList,
           });
         }
       },
@@ -89,11 +89,7 @@ export const useConversationStore = create<ConversationState>()(
         let state = persistedState as ConversationState;
         if (version === 0) {
           for (const conversation of state.conversationList) {
-            if (!conversation.connectionId) {
-              conversation.assistantId = "general-bot";
-            } else {
-              conversation.assistantId = "sql-chat-bot";
-            }
+            conversation.assistantId = SQLChatBotId;
           }
           state.currentConversationId = undefined;
         }

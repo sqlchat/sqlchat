@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { Connection, Database, Engine, ResponseObject, Schema } from "@/types";
 import { countTextTokens, generateUUID } from "@/utils";
-import { count } from "console";
 
 interface ConnectionContext {
   connection: Connection;
