@@ -1,11 +1,11 @@
-name: build-and-push-release-image
+name: build-and-push-latest-image
 
 on:
   push:
-    branches: [release]
+    branches: [main]
 
 jobs:
-  build-and-push-release-image:
+  build-and-push-latest-image:
     runs-on: ubuntu-latest
     permissions:
       contents: read
