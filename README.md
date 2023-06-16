@@ -16,6 +16,8 @@ SQL Chat is a chat-based SQL client, which uses natural language to communicate 
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot2.webp)
 
+![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot3.webp)
+
 ## Why
 
 As we enter the [Developer Tools 2.0 era](https://www.sequoiacap.com/article/ai-powered-developer-tools/),
