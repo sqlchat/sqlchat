@@ -104,7 +104,7 @@ const QueryDrawer = () => {
 
   return (
     <Drawer open={queryStore.showDrawer} anchor="right" className="w-full" onClose={close}>
-      <div className="dark:text-gray-300 w-screen sm:w-[calc(60vw)] lg:w-[calc(50vw)] 2xl:w-[calc(40vw)] max-w-full flex flex-col justify-start items-start p-4">
+      <div className="dark:text-gray-300 w-screen sm:w-[calc(75vw)] max-w-full flex flex-col justify-start items-start p-4">
         <button className="w-8 h-8 p-1 bg-zinc-600 text-gray-100 rounded-full hover:opacity-80" onClick={close}>
           <Icon.IoMdClose className="w-full h-auto" />
         </button>
@@ -128,7 +128,7 @@ const QueryDrawer = () => {
                 value={statement}
                 rows={1}
                 minRows={1}
-                maxRows={5}
+                maxRows={20}
                 placeholder="Enter your SQL statement here..."
                 onChange={(e) => setStatement(e.target.value)}
               />
