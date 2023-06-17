@@ -16,6 +16,8 @@ SQL Chat 是一个基于聊天的 SQL 客户端，使用自然语言与数据库
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot2.webp)
 
+![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot3.webp)
+
 ## 为什么会出现 SQL Chat
 
 随着我们进入 [开发者工具 2.0 时代](https://www.sequoiacap.com/article/ai-powered-developer-tools/)，使用基于聊天的界面重建现有工具的机会非常大。SQL Client 也不例外。与在许多 UI 控件之间导航不同，基于聊天的界面更加直观。当然，前提是那可行，而我们的目标就是提供这种体验。
@@ -44,7 +46,7 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 ## 使用 Docker 自托管
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
 ```
 
 ### OpenAI 相关变量:
@@ -62,7 +64,7 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 - `DATABASE_URL`: 只有在 NEXT_PUBLIC_DATABASE_LESS 为 true 时有效。Postgres 数据库连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
 ```
 
 ## 本地开发环境
@@ -79,6 +81,12 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    cp .env.example .env
    ```
 
+1. 生成 `prisma` 客户端
+
+   ```bash
+   pnpm prisma generate
+   ```
+
 1. 将您的 [API 密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点（可选）添加到新创建的 `.env` 文件;
 
 ### 配置数据库
@@ -93,25 +101,18 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
    在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL` 和 `DATABASE_DIRECT_URL`。至于需要两个 URL 的原因[见此](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema).
 
-1. 生成 schema
 
-   1. 从模型生成 `prisma` 客户端
+1. 设置数据库 schema
 
-      ```bash
-      pnpm prisma generate
-      ```
+  ```bash
+  pnpm prisma migrate dev
+  ```
 
-   2. 迁移 schema
+1. 初始化数据（可选）
 
-      ```bash
-      pnpm prisma migrate dev
-      ```
-
-   3. 初始化数据（可选）
-
-      ```bash
-      pnpm prisma db seed
-      ```
+  ```bash
+  pnpm prisma db seed
+  ```
 
 ## Star 历史
 

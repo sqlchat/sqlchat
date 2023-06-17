@@ -16,6 +16,8 @@ SQL Chat es un cliente SQL basado en chat, que utiliza lenguaje natural para com
 
 ![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot2.webp)
 
+![Screenshot](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/screenshot3.webp)
+
 ## ¿Por que?
 
 A medida que entramos en la [Era de las Herramientas de Desarrollo 2.0](https://www.sequoiacap.com/article/ai-powered-developer-tools/),
@@ -44,7 +46,7 @@ Si usas [sqlchat.ai](https://sqlchat.ai) para conectarte a tu base de datos, deb
 ## Hospedaje propio con Docker
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
 ```
 
 ### Variables relacionadas con OpenAI:
@@ -64,7 +66,7 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 - `DATABASE_URL`: Aplicable si `NEXT_PUBLIC_DATABASE_LESS` es `false`. Cadena de conexión de Postgres para almacenar datos. ej. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
 ```
 
 ## Desarrollo Local
@@ -75,13 +77,19 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm i
    ```
 
-2. Haga una copia del archivo de variables de entorno de ejemplo:
+1. Haga una copia del archivo de variables de entorno de ejemplo:
 
    ```bash
    cp .env.example .env
    ```
 
-3. Añade tu [clave de API](https://platform.openai.com/account/api-keys) y el endpoint del API de OpenAI(opcional) al recién creado archivo `.env`.
+1. Generar el cliente prisma a partir del modelo.
+
+   ```bash
+   pnpm prisma generate
+   ```
+
+1. Añade tu [clave de API](https://platform.openai.com/account/api-keys) y el endpoint del API de OpenAI(opcional) al recién creado archivo `.env`.
 
 ### Configura la base de datos
 
@@ -89,7 +97,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
 1. Inicie una instancia de Postgres. Para mac, puedes usar [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) o [Postgres.app](https://postgresapp.com/).
 
-2. Crea una base de datos:
+1. Crea una base de datos:
 
    ```sql
    CREATE DATABASE sqlchat;
@@ -97,25 +105,17 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
    En el archivo `.env`, asigna la cadena de conexión a la variable de entorno `DATABASE_URL` y `DATABASE_DIRECT_URL`. [Este articulo](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema) explica por qué necesitamos dos URL.
 
-3. Generar esquema
+1. Migrar esquema
 
-   1. Generar el cliente prisma a partir del modelo.
+   ```bash
+   pnpm prisma migrate dev
+   ```
 
-      ```bash
-      pnpm prisma generate
-      ```
+1. (Opcional) Seed data
 
-   2. Migrar esquema
-
-      ```bash
-      pnpm prisma migrate dev
-      ```
-
-   3. (Opcional) Seed data
-
-      ```bash
-      pnpm prisma db seed
-      ```
+   ```bash
+   pnpm prisma db seed
+   ```
 
 ## Historial de Estrellas
 

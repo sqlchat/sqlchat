@@ -46,7 +46,7 @@ to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://v
 ## Self-host with Docker
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
 ```
 
 ### OpenAI related variables:
@@ -66,7 +66,7 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 - `DATABASE_URL`: Applicable if `NEXT_PUBLIC_DATABASE_LESS` is `false`. Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy --env NEXTAUTH_SECRET=zzz -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
 ```
 
 ## Local Development
