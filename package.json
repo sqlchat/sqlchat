@@ -3,11 +3,11 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "build-prisma-deploy": "prisma generate && next build && prisma migrate deploy",
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "prisma-build": "prisma generate && prisma migrate deploy && next build",
     "stripe": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
   },
   "dependencies": {

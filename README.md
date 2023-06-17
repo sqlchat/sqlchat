@@ -77,6 +77,12 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm i
    ```
 
+1. Generate prisma client from the model
+
+   ```bash
+   pnpm prisma generate
+   ```
+
 1. Make a copy of the example environment variables file:
 
    ```bash
@@ -99,25 +105,17 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
 
    In `.env` file, assign the connection string to environment variable `DATABASE_URL` and `DATABASE_DIRECT_URL`. [This article](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema) explains why we need two URLs.
 
-1. Generate schema
+1. Set up database schema
 
-   1. Generate prisma client from the model
+    ```bash
+    pnpm prisma migrate dev
+    ```
 
-      ```bash
-      pnpm prisma generate
-      ```
+1. (Optional) Seed data
 
-   2. Migrate schema
-
-      ```bash
-      pnpm prisma migrate dev
-      ```
-
-   3. (Optional) Seed data
-
-      ```bash
-      pnpm prisma db seed
-      ```
+    ```bash
+    pnpm prisma db seed
+  ```
 
 ## Star History
 
