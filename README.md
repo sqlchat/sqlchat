@@ -66,7 +66,7 @@ docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
 - `DATABASE_URL`: Applicable if `NEXT_PUBLIC_DATABASE_LESS` is `false`. Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env OPENAI_API_ENDPOINT=yyy --env NEXTAUTH_SECRET=zzz -p 3000:3000 sqlchat/sqlchat
 ```
 
 ## Local Development
@@ -77,7 +77,7 @@ docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx --env 
    pnpm i
    ```
 
-1. Generate prisma client from the model
+1. Generate prisma client
 
    ```bash
    pnpm prisma generate
