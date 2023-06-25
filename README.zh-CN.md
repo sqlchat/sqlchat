@@ -190,7 +190,7 @@ ping api.openai.com
 
 ![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
 
-这个表示你自己提供的 OpenAI Key 的 Quota 没有了
+这个表示你自己提供的 OpenAI Key 的 Quota 没有了。请查看自己的 [OpenAI 账号](https://platform.openai.com/account/api-keys)。
 
 </p>
 </details>
