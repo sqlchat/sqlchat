@@ -101,18 +101,17 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 
    在 `.env` 文件中, 将连接字符串分配给环境变量 `DATABASE_URL` 和 `DATABASE_DIRECT_URL`。至于需要两个 URL 的原因[见此](https://www.prisma.io/docs/data-platform/data-proxy/prisma-cli-with-data-proxy#set-a-direct-database-connection-url-in-your-prisma-schema).
 
-
 1. 设置数据库 schema
 
-  ```bash
-  pnpm prisma migrate dev
-  ```
+```bash
+pnpm prisma migrate dev
+```
 
 1. 初始化数据（可选）
 
-  ```bash
-  pnpm prisma db seed
-  ```
+```bash
+pnpm prisma db seed
+```
 
 ## Star 历史
 
@@ -173,7 +172,25 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 <details><summary>它总是说我有网络连接问题？</summary>
 <p>
 
-请确保您有一个稳定的网络连接，可以访问 OpenAI API 端点。如果您无法访问 OpenAI API 端点，您可以尝试在 UI 或环境变量中设置 `OPENAI_API_ENDPOINT`。
+![network error](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-network.webp)
+
+请确保您有一个稳定的网络连接，可以访问 OpenAI API 端点。
+
+```bash
+ping api.openai.com
+```
+
+如果您无法访问 OpenAI API 端点，您可以尝试在 UI 或环境变量中设置 `OPENAI_API_ENDPOINT`。
+
+</p>
+</details>
+
+<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
+<p>
+
+![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
+
+这个表示你自己提供的 OpenAI Key 的 Quota 没有了
 
 </p>
 </details>

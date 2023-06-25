@@ -21,8 +21,8 @@ SQL Chat es un cliente SQL basado en chat, que utiliza lenguaje natural para com
 ## ¿Por que?
 
 A medida que entramos en la [Era de las Herramientas de Desarrollo 2.0](https://www.sequoiacap.com/article/ai-powered-developer-tools/),
-existe una gran oportunidad para reconstruir las herramientas existentes utilizando una interfaz basada en chat. El cliente SQL 
-no es una excepción. En lugar de navegar a través de varias interfaces de usuario, una interfaz basada en chat es 
+existe una gran oportunidad para reconstruir las herramientas existentes utilizando una interfaz basada en chat. El cliente SQL
+no es una excepción. En lugar de navegar a través de varias interfaces de usuario, una interfaz basada en chat es
 más intuitiva. Por supuesto, solo si funciona, y nuestro objetivo es ofrecer esa experiencia.
 
 ## ¿Como?
@@ -40,7 +40,7 @@ Vea la [Política de Privacidad de SQL Chat](https://sqlchat.ai/privacy).
 
 ## IP Whitelisting
 
-Si usas [sqlchat.ai](https://sqlchat.ai) para conectarte a tu base de datos, debes agregar 0.0.0.0 (permitir todas las conexiones) a la IP de la lista blanca de la base de datos. Porque sqlchat.AI está alojado en 
+Si usas [sqlchat.ai](https://sqlchat.ai) para conectarte a tu base de datos, debes agregar 0.0.0.0 (permitir todas las conexiones) a la IP de la lista blanca de la base de datos. Porque sqlchat.AI está alojado en
 [Vercel](https://vercel.com/) el cual [usa IP dinámica](https://vercel.com/guides/how-to-allowlist-deployment-ip-address). Si esto le preocupa, considere la opción de hospedaje propio a continuación.
 
 ## Hospedaje propio con Docker
@@ -57,7 +57,7 @@ docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 300
 
 ### Variables relacionadas con la base de datos:
 
-- `NEXT_PUBLIC_DATABASE_LESS`: Establézcalo en `true` para iniciar SQL Chat en modo sin base de datos. Esto 
+- `NEXT_PUBLIC_DATABASE_LESS`: Establézcalo en `true` para iniciar SQL Chat en modo sin base de datos. Esto
   desactivara las siguientes funciones:
   1. Sistema de cuentas.
   2. Ejecución de Cuota por Usuario.
@@ -176,7 +176,23 @@ Este proyecto está bajo la Licencia BSL. Consulte el archivo [LICENSE](LICENSE)
 <details><summary>¿Siempre dice que tengo un problema de conexión de red?</summary>
 <p>
 
-Asegúrese de tener una conexión de red estable que pueda acceder al endpoint de la API de OpenAI. Si no puede acceder al endpoint de la API de OpenAI, puede intentar configurar el `OPENAI_API_ENDPOINT` en la UI o como una variable de entorno.
+Asegúrese de tener una conexión de red estable que pueda acceder al endpoint de la API de OpenAI.
+
+```bash
+ping api.openai.com
+```
+
+Si no puede acceder al endpoint de la API de OpenAI, puede intentar configurar el `OPENAI_API_ENDPOINT` en la UI o como una variable de entorno.
+
+</p>
+</details>
+
+<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
+<p>
+
+![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
+
+Su clave OpenAI se ha quedado sin cuota. Por favor revise su [cuenta de OpenAI ](https://platform.openai.com/account/api-keys).
 
 </p>
 </details>

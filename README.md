@@ -107,15 +107,15 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 
 1. Set up database schema
 
-    ```bash
-    pnpm prisma migrate dev
-    ```
+   ```bash
+   pnpm prisma migrate dev
+   ```
 
 1. (Optional) Seed data
 
-    ```bash
-    pnpm prisma db seed
-  ```
+   ```bash
+   pnpm prisma db seed
+   ```
 
 ## Star History
 
@@ -176,7 +176,25 @@ This project is under the BSL License. See the [LICENSE](LICENSE) file for the f
 <details><summary>It always says that I have a network connection issue?</summary>
 <p>
 
-Please make sure you have a stable network connection which can access the OpenAI API endpoint. If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
+![network error](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-network.webp)
+
+Please make sure you have a stable network connection which can access the OpenAI API endpoint.
+
+```bash
+ping api.openai.com
+```
+
+If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
+
+</p>
+</details>
+
+<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
+<p>
+
+![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
+
+Your OpenAI Key has run out of quota. Please check your [OpenAI account](https://platform.openai.com/account/api-keys).
 
 </p>
 </details>
