@@ -9,7 +9,7 @@
     "setting": "Setting",
     "copy": "Copy",
     "delete": "Delete",
-    "execute": "Execute",
+    "run-sql": "Run SQL",
     "sign-in": "Sign in",
     "sign-out": "Sign out",
     "back": "Back",

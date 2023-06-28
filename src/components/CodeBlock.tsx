@@ -60,14 +60,12 @@ export const CodeBlock = (props: Props) => {
             </button>
           </Tooltip>
           {showExecuteButton && (
-            <Tooltip title={t("common.execute")} side="top">
-              <button
-                className="flex justify-center items-center rounded bg-none w-6 h-6 p-1 text-xs text-white bg-indigo-600 opacity-90 hover:opacity-100"
-                onClick={handleExecuteQuery}
-              >
-                <Icon.IoPlay className="w-full h-auto" />
-              </button>
-            </Tooltip>
+            <button
+              className="flex justify-center items-center rounded bg-none h-6 py-1 px-2 text-xs text-white bg-indigo-600 opacity-90 hover:opacity-100"
+              onClick={handleExecuteQuery}
+            >
+              {t("common.run-sql")}
+            </button>
           )}
         </div>
       </div>

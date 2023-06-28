@@ -132,14 +132,12 @@ const QueryDrawer = () => {
                 placeholder="Enter your SQL statement here..."
                 onChange={(e) => setStatement(e.target.value)}
               />
-              <Tooltip title={t("common.execute")} side="top">
-                <button
-                  className="w-6 p-1 -translate-y-2 cursor-pointer rounded-md hover:shadow opacity-90 hover:opacity-100 bg-indigo-600 text-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
-                  onClick={() => executeStatement(statement)}
-                >
-                  <Icon.IoPlay className="w-full h-auto" />
-                </button>
-              </Tooltip>
+              <button
+                className="h-8 py-1 px-4 whitespace-nowrap -translate-y-2 cursor-pointer rounded-md hover:shadow opacity-90 hover:opacity-100 bg-indigo-600 text-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => executeStatement(statement)}
+              >
+                {t("common.run-sql")}
+              </button>
             </div>
             <div className="w-full flex flex-col justify-start items-start mt-4">
               {isLoading ? (
