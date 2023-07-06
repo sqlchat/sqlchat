@@ -106,6 +106,7 @@
       "quota-per-ask": "{{count}} cuotas por pedido",
       "provide-gpt4-key": "Requerir su propia clave API habilitada para GPT-4",
       "key-description": "Indique su propia clave para retirarse del límite por cuota.",
+      "find-my-key": "Encuentra mi llave",
       "endpoint-description": "Endpoint opcional que apunta a su propio servidor o gateway compatible."
     },
     "data": {

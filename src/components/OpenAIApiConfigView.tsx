@@ -102,7 +102,16 @@ const OpenAIApiConfigView = () => {
         </div>
         <div className="flex flex-col mt-4">
           <label className="text-base font-semibold">OpenAI API Endpoint</label>
-          <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.endpoint-description")}</p>
+          <div className="flex">
+            <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.endpoint-description")}</p>
+            <a
+              href="https://platform.openai.com/account/api-keys"
+              target="_blank"
+              className="text-sm text-indigo-600 hover:text-indigo-900"
+            >
+              {t("setting.openai-api-configuration.find-my-key")}
+            </a>
+          </div>
           <TextField
             className="mt-4"
             placeholder="API Endpoint"

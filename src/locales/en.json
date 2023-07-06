@@ -106,6 +106,7 @@
       "quota-per-ask": "{{count}} quota per ask",
       "provide-gpt4-key": "Require your own GPT-4 enabled API key",
       "key-description": "Bring your own key to waive quota requirement.",
+      "find-my-key": "Find my key",
       "endpoint-description": "Optional endpoint pointing to your own compatible server or gateway."
     },
     "data": {

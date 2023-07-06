@@ -104,6 +104,7 @@
       "model": "模型",
       "model-description": "如果您提供自己的 key，额度是不会消耗的。",
       "quota-per-ask": "每一个提问消耗 {{count}} 点额度",
+      "find-my-key": "找到我的 Key",
       "provide-gpt4-key": "需提供您自己的，可以使用 GPT-4 的 key",
       "key-description": "一旦您提供了自己的 key，额度就不受限制了。",
       "endpoint-description": "可选的 endpoint 指向接口兼容的服务器或者网关。"
