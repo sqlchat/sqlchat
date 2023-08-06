@@ -23,8 +23,8 @@ const OpenAIApiConfigView = () => {
     {
       id: "gpt-4",
       title: `GPT-4 (${t("setting.openai-api-configuration.quota-per-ask", { count: 10 })})`,
-      disabled: !settingStore.setting.openAIApiConfig.key,
-      tooltip: t("setting.openai-api-configuration.provide-gpt4-key"),
+      disabled: false,
+      tooltip: "",
     },
   ];
 
