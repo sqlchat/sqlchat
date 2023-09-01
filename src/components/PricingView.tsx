@@ -55,7 +55,7 @@ const PricingView = () => {
         count: 12,
       }),
       priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION,
-      priceMonthly: "$50",
+      priceMonthly: "$30",
       buyButton: t("setting.plan.purhcase-n-months", {
         count: 12,
       }),
@@ -65,9 +65,6 @@ const PricingView = () => {
   return (
     <div className="bg-white dark:bg-zinc-800 py-4">
       <div className="mx-auto max-w-4xl text-center">
-        <span className="rounded-full bg-green-50 px-4 py-1.5 text-xl font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-          {t(`setting.plan.pro-early-bird`)}
-        </span>
         <p className="mt-6 text-4xl font-bold tracking-tight sm:text-5xl">
           {t("setting.plan.n-question-per-month", {
             count: 1000,
