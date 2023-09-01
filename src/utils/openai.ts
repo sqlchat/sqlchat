@@ -50,3 +50,7 @@ export function generateDbPromptFromContext(
   }
   return promptGenerator(engine, finalTableList.join("\n\n"));
 }
+
+export function allowSelfOpenAIKey() {
+  return process.env.NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY == "true";
+}

@@ -1,5 +1,6 @@
 import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "react-use";
+import { allowSelfOpenAIKey } from "@/utils";
 import Link from "next/link";
 import Icon from "./Icon";
 
@@ -22,9 +23,11 @@ const QuotaOverflowBanner = (props: Props) => {
       >
         <div className="text-sm leading-6 pr-4 cursor-pointer">
           {t("banner.quota-overflow")}{" "}
-          <Link className="ml-1 underline hover:opacity-80" href="/setting">
-            {t("banner.use-my-key")}
-          </Link>
+          {allowSelfOpenAIKey() && (
+            <Link className="ml-1 underline hover:opacity-80" href="/setting">
+              {t("banner.use-my-key")}
+            </Link>
+          )}
         </div>
         <button className="absolute right-2 sm:right-4 opacity-60 hover:opacity-100" onClick={() => setHideBanner(true)}>
           <Icon.BiX className="w-6 h-auto" />

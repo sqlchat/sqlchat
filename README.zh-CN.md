@@ -51,6 +51,7 @@ docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 300
 
 ### OpenAI 相关变量:
 
+- `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: 设置为 `true` 如果你允许用户提供自己的 OpenAI API key.
 - `OPENAI_API_KEY`: OpenAI API Key，通过[这里](https://beta.openai.com/docs/developer-quickstart/api-keys)申请。
 - `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
 

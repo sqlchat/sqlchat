@@ -6,6 +6,8 @@ declare namespace NodeJS {
     // We can't prefix DATABASE_URL with NEXT_PUBLIC_ because it contains sensitive information that
     // should not be exposed to the client.
     NEXT_PUBLIC_DATABASE_LESS: string;
+    // Optional. Set to "true" to allow users to bring their own OpenAI API key.
+    NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY: string;
     // Required if NEXT_PUBLIC_DATABASE_LESS is false. Postgres database connection string to store
     // the data. e.g. postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat
     DATABASE_URL: string;

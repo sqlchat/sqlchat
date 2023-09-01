@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { Quota } from "@/types";
 import getEventEmitter from "@/utils/event-emitter";
+import { allowSelfOpenAIKey } from "@/utils";
 
 interface Props {
   className?: string;
@@ -78,7 +79,7 @@ const QuotaView = (props: Props) => {
             {t("setting.plan.signup-for-more")}
           </button>
         ))}
-      {!!showSupplyOwnKey && (
+      {allowSelfOpenAIKey() && !!showSupplyOwnKey && (
         <Link className="text-center rounded-full underline hover:opacity-80 px-2 py-0.5 text-xs font-medium text-gray-700" href="/setting">
           {t("banner.use-my-key")}
         </Link>

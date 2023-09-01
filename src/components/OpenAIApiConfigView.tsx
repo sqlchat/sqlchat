@@ -3,9 +3,11 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "react-use";
 import { useSettingStore } from "@/store";
 import { OpenAIApiConfig } from "@/types";
+import { allowSelfOpenAIKey } from "@/utils";
 import Radio from "./kit/Radio";
 import TextField from "./kit/TextField";
 import Tooltip from "./kit/Tooltip";
+
 const OpenAIApiConfigView = () => {
   const { t } = useTranslation();
   const settingStore = useSettingStore();
@@ -75,7 +77,7 @@ const OpenAIApiConfigView = () => {
       <div className="w-full border border-gray-200 dark:border-zinc-700 p-4 rounded-lg">
         <div>
           <label className="text-base font-semibold ">{t("setting.openai-api-configuration.model")}</label>
-          <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.model-description")}</p>
+          {allowSelfOpenAIKey() && <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.model-description")}</p>}
           <fieldset className="mt-4">
             <div className="space-y-4 sm:flex sm:items-center sm:space-x-10 sm:space-y-0">
               {models.map((model) =>
@@ -90,35 +92,39 @@ const OpenAIApiConfigView = () => {
             </div>
           </fieldset>
         </div>
-        <div className="flex flex-col mt-4">
-          <label className="text-base font-semibold">OpenAI API Key</label>
-          <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.key-description")}</p>
-          <TextField
-            className="mt-4"
-            placeholder="OpenAI API Key"
-            value={maskKey ? maskedKey(openAIApiConfig.key) : openAIApiConfig.key}
-            onChange={(value) => handleSetOpenAIApiConfig({ key: value })}
-          />
-        </div>
-        <div className="flex flex-col mt-4">
-          <label className="text-base font-semibold">OpenAI API Endpoint</label>
-          <div className="flex">
-            <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.endpoint-description")}</p>
-            <a
-              href="https://platform.openai.com/account/api-keys"
-              target="_blank"
-              className="text-sm text-indigo-600 hover:text-indigo-900"
-            >
-              {t("setting.openai-api-configuration.find-my-key")}
-            </a>
-          </div>
-          <TextField
-            className="mt-4"
-            placeholder="API Endpoint"
-            value={openAIApiConfig.endpoint}
-            onChange={(value) => handleSetOpenAIApiConfig({ endpoint: value })}
-          />
-        </div>
+        {allowSelfOpenAIKey() && (
+          <>
+            <div className="flex flex-col mt-4">
+              <label className="text-base font-semibold">OpenAI API Key</label>
+              <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.key-description")}</p>
+              <TextField
+                className="mt-4"
+                placeholder="OpenAI API Key"
+                value={maskKey ? maskedKey(openAIApiConfig.key) : openAIApiConfig.key}
+                onChange={(value) => handleSetOpenAIApiConfig({ key: value })}
+              />
+            </div>
+            <div className="flex flex-col mt-4">
+              <label className="text-base font-semibold">OpenAI API Endpoint</label>
+              <div className="flex">
+                <p className="text-sm text-gray-500">{t("setting.openai-api-configuration.endpoint-description")}</p>
+                <a
+                  href="https://platform.openai.com/account/api-keys"
+                  target="_blank"
+                  className="text-sm text-indigo-600 hover:text-indigo-900"
+                >
+                  {t("setting.openai-api-configuration.find-my-key")}
+                </a>
+              </div>
+              <TextField
+                className="mt-4"
+                placeholder="API Endpoint"
+                value={openAIApiConfig.endpoint}
+                onChange={(value) => handleSetOpenAIApiConfig({ endpoint: value })}
+              />
+            </div>
+          </>
+        )}
       </div>
     </>
   );
