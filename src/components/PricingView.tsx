@@ -37,7 +37,7 @@ const PricingView = () => {
     {
       name: t("setting.plan.1-month"),
       priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_MONTH_SUBSCRIPTION,
-      priceMonthly: "$5",
+      priceMonthly: "$10",
       buyButton: t("setting.plan.purhcase-1-month"),
     },
     {
