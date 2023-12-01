@@ -46,7 +46,7 @@ const handler = async (req: NextRequest) => {
       return new Response(
         JSON.stringify({
           error: {
-            message: "Please sign up to get free quota or supply your own OpenAI key.",
+            message: "Please sign up to get free quota.",
           },
         }),
         {
