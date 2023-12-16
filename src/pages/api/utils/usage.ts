@@ -23,7 +23,7 @@ export const getCurrentMonthUsage = async (endUser: string): Promise<number> => 
 };
 
 // We coerce individual usage to the begining of the day to reduce the usage records.
-export const addUsage = async (endUser: string): Promise<number> => {
+export const addUsage = async (endUser: string, addition: number): Promise<number> => {
   const now = new Date();
   const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
   const usage = await prisma.usage.findFirst({
@@ -35,7 +35,7 @@ export const addUsage = async (endUser: string): Promise<number> => {
 
   let newUsage = 0;
   if (usage) {
-    newUsage = usage.count + 1;
+    newUsage = usage.count + addition;
     await prisma.usage.update({
       where: {
         id: usage.id,
@@ -45,12 +45,12 @@ export const addUsage = async (endUser: string): Promise<number> => {
       },
     });
   } else {
-    newUsage = 1;
+    newUsage = addition;
     await prisma.usage.create({
       data: {
         endUser: endUser,
         createdAt: today,
-        count: 1,
+        count: newUsage,
       },
     });
   }

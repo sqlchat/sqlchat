@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "./auth/[...nextauth]";
 import { getSubscriptionByEmail } from "./utils/subscription";
+import { getModel } from "@/utils";
 import { addUsage, getCurrentMonthUsage } from "./utils/usage";
 import { getEndUser } from "./auth/end-user";
 import { Quota } from "@/types";
@@ -24,6 +25,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   if (req.method === "GET") {
     usage = await getCurrentMonthUsage(endUser);
   } else if (req.method === "POST") {
+    const model = getModel((req.headers["x-openai-model"] as string) || "");
     usage = await addUsage(endUser);
   }
 

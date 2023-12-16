@@ -4,6 +4,7 @@ const gpt35 = {
   frequency_penalty: 0.0,
   presence_penalty: 0.0,
   max_token: 4000,
+  cost_per_call: 1,
 };
 
 const gpt4 = {
@@ -12,6 +13,7 @@ const gpt4 = {
   frequency_penalty: 0.0,
   presence_penalty: 0.0,
   max_token: 8000,
+  cost_per_call: 10,
 };
 
 export const models = [gpt35, gpt4];
