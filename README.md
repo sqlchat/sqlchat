@@ -55,7 +55,10 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 * Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain. It doesn't matter
 if you don't enable login.
-* If you connect to the database on the same host, you need to use `host.docker.internal` as the host name.
+* If you chat to the database on the same host, you need to use `host.docker.internal` as the host in
+the database connection setting.
+
+<img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/docs/docker-connection-setting.webp" />
 
 ### Startup options
 
