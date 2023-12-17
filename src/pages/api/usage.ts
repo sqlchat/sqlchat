@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     usage = await getCurrentMonthUsage(endUser);
   } else if (req.method === "POST") {
     const model = getModel((req.headers["x-openai-model"] as string) || "");
-    usage = await addUsage(endUser);
+    usage = await addUsage(endUser, model.cost_per_call);
   }
 
   const quota: Quota = {

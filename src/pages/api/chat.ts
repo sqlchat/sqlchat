@@ -40,6 +40,10 @@ const handler = async (req: NextRequest) => {
   const requestHeaders: any = {
     Authorization: `Bearer ${sessionToken}`,
   };
+  if (req.headers.get("x-openai-model")) {
+    // Pass model to usage API to calculate usage
+    requestHeaders["x-openai-model"] = req.headers.get("x-openai-model");
+  }
 
   if (useServerKey) {
     if (hasFeature("account") && !sessionToken) {
