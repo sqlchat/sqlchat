@@ -5,13 +5,14 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import EmailProvider from "next-auth/providers/email";
 import { PrismaClient } from "@prisma/client";
 import { getSubscriptionByEmail } from "../utils/subscription";
+import { hasFeature } from "@/utils";
 
 const prisma = new PrismaClient();
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
+  adapter: hasFeature("account") ? PrismaAdapter(prisma) : undefined,
   // https://next-auth.js.org/configuration/providers/oauth
   providers: [
     EmailProvider({
