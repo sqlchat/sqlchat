@@ -79,7 +79,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 1. 复制示例环境变量文件;
 
    ```bash
-   cp .env.use-db .env
+   cp .env.usedb .env
    ```
 
 1. 生成 `prisma` 客户端

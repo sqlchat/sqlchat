@@ -82,7 +82,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 1. Haga una copia del archivo de variables de entorno de ejemplo:
 
    ```bash
-   cp .env.use-db .env
+   cp .env.usedb .env
    ```
 
 1. Generar el cliente prisma a partir del modelo.

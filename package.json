@@ -3,8 +3,8 @@
   "private": false,
   "scripts": {
     "dev": "next dev",
-    "no-db": "env-cmd -f .env.no-db pnpm dev",
-    "use-db": "env-cmd -f .env.use-db pnpm dev",
+    "nodb": "env-cmd -f .env.nodb pnpm dev",
+    "usedb": "env-cmd -f .env.usedb pnpm dev",
     "build": "prisma generate && next build",
     "build-prisma-deploy": "prisma generate && next build && prisma migrate deploy",
     "export": "next export",
