@@ -14,21 +14,23 @@ const prisma = new PrismaClient();
 export const authOptions: NextAuthOptions = {
   adapter: hasFeature("account") ? PrismaAdapter(prisma) : undefined,
   // https://next-auth.js.org/configuration/providers/oauth
-  providers: [
-    EmailProvider({
-      server: process.env.EMAIL_SERVER,
-      from: "noreply@sqlchat.ai",
-      // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
-    }),
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-    }),
-  ],
+  providers: hasFeature("account")
+    ? [
+        EmailProvider({
+          server: process.env.EMAIL_SERVER,
+          from: "noreply@sqlchat.ai",
+          // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
+        }),
+        GoogleProvider({
+          clientId: process.env.GOOGLE_CLIENT_ID,
+          clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        }),
+        GithubProvider({
+          clientId: process.env.GITHUB_ID,
+          clientSecret: process.env.GITHUB_SECRET,
+        }),
+      ]
+    : [],
   cookies: {
     sessionToken: {
       name: `next-auth.session-token`,
