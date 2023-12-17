@@ -50,8 +50,12 @@ See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
 ### Docker
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
+
+* Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain. It doesn't matter
+if you don't enable login.
+* If you connect to the database on the same host, you need to use `host.docker.internal` as the host name.
 
 ### Startup options
 
