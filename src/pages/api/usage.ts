@@ -12,6 +12,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json([]);
   }
 
+  console.log("usage");
   const endUser = await getEndUser(req, res);
 
   // Get from server session if available
