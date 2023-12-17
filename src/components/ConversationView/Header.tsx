@@ -41,14 +41,10 @@ const Header = (props: Props) => {
           <span className="w-auto text-center hidden lg:flex justify-center items-center">
             <a
               href="https://www.bytebase.com?source=sqlchat"
-              className="hidden sm:block w-auto h-auto py-1 px-2 rounded-md hover:bg-gray-100 dark:hover:bg-zinc-700"
+              className="hidden sm:block text-blue-600 text-lg hover:underline"
               target="_blank"
             >
-              <img
-                className="h-5 sm:h-6 w-auto"
-                src={isDarkMode ? "/craft-by-bytebase-dark-mode.webp" : "/craft-by-bytebase.webp"}
-                alt=""
-              />
+              THE tool for database schema migration 🔗
             </a>
           </span>
         </div>
