@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 
 // Returns the login user email or the client IP address
 export const getEndUser = async (req: NextApiRequest, res: NextApiResponse): Promise<string> => {
-  console.log("getEndUser");
   // Get from server session if available
   const serverSession = await getServerSession(req, res, authOptions);
   if (serverSession?.user?.email) {

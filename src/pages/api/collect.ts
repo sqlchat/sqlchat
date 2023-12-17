@@ -18,7 +18,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         id: conversation.id,
       },
     });
-    console.log("collect");
     const endUser = await getEndUser(req, res);
     if (chat) {
       await prisma.message.createMany({
