@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ s
 
   // Check whether those NEXT_PUBLIC_ envs are properly exposed in frontend.
   // See https://github.com/vercel/next.js/discussions/17641
-  console.log("Use database:", process.env.NEXT_PUBLIC_DATABASE_LESS);
+  console.log("Use database:", !process.env.NEXT_PUBLIC_DATABASE_LESS);
 
   useEffect(() => {
     const darkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
