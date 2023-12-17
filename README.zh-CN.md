@@ -57,12 +57,12 @@ docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 300
 
 ### 数据库相关变量:
 
-- `NEXT_PUBLIC_DATABASE_LESS`: 设置为 `true` 如果你想让 SQL Chat 运行时不需要数据库。这个会关闭如下功能:
+- `NEXT_PUBLIC_USE_DATABASE`: 设置为 `true` 如果你启动 SQL Chat 时使用了数据库。这会开启如下功能:
   1. 账户系统。
   1. 用户额度控制。
   1. 支付。
   1. 使用数据收集。
-- `DATABASE_URL`: 只有在 NEXT_PUBLIC_DATABASE_LESS 为 true 时有效。Postgres 数据库连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
+- `DATABASE_URL`: 只有在 `NEXT_PUBLIC_USE_DATABASE` 为 `true` 时有效。Postgres 数据库连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
@@ -79,7 +79,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 1. 复制示例环境变量文件;
 
    ```bash
-   cp .env.example .env
+   cp .env.use-db .env
    ```
 
 1. 生成 `prisma` 客户端

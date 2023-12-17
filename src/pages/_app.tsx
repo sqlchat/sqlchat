@@ -7,6 +7,7 @@ import React, { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { useSettingStore } from "@/store";
+import { hasDatabase } from "@/utils";
 
 dayjs.extend(localizedFormat);
 import "dayjs/locale/zh";
@@ -25,7 +26,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps<{ s
 
   // Check whether those NEXT_PUBLIC_ envs are properly exposed in frontend.
   // See https://github.com/vercel/next.js/discussions/17641
-  console.log("Use database:", !process.env.NEXT_PUBLIC_DATABASE_LESS);
+  console.log("Has database:", hasDatabase());
 
   useEffect(() => {
     const darkMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");

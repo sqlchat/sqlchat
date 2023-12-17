@@ -34,41 +34,49 @@ SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following d
 - MSSQL
 - TiDB Cloud
 
-## Data Privacy
+## [sqlchat.ai](https://sqlchat.ai) 
 
-See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
-
-## IP Whitelisting
+### IP Whitelisting
 
 If you use [sqlchat.ai](https://sqlchat.ai) to connect to your database, you need to add 0.0.0.0 (allow all connections)
 to the database whitelist IP. Because sqlchat.AI is hosted on [Vercel](https://vercel.com/) which [uses dynamic IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address). If this is a concern, please consider the self-host option below.
 
-## Self-host with Docker
+### Data Privacy
+
+See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
+
+## Self-host
+
+### Docker
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
 ```
 
-### OpenAI related variables:
+### Startup options
 
-- `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: Set to `true` to allow users to bring their own OpenAI API key.
+* Run without database, check [.env.no-db](https://github.com/sqlchat/sqlchat/blob/main/.env.no-db).
+This is suitable if you just want to use for yourself.
+* Run with database, check [.env.use-db](https://github.com/sqlchat/sqlchat/blob/main/.env.use-db).
+This is suitable if you want to run a similar multi-tenant service as [sqlchat.ai](https://sqlchat.ai) where you need manage account, usage and etc.
+
+#### OpenAI related
+
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
 
-### Database related variables:
+- `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: Set to `true` to allow users to bring their own OpenAI API key.
 
-- `NEXT_PUBLIC_DATABASE_LESS`: Set to `true` to start SQL Chat in database-less mode. This will
-  disable following features:
+#### Database related
+
+- `NEXT_PUBLIC_USE_DATABASE`: Set to `true` to start SQL Chat with database. This will
+  enable following features:
   1. Account system.
   1. Per-user quota enforcement.
   1. Payment.
   1. Usage data collection.
-- `DATABASE_URL`: Applicable if `NEXT_PUBLIC_DATABASE_LESS` is `false`. Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
-
-```bash
-docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
-```
+- `DATABASE_URL`: Applicable if `NEXT_PUBLIC_USE_DATABASE` is `true`. Postgres connection string to store data. e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ## Local Development
 
@@ -87,14 +95,14 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 1. Make a copy of the example environment variables file:
 
    ```bash
-   cp .env.example .env
+   cp .env.use-db .env
    ```
 
 1. Add your [API key](https://platform.openai.com/account/api-keys) and OpenAI API Endpoint(optional) to the newly created `.env` file.
 
 ### Setup database
 
-**You can skip this section with `NEXT_PUBLIC_DATABASE_LESS=true` if you don't build features requiring database**
+**You can skip this section with `NEXT_PUBLIC_USE_DATABASE=false` if you don't build features requiring database**
 
 1. Start a Postgres instance. For mac, you can use [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) or [Postgres.app](https://postgresapp.com/).
 

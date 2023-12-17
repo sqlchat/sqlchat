@@ -59,13 +59,13 @@ docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 300
 
 ### Variables relacionadas con la base de datos:
 
-- `NEXT_PUBLIC_DATABASE_LESS`: Establézcalo en `true` para iniciar SQL Chat en modo sin base de datos. Esto
+- `NEXT_PUBLIC_USE_DATABASE`: Establézcalo en `false` para iniciar SQL Chat en modo sin base de datos. Esto
   desactivara las siguientes funciones:
   1. Sistema de cuentas.
   2. Ejecución de Cuota por Usuario.
   3. Pago.
   4. Recopilación de datos de uso.
-- `DATABASE_URL`: Aplicable si `NEXT_PUBLIC_DATABASE_LESS` es `false`. Cadena de conexión de Postgres para almacenar datos. ej. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
+- `DATABASE_URL`: Aplicable si `NEXT_PUBLIC_USE_DATABASE` es `true`. Cadena de conexión de Postgres para almacenar datos. ej. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
@@ -82,7 +82,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 1. Haga una copia del archivo de variables de entorno de ejemplo:
 
    ```bash
-   cp .env.example .env
+   cp .env.use-db .env
    ```
 
 1. Generar el cliente prisma a partir del modelo.
@@ -95,7 +95,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
 
 ### Configura la base de datos
 
-**Puede omitir esta sección con `NEXT_PUBLIC_DATABASE_LESS=true` si no crea funciones que requieren una base de datos**
+**Puede omitir esta sección con `NEXT_PUBLIC_USE_DATABASE=false` si no crea funciones que requieren una base de datos**
 
 1. Inicie una instancia de Postgres. Para mac, puedes usar [StackbBricks](https://stackbricks.app/), [DBngin](https://dbngin.com/) o [Postgres.app](https://postgresapp.com/).
 

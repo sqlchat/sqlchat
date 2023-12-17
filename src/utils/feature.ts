@@ -1,23 +1,23 @@
 type FeatureType = "debug" | "account" | "payment" | "quota" | "collect";
 
-function databaseLess() {
-  return process.env.NEXT_PUBLIC_DATABASE_LESS == "true";
-}
+export const hasDatabase = () => {
+  return process.env.NEXT_PUBLIC_USE_DATABASE == "true";
+};
 
 const matrix: { [key: string]: { [feature: string]: boolean } } = {
   development: {
     debug: true,
-    account: !databaseLess(),
-    payment: !databaseLess(),
-    quota: !databaseLess(),
-    collect: !databaseLess(),
+    account: hasDatabase(),
+    payment: hasDatabase(),
+    quota: hasDatabase(),
+    collect: hasDatabase(),
   },
   production: {
     debug: false,
-    account: !databaseLess(),
-    payment: !databaseLess(),
-    quota: !databaseLess(),
-    collect: !databaseLess(),
+    account: hasDatabase(),
+    payment: hasDatabase(),
+    quota: hasDatabase(),
+    collect: hasDatabase(),
   },
 };
 
