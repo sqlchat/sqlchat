@@ -60,14 +60,14 @@ the database connection setting.
 
 <img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/docs/docker-connection-setting.webp" />
 
-### Startup options
+## Startup options
 
 * Run without database, check [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
 This is suitable if you just want to use for yourself.
 * Run with database, check [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb).
 This is suitable if you want to run a similar multi-tenant service as [sqlchat.ai](https://sqlchat.ai) where you need manage account, usage and etc.
 
-#### OpenAI related
+### OpenAI related
 
 - `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
 
@@ -75,7 +75,7 @@ This is suitable if you want to run a similar multi-tenant service as [sqlchat.a
 
 - `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: Set to `true` to allow users to bring their own OpenAI API key.
 
-#### Database related
+### Database related
 
 - `NEXT_PUBLIC_USE_DATABASE`: Set to `true` to start SQL Chat with database. This will
   enable following features:
