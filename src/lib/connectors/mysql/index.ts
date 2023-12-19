@@ -25,7 +25,22 @@ const getMySQLConnection = async (connection: Connection): Promise<mysql.Connect
       rejectUnauthorized: false,
     };
   }
-  const conn = await mysql.createConnection(connectionOptions);
+
+  let conn;
+  if (connection.ssl) {
+    conn = await mysql.createConnection(connectionOptions);
+  } else {
+    try {
+      conn = await mysql.createConnection(connectionOptions);
+    } catch (error) {
+      if (error instanceof Error && error.message.includes("Server does not support secure")) {
+        connectionOptions.ssl = undefined;
+        conn = await mysql.createConnection(connectionOptions);
+      } else {
+        throw error;
+      }
+    }
+  }
   return conn;
 };
 
