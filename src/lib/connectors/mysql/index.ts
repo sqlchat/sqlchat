@@ -88,7 +88,8 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
   const conn = await getMySQLConnection(connection);
   // get All tableList from database
   const [rows] = await conn.query<RowDataPacket[]>(
-    `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA=? AND TABLE_TYPE='BASE TABLE';`,
+    // SYSTEM VERSIONED is a special table for MariaDB https://mariadb.com/kb/en/system-versioned-tables/
+    `SELECT TABLE_NAME as table_name FROM information_schema.tables WHERE TABLE_SCHEMA=? AND (TABLE_TYPE='BASE TABLE' || TABLE_TYPE='SYSTEM VERSIONED');`,
     [databaseName]
   );
   const tableList = [];
