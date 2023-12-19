@@ -34,7 +34,7 @@ SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following d
 - MSSQL
 - TiDB Cloud
 
-## [sqlchat.ai](https://sqlchat.ai) 
+## [sqlchat.ai](https://sqlchat.ai)
 
 ### IP Whitelisting
 
@@ -50,22 +50,22 @@ See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
 ### Docker
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" -p 3000:3000 --hostname localhost sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" --env OPENAI_API_KEY=<<YOUR OPENAI KEY>> -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
 
-* Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain. It doesn't matter
-if you don't enable login.
-* If you chat to the database on the same host, you need to use `host.docker.internal` as the host in
-the database connection setting.
+- Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain. It doesn't matter
+  if you don't enable login.
+- If you chat to the database on the same host, you need to use `host.docker.internal` as the host in
+  the database connection setting.
 
 <img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/docs/docker-connection-setting.webp" />
 
 ## Startup options
 
-* Run without database, check [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
-This is suitable if you just want to use for yourself.
-* Run with database, check [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb).
-This is suitable if you want to run a similar multi-tenant service as [sqlchat.ai](https://sqlchat.ai) where you need manage account, usage and etc.
+- Run without database, check [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
+  This is suitable if you just want to use for yourself.
+- Run with database, check [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb).
+  This is suitable if you want to run a similar multi-tenant service as [sqlchat.ai](https://sqlchat.ai) where you need manage account, usage and etc.
 
 ### OpenAI related
 
