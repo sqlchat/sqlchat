@@ -67,10 +67,10 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 ## Startup options
 
-- Run without database, check [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
-  This is suitable if you just want to use for yourself.
-- Run with database, check [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb).
-  This is suitable if you want to run a similar multi-tenant service as [sqlchat.ai](https://sqlchat.ai) where you need manage account, usage and etc.
+## TL;DR
+
+- If you just want to use for yourself, then run without database. Check [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
+- If you want to offer a similar service as [sqlchat.ai](https://sqlchat.ai), then run with database, check [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb). The database is used to store account, usage info.
 
 ### OpenAI related
 
