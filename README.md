@@ -172,16 +172,12 @@ See [this issue](https://github.com/sqlchat/sqlchat/issues/141).
 </p>
 </details>
 
-<details><summary>How to use my OpenAI API key?</summary>
+<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
 <p>
 
-- You can set the `OPENAI_API_KEY` in environment variable.
+![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
 
-  ```bash
-  docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx -p 3000:3000 sqlchat/sqlchat
-  ```
-
-- You can set the `OPENAI_API_KEY` in setting dialog.
+Your OpenAI Key has run out of quota. Please check your [OpenAI account](https://platform.openai.com/account/api-keys).
 
 </p>
 </details>
@@ -198,16 +194,6 @@ ping api.openai.com
 ```
 
 If you cannot access the OpenAI API endpoint, you can try to set the `OPENAI_API_ENDPOINT` in UI or environment variable.
-
-</p>
-</details>
-
-<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
-<p>
-
-![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
-
-Your OpenAI Key has run out of quota. Please check your [OpenAI account](https://platform.openai.com/account/api-keys).
 
 </p>
 </details>
