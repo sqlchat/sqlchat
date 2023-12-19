@@ -164,18 +164,10 @@ This project is under the BSL License. See the [LICENSE](LICENSE) file for the f
 
 ## FAQ
 
-<details><summary>How to self host SQL Chat?</summary>
+<details><summary>Why asking me to sign up to get quota when self-hosted</summary>
 <p>
 
-- You can deploy SQL Chat to Vercel with one click
-
-  <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY"><img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel"></a>
-
-- You can deploy your SQL Chat with docker in seconds
-
-  ```bash
-  docker run --name sqlchat --platform linux/amd64 -p 3000:3000 sqlchat/sqlchat
-  ```
+See [this issue](https://github.com/sqlchat/sqlchat/issues/141).
 
 </p>
 </details>
