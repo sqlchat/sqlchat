@@ -49,6 +49,11 @@ See [SQL Chat Privacy Policy](https://sqlchat.ai/privacy).
 
 ### Docker
 
+If you just want to run for your own use, supply the following options:
+
+- `NEXTAUTH_SECRET`
+- `OPENAI_API_KEY`
+
 ```bash
 docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" --env OPENAI_API_KEY=<<YOUR OPENAI KEY>> -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
