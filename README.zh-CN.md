@@ -39,7 +39,7 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 
 ## 数据保密
 
-请读 [SQL Chat 隐私政策](https://sqlchat.ai/privacy).
+参阅 [SQL Chat 隐私政策](https://sqlchat.ai/privacy).
 
 ## 自托管
 
@@ -119,15 +119,15 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 1. 设置数据库 schema
 
-```bash
-pnpm prisma migrate dev
-```
+   ```bash
+   pnpm prisma migrate dev
+   ```
 
 1. 初始化数据（可选）
 
-```bash
-pnpm prisma db seed
-```
+   ```bash
+   pnpm prisma db seed
+   ```
 
 ## Star 历史
 
