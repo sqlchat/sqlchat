@@ -31,42 +31,57 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 - MSSQL
 - TiDB Cloud
 
-## 数据保密
-
-- 所有数据库连接配置都本地存储在浏览器中，您也可以访问设置到清除数据。
-
-- 只有数据库模式提供给 OpenAI API，表数据不会提供给 OpenAI API。
-
-- 如果使用 [sqlchat.ai](https://sqlchat.ai), 它会记录下这些匿名对话。
+## [sqlchat.ai](https://sqlchat.ai)
 
 ## IP 白名单
 
 如果使用 [sqlchat.ai](https://sqlchat.ai) 连接数据库，则需要在数据库白名单 I P 中添加 0.0.0.0(允许所有连接)。因为 sqlchat.ai 托管在 [Vercel](https://vercel.com/) 上 [使用动态 IP](https://vercel.com/guides/how-to-allowlist-deployment-ip-address)。如果这是一个问题，请考虑下面的自主机选项。
 
-## 使用 Docker 自托管
+## 数据保密
+
+请读 [SQL Chat 隐私政策](https://sqlchat.ai/privacy).
+
+## 自托管
+
+### Docker
+
+如果是自用，启动时提供下面两个参数即可：
+
+- `NEXTAUTH_SECRET`
+- `OPENAI_API_KEY`
 
 ```bash
-docker run --name sqlchat --platform linux/amd64 -env NEXTAUTH_SECRET=xxx -p 3000:3000 sqlchat/sqlchat
+docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" --env OPENAI_API_KEY=<<YOUR OPENAI KEY>> -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
 
-### OpenAI 相关变量:
+- 传一个任意值给 NEXTAUTH_SECRET 否则 next-auth 会抱怨。
+- 如果您连接同一个 host 上的数据库，在数据库连接配置中，需要使用 `host.docker.internal` 作为 host。
 
-- `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: 设置为 `true` 如果你允许用户提供自己的 OpenAI API key.
-- `OPENAI_API_KEY`: OpenAI API Key，通过[这里](https://beta.openai.com/docs/developer-quickstart/api-keys)申请。
-- `OPENAI_API_ENDPOINT`: OpenAI API 端点，默认为 `https://api.openai.com`。
+<img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/docs/docker-connection-setting.webp" />
 
-### 数据库相关变量:
+## 启动参数
 
-- `NEXT_PUBLIC_USE_DATABASE`: 设置为 `true` 如果你启动 SQL Chat 时使用了数据库。这会开启如下功能:
-  1. 账户系统。
-  1. 用户额度控制。
+## TL;DR
+
+- 如果是自用，选择不需要数据库的配置，参阅 [.env.nodb](https://github.com/sqlchat/sqlchat/blob/main/.env.nodb).
+- 如果是希望提供类似于 [sqlchat.ai](https://sqlchat.ai) 的服务供多人使用, 那么需要数据库，参阅 [.env.usedb](https://github.com/sqlchat/sqlchat/blob/main/.env.usedb)。数据库用来保存用户以及使用信息。
+
+### OpenAI 相关
+
+- `OPENAI_API_KEY`: OpenAI API key. 您能从 [这里](https://beta.openai.com/docs/developer-quickstart/api-keys) 获得。
+
+- `OPENAI_API_ENDPOINT`: OpenAI API endpoint. 默认 `https://api.openai.com`。
+
+- `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: 置为 `true` 以允许 SQL Chat 服务的用户使用自己的 key。
+
+### 数据库相关
+
+- `NEXT_PUBLIC_USE_DATABASE`: 置为 `true` 使得 SQL Chat 启动时使用数据库，这会开启如下功能：
+  1. 账号系统。
+  1. 用户额度。
   1. 支付。
   1. 使用数据收集。
-- `DATABASE_URL`: 只有在 `NEXT_PUBLIC_USE_DATABASE` 为 `true` 时有效。Postgres 数据库连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
-
-```bash
-docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env OPENAI_API_KEY=yyy --env OPENAI_API_ENDPOINT=zzz -p 3000:3000 sqlchat/sqlchat
-```
+- `DATABASE_URL`: 当 `NEXT_PUBLIC_USE_DATABASE` 是 `true` 时有效。用于保存数据的 Postgres 连接串 e.g. `postgresql://postgres:YOUR_PASSWORD@localhost:5432/sqlchat?schema=sqlchat`.
 
 ## 本地开发环境
 
@@ -76,16 +91,16 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET=xxx --env
    pnpm i
    ```
 
-1. 复制示例环境变量文件;
-
-   ```bash
-   cp .env.usedb .env
-   ```
-
 1. 生成 `prisma` 客户端
 
    ```bash
    pnpm prisma generate
+   ```
+
+1. 复制示例环境变量文件;
+
+   ```bash
+   cp .env.usedb .env
    ```
 
 1. 将您的 [API 密钥](https://platform.openai.com/account/api-keys) 和 `OpenAI API` 端点（可选）添加到新创建的 `.env` 文件;
@@ -140,6 +155,15 @@ pnpm prisma db seed
 
 ## 常见问题
 
+<details><summary>为什么要我 sign up to get quota when self-hosted </summary>
+<p>
+
+看这个 [issue](https://github.com/sqlchat/sqlchat/issues/141).
+
+</p>
+</details>
+
+
 <details><summary>如何自托管 SQL Chat?</summary>
 <p>
 
@@ -156,19 +180,16 @@ pnpm prisma db seed
 </p>
 </details>
 
-<details><summary>如何使用我的 OpenAI API 密钥？</summary>
+<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
 <p>
 
-- 您可以在环境变量中设置 `OPENAI_API_KEY`。
+![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
 
-  ```bash
-  docker run --name sqlchat --platform linux/amd64 --env OPENAI_API_KEY=xxx -p 3000:3000 sqlchat/sqlchat
-  ```
-
-- 您可以在设置对话框中设置 `OPENAI_API_KEY`。
+这个表示你自己提供的 OpenAI Key 的 Quota 没有了。请查看自己的 [OpenAI 账号](https://platform.openai.com/account/api-keys)。
 
 </p>
 </details>
+
 
 <details><summary>它总是说我有网络连接问题？</summary>
 <p>
@@ -182,16 +203,6 @@ ping api.openai.com
 ```
 
 如果您无法访问 OpenAI API 端点，您可以尝试在 UI 或环境变量中设置 `OPENAI_API_ENDPOINT`。
-
-</p>
-</details>
-
-<details><summary>You exceeded your current quota, please check your plan and billing details</summary>
-<p>
-
-![openai quota](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-exceed-openai-quota.webp)
-
-这个表示你自己提供的 OpenAI Key 的 Quota 没有了。请查看自己的 [OpenAI 账号](https://platform.openai.com/account/api-keys)。
 
 </p>
 </details>

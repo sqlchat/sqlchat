@@ -58,8 +58,7 @@ If you just want to run for your own use, supply the following options:
 docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" --env OPENAI_API_KEY=<<YOUR OPENAI KEY>> -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
 
-- Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain. It doesn't matter
-  if you don't enable login.
+- Pass an arbitrary string to NEXTAUTH_SECRET otherwise next-auth will complain.
 - If you chat to the database on the same host, you need to use `host.docker.internal` as the host in
   the database connection setting.
 
