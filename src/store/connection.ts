@@ -14,11 +14,11 @@ const samplePGConnection: Connection = {
   id: "sample-pg",
   title: "Sample PostgreSQL",
   engineType: Engine.PostgreSQL,
-  host: "ep-throbbing-thunder-042250-pooler.us-west-2.aws.neon.tech",
+  host: "ep-raspy-butterfly-84248843.us-east-1.postgres.vercel-storage.com",
   port: "5432",
-  username: "sqlchat_readonly",
-  password: "U5rI8tJMiKWp",
-  database: "sample-employee",
+  username: "default",
+  password: "uH7g6QYwMJcT",
+  database: "verceldb",
 };
 
 interface ConnectionState {
