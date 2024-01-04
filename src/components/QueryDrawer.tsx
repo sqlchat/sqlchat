@@ -50,6 +50,38 @@ const QueryDrawer = () => {
     }
   }, [queryStore.showDrawer]);
 
+  const saveExampleStatement = async (statement: string) => {
+    if (!statement) {
+      toast.error("Please enter a statement.");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await fetch("/api/sample-sql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          statement,
+        }),
+      });
+      if (response.status == 200) {
+        toast.success("save succeed");
+      } else {
+        toast.error("保存失败");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to execute statement");
+    } finally {
+      setIsLoading(false);
+    }
+    return;
+  };
+
   const executeStatement = async (statement: string) => {
     if (!statement) {
       toast.error("Please enter a statement.");
@@ -132,6 +164,12 @@ const QueryDrawer = () => {
                 placeholder="Enter your SQL statement here..."
                 onChange={(e) => setStatement(e.target.value)}
               />
+              <button
+                className="mr-6 h-8 py-1 px-4 whitespace-nowrap -translate-y-2 cursor-pointer rounded-md hover:shadow opacity-90 hover:opacity-100 bg-red-600 text-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                onClick={() => saveExampleStatement(statement)}
+              >
+                {t("common.save-sql")}
+              </button>
               <button
                 className="h-8 py-1 px-4 whitespace-nowrap -translate-y-2 cursor-pointer rounded-md hover:shadow opacity-90 hover:opacity-100 bg-indigo-600 text-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
                 onClick={() => executeStatement(statement)}

@@ -10,6 +10,7 @@
     "copy": "复制",
     "delete": "删除",
     "run-sql": "运行 SQL",
+    "save-sql": "保存 SQL",
     "sign-in": "登录",
     "sign-out": "登出",
     "back": "返回",

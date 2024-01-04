@@ -188,6 +188,19 @@ const ConversationView = () => {
       role: CreatorRole.System,
       content: dbPrompt,
     });
+    // 处理userPrompt
+    const indexOfUnderscore = userPrompt.indexOf("_");
+    // 获取信号和真正的 prompt
+    const realPrompt = userPrompt.slice(indexOfUnderscore + 1);
+
+    if (indexOfUnderscore !== -1) {
+      const example_sql = `
+      查询为北京市大兴区2023年药品临床三期药品类型分布
+      返回的sql为 SELECT drug_type, COUNT(*) AS count FROM clinical_trials WHERE EXTRACT(YEAR FROM first_public_date) = 2023   AND city = '北京市'   AND district = '大兴区'   AND trial_phase = 'III期' GROUP BY drug_type;
+      请给予以上例子，生成sql
+      `;
+      userPrompt = example_sql + realPrompt;
+    }
 
     // Add the user prompt as the last context.
     formatedMessageList.push({

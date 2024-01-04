@@ -10,6 +10,7 @@
     "copy": "Copiar",
     "delete": "Borrar",
     "run-sql": "Ejecutar SQL",
+    "save-sql": "Save SQL",
     "sign-in": "Iniciar sesión",
     "sign-out": "Desconectar",
     "back": "Volver",

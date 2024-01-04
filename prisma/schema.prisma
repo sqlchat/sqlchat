@@ -17,6 +17,17 @@ datasource db {
   directUrl = env("DATABASE_DIRECT_URL")
 }
 
+model SampleSql {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now()) @map("created_at")
+  query     String 
+  table     String 
+  sql       String 
+
+  @@index([sql], map: "chat_sql_idx")
+  @@map("sample_sql")
+}
+
 model Chat {
   id        String    @id @default(cuid())
   createdAt DateTime  @default(now()) @map("created_at")
