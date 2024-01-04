@@ -311,7 +311,7 @@ const ConnectionSidebar = () => {
                   height="54"
                 />
               </a>
-              <a
+              {/* <a
                 className="hidden dark:block"
                 href="https://www.producthunt.com/posts/sql-chat-2?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-sql&#0045;chat&#0045;2"
                 target="_blank"
@@ -323,7 +323,7 @@ const ConnectionSidebar = () => {
                   width="250"
                   height="54"
                 />
-              </a>
+              </a> */}
             </div>
           </div>
         </div>
