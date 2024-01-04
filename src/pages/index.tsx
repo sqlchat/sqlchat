@@ -20,7 +20,7 @@ const IndexPage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>SQL Chat - Chat-based SQL Client and Editor for the next decade</title>
+        <title>JustOne SQL - 最多处理一次，剩下交给AI</title>
         <meta name="description" content="Chat-based SQL Client and Editor for the next decade" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="og:title" property="og:title" content="SQL Chat" />

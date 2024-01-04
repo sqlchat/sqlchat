@@ -2,7 +2,7 @@ import { Engine } from "@/types";
 
 export default {
   id: "sql-chat-bot",
-  name: "SQL Chat bot",
+  name: "JustOne SQL bot",
   description: "The wonderful SQL Chat bot.",
   avatar: "",
   getPrompt: (engine?: Engine, schema?: string): string => {

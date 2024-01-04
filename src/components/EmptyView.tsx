@@ -33,7 +33,7 @@ const EmptyView = (props: Props) => {
   return (
     <div className={`${className || ""} w-full h-full flex flex-col justify-start items-center`}>
       <div className="w-96 max-w-full font-medium leading-loose mb-8">
-        <img src={isDarkMode ? "/chat-logo-and-text-dark-mode.webp" : "/chat-logo-and-text.webp"} alt="sql-chat-logo" />
+        {/* <img src={isDarkMode ? "/chat-logo-and-text-dark-mode.webp" : "/chat-logo-and-text.webp"} alt="sql-chat-logo" /> */}
       </div>
       <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4">
         <div className="w-full flex flex-col justify-start items-center">

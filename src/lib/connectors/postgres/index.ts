@@ -14,7 +14,7 @@ const newPostgresClient = async (connection: Connection) => {
     user: connection.username,
     password: connection.password,
     database: connection.database,
-    application_name: "sqlchat",
+    application_name: "JustOne SQL",
   };
   if (connection.ssl) {
     clientConfig.ssl = {
