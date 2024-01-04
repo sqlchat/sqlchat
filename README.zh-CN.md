@@ -153,9 +153,9 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 本项目使用 BSL 许可证。请参阅 [LICENSE](LICENSE) 文件以获取完整的许可文本。
 
-## 常见问题
+## 常见错误信息
 
-<details><summary>为什么要我 sign up to get quota when self-hosted </summary>
+<details><summary>sign up to get quota when self-hosted </summary>
 <p>
 
 看这个 [issue](https://github.com/sqlchat/sqlchat/issues/141).
@@ -191,7 +191,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 </details>
 
 
-<details><summary>它总是说我有网络连接问题？</summary>
+<details><summary>Failed to request message, please check your network</summary>
 <p>
 
 ![network error](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-network.webp)

@@ -161,9 +161,9 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
 
-## FAQ
+## Common Error Message
 
-<details><summary>Why asking me to sign up to get quota when self-hosted</summary>
+<details><summary>Please sign up to get free quota</summary>
 <p>
 
 See [this issue](https://github.com/sqlchat/sqlchat/issues/141).
@@ -181,7 +181,7 @@ Your OpenAI Key has run out of quota. Please check your [OpenAI account](https:/
 </p>
 </details>
 
-<details><summary>It always says that I have a network connection issue?</summary>
+<details><summary>Failed to request message, please check your network</summary>
 <p>
 
 ![network error](https://raw.githubusercontent.com/sqlchat/sqlchat/main/public/error-network.webp)
