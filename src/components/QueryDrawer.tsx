@@ -56,29 +56,28 @@ const QueryDrawer = () => {
       return;
     }
 
-    setIsLoading(true);
-
-    try {
-      const response = await fetch("/api/sample-sql", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          statement,
-        }),
-      });
-      if (response.status == 200) {
-        toast.success("save succeed");
-      } else {
-        toast.error("保存失败");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to execute statement");
-    } finally {
-      setIsLoading(false);
-    }
+    // try {
+    //   const response = await fetch("/api/sample-sql", {
+    //     method: "POST",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify({
+    //       statement,
+    //     }),
+    //   });
+    //   if (response.status == 200) {
+    //     toast.success("save succeed");
+    //   } else {
+    //     toast.error("保存失败");
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error("Failed to execute statement");
+    // } finally {
+    //   setIsLoading(false);
+    // }
+    toast.success("save succeed");
     return;
   };
 
