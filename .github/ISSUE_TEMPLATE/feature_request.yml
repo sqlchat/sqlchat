@@ -1,6 +1,6 @@
-name: Feature request
-description: Suggest an idea for this project.
-labels: [enhancement]
+name: Fuature mindstrom
+description: Suggest any idea for this project.
+labels: [mindstorm]
 body:
   - type: markdown
     attributes:
@@ -15,13 +15,7 @@ body:
         I'm always frustrated when [...]
     validations:
       required: true
-  - type: textarea
-    attributes:
-      label: Describe the solution you'd like
-      description: |
-        A clear and concise description of what you want to happen.
-    validations:
-      required: true
+ 
   - type: textarea
     attributes:
       label: Additional context
