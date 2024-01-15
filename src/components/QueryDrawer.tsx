@@ -1,9 +1,10 @@
 import { Drawer } from "@mui/material";
+import { head, last } from "lodash-es";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import TextareaAutosize from "react-textarea-autosize";
-import { useQueryStore, useMessageStore } from "@/store";
+import { useQueryStore, useMessageStore, useConversationStore } from "@/store";
 import { ExecutionResult, ResponseObject } from "@/types";
 import { checkStatementIsSelect, getMessageFromExecutionResult } from "@/utils";
 import Tooltip from "./kit/Tooltip";
@@ -17,6 +18,9 @@ const QueryDrawer = () => {
   const { t } = useTranslation();
   const queryStore = useQueryStore();
   const messageStore = useMessageStore();
+  const conversationStore = useConversationStore();
+  const currentConversation = conversationStore.getConversationById(conversationStore.currentConversationId);
+
   const [executionResult, setExecutionResult] = useState<ExecutionResult | undefined>(undefined);
   const [originalStatement, setOriginalStatement] = useState<string>("");
   const [statement, setStatement] = useState<string>("");
@@ -55,28 +59,36 @@ const QueryDrawer = () => {
       toast.error("Please enter a statement.");
       return;
     }
+    setIsLoading(true);
 
-    // try {
-    //   const response = await fetch("/api/sample-sql", {
-    //     method: "POST",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       statement,
-    //     }),
-    //   });
-    //   if (response.status == 200) {
-    //     toast.success("save succeed");
-    //   } else {
-    //     toast.error("保存失败");
-    //   }
-    // } catch (error) {
-    //   console.error(error);
-    //   toast.error("Failed to execute statement");
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    const messageList = currentConversation
+      ? messageStore.messageList.filter((message: Message) => message.conversationId === currentConversation.id)
+      : [];
+    const headMessage = head(messageList);
+
+    const userQuery = headMessage?.content || "";
+    try {
+      const response = await fetch("/api/sample-sql", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          statement: statement,
+          query: userQuery,
+        }),
+      });
+      if (response.status == 200) {
+        toast.success("save succeed");
+      } else {
+        toast.error("保存失败");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to execute statement");
+    } finally {
+      setIsLoading(false);
+    }
     toast.success("save succeed");
     return;
   };
