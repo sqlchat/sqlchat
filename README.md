@@ -73,7 +73,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 ### OpenAI related
 
-- `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://beta.openai.com/docs/developer-quickstart/api-keys).
+- `OPENAI_API_KEY`: OpenAI API key. You can get one from [here](https://platform.openai.com/api-keys).
 
 - `OPENAI_API_ENDPOINT`: OpenAI API endpoint. Defaults to `https://api.openai.com`.
 
