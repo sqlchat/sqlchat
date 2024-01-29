@@ -1,6 +1,6 @@
 import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 import { NextRequest } from "next/server";
-import { openAIApiEndpoint, openAIApiKey, hasFeature, getModel } from "@/utils";
+import { openAIApiEndpoint, openAIApiKey, openAIOrganization, hasFeature, getModel } from "@/utils";
 
 // Needs Edge for streaming response.
 export const config = {
@@ -93,13 +93,19 @@ const handler = async (req: NextRequest) => {
     }
   }
 
+  let headers: { [key: string]: string } = {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${apiKey}`,
+  };
+
+  if (openAIOrganization) {
+    headers["OpenAI-Organization"] = openAIOrganization;
+  }
+
   const apiEndpoint = getApiEndpoint(req.headers.get("x-openai-endpoint") || openAIApiEndpoint);
   const model = getModel(req.headers.get("x-openai-model") || "");
   const remoteRes = await fetch(apiEndpoint, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
+    headers: headers,
     method: "POST",
     body: JSON.stringify({
       model: model.name,

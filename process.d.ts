@@ -13,6 +13,10 @@ declare namespace NodeJS {
     NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY: string;
     // Required. Do not share your OpenAI API key with anyone! It should remain a secret.
     OPENAI_API_KEY: string;
+    // Optional.For users who belong to multiple organizations,
+    // you can pass a header to specify which organization is used for an API request.
+    // Usage from these API requests will count as usage for the specified organization.
+    OPENAI_ORGANIZATION: string;
     // Optional. OpenAI API endpoint. Defaults to https://api.openai.com.
     OPENAI_API_ENDPOINT: string;
     // Optional. NextAuth.js URL. Defaults to the current domain.
