@@ -44,7 +44,7 @@ const Header = (props: Props) => {
               className="hidden sm:block text-blue-600 text-lg hover:underline"
               target="_blank"
             >
-              THE tool for database schema migration 🔗
+              Looking for schema migration tool?
             </a>
           </span>
         </div>
