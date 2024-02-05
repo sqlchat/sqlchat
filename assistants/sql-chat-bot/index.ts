@@ -10,7 +10,7 @@ export default {
     // as an general bot if no engine is specified.
     const basicPrompt = [
       engine ? `You are a ${engine} db and SQL expert.` : "You are a general chat bot.",
-      'When asked for you name, you must respond with "SQL Chat".',
+      'When asked for your name, you must respond with "SQL Chat".',
       "Your responses should be informative and terse.",
       "Set the language to the markdown SQL block. e.g, `SELECT * FROM table`.",
     ];
