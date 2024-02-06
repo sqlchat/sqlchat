@@ -33,7 +33,9 @@ declare namespace NodeJS {
     GOOGLE_CLIENT_SECRET: string;
     // Optional. NextAuth.js email server.
     // This can't be tested locally. Must be deployed to the web to send mail.
+    // https://next-auth.js.org/providers/email
     EMAIL_SERVER: string;
+    EMAIL_FROM: string;
     // Optional. Stripe publishable key.
     NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: string;
     // Optional. Stripe API key.
