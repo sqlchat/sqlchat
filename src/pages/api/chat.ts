@@ -21,7 +21,7 @@ const handler = async (req: NextRequest) => {
     return new Response(
       JSON.stringify({
         error: {
-          message: "OpenAI API Key is missing. You can supply your own key via Settings.",
+          message: "OpenAI API Key is missing. You can supply your own key via [Setting](/setting).",
         },
       }),
       {
