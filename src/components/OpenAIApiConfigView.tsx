@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useDebounce } from "react-use";
 import { useSettingStore } from "@/store";
 import { OpenAIApiConfig } from "@/types";
-import { allowSelfOpenAIKey } from "@/utils";
+import { allowSelfOpenAIKey, hasFeature } from "@/utils";
 import Radio from "./kit/Radio";
 import TextField from "./kit/TextField";
 import Tooltip from "./kit/Tooltip";
@@ -17,14 +17,29 @@ const OpenAIApiConfigView = () => {
   const models = [
     {
       id: "gpt-3.5-turbo",
-      title: `GPT-3.5 (${t("setting.openai-api-configuration.quota-per-ask", { count: 1 })})`,
+      title: `GPT-3.5 Turbo`,
+      cost: 1,
       disabled: false,
       tooltip: "",
     },
-    // Disable GPT-4 if user doesn't provide key (because SQL Chat own key hasn't been whitelisted yet).
+    {
+      id: "gpt-4-turbo",
+      title: `GPT-4 Turbo`,
+      cost: 20,
+      disabled: false,
+      tooltip: "",
+    },
     {
       id: "gpt-4",
-      title: `GPT-4 (${t("setting.openai-api-configuration.quota-per-ask", { count: 10 })})`,
+      title: `GPT-4`,
+      cost: 60,
+      disabled: false,
+      tooltip: "",
+    },
+    {
+      id: "gpt-4o",
+      title: `GPT-4o`,
+      cost: 10,
       disabled: false,
       tooltip: "",
     },
@@ -66,7 +81,7 @@ const OpenAIApiConfigView = () => {
           onChange={(value) => handleSetOpenAIApiConfig({ model: value })}
         />
         <label htmlFor={model.id} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
-          {model.title}
+          {model.title} {hasFeature("quota") ? `(${t("setting.openai-api-configuration.quota-per-ask", { count: model.cost })})` : ""}
         </label>
       </div>
     );
