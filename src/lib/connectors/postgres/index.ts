@@ -96,7 +96,7 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
   connection.database = databaseName;
   const client = await newPostgresClient(connection);
   const { rows } = await client.query(
-    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND table_type='BASE TABLE' AND table_catalog=$1;`,
+    `SELECT table_schema, table_name FROM information_schema.tables WHERE table_schema NOT IN (${systemSchemas}) AND table_name NOT IN (${systemTables}) AND (table_type='BASE TABLE' or table_type='VIEW') AND table_catalog=$1;`,
     [databaseName]
   );
 
