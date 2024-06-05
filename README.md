@@ -5,6 +5,10 @@
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY">
     <img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel">
   </a>
+  <br>
+  <a href="https://repocloud.io/details/?app_id=293">
+    <img src="https://img.shields.io/badge/DEPLOY%20ON-REPOCLOUD-blue?logo=iconify&logoColor=white&style=for-the-badge" alt="RepoCloud">
+  </a>
   <p>English | <a href="README.zh-CN.md">中文</a> | <a href="README.es-ES.md">Español</a></p>
 </div>
 
