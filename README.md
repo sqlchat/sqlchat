@@ -7,7 +7,7 @@
   </a>
   <br>
   <a href="https://repocloud.io/details/?app_id=293">
-    <img src="https://d16t0pc4846x52.cloudfront.net/deploy-lobe.png" alt="RepoCloud">
+    <img src="https://img.shields.io/badge/DEPLOY%20ON-REPOCLOUD-blue?logo=iconify&logoColor=white&style=for-the-badge" alt="RepoCloud">
   </a>
   <p>English | <a href="README.zh-CN.md">中文</a> | <a href="README.es-ES.md">Español</a></p>
 </div>
