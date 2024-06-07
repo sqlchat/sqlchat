@@ -54,7 +54,7 @@ SQL Chat 是由 [Next.js](https://nextjs.org/) 构建的，它支持以下数据
 docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openssl rand -hex 5)" --env OPENAI_API_KEY=<<YOUR OPENAI KEY>> -p 3000:3000 --hostname localhost sqlchat/sqlchat
 ```
 
-- 传一个任意值给 NEXTAUTH_SECRET 否则 next-auth 会抱怨。
+- 传一个任意值给 NEXTAUTH_SECRET 否则 next-auth 会报错。
 - 如果您连接同一个 host 上的数据库，在数据库连接配置中，需要使用 `host.docker.internal` 作为 host。
 
 <img src="https://raw.githubusercontent.com/sqlchat/sqlchat/main/docs/docker-connection-setting.webp" />
