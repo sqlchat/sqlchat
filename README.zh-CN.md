@@ -70,7 +70,7 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 - `OPENAI_API_KEY`: OpenAI API key. 您能从 [这里](https://beta.openai.com/docs/developer-quickstart/api-keys) 获得。
 
-- `OPENAI_API_ENDPOINT`: OpenAI API endpoint. 默认 `https://api.openai.com`。
+- `OPENAI_API_ENDPOINT`: OpenAI API endpoint. 默认 `https://api.openai.com`。使用 [Ollama](https://github.com/ollama/ollama) 来启动 self-host AI 模型，并且把 endpoint 指向它.
 
 - `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: 置为 `true` 以允许 SQL Chat 服务的用户使用自己的 key。
 
