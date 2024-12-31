@@ -1,0 +1,130 @@
+{
+  "common": {
+    "clear": "Limpiar",
+    "close": "Cerrar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "loading": "Cargando",
+    "setting": "Configuración",
+    "copy": "Copiar",
+    "delete": "Borrar",
+    "run-sql": "Ejecutar SQL",
+    "sign-in": "Iniciar sesión",
+    "sign-out": "Desconectar",
+    "back": "Volver",
+    "quota": "Cuota Mensual",
+    "date": "Fecha",
+    "description": "Descripción",
+    "amount": "Cantidad"
+  },
+  "conversation": {
+    "new-chat": "Nuevo Chat",
+    "conversation-title": "Título de la conversación",
+    "update": "Actualizar conversación",
+    "title": "Titulo"
+  },
+  "connection": {
+    "self": "Conexión",
+    "new": "Crear Conexión",
+    "edit": "Editar Conexión",
+    "refresh-schema": "Actualizar Esquema",
+    "select-database": "Selecciona tu base de datos",
+    "database-type": "Tipo de Base de Datos",
+    "title": "Nombre",
+    "host": "Servidor",
+    "port": "Puerto",
+    "database-name": "Nombre de Base de Datos",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "empty-select": "limpiar selección",
+    "select-all": "seleccionar todo",
+    "total-token": "Tokens",
+    "tidb-serverless-ssl-hint": "SSL está habilitado de forma predeterminada",
+    "select-table": "Selecciona tu tabla",
+    "select-schema": "Selecciona tu Esquema",
+    "all-tables": "Todas las Tablas"
+  },
+  "prompt": {
+    "view": "Prompt",
+    "current-conversation": "Mensaje de conversación actual"
+  },
+  "assistant": {
+    "self": "Bot",
+    "create-your-bot": "¿No encuentras el bot que necesitas? Crea uno"
+  },
+  "execution": {
+    "title": "Ejecutar consulta",
+    "message": {
+      "executing": "Ejecutando consulta...",
+      "no-connection": "No se ha seleccionado una conexión",
+      "no-data": "No hay datos para mostrar"
+    }
+  },
+  "editor": {
+    "placeholder": "Ingresa tu pregunta aquí..."
+  },
+  "setting": {
+    "self": "Configuración",
+    "general": "General",
+    "plan": {
+      "guest": "Invitado",
+      "free": "Gratis",
+      "pro": "Pro",
+      "pro-early-bird": "🐤 Early Bird - Pro 50% de descuento",
+      "signup-for-more": "Regístrese para obtener más",
+      "upgrade": "Mejora",
+      "renew": "Renovar",
+      "expired": "Expirado",
+      "n-question-per-month": "{{count}} Cuota / mes",
+      "1-month": "1 mes",
+      "n-months": "{{count}} meses",
+      "purhcase-1-month": "Comprar 1 mes",
+      "purhcase-n-months": "Comprar {{count}} meses"
+    },
+    "subscription": {
+      "self": "Suscripción",
+      "view-receipt": "Ver recibo"
+    },
+    "account": {
+      "self": "Cuenta"
+    },
+    "basic": {
+      "self": "Básico",
+      "language": "Idioma"
+    },
+    "theme": {
+      "self": "Tema",
+      "system": "Usar tema del sistema",
+      "light": "Claro",
+      "dark": "Oscuro"
+    },
+    "openai-api-configuration": {
+      "self": "Configuración del API de OpenAI",
+      "model": "Modelo",
+      "model-description": "La cuota no se consumirá si proporciona su propia clave a continuación.",
+      "key-description": "Indique su propia clave para retirarse del límite por cuota.",
+      "find-my-key": "Encuentra mi llave",
+      "endpoint-description": "Endpoint opcional que apunta a su propio servidor o gateway compatible."
+    },
+    "data": {
+      "self": "Datos",
+      "clear-all-data": "Limpiar todos los datos"
+    }
+  },
+  "social": {
+    "join-discord-channel": "Unirse al canal de Discord",
+    "join-wechat-group": "Unirse al grupo de WeChat"
+  },
+  "banner": {
+    "data-storage": "Las configuraciones de conexión y las consultas se almacenan en tu navegador",
+    "non-select-sql-warning": "La declaración actual puede no ser SELECT SQL, lo que dará como resultado un esquema de base de datos o un cambio de datos. Asegúrate de saber lo que estás haciendo.",
+    "product-hunt": "🚀🚀🚀 Acabamos de lanzar en Product Hunt, ¡por favor, vota por nosotros! 🚀🚀🚀",
+    "quota-overflow": "Cuota excedida. Proporcione su propia clave API de OpenAI.",
+    "use-my-key": "Usar mi propia clave"
+  },
+  "payment": {
+    "self": "Pago",
+    "sign-in-to-buy": "Inicia sesión para comprar"
+  }
+}

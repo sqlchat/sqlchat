@@ -1,0 +1,138 @@
+{
+  "common": {
+    "clear": "Clear",
+    "close": "Close",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "loading": "Loading",
+    "setting": "Setting",
+    "copy": "Copy",
+    "delete": "Delete",
+    "run-sql": "Run SQL",
+    "sign-in": "Sign in",
+    "sign-out": "Sign out",
+    "back": "Back",
+    "quota": "Monthly Quota",
+    "date": "Date",
+    "description": "Description",
+    "amount": "Amount",
+    "show": "Show",
+    "hide": "Hide"
+  },
+  "conversation": {
+    "new-chat": "New Chat",
+    "conversation-title": "Conversation title",
+    "update": "Update conversation",
+    "title": "Title"
+  },
+  "connection": {
+    "self": "Connection",
+    "new": "Create Connection",
+    "edit": "Edit Connection",
+    "refresh-schema": "Refresh Schema",
+    "select-database": "Select your database",
+    "select-table": "Select your table",
+    "select-schema": "Select your Schema",
+    "all-tables": "All Tables",
+    "total-token": "Tokens",
+    "database-type": "Database type",
+    "title": "Title",
+    "host": "Host",
+    "port": "Port",
+    "database-name": "Database name",
+    "username": "Username",
+    "password": "Password",
+    "empty-select": "clear selection",
+    "select-all": "select all",
+    "tidb-serverless-ssl-hint": "SSL is enabled by default"
+  },
+  "prompt": {
+    "self": "Prompt",
+    "current-conversation": "Current conversation prompt"
+  },
+  "assistant": {
+    "self": "Bot",
+    "create-your-bot": "Can't find the bot you need? Create one"
+  },
+  "execution": {
+    "title": "Execute SQL",
+    "message": {
+      "executing": "Executing query...",
+      "no-connection": "No connection selected",
+      "no-data": "No data returned"
+    }
+  },
+  "editor": {
+    "placeholder": "Enter your question here..."
+  },
+  "setting": {
+    "self": "Setting",
+    "general": "General",
+    "plan": {
+      "guest": "Guest",
+      "free": "Free",
+      "pro": "Pro",
+      "pro-early-bird": "🐤 Early Bird - Pro 50% OFF",
+      "signup-for-more": "Sign up for more",
+      "upgrade": "Upgrade",
+      "renew": "Renew",
+      "expired": "Expired",
+      "n-question-per-month": "{{count}} quota / month",
+      "1-month": "1 month",
+      "n-months": "{{count}} months",
+      "purhcase-1-month": "Purchase 1 month",
+      "purhcase-n-months": "Purchase {{count}} months"
+    },
+    "subscription": {
+      "self": "Subscription",
+      "view-receipt": "View receipt"
+    },
+    "account": {
+      "self": "Account"
+    },
+    "basic": {
+      "self": "Basic",
+      "language": "Language"
+    },
+    "theme": {
+      "self": "Theme",
+      "system": "Follow system",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI API configuration",
+      "model": "Model",
+      "model-description": "Quota won't be consumed if you provide your own key below.",
+      "quota-per-ask": "{{count}} quota per ask",
+      "key-description": "Bring your own key to waive quota requirement.",
+      "find-my-key": "Find my key",
+      "endpoint-description": "Optional endpoint pointing to your own compatible server or gateway."
+    },
+    "dashscope": {
+      "api-key": "DashScope API Key",
+      "api-key-placeholder": "Enter your DashScope API Key",
+      "model": "Model"
+    },
+    "data": {
+      "self": "Data",
+      "clear-all-data": "Clear all data"
+    }
+  },
+  "social": {
+    "join-discord-channel": "Join Discord Channel",
+    "join-wechat-group": "Join WeChat Group"
+  },
+  "banner": {
+    "data-storage": "Connection settings are stored in your local browser",
+    "non-select-sql-warning": "The current statement may be non-SELECT SQL, which will result in a database schema or data change. Make sure you know what you are doing.",
+    "product-hunt": "🚀🚀🚀 We just launched on Product Hunt, please give us a vote! 🚀🚀🚀",
+    "quota-overflow": "We are running out of quota. You can still supply your own OpenAI API key to continue using.",
+    "use-my-key": "Use my own key"
+  },
+  "payment": {
+    "self": "Payment",
+    "sign-in-to-buy": "Sign in to buy"
+  }
+}

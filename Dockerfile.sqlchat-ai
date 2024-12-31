@@ -1,0 +1,52 @@
+# This is the dockerfile to run www.sqlchat.ai, in particular it injects the NEXT_PUBLIC_ vars at
+# BUILD time
+FROM node:18-alpine AS base
+
+# Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml* ./
+RUN yarn global add pnpm && pnpm i --frozen-lockfile
+
+# Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+
+# Need to inject NEXT_PUBLIC at build time
+# https://github.com/vercel/next.js/issues/51575
+ENV NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_MONTH_SUBSCRIPTION price_1O2clpAeLQYhEB73FPWr7JjV
+ENV NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_3_MONTH_SUBSCRIPTION price_1NAE2hAeLQYhEB73FoF8WJPS
+ENV NEXT_PUBLIC_STRIPE_PRICE_ID_PRO_1_YEAR_SUBSCRIPTION price_1N96riAeLQYhEB73YPSL8GuV
+ENV NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY pk_live_JoPlkGsFcm2iHvy5a4JR5tia00vVXVJM8d
+ENV NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY true
+
+RUN yarn run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
+COPY --from=builder /app/public ./public
+
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
+EXPOSE 3000
+
+ENV PORT 3000
+
+CMD ["node", "server.js"]

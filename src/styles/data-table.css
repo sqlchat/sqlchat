@@ -1,0 +1,14 @@
+.rdt_Pagination {
+  @apply !border-t-0 dark:bg-zinc-800 dark:text-gray-300;
+}
+
+.rdt_Pagination button {
+  @apply dark:bg-zinc-800 dark:text-gray-300 dark:fill-gray-300;
+}
+
+.rdt_Table,
+.rdt_TableHead,
+.rdt_TableHeadRow,
+.rdt_TableRow {
+  @apply dark:bg-zinc-800 dark:text-gray-300;
+}

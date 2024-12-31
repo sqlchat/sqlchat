@@ -1,0 +1,143 @@
+{
+  "common": {
+    "clear": "清除",
+    "close": "关闭",
+    "confirm": "确认",
+    "save": "保存",
+    "edit": "编辑",
+    "loading": "加载中",
+    "setting": "设置",
+    "copy": "复制",
+    "delete": "删除",
+    "run-sql": "运行 SQL",
+    "sign-in": "登录",
+    "sign-out": "登出",
+    "back": "返回",
+    "quota": "每月额度",
+    "date": "日期",
+    "description": "描述",
+    "amount": "金额",
+    "show": "显示",
+    "hide": "隐藏"
+  },
+  "conversation": {
+    "new-chat": "新建会话",
+    "conversation-title": "会话标题",
+    "update": "更新会话",
+    "title": "标题"
+  },
+  "connection": {
+    "self": "连接",
+    "new": "创建连接",
+    "edit": "编辑连接",
+    "refresh-schema": "刷新 Schema",
+    "select-database": "选择数据库",
+    "select-table": "选择数据表",
+    "select-schema": "选择 Schema",
+    "all-tables": "全部表",
+    "select-all": "选择全部",
+    "total-token": "Token",
+    "empty-select": "清空选择",
+    "database-type": "数据库类型",
+    "title": "标题",
+    "host": "主机",
+    "port": "端口",
+    "database-name": "数据库",
+    "username": "用户名",
+    "password": "密码",
+    "tidb-serverless-ssl-hint": "SSL 默认已开启"
+  },
+  "prompt": {
+    "view": "提示词",
+    "current-conversation": "当前会话的提示词"
+  },
+  "assistant": {
+    "self": "机器人",
+    "create-your-bot": "找不到需要的机器人？创建一个"
+  },
+  "execution": {
+    "title": "执行 SQL",
+    "message": {
+      "executing": "正在执行查询...",
+      "no-connection": "未选择连接",
+      "no-data": "未返回数据"
+    }
+  },
+  "editor": {
+    "placeholder": "在此输入您的问题..."
+  },
+  "setting": {
+    "self": "设置",
+    "general": "通用",
+    "plan": {
+      "guest": "访客",
+      "free": "免费版",
+      "pro": "专业版",
+      "pro-early-bird": " 早鸟优惠 - 专业版 5 折",
+      "signup-for-more": "注册获得额度",
+      "upgrade": "升级",
+      "renew": "续费",
+      "expired": "已过期",
+      "n-question-per-month": "{{count}} 点额度 / 月",
+      "1-month": "1 个月",
+      "n-months": "{{count}} 个月",
+      "purhcase-1-month": "购买 1 个月",
+      "purhcase-n-months": "购买 {{count}} 个月"
+    },
+    "subscription": {
+      "self": "订阅",
+      "view-receipt": "查看收据"
+    },
+    "account": {
+      "self": "账户"
+    },
+    "basic": {
+      "self": "基础",
+      "language": "语言"
+    },
+    "theme": {
+      "self": "主题",
+      "system": "跟随系统",
+      "light": "浅色",
+      "dark": "深色"
+    },
+    "ai-provider": "AI 提供商",
+    "providers": {
+      "openai": "OpenAI",
+      "dashscope": "通义千问"
+    },
+    "openai-api-configuration": {
+      "self": "OpenAI API 配置",
+      "model": "模型",
+      "model-description": "如果您提供自己的 key，额度是不会消耗的。",
+      "quota-per-ask": "每一个提问消耗 {{count}} 点额度",
+      "find-my-key": "找到我的 Key",
+      "key-description": "一旦您提供了自己的 key，额度就不受限制了。",
+      "endpoint-description": "可选的 endpoint 指向接口兼容的服务器或者网关。"
+    },
+    "data": {
+      "self": "数据",
+      "clear-all-data": "清除所有数据"
+    },
+    "dashscope": {
+      "api-key": "通义千问 API Key",
+      "api-key-placeholder": "请输入通义千问 API Key",
+      "model": "模型"
+    }
+  },
+  "social": {
+    "join-discord-channel": "加入 Discord 频道",
+    "join-wechat-group": "加入微信群"
+  },
+  "banner": {
+    "data-storage": "连接设置存储在您的本地浏览器中",
+    "non-select-sql-warning": "当前语句可能是非 SELECT SQL，这将导致数据库模式或数据变化。",
+    "product-hunt": " 我们刚在 Product Hunt 发布, 来给我们点个赞! ",
+    "quota-overflow": "我们的 OpenAI 额度已用完，请提供您自己的 OpenAI API key。",
+    "use-my-key": "提供我自己的 key"
+  },
+  "payment": {
+    "self": "支付",
+    "sign-in-to-buy": "登录后购买"
+  }
+}
