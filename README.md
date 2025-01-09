@@ -162,10 +162,6 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
   </a>
 </p>
 
-## License
-
-This project is under the BSL License. See the [LICENSE](LICENSE) file for the full license text.
-
 ## Common Error Message
 
 <details><summary>Please sign up to get free quota</summary>
