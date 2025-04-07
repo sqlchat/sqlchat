@@ -43,6 +43,13 @@ const OpenAIApiConfigView = () => {
       disabled: false,
       tooltip: "",
     },
+    {
+      id: "deepseek-chat",
+      title: `Deepseek Chat`,
+      cost: 1,
+      disabled: false,
+      tooltip: "",
+    },
   ];
 
   const maskedKey = (str: string) => {

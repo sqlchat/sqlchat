@@ -34,7 +34,16 @@ const gpt4ho = {
   cost_per_call: 10,
 };
 
-export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho];
+const deepseekChat = {
+  name: "deepseek-chat",
+  temperature: 0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  max_token: 12000,
+  cost_per_call: 1,
+};
+
+export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat];
 
 export const getModel = (name: string) => {
   for (const model of models) {
