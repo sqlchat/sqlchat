@@ -5,10 +5,6 @@
   <a href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsqlchat%2Fsqlchat&env=OPENAI_API_KEY">
     <img src="https://img.shields.io/badge/deploy%20on-Vercel-brightgreen.svg?style=for-the-badge&logo=vercel" alt="vercel">
   </a>
-  <br>
-  <a href="https://repocloud.io/details/?app_id=293">
-    <img src="https://img.shields.io/badge/DEPLOY%20ON-REPOCLOUD-blue?logo=iconify&logoColor=white&style=for-the-badge" alt="RepoCloud">
-  </a>
   <p>English | <a href="README.zh-CN.md">中文</a> | <a href="README.es-ES.md">Español</a></p>
 </div>
 
@@ -147,8 +143,6 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 [![Star History Chart](https://api.star-history.com/svg?repos=sqlchat/sqlchat&type=Date)](https://star-history.com/#sqlchat/sqlchat&Date)
 
 ## Community
-
-[![Hang out on Discord](https://img.shields.io/badge/%20-Hang%20out%20on%20Discord-5865F2?style=for-the-badge&logo=discord&labelColor=EEEEEE)](https://discord.gg/z6kakemDjm)
 
 [![Follow us on Twitter](https://img.shields.io/badge/Follow%20us%20on%20Twitter-1DA1F2?style=for-the-badge&logo=twitter&labelColor=EEEEEE)](https://twitter.com/Bytebase)
 
