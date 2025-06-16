@@ -33,6 +33,7 @@ SQL Chat is built by [Next.js](https://nextjs.org/), it supports the following d
 - PostgreSQL
 - MSSQL
 - TiDB Cloud
+- OceanBase
 
 ## [sqlchat.ai](https://sqlchat.ai)
 
