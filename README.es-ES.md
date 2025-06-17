@@ -33,6 +33,7 @@ SQL Chat esta construido en [Next.js](https://nextjs.org/), admite las siguiente
 - PostgreSQL
 - MSSQL
 - TiDB Cloud
+- OceanBase
 
 ## Privacidad de la Data
 
