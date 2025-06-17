@@ -59,6 +59,11 @@ const engines = [
     name: "TiDB Serverless",
     defaultPort: "4000",
   },
+  {
+    type: Engine.OceanBase,
+    name: "OceanBase",
+    defaultPort: "2881",
+  },
   // {
   //   type: Engine.Snowflake,
   //   name: "Snowflake",

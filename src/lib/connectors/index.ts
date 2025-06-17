@@ -18,6 +18,8 @@ export const newConnector = (connection: Connection): Connector => {
       return postgres(connection);
     case Engine.MSSQL:
       return mssql(connection);
+    case Engine.OceanBase:
+      return mysql(connection);
     default:
       throw new Error("Unsupported engine type.");
   }

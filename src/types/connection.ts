@@ -7,6 +7,7 @@ export enum Engine {
   TiDB = "TiDB",
   Snowflake = "SNOWFLAKE",
   Hive = "HIVE",
+  OceanBase = "OCEANBASE"
 }
 
 export interface SSLOptions {
