@@ -50,3 +50,25 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Docker meta for website
+        id: meta-website
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            sqlchat/sqlchat
+          flavor: |
+            latest=false
+          tags: |
+            type=raw,value=website-latest
+
+      - name: Build and Push Website Image
+        id: docker_build_website
+        uses: docker/build-push-action@v3
+        with:
+          context: ./
+          file: ./Dockerfile.sqlchat-ai
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.meta-website.outputs.tags }}
+          labels: ${{ steps.meta-website.outputs.labels }}
