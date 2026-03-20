@@ -80,6 +80,20 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 - `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: Set to `true` to allow users to bring their own OpenAI API key.
 
+### Using MiniMax
+
+SQL Chat supports [MiniMax](https://www.minimax.io/) models (M2.7 and M2.7 Highspeed) via their OpenAI-compatible API. To use MiniMax:
+
+1. Get an API key from [MiniMax Platform](https://platform.minimax.io/).
+2. Set the environment variables:
+
+```bash
+OPENAI_API_KEY=your-minimax-api-key
+OPENAI_API_ENDPOINT=https://api.minimax.io
+```
+
+Or, if `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY=true`, enter the API key and endpoint (`https://api.minimax.io`) in the Settings UI, then select a MiniMax model.
+
 
 ### Database related
 

@@ -43,7 +43,25 @@ const deepseekChat = {
   cost_per_call: 1,
 };
 
-export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat];
+const minimaxM27 = {
+  name: "MiniMax-M2.7",
+  temperature: 0.01,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  max_token: 204800,
+  cost_per_call: 1,
+};
+
+const minimaxM27Highspeed = {
+  name: "MiniMax-M2.7-highspeed",
+  temperature: 0.01,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  max_token: 204800,
+  cost_per_call: 1,
+};
+
+export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat, minimaxM27, minimaxM27Highspeed];
 
 export const getModel = (name: string) => {
   for (const model of models) {

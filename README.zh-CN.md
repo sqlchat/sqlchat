@@ -75,6 +75,20 @@ docker run --name sqlchat --platform linux/amd64 --env NEXTAUTH_SECRET="$(openss
 
 - `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY`: 置为 `true` 以允许 SQL Chat 服务的用户使用自己的 key。
 
+### 使用 MiniMax
+
+SQL Chat 支持通过 OpenAI 兼容 API 使用 [MiniMax](https://www.minimax.io/) 模型（M2.7 和 M2.7 Highspeed）。使用方法：
+
+1. 从 [MiniMax 开放平台](https://platform.minimax.io/) 获取 API Key。
+2. 设置环境变量：
+
+```bash
+OPENAI_API_KEY=your-minimax-api-key
+OPENAI_API_ENDPOINT=https://api.minimax.io
+```
+
+或者，如果设置了 `NEXT_PUBLIC_ALLOW_SELF_OPENAI_KEY=true`，可以在设置界面中输入 API Key 和 Endpoint（`https://api.minimax.io`），然后选择 MiniMax 模型。
+
 ### 数据库相关
 
 - `NEXT_PUBLIC_USE_DATABASE`: 置为 `true` 使得 SQL Chat 启动时使用数据库，这会开启如下功能：
