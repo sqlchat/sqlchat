@@ -95,7 +95,7 @@ const CreateConnectionModal = (props: Props) => {
   const [sslType, setSSLType] = useState<SSLType>("preferred");
   const [selectedSSLField, setSelectedSSLField] = useState<SSLFieldType>("ca");
   const [isRequesting, setIsRequesting] = useState(false);
-  const showDatabaseField = connection.engineType === Engine.PostgreSQL;
+  const showDatabaseField = connection.engineType === Engine.PostgreSQL || connection.engineType === Engine.MSSQL;
   const isEditing = editConnection !== undefined;
   const allowSave = connection.title !== "" && connection.host !== "" && connection.username !== "";
 
