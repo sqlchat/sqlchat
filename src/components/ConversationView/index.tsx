@@ -259,18 +259,26 @@ const ConversationView = () => {
     const reader = data.getReader();
     const decoder = new TextDecoder("utf-8");
     let done = false;
-    while (!done) {
-      const { value, done: readerDone } = await reader.read();
-      if (value) {
-        const char = decoder.decode(value);
-        if (char) {
-          assistantMessage.content = assistantMessage.content + char;
-          messageStore.updateMessage(assistantMessage.id, {
-            content: assistantMessage.content,
-          });
+    try {
+      while (!done) {
+        const { value, done: readerDone } = await reader.read();
+        if (value) {
+          const char = decoder.decode(value);
+          if (char) {
+            assistantMessage.content = assistantMessage.content + char;
+            messageStore.updateMessage(assistantMessage.id, {
+              content: assistantMessage.content,
+            });
+          }
         }
+        done = readerDone;
       }
-      done = readerDone;
+    } catch (error) {
+      messageStore.updateMessage(assistantMessage.id, {
+        content: assistantMessage.content || "Failed to receive response. Please check your API endpoint configuration.",
+        status: "FAILED",
+      });
+      return;
     }
     messageStore.updateMessage(assistantMessage.id, {
       status: "DONE",

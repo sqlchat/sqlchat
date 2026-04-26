@@ -140,8 +140,10 @@ const handler = async (req: NextRequest) => {
           try {
             const json = JSON.parse(data);
             const text = json.choices[0].delta?.content;
-            const queue = encoder.encode(text);
-            controller.enqueue(queue);
+            if (text) {
+              const queue = encoder.encode(text);
+              controller.enqueue(queue);
+            }
           } catch (e) {
             controller.error(e);
           }
@@ -150,6 +152,14 @@ const handler = async (req: NextRequest) => {
       const parser = createParser(streamParser);
       for await (const chunk of remoteRes.body as any) {
         parser.feed(decoder.decode(chunk));
+      }
+      // Ensure the stream is closed after all upstream chunks are consumed.
+      // Some providers (e.g. Ollama native API) may not send a [DONE] sentinel,
+      // which would leave the ReadableStream open and the client hanging indefinitely.
+      try {
+        controller.close();
+      } catch {
+        // Already closed by the [DONE] handler — ignore.
       }
     },
   });
