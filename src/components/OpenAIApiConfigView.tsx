@@ -50,6 +50,13 @@ const OpenAIApiConfigView = () => {
       disabled: false,
       tooltip: "",
     },
+    {
+      id: "MiniMax-M3",
+      title: `MiniMax M3`,
+      cost: 1,
+      disabled: false,
+      tooltip: "",
+    },
   ];
 
   const maskedKey = (str: string) => {

@@ -43,7 +43,16 @@ const deepseekChat = {
   cost_per_call: 1,
 };
 
-export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat];
+const minimaxM3 = {
+  name: "MiniMax-M3",
+  temperature: 0.01,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  max_token: 1000000,
+  cost_per_call: 1,
+};
+
+export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat, minimaxM3];
 
 export const getModel = (name: string) => {
   for (const model of models) {
