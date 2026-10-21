@@ -51,6 +51,13 @@ const OpenAIApiConfigView = () => {
       tooltip: "",
     },
     {
+      id: "MiniMax-M3.1-Flash",
+      title: `MiniMax M3.1 Flash`,
+      cost: 1,
+      disabled: false,
+      tooltip: "",
+    },
+    {
       id: "MiniMax-M3",
       title: `MiniMax M3`,
       cost: 1,

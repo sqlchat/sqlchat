@@ -43,6 +43,15 @@ const deepseekChat = {
   cost_per_call: 1,
 };
 
+const minimaxM31Flash = {
+  name: "MiniMax-M3.1-Flash",
+  temperature: 0.01,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  max_token: 1000000,
+  cost_per_call: 1,
+};
+
 const minimaxM3 = {
   name: "MiniMax-M3",
   temperature: 0.01,
@@ -52,13 +61,22 @@ const minimaxM3 = {
   cost_per_call: 1,
 };
 
-export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat, minimaxM3];
+export const models = [gpt35turbo, gpt4, gpt4turbo, gpt4ho, deepseekChat, minimaxM31Flash, minimaxM3];
 
 export const getModel = (name: string) => {
+  if (!name) {
+    return gpt35turbo;
+  }
+
   for (const model of models) {
     if (model.name === name) {
       return model;
     }
   }
-  return gpt35turbo;
+
+  // Keep explicitly selected saved/custom/legacy model IDs intact at the request boundary.
+  return {
+    ...gpt35turbo,
+    name,
+  };
 };
