@@ -13,6 +13,21 @@ const getApiEndpoint = (apiEndpoint: string) => {
   return url;
 };
 
+export const buildChatCompletionRequest = (modelName: string, messages: unknown[], user?: string) => {
+  const model = getModel(modelName);
+  return {
+    model: model.name,
+    messages,
+    temperature: model.temperature,
+    frequency_penalty: model.frequency_penalty,
+    presence_penalty: model.presence_penalty,
+    stream: true,
+    // Send end-user IP to help OpenAI monitor and detect abuse.
+    // It's intentionally not using email to avoid leaking user's email to OpenAI.
+    user,
+  };
+};
+
 const handler = async (req: NextRequest) => {
   const reqBody = await req.json();
   const apiKey = req.headers.get("x-openai-key") || openAIApiKey;
@@ -103,21 +118,10 @@ const handler = async (req: NextRequest) => {
   }
 
   const apiEndpoint = getApiEndpoint(req.headers.get("x-openai-endpoint") || openAIApiEndpoint);
-  const model = getModel(req.headers.get("x-openai-model") || "");
   const remoteRes = await fetch(apiEndpoint, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify({
-      model: model.name,
-      messages: reqBody.messages,
-      temperature: model.temperature,
-      frequency_penalty: model.frequency_penalty,
-      presence_penalty: model.presence_penalty,
-      stream: true,
-      // Send end-user IP to help OpenAI monitor and detect abuse.
-      // It's intentionally not using email to avoid leaking user's email to OpenAI.
-      user: req.ip,
-    }),
+    body: JSON.stringify(buildChatCompletionRequest(req.headers.get("x-openai-model") || "", reqBody.messages, req.ip)),
   });
   if (!remoteRes.ok) {
     return new Response(remoteRes.body, {
