@@ -118,7 +118,20 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
   for (const schema of schemaList) {
     for (const table of schema.tables) {
       const { rows: result } = await client.query(
-        `SELECT column_name, data_type, is_nullable FROM information_schema.columns WHERE table_schema NOT IN (${systemSchemas}) AND table_name=$1 AND table_schema=$2;`,
+        `SELECT cols.column_name, cols.data_type, cols.is_nullable,
+          CASE WHEN description.description IS NOT NULL THEN
+            pg_catalog.format('COMMENT ON COLUMN %I.%I.%I IS %L;',
+              cols.table_schema, cols.table_name, cols.column_name, description.description)
+          END AS column_comment
+        FROM information_schema.columns AS cols
+        JOIN pg_catalog.pg_namespace AS namespace ON namespace.nspname = cols.table_schema
+        JOIN pg_catalog.pg_class AS relation ON relation.relnamespace = namespace.oid AND relation.relname = cols.table_name
+        LEFT JOIN pg_catalog.pg_description AS description
+          ON description.objoid = relation.oid
+          AND description.classoid = 'pg_catalog.pg_class'::regclass
+          AND description.objsubid = cols.ordinal_position
+        WHERE cols.table_name=$1 AND cols.table_schema=$2
+        ORDER BY cols.ordinal_position;`,
         [table.name, schema.name]
       );
       const columnList = [];
@@ -130,7 +143,8 @@ const getTableSchema = async (connection: Connection, databaseName: string): Pro
       }
 
       let fullTableName = schema.name == "public" ? `"${table.name}"` : `"${schema.name}"."${table.name}"`;
-      table.structure = `CREATE TABLE ${fullTableName} (\n${columnList.join(",\n")}\n);`;
+      const columnComments = result.map((row) => row["column_comment"]).filter((comment) => comment !== null);
+      table.structure = [`CREATE TABLE ${fullTableName} (\n${columnList.join(",\n")}\n);`, ...columnComments].join("\n");
     }
   }
 

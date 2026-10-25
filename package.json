@@ -10,7 +10,8 @@
     "export": "next export",
     "start": "next start",
     "lint": "next lint",
-    "stripe": "stripe listen --forward-to localhost:3000/api/stripe/webhook"
+    "stripe": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
+    "test:postgres": "node --test tests/postgres-schema.test.cjs"
   },
   "dependencies": {
     "@emotion/react": "^11.10.6",

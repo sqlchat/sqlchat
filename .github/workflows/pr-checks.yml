@@ -7,6 +7,18 @@ on:
 jobs:
   lint-and-build:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
       - uses: actions/checkout@v3
 
@@ -16,13 +28,18 @@ jobs:
           node-version: 18
 
       - name: Install pnpm
-        run: npm install -g pnpm
+        run: npm install -g pnpm@10.34.8
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
       - name: Run lint
         run: pnpm lint
+
+      - name: Test PostgreSQL schemas
+        env:
+          SQLCHAT_TEST_POSTGRES_URL: postgres://postgres:postgres@localhost:5432/postgres
+        run: pnpm test:postgres
 
       - name: Run build
         run: pnpm build
