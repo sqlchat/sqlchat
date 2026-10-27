@@ -1,6 +1,7 @@
 # This is the dockerfile to run www.sqlchat.ai, in particular it injects the NEXT_PUBLIC_ vars at
 # BUILD time
 FROM node:18-alpine AS base
+RUN apk add --no-cache openssl
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -8,7 +9,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 RUN yarn global add pnpm && pnpm i --frozen-lockfile
 
 # Rebuild the source code only when needed

@@ -1,4 +1,5 @@
 FROM node:18-alpine AS base
+RUN apk add --no-cache openssl
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -6,7 +7,7 @@ FROM base AS deps
 RUN apk add --no-cache libc6-compat openssl openssl-dev
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
 RUN yarn global add pnpm && pnpm i --frozen-lockfile
 
 # Rebuild the source code only when needed

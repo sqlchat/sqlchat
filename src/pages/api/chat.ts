@@ -13,6 +13,23 @@ const getApiEndpoint = (apiEndpoint: string) => {
   return url;
 };
 
+// NextRequest.ip was removed in Next 15. Rebuild the same end-user hint from the
+// proxy headers, bounded to the first forwarded hop: this value only helps OpenAI
+// group abuse reports, it never authorises anything.
+const MAX_CLIENT_IP_LENGTH = 64;
+
+const getClientIp = (req: NextRequest) => {
+  const forwardedIp = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  if (forwardedIp && forwardedIp.length <= MAX_CLIENT_IP_LENGTH) {
+    return forwardedIp;
+  }
+  const realIp = req.headers.get("x-real-ip")?.trim();
+  if (realIp && realIp.length <= MAX_CLIENT_IP_LENGTH) {
+    return realIp;
+  }
+  return "unknown";
+};
+
 export const buildChatCompletionRequest = (modelName: string, messages: unknown[], user?: string) => {
   const model = getModel(modelName);
   return {
@@ -121,7 +138,7 @@ const handler = async (req: NextRequest) => {
   const remoteRes = await fetch(apiEndpoint, {
     headers: headers,
     method: "POST",
-    body: JSON.stringify(buildChatCompletionRequest(req.headers.get("x-openai-model") || "", reqBody.messages, req.ip)),
+    body: JSON.stringify(buildChatCompletionRequest(req.headers.get("x-openai-model") || "", reqBody.messages, getClientIp(req))),
   });
   if (!remoteRes.ok) {
     return new Response(remoteRes.body, {

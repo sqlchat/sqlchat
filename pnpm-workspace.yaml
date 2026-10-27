@@ -1,0 +1,9 @@
+# Dependency build-script policy for pnpm >= 11 (pnpm 12 denies unlisted builds
+# by default via strictDepBuilds: true and fails with ERR_PNPM_IGNORED_BUILDS).
+# The versions are exact matchers taken from pnpm-lock.yaml: approving a bare
+# name would also approve every future release of that package.
+allowBuilds:
+  '@prisma/client@4.13.0': true   # postinstall runs `prisma generate`; without it @prisma/client stays a throwing stub
+  '@prisma/engines@4.16.2': true  # postinstall downloads the query/migration engine binaries
+  prisma@4.16.2: false            # preinstall only checks Node >= 14.17 and global-CLI conflicts; nothing sqlchat needs
+  fsevents@2.3.3: false           # darwin-only optional watcher; its install script has never run under pnpm >= 10 either
